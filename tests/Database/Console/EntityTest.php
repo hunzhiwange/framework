@@ -33,13 +33,12 @@ final class EntityTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -53,13 +52,12 @@ final class EntityTest extends TestCase
 
     public function testWithTable(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'test',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -74,13 +72,12 @@ final class EntityTest extends TestCase
 
     public function testWithStub(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--stub' => __DIR__.'/assert/stub/entity',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -98,13 +95,12 @@ final class EntityTest extends TestCase
 
     public function testWithForce(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -118,7 +114,6 @@ final class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -128,7 +123,6 @@ final class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--force' => true,
         ], function ($container): void {
             $this->initContainerService($container);
@@ -141,7 +135,7 @@ final class EntityTest extends TestCase
 
     public function testWithRefresh(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh'));
         static::assertTrue(is_file($file));
@@ -152,7 +146,6 @@ final class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--refresh' => true,
         ], function ($container): void {
             $this->initContainerService($container);
@@ -168,13 +161,12 @@ final class EntityTest extends TestCase
 
     public function testWithTableNotFound(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'table_test_not_found',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -188,13 +180,12 @@ final class EntityTest extends TestCase
 
     public function testWithStubNotFound(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--stub' => 'stub_not_found',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -208,7 +199,7 @@ final class EntityTest extends TestCase
 
     public function testWithRefreshExtendsStruct(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_extends_struct'));
         static::assertTrue(is_file($file));
@@ -219,7 +210,6 @@ final class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--refresh' => true,
         ], function ($container): void {
             $this->initContainerService($container);
@@ -234,13 +224,12 @@ final class EntityTest extends TestCase
 
     public function testWithRefreshButNotExistsOld(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--refresh' => true,
         ], function ($container): void {
             $this->initContainerService($container);
@@ -255,7 +244,7 @@ final class EntityTest extends TestCase
 
     public function testWithRefreshCanNotFindStartAndEndPositionOfStruct(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
         Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_bad_struct'));
         static::assertTrue(is_file($file));
@@ -266,7 +255,6 @@ final class EntityTest extends TestCase
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--refresh' => true,
         ], function ($container): void {
             $this->initContainerService($container);
@@ -277,13 +265,12 @@ final class EntityTest extends TestCase
 
     public function testWithTableWithoutPrimaryKey(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'without_primarykey',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -299,13 +286,12 @@ final class EntityTest extends TestCase
 
     public function testWithTableWithoutCompositePrimaryKey(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'composite_id',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -321,13 +307,12 @@ final class EntityTest extends TestCase
 
     public function testWithComposerJson(): void
     {
-        $file = __DIR__.'/Domain/Entity/Test.php';
+        $file = __DIR__.'/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'role_soft_deleted',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -344,13 +329,12 @@ final class EntityTest extends TestCase
 
     public function testWithTableFieldAllowedNull(): void
     {
-        $file = __DIR__.'/../../Console/Domain/Entity/Test.php';
+        $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         static::assertFalse(is_file($file));
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
             'name' => 'test',
-            '--namespace' => 'App',
             '--table' => 'field_allowed_null',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -370,8 +354,8 @@ final class EntityTest extends TestCase
     protected function clearConsoleFiles(): void
     {
         $dirs = [
-            __DIR__.'/../../Console/Domain',
-            __DIR__.'/Domain',
+            __DIR__.'/../../Console/Base',
+            __DIR__.'/Base',
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
