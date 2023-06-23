@@ -53,6 +53,11 @@ abstract class Make extends Command
     protected string $namespace = 'App';
 
     /**
+     * 应用名.
+     */
+    protected string $appName = '';
+
+    /**
      * 设置全局变量替换.
      */
     public static function setGlobalReplace(array $replace): void
@@ -207,7 +212,8 @@ abstract class Make extends Command
             ->make(IApp::class)
         ;
 
-        return $app->namespacePath($this->getNamespace()).'/'.ucfirst($this->appName).'/';
+        return $app->namespacePath($this->getNamespace()).'/'.
+            ($this->appName ? ucfirst($this->appName).'/' : '');
     }
 
     /**

@@ -85,9 +85,10 @@ class Entity extends Make
      */
     protected ?array $composerOption = null;
 
-    protected string $appName;
-
-    protected string $tableName;
+    /**
+     * 表名.
+     */
+    protected string $tableName = '';
 
     /**
      * 响应命令.
