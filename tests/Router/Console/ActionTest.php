@@ -9,6 +9,9 @@ use Leevel\Router\Console\Action;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ActionTest extends TestCase
 {
     use BaseMake;
@@ -24,7 +27,6 @@ final class ActionTest extends TestCase
             'command' => 'make:action',
             'controller' => 'BarValue',
             'name' => 'hello',
-            '--namespace' => 'Common',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -47,7 +49,6 @@ final class ActionTest extends TestCase
             'command' => 'make:action',
             'controller' => 'Hello',
             'name' => 'hello-world_Yes',
-            '--namespace' => 'common',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -71,7 +72,6 @@ final class ActionTest extends TestCase
             'command' => 'make:action',
             'controller' => 'BarValue',
             'name' => 'hello',
-            '--namespace' => 'Common',
             '--stub' => __DIR__.'/../assert/action_stub',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -90,7 +90,6 @@ final class ActionTest extends TestCase
             'command' => 'make:action',
             'controller' => 'BarValue',
             'name' => 'hello',
-            '--namespace' => 'Common',
             '--stub' => '/notFound',
         ], function ($container): void {
             $this->initContainerService($container);

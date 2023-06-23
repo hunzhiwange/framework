@@ -10,6 +10,9 @@ use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ControllerTest extends TestCase
 {
     use BaseMake;
@@ -25,7 +28,6 @@ final class ControllerTest extends TestCase
             'command' => 'make:controller',
             'name' => 'BarValue',
             'action' => 'hello',
-            '--namespace' => 'common',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -47,7 +49,6 @@ final class ControllerTest extends TestCase
             'command' => 'make:controller',
             'name' => 'Hello',
             'action' => 'hello-world_Yes',
-            '--namespace' => 'common',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -72,7 +73,6 @@ final class ControllerTest extends TestCase
             'name' => 'BarValue',
             'action' => 'hello',
             '--subdir' => 'subdir/suddir2',
-            '--namespace' => 'common',
         ], function ($container): void {
             $this->initContainerService($container);
         });
@@ -95,7 +95,6 @@ final class ControllerTest extends TestCase
             'command' => 'make:controller',
             'name' => 'BarValue',
             'action' => 'hello',
-            '--namespace' => 'common',
             '--stub' => __DIR__.'/../assert/controller_stub',
         ], function ($container): void {
             $this->initContainerService($container);
@@ -113,7 +112,6 @@ final class ControllerTest extends TestCase
             'command' => 'make:controller',
             'name' => 'BarValue',
             'action' => 'hello',
-            '--namespace' => 'common',
             '--stub' => '/notFound',
         ], function ($container): void {
             $this->initContainerService($container);
