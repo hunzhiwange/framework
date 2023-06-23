@@ -725,6 +725,7 @@ class Validator implements IValidator
             $validatorErrorMessage = '';
 
             try {
+                /** @phpstan-ignore-next-line */
                 $validateResult = $validateRule->handle($fieldValue, $param, $this, $field);
             } catch (ValidatorException $e) {
                 $validateResult = false;
