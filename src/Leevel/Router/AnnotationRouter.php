@@ -400,7 +400,6 @@ class AnnotationRouter
      */
     protected function normalizeFastRoute(array $routers): array
     {
-        // 2018.05 我和同事毛飞我们讨论了这个，基于 FastRoute 背后技术原理构建
         // 合并路由匹配规则提高匹配效率，10 个一分组
         // http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html
         foreach ($routers as &$first) {
