@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Condition;
 use Leevel\Di\Container;
+use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoVersion;
@@ -209,15 +210,29 @@ final class EntityTest extends TestCase
 
     public function testEntityWithEnumItemNotFoundAndWillBeEmptyStringNotFromStorage(): void
     {
-        $this->expectException(\ValueError::class);
-        $this->expectExceptionMessage(
-            '5 is not a valid backing value for enum'
-        );
-
         $entity = new EntityWithEnum([
             'title' => 'foo',
             'status' => 5,
         ]);
+        [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
+        $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
+        $result = $validator->fail();
+        static::assertTrue($result);
+
+        $data = <<<'eot'
+{
+    "status": [
+        ""
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validator->error()
+            )
+        );
     }
 
     /**
