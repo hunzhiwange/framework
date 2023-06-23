@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 if (!(isset($errorBlocking) && false === $errorBlocking)) {
-    /** @phpstan-ignore-next-line */
-    $message = $messageDefault;
+    $message = $messageDefault ?? '';
 }
 ?>
 
