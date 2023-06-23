@@ -197,15 +197,30 @@ final class EntityTest extends TestCase
 
     public function testEntityWithEnumItemNotFoundAndWillThrowException(): void
     {
-        $this->expectException(\ValueError::class);
-        $this->expectExceptionMessage(
-            '5 is not a valid backing value for enum'
-        );
-
         $entity = new EntityWithEnum([
             'title' => 'foo',
             'status' => 5,
         ], true);
+
+        [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
+        $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
+        $result = $validator->fail();
+        static::assertTrue($result);
+
+        $data = <<<'eot'
+{
+    "status": [
+        ""
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validator->error()
+            )
+        );
     }
 
     public function testEntityWithEnumItemNotFoundAndWillBeEmptyStringNotFromStorage(): void
