@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/max",
  *     zh-CN:description="小于或者全等",
  * )
+ *
+ * @internal
  */
 final class MaxTest extends TestCase
 {
@@ -55,6 +57,7 @@ final class MaxTest extends TestCase
     {
         return [
             [2, 3],
+            ['1.1', '1.1'],
             [1.1, '1.5'],
             [1.5, '2'],
             [1.5, '3'],
@@ -105,7 +108,6 @@ final class MaxTest extends TestCase
     {
         return [
             [3, 2],
-            ['1.1', '1.1'],
             ['1.5', '1.1'],
             ['2', '1.5'],
             ['3', '1.5'],

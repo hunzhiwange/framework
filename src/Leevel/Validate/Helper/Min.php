@@ -19,6 +19,6 @@ class Min
             throw new \InvalidArgumentException($e);
         }
 
-        return $value > $param[0] || $value === $param[0];
+        return $value >= $param[0];
     }
 }
