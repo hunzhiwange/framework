@@ -32,6 +32,6 @@ class Clear extends Command
         DeleteDirectory::handle($cacheDir = $app->storagePath('logs'));
         $this->info(sprintf('Log cache files in path %s clear successed.', $cacheDir));
 
-        return 0;
+        return self::SUCCESS;
     }
 }

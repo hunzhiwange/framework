@@ -45,7 +45,7 @@ class DocFramework extends Command
             $this->call('make:doc', $input);
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

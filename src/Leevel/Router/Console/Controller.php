@@ -68,7 +68,7 @@ class Controller extends Make
         // 执行
         $this->create();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

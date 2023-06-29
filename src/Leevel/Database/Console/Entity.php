@@ -124,7 +124,7 @@ class Entity extends Make
         // 清理
         $this->clear();
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

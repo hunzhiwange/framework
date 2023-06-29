@@ -35,7 +35,7 @@ class Cache extends Command
         $this->writeCache($cachePath, $data);
         $this->info(sprintf('Router cache successed at %s.', $cachePath));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

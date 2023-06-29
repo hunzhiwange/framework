@@ -47,6 +47,6 @@ class Generate extends Command
 
         $this->info('I18n file generate successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 }

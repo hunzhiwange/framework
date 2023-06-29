@@ -40,7 +40,7 @@ class Development extends Command
         $this->line('');
         $this->info('Caches cleared successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

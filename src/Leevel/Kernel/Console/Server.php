@@ -45,7 +45,7 @@ class Server extends Command
         ]);
         passthru($this->normalizeCommand(), $status);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

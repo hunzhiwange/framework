@@ -57,7 +57,7 @@ class Cache extends Command
 
         $this->info('I18n cache successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

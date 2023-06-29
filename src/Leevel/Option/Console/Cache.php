@@ -44,7 +44,7 @@ class Cache extends Command
 
         $this->info(sprintf('Option cache successed at %s.', $cachePath));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

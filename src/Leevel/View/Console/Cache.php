@@ -61,7 +61,7 @@ class Cache extends Command
 
         $this->info('View files cache successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

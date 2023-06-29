@@ -70,7 +70,7 @@ class Doc extends Command
         $message = sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount);
         $this->info($message);
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

@@ -32,7 +32,7 @@ class LinkStatic extends Command
         $this->createLink($source, $app->path('www/static'));
         $this->createLink($source, $app->path('static'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

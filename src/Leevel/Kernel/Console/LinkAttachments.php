@@ -32,7 +32,7 @@ class LinkAttachments extends Command
         $this->createLink($source, $app->path('www/attachments'));
         $this->createLink($source, $app->path('attachments'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

@@ -32,7 +32,7 @@ class Autoload extends Command
         exec($command);
         $this->info('Autoload cache successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

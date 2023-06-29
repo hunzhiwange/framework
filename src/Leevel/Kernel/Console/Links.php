@@ -36,7 +36,7 @@ class Links extends Command
         $this->line('');
         $this->info('Links created successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

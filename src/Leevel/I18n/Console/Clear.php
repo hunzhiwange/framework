@@ -41,7 +41,7 @@ class Clear extends Command
 
         $this->info('I18n cache files clear successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

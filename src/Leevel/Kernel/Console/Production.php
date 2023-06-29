@@ -38,7 +38,7 @@ class Production extends Command
         $this->line('');
         $this->info('Optimize successed.');
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

@@ -32,7 +32,7 @@ class LinkDebugBar extends Command
         $this->createLink($source, $app->path('www/debugbar'));
         $this->createLink($source, $app->path('debugbar'));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

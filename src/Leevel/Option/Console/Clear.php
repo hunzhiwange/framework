@@ -32,7 +32,7 @@ class Clear extends Command
         $this->clearCache($cachePath);
         $this->info(sprintf('Option cache files %s clear successed.', $cachePath));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

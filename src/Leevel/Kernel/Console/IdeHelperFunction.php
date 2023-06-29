@@ -46,7 +46,7 @@ class IdeHelperFunction extends Command
             $this->info(sprintf('Ide helper cache successed at %s.', $cachePath));
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**

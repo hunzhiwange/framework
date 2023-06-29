@@ -33,6 +33,6 @@ class Clear extends Command
         $message = sprintf('View cache files in path %s clear successed.', $cachePath);
         $this->info($message);
 
-        return 0;
+        return self::SUCCESS;
     }
 }
