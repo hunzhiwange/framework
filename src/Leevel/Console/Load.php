@@ -74,10 +74,19 @@ class Load
                 throw new \RuntimeException($e);
             }
 
-            $currentFiles = glob($dir.'/*.php');
+            // PHAR 模式下不支持 glob 读取文件
+            $currentFiles = scandir($dir);
             if (false === $currentFiles) {
                 throw new \Exception('Find path names failed.');
             }
+
+            if ($currentFiles) {
+                $currentFiles = array_values(array_filter(
+                    $currentFiles,
+                    fn (string $item): bool => '.php' === substr($item, -4)
+                ));
+            }
+
             $currentFiles = array_map(
                 fn (string $item): string => $key.'\\'.basename($item, '.php'),
                 $currentFiles,
