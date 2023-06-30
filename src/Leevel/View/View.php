@@ -107,7 +107,9 @@ abstract class View implements IView
             throw new \RuntimeException($e);
         }
 
-        $file = str_replace('//', '/', str_replace('\\', '/', $file));
+        // PHAR模式，文件路径像这样 phar:///User/dyhb/leevel.phar/vendor
+        // 不能将两个斜杠替换为一个斜杆，否则会导致路径错误
+        $file = str_replace('\\', '/', $file);
 
         return realpath($file) ?: $file;
     }
