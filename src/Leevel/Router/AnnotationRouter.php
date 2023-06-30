@@ -182,7 +182,9 @@ class AnnotationRouter
         $classParser = new ClassParser();
         $routers = [];
         foreach ($finder as $file) {
-            $content = file_get_contents($filePath = $file->getRealPath()) ?: '';
+            // PHAR模式，getRealPath 总是返回为false，所以使用 getPathname
+            $filePath = $file->getRealPath() ?: $file->getPathname();
+            $content = file_get_contents($filePath) ?: '';
             if (str_contains($content, '#[')
                 && preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
                 $controllerClassName = $classParser->handle($filePath);
