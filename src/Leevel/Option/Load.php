@@ -137,14 +137,28 @@ class Load
     protected function loadOptionData(): array
     {
         $data = [];
-        $files = glob($this->dir.'/*.php') ?: [];
+
+        // PHAR 模式下不支持 glob 读取文件
+        $files = scandir($this->dir) ?: [];
+        if ($files) {
+            $files = array_values(array_filter(
+                $files,
+                fn (string $item): bool => '.php' === substr($item, -4)
+            ));
+        }
+
         $findApp = false;
         foreach ($files as $file) {
-            $type = substr(basename($file), 0, -4);
-            if ('app' === $type) {
+            if (!str_ends_with($file, '.php')) {
+                continue;
+            }
+
+            $type = substr($file, 0, -4);
+            if (false === $findApp && 'app' === $type) {
                 $findApp = true;
             }
-            $data[$type] = (array) include $file;
+
+            $data[$type] = (array) include $this->dir.'/'.$file;
         }
 
         if (false === $findApp) {
