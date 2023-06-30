@@ -98,7 +98,16 @@ class Load
      */
     protected function getPoFiles(string $dir): array
     {
-        return glob($dir.'/*.po') ?: [];
+        // PHAR 模式下不支持 glob 读取文件
+        $dir = scandir($dir);
+        if (false === $dir) {
+            return [];
+        }
+
+        return array_values(array_filter(
+            $dir,
+            fn (string $item): bool => '.php' === substr($item, -4)
+        ));
     }
 
     /**
