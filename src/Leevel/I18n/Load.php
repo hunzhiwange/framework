@@ -99,15 +99,19 @@ class Load
     protected function getPoFiles(string $dir): array
     {
         // PHAR 模式下不支持 glob 读取文件
-        $dir = scandir($dir);
-        if (false === $dir) {
+        $files = scandir($dir);
+        if (false === $files) {
             return [];
         }
 
-        return array_values(array_filter(
-            $dir,
-            fn (string $item): bool => '.php' === substr($item, -4)
+        $files = array_values(array_filter(
+            $files,
+            fn (string $item): bool => '.po' === substr($item, -3)
         ));
+
+        return array_map(function (string $file) use ($dir) {
+            return $dir.'/'.$file;
+        }, $files);
     }
 
     /**
