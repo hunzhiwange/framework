@@ -92,7 +92,7 @@ class Register extends Provider
      */
     protected function databaseLazyload(): void
     {
-        $this->container->singleton('database.lazyload');
+        $this->container->instance('database.lazyload');
     }
 
     /**
