@@ -18,7 +18,7 @@ class Lazyload
      */
     public static function placeholder(): bool
     {
-        Container::singletons()->make('database.lazyload');
+        Container::singletons()->make('database.lazyload', throw: false);
 
         return true;
     }
