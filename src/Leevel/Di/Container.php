@@ -62,6 +62,16 @@ class Container implements IContainer, \ArrayAccess
     protected array $providerBootstraps = [];
 
     /**
+     * 已经注册过的服务提供者.
+     */
+    protected array $registeredProviders = [];
+
+    /**
+     * 已经引导过的服务提供者.
+     */
+    protected array $bootedProviders = [];
+
+    /**
      * 实现魔术方法 __clone.
      *
      * - 禁止克隆.
@@ -192,7 +202,7 @@ class Container implements IContainer, \ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function make(string $name, array $args = []): mixed
+    public function make(string $name, array $args = [], bool $throw = true): mixed
     {
         // 别名
         $name = $this->getAlias($name);
@@ -204,20 +214,28 @@ class Container implements IContainer, \ArrayAccess
             return $this->instances[$name];
         }
 
-        // 生成实例
-        if (!isset($this->services[$name])) {
-            $instance = $this->getInjectionObject($name, $args);
-        } else {
-            if (!\is_string($this->services[$name]) && \is_callable($this->services[$name])) {
-                array_unshift($args, $this);
-                $instance = $this->services[$name](...$args);
+        try {
+            // 生成实例
+            if (!isset($this->services[$name])) {
+                $instance = $this->getInjectionObject($name, $args);
             } else {
-                if (\is_string($this->services[$name])) {
-                    $instance = $this->getInjectionObject($this->services[$name], $args);
+                if (!\is_string($this->services[$name]) && \is_callable($this->services[$name])) {
+                    array_unshift($args, $this);
+                    $instance = $this->services[$name](...$args);
                 } else {
-                    $instance = $this->services[$name];
+                    if (\is_string($this->services[$name])) {
+                        $instance = $this->getInjectionObject($this->services[$name], $args);
+                    } else {
+                        $instance = $this->services[$name];
+                    }
                 }
             }
+        } catch (ServiceNotFoundException $e) {
+            if ($throw) {
+                throw $e;
+            }
+
+            return null;
         }
 
         // 单一实例
@@ -253,6 +271,7 @@ class Container implements IContainer, \ArrayAccess
 
                     throw new \InvalidArgumentException($e);
                 }
+
                 $callback[0] = $this->getInjectionObject($callback[0]);
             }
 
@@ -322,11 +341,19 @@ class Container implements IContainer, \ArrayAccess
      */
     public function callProviderBootstrap(Provider $provider): void
     {
+        $providerClass = $provider::class;
+        if (\in_array($providerClass, $this->bootedProviders, true)) {
+            return;
+        }
+
         if (!method_exists($provider, 'bootstrap')) {
+            $this->bootedProviders[] = $providerClass;
+
             return;
         }
 
         $this->call([$provider, 'bootstrap']);
+        $this->bootedProviders[] = $providerClass;
     }
 
     /**
@@ -342,6 +369,11 @@ class Container implements IContainer, \ArrayAccess
      */
     public function register(Provider|string $provider): Provider
     {
+        $providerClass = \is_string($provider) ? $provider : $provider::class;
+        if (isset($this->registeredProviders[$providerClass])) {
+            return $this->registeredProviders[$providerClass];
+        }
+
         if (\is_string($provider)) {
             $provider = $this->makeProvider($provider);
         }
@@ -354,7 +386,7 @@ class Container implements IContainer, \ArrayAccess
             $this->callProviderBootstrap($provider);
         }
 
-        return $provider;
+        return $this->registeredProviders[$providerClass] = $provider;
     }
 
     /**
@@ -476,10 +508,8 @@ class Container implements IContainer, \ArrayAccess
 
     /**
      * 根据 class 名字创建实例.
-     *
-     * @throws \Leevel\Di\ContainerInvalidArgumentException
      */
-    protected function getInjectionObject(string $className, array $args = []): object|string
+    protected function getInjectionObject(string $className, array $args = []): object|string|null
     {
         if (interface_exists($className)) {
             $e = sprintf('Interface %s cannot be normalize because not binded.', $className);
@@ -488,7 +518,7 @@ class Container implements IContainer, \ArrayAccess
         }
 
         if (!class_exists($className)) {
-            return $className;
+            throw new ServiceNotFoundException(sprintf('Service %s was not found.', $className));
         }
 
         $args = $this->normalizeInjectionArgs($className, $args);

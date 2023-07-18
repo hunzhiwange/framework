@@ -39,7 +39,7 @@ interface IContainer extends ContainerInterface
     /**
      * 创建容器服务并返回.
      */
-    public function make(string $name, array $args = []): mixed;
+    public function make(string $name, array $args = [], bool $throw = true): mixed;
 
     /**
      * 回调自动依赖注入.
