@@ -548,7 +548,7 @@ class Validator implements IValidator
         } elseif (!\is_array($params)) {
             $params = [$params];
         }
-        $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
+        $params = array_map(fn (mixed $item) => !\is_string($item) ? $item : StringDecode::handle($item, false), $params);
 
         return [$rule, $params];
     }
@@ -876,7 +876,7 @@ class Validator implements IValidator
         }
 
         // @phpstan-ignore-next-line
-        if (!\is_object($extend = $this->container->make($className))) {
+        if (!\is_object($extend = $this->container->make($className, throw: false))) {
             $e = sprintf('Extend class %s is not valid.', $className);
 
             throw new \InvalidArgumentException($e);

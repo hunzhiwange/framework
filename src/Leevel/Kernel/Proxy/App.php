@@ -50,7 +50,7 @@ use Leevel\Kernel\App as BaseApp;
  * @method static \Leevel\Di\IContainer instance($name, $service)                                                                     注册为实例.
  * @method static \Leevel\Di\IContainer singleton($name, $service = null)                                                             注册单一实例.
  * @method static \Leevel\Di\IContainer alias($alias, $value = null)                                                                  设置别名.
- * @method static mixed                 make(string $name, array $args = [])                                                          创建容器服务并返回.
+ * @method static mixed                 make(string $name, array $args = [], bool $throw = false)                                     创建容器服务并返回.
  * @method static mixed                 call($callback, array $args = [])                                                             实例回调自动注入.
  * @method static void                  remove(string $name)                                                                          删除服务和实例.
  * @method static bool                  exists(string $name)                                                                          服务或者实例是否存在.

@@ -43,7 +43,7 @@ class Dispatch implements IDispatch
             $name = $event::class;
         } else {
             $name = $event;
-            $event = $this->container->make($event);
+            $event = $this->container->make($event, throw: false) ?? $event;
         }
 
         array_unshift($params, $event);

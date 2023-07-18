@@ -99,7 +99,7 @@ class App implements IApp
      */
     public function isConsole(): bool
     {
-        if (!\is_object($this->container->make('request'))) {
+        if (null === $this->container->make('request', throw: false)) {
             return \PHP_SAPI === 'cli';
         }
 
@@ -353,7 +353,7 @@ class App implements IApp
      */
     public function isDebug(): bool
     {
-        if (\is_string($option = $this->container->make('option'))) {
+        if (null === ($option = $this->container->make('option', throw: false))) {
             return true;
         }
 
@@ -374,7 +374,7 @@ class App implements IApp
      */
     public function environment(): string
     {
-        if (\is_string($option = $this->container->make('option'))) {
+        if (null === ($option = $this->container->make('option', throw: false))) {
             return 'development';
         }
 

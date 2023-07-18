@@ -75,8 +75,8 @@ class Subject implements \SplSubject
         if ($observer instanceof \Closure) {
             $observer = new Observer($observer);
         } else {
-            if (\is_string($observer)
-                && \is_string($observer = $this->container->make($observer))) {
+            if (\is_string($observer) // @phpstan-ignore-line
+                && null === ($observer = $this->container->make($observer, throw: false))) { /** @phpstan-ignore-line */
                 $e = sprintf('Observer `%s` is invalid.', $observer);
 
                 throw new \InvalidArgumentException($e);
@@ -90,6 +90,7 @@ class Subject implements \SplSubject
                     throw new \InvalidArgumentException($e);
                 }
 
+                /** @phpstan-ignore-next-line */
                 $observer = new Observer(\Closure::fromCallable([$observer, 'handle']));
             }
         }
