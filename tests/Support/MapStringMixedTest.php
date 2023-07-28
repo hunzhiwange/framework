@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use Leevel\Support\TypedAssociativeArray;
+use Leevel\Support\MapStringMixed;
 use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="关联数组集合 collection",
- *     path="component/collection/typedassociative",
+ *     zh-CN:title="MapStringMixed 映射",
+ *     path="component/collection/map_string_mixed",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
-final class TypedAssociativeArrayTest extends TestCase
+final class MapStringMixedTest extends TestCase
 {
     /**
      * @api(
@@ -30,7 +32,7 @@ final class TypedAssociativeArrayTest extends TestCase
             'w' => 'world',
         ];
 
-        $collection = new TypedAssociativeArray($data);
+        $collection = new MapStringMixed($data);
         static::assertSame($collection['h'], 'hello');
         static::assertSame($collection['w'], 'world');
         static::assertTrue(isset($collection['h']));
@@ -46,6 +48,6 @@ final class TypedAssociativeArrayTest extends TestCase
             1, 'string', 3, 4,
         ];
 
-        new TypedAssociativeArray($data);
+        new MapStringMixed($data);
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Support\DemoProject;
 
 use Leevel\Support\Dto;
-use Leevel\Support\TypedDtoArray;
+use Leevel\Support\VectorDto;
 
 class Template extends Dto
 {
@@ -13,5 +13,5 @@ class Template extends Dto
 
     public string $title;
 
-    public TypedDtoArray $data;
+    public VectorDto $data;
 }

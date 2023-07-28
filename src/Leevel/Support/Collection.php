@@ -46,12 +46,8 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
             $this->keyTypes = $keyTypes;
         }
 
-        if ($this->valueTypes || $this->keyTypes) {
-            foreach ($elements as $key => $value) {
-                $this->offsetSet($key, $value);
-            }
-        } else {
-            $this->elements = $elements;
+        foreach ($elements as $key => $value) {
+            $this->offsetSet($key, $value);
         }
     }
 
@@ -301,11 +297,19 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
      *
      * @throws \UnexpectedValueException
      */
-    protected function checkType(mixed $value, bool $isKey = false): void
+    protected function checkType(mixed $value, bool $isKey = false, ?int $typeIndex = null): void
     {
         $types = $isKey ? $this->keyTypes : $this->valueTypes;
         if (!$types) {
             return;
+        }
+
+        if (isset($typeIndex)) {
+            if (!isset($types[$typeIndex])) {
+                return;
+            }
+
+            $types = [$types[$typeIndex]];
         }
 
         if (These::handle($value, $types)) {

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use Leevel\Support\TypedIntArray;
+use Leevel\Support\VectorInt;
 use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="整数集合 collection",
- *     path="component/collection/typedint",
+ *     zh-CN:title="VectorInt 动态数组",
+ *     path="component/collection/vectorint",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
-final class TypedIntArrayTest extends TestCase
+final class VectorIntTest extends TestCase
 {
     /**
      * @api(
@@ -29,7 +31,7 @@ final class TypedIntArrayTest extends TestCase
             1, 2, 3, 4,
         ];
 
-        $collection = new TypedIntArray($data);
+        $collection = new VectorInt($data);
         static::assertSame($collection[0], 1);
         static::assertSame($collection[1], 2);
         static::assertSame($collection[2], 3);
@@ -49,7 +51,7 @@ final class TypedIntArrayTest extends TestCase
      */
     public function testFromRequest(): void
     {
-        $collection = TypedIntArray::fromRequest([
+        $collection = VectorInt::fromRequest([
             1, 2, 3, 4,
         ]);
         static::assertSame($collection[0], 1);
@@ -61,7 +63,7 @@ final class TypedIntArrayTest extends TestCase
         static::assertTrue(isset($collection[2]));
         static::assertTrue(isset($collection[3]));
 
-        $collection = TypedIntArray::fromRequest('1,2,3,4');
+        $collection = VectorInt::fromRequest('1,2,3,4');
         static::assertSame($collection[0], 1);
         static::assertSame($collection[1], 2);
         static::assertSame($collection[2], 3);
@@ -81,7 +83,7 @@ final class TypedIntArrayTest extends TestCase
             1, 'string', 3, 4,
         ];
 
-        new TypedIntArray($data);
+        new VectorInt($data);
     }
 
     public function testError2(): void
@@ -93,6 +95,6 @@ final class TypedIntArrayTest extends TestCase
             'hello' => 'world',
         ];
 
-        new TypedIntArray($data);
+        new VectorInt($data);
     }
 }

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use Leevel\Support\TypedStringArray;
+use Leevel\Support\VectorString;
 use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="字符串集合 collection",
- *     path="component/collection/typedstring",
+ *     zh-CN:title="VectorString 动态数组",
+ *     path="component/collection/vectorstring",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
-final class TypedStringArrayTest extends TestCase
+final class VectorStringTest extends TestCase
 {
     /**
      * @api(
@@ -29,7 +31,7 @@ final class TypedStringArrayTest extends TestCase
             'h', 'l', 'w', 'd',
         ];
 
-        $collection = new TypedStringArray($data);
+        $collection = new VectorString($data);
         static::assertSame($collection[0], 'h');
         static::assertSame($collection[1], 'l');
         static::assertSame($collection[2], 'w');
@@ -49,7 +51,7 @@ final class TypedStringArrayTest extends TestCase
             1, 'string', 3, 4,
         ];
 
-        new TypedStringArray($data);
+        new VectorString($data);
     }
 
     public function testError2(): void
@@ -61,6 +63,6 @@ final class TypedStringArrayTest extends TestCase
             'hello' => 'world',
         ];
 
-        new TypedStringArray($data);
+        new VectorString($data);
     }
 }

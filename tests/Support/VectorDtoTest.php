@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
-use Leevel\Support\TypedDtoArray;
+use Leevel\Support\VectorDto;
 use Tests\Support\DemoProject\Template;
 use Tests\Support\DemoProject\TemplateData;
 use Tests\TestCase;
 
 /**
  * @api(
- *     zh-CN:title="整数集合 collection",
- *     path="component/collection/typedint",
+ *     zh-CN:title="VectorDto 动态数组",
+ *     path="component/collection/vectordto",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
-final class TypedDtoArrayTest extends TestCase
+final class VectorDtoTest extends TestCase
 {
     /**
      * @api(
@@ -37,7 +39,7 @@ final class TypedDtoArrayTest extends TestCase
      */
     public function testBaseUse(): void
     {
-        $templateData = TypedDtoArray::fromRequest($sourceTemplateData = [
+        $templateData = VectorDto::fromRequest($sourceTemplateData = [
             [
                 'title' => 'hello',
                 'tag' => 'world',
@@ -58,7 +60,7 @@ final class TypedDtoArrayTest extends TestCase
         $collection = new Template($data);
         static::assertSame($collection['key'], 'hello');
         static::assertSame($collection['title'], 'world');
-        static::assertInstanceOf(TypedDtoArray::class, $collection['data']);
+        static::assertInstanceOf(VectorDto::class, $collection['data']);
         static::assertSame($collection['data'], $templateData);
         static::assertSame($collection['data']->toArray(), $sourceTemplateData);
     }
@@ -72,6 +74,6 @@ final class TypedDtoArrayTest extends TestCase
             1, 'string', 3, 4,
         ];
 
-        new TypedDtoArray($data);
+        new VectorDto($data);
     }
 }
