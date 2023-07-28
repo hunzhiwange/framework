@@ -1766,7 +1766,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 设置显示白名单属性.
      */
-    public function only(array $onlyPropertys, bool $overrideProperty = false): static
+    public function only(array $onlyPropertys = [], bool $overrideProperty = true): static
     {
         $entity = clone $this;
         $entity->showPropWhiteFramework = $overrideProperty ? $onlyPropertys : [...$this->showPropWhiteFramework, ...$onlyPropertys];
@@ -1777,7 +1777,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 设置显示黑名单属性.
      */
-    public function except(array $exceptPropertys, bool $overrideProperty = false): static
+    public function except(array $exceptPropertys = [], bool $overrideProperty = true): static
     {
         $entity = clone $this;
         $entity->showPropBlackFramework = $overrideProperty ? $exceptPropertys : [...$this->showPropBlackFramework, ...$exceptPropertys];
