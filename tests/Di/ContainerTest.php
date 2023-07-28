@@ -250,13 +250,13 @@ final class ContainerTest extends TestCase
         $container->alias(['foo' => ['foo5', 'foo6']]);
         $container->alias(['foo' => 'foo7']);
 
-        static::assertSame('bar', $container->make('foo'));
-        static::assertSame('bar', $container->make('foo2'));
-        static::assertSame('bar', $container->make('foo3'));
-        static::assertSame('bar', $container->make('foo4'));
-        static::assertSame('bar', $container->make('foo5'));
-        static::assertSame('bar', $container->make('foo6'));
-        static::assertSame('bar', $container->make('foo7'));
+        static::assertNull($container->make('foo', throw: false));
+        static::assertNull($container->make('foo2', throw: false));
+        static::assertNull($container->make('foo3', throw: false));
+        static::assertNull($container->make('foo4', throw: false));
+        static::assertNull($container->make('foo5', throw: false));
+        static::assertNull($container->make('foo6', throw: false));
+        static::assertNull($container->make('foo7', throw: false));
     }
 
     /**
@@ -712,9 +712,9 @@ final class ContainerTest extends TestCase
      */
     public function testParseReflectionException(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Leevel\Di\ServiceNotFoundException::class);
         $this->expectExceptionMessage(
-            'Class or interface Tests\\Di\\Fixtures\\TestNotFound is register in container is not object.'
+            'Service Tests\\Di\\Fixtures\\TestNotFound was not found.'
         );
 
         $container = new Container();
