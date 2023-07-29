@@ -15,6 +15,6 @@ class NewPrefix
                 ->make('request')
                 ->attributes
                 ->get('petId')
-            ;
+        ;
     }
 }

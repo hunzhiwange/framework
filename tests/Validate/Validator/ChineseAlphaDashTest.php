@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/chinesealphadash",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ChineseAlphaDashTest extends TestCase
 {

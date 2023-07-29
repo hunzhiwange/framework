@@ -14,6 +14,9 @@ use Leevel\View\Manager;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class CacheTest extends TestCase
 {
     use BaseCommand;

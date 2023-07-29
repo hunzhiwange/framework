@@ -6,6 +6,9 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class CompilerFileNotFoundTest extends TestCase
 {
     use Compiler;

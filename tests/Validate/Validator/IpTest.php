@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/ip",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class IpTest extends TestCase
 {

@@ -72,6 +72,8 @@ use Tests\TestCase;
  * :::
  * ",
  * )
+ *
+ * @internal
  */
 final class SessionTest extends TestCase
 {

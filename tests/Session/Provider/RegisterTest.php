@@ -9,6 +9,9 @@ use Leevel\Option\Option;
 use Leevel\Session\Provider\Register;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

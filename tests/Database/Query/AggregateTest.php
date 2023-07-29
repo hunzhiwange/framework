@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/aggregate",
  *     zh-CN:description="数据库聚合查询功能。",
  * )
+ *
+ * @internal
  */
 final class AggregateTest extends TestCase
 {

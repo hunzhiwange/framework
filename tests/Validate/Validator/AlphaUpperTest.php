@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/alphaupper",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class AlphaUpperTest extends TestCase
 {

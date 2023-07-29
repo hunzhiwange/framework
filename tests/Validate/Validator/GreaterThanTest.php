@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/greaterthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class GreaterThanTest extends TestCase
 {

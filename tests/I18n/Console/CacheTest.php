@@ -13,6 +13,9 @@ use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class CacheTest extends TestCase
 {
     use BaseCommand;

@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/boolean",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class BooleanTest extends TestCase
 {

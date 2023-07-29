@@ -13,6 +13,8 @@ use Tests\TestCase;
  *     path="component/support/str",
  *     zh-CN:description="这里为系统提供的字符串使用的功能文档说明。",
  * )
+ *
+ * @internal
  */
 final class StrTest extends TestCase
 {

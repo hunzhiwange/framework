@@ -12,6 +12,9 @@ use Leevel\Option\Option;
 use RedisException;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ManagerTest extends TestCase
 {
     protected function tearDown(): void

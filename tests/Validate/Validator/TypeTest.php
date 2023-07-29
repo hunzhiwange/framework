@@ -16,6 +16,8 @@ use Tests\TestCase;
  * 数据类型验证底层核心为函数 `Leevel\Support\Type\Type`，相对于 PHP 提供的 `gettype` 更加强大。
  * ",
  * )
+ *
+ * @internal
  */
 final class TypeTest extends TestCase
 {

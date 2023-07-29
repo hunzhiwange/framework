@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/isempty",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class IsEmptyTest extends TestCase
 {

@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/checkdnsrr",
  *     zh-CN:description="",
  * ).
+ *
+ * @internal
  */
 final class CheckdnsrrTest extends TestCase
 {

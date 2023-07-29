@@ -14,6 +14,9 @@ use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ClearTest extends TestCase
 {
     use BaseCommand;

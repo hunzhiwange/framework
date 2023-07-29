@@ -12,6 +12,8 @@ use Tests\TestCase;
  *     path="template/var",
  *     zh-CN:description="变量是最基本的用法，这里模板引擎做了大量的工作支持更好。",
  * )
+ *
+ * @internal
  */
 final class CompilerVarTest extends TestCase
 {

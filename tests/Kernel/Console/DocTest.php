@@ -12,6 +12,9 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class DocTest extends TestCase
 {
     use BaseCommand;

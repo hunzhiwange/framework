@@ -12,6 +12,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/value",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ValueTest extends TestCase
 {

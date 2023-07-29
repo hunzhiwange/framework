@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/timezone",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class TimezoneTest extends TestCase
 {

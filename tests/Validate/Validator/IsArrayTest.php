@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/isarray",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class IsArrayTest extends TestCase
 {

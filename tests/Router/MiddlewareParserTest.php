@@ -9,6 +9,9 @@ use Leevel\Router\MiddlewareParser;
 use Leevel\Router\Router;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class MiddlewareParserTest extends TestCase
 {
     public function testBaseUse(): void

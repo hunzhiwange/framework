@@ -15,6 +15,8 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  *     path="orm/replace",
  *     zh-CN:description="替换实体，将实体变更持久化到数据库。",
  * )
+ *
+ * @internal
  */
 final class ReplaceTest extends TestCase
 {

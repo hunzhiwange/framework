@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/columns",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ColumnsTest extends TestCase
 {

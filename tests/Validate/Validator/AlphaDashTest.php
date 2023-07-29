@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/alphadash",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class AlphaDashTest extends TestCase
 {

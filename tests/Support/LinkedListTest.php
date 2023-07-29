@@ -19,6 +19,8 @@ use Tests\TestCase;
  * 底层基于 spldoublylinkedlist 开发，相关文档 <http://php.net/manual/zh/class.spldoublylinkedlist.php>。
  * ",
  * )
+ *
+ * @internal
  */
 final class LinkedListTest extends TestCase
 {

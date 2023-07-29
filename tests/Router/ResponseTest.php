@@ -34,6 +34,8 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
  */
 final class ResponseTest extends TestCase
 {

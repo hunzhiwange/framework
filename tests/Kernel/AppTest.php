@@ -23,6 +23,8 @@ use Tests\TestCase;
  * 应用设计为可替代，只需要实现 `\Leevel\Kernel\IApp` 即可，然后在入口文件替换即可。
  * ",
  * )
+ *
+ * @internal
  */
 final class AppTest extends TestCase
 {

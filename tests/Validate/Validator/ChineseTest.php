@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/chinese",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ChineseTest extends TestCase
 {

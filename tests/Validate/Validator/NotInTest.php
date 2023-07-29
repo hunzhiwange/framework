@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/notin",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class NotInTest extends TestCase
 {

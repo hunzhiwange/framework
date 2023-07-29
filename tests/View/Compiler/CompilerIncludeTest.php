@@ -12,6 +12,8 @@ use Tests\TestCase;
  *     path="template/include",
  *     zh-CN:description="可以使用 include 标签来包含外部的模板文件。",
  * )
+ *
+ * @internal
  */
 final class CompilerIncludeTest extends TestCase
 {

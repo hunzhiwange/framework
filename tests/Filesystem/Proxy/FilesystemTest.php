@@ -12,6 +12,9 @@ use Leevel\Filesystem\Proxy\Filesystem;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class FilesystemTest extends TestCase
 {
     protected function setUp(): void

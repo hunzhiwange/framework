@@ -12,6 +12,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/aggregate",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class AggregateTest extends TestCase
 {

@@ -10,6 +10,9 @@ use Leevel\Event\Observer;
 use Leevel\Event\Proxy\Event;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class EventTest extends TestCase
 {
     protected function setUp(): void

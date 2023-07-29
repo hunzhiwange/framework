@@ -27,6 +27,8 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
  * | manyMany  | 多对多关联 |
  * ",
  * )
+ *
+ * @internal
  */
 final class RelationTest extends TestCase
 {

@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/json",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class JsonTest extends TestCase
 {

@@ -19,6 +19,9 @@ use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ResponseTest extends TestCase
 {
     protected function setUp(): void

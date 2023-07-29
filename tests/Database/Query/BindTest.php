@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/bind",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class BindTest extends TestCase
 {

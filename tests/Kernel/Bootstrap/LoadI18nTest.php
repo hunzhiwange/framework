@@ -24,6 +24,8 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
  */
 final class LoadI18nTest extends TestCase
 {

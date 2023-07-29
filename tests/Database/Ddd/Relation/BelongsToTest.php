@@ -29,6 +29,8 @@ use Tests\Database\Ddd\Entity\Relation\User;
  * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
  * ",
  * )
+ *
+ * @internal
  */
 final class BelongsToTest extends TestCase
 {

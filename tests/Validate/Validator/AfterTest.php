@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/after",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class AfterTest extends TestCase
 {

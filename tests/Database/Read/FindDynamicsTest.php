@@ -12,6 +12,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/read/finddynamics",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class FindDynamicsTest extends TestCase
 {

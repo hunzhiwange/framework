@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/forceindex",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ForceIndexTest extends TestCase
 {

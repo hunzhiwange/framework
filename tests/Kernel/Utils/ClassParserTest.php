@@ -7,6 +7,9 @@ namespace Tests\Kernel\Utils;
 use Leevel\Kernel\Utils\ClassParser;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ClassParserTest extends TestCase
 {
     public function testBaseUse(): void

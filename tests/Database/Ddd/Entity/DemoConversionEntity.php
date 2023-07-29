@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Entity;
 
-use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Struct;
 
 class DemoConversionEntity extends Entity
@@ -299,6 +299,7 @@ class DemoConversionEntity extends Entity
     public function getColl1(): Collection
     {
         $data = json_decode($this->getter('coll1'), true);
+
         return new Collection([new DemoEntity($data)]);
     }
 
@@ -310,6 +311,7 @@ class DemoConversionEntity extends Entity
     public function getColl2(): Collection
     {
         $data = json_decode($this->getter('coll2'), true);
+
         return new Collection([new DemoEntity($data)]);
     }
 

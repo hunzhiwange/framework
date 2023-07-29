@@ -12,6 +12,9 @@ use Tests\Console\BaseCommand;
 use Tests\Kernel\Utils\Assert\DemoClass;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class IdeHelperTest extends TestCase
 {
     use BaseCommand;

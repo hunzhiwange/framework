@@ -20,6 +20,8 @@ use Tests\TestCase;
  * QueryPHP 提供的分页组件，可以轻松地对数据进行分页处理。
  * ",
  * )
+ *
+ * @internal
  */
 final class PageTest extends TestCase
 {

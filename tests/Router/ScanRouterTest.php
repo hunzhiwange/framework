@@ -11,6 +11,9 @@ use Leevel\Router\Router;
 use Leevel\Router\ScanRouter;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ScanRouterTest extends TestCase
 {
     public function testBaseUse(): void

@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/dateformat",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class DateFormatTest extends TestCase
 {

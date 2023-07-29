@@ -19,6 +19,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
  */
 final class DistinctTest extends TestCase
 {

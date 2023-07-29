@@ -20,6 +20,9 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class DebugTest extends TestCase
 {
     protected function setUp(): void

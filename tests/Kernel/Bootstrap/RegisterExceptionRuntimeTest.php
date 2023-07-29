@@ -29,6 +29,8 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
  */
 final class RegisterExceptionRuntimeTest extends TestCase
 {

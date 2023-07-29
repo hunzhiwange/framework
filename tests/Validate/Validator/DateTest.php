@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/date",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class DateTest extends TestCase
 {

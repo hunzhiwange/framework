@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/alphanum",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class AlphaNumTest extends TestCase
 {

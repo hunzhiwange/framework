@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/union",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class UnionTest extends TestCase
 {

@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/update/updatedecrease",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class UpdateDecreaseTest extends TestCase
 {

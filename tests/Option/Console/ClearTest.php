@@ -10,6 +10,9 @@ use Leevel\Option\Console\Clear;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ClearTest extends TestCase
 {
     use BaseCommand;

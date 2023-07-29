@@ -24,6 +24,8 @@ use Tests\Database\Ddd\Entity\Relation\Post;
  * 仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
  * ",
  * )
+ *
+ * @internal
  */
 final class RepositoryTest extends TestCase
 {

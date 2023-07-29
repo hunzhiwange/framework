@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/orderby",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class OrderByTest extends TestCase
 {

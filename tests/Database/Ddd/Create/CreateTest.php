@@ -20,6 +20,8 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  *     path="orm/create",
  *     zh-CN:description="将实体持久化到数据库。",
  * )
+ *
+ * @internal
  */
 final class CreateTest extends TestCase
 {

@@ -14,6 +14,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/table",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class TableTest extends TestCase
 {

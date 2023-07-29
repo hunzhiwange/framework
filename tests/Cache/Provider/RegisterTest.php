@@ -12,6 +12,9 @@ use Leevel\Filesystem\Helper;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RegisterTest extends TestCase
 {
     protected function setUp(): void

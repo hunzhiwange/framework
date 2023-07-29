@@ -23,6 +23,8 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
  */
 final class TraverseProviderTest extends TestCase
 {

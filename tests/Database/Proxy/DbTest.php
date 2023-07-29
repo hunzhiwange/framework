@@ -9,6 +9,9 @@ use Leevel\Database\Proxy\Db;
 use Leevel\Di\Container;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+/**
+ * @internal
+ */
 final class DbTest extends TestCase
 {
     protected function setUp(): void

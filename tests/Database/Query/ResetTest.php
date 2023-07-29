@@ -13,6 +13,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *     path="database/query/reset",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class ResetTest extends TestCase
 {

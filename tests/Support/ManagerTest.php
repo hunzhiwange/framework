@@ -20,6 +20,8 @@ use Tests\TestCase;
  * 系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
  * ",
  * )
+ *
+ * @internal
  */
 final class ManagerTest extends TestCase
 {

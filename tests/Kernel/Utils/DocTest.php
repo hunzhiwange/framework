@@ -11,6 +11,9 @@ use Tests\Kernel\Utils\Assert\Doc\Demo2;
 use Tests\Kernel\Utils\Assert\Doc\Demo3;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class DocTest extends TestCase
 {
     protected function setUp(): void

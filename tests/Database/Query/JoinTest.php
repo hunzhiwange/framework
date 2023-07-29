@@ -23,6 +23,8 @@ use Tests\Database\DatabaseTestCase as TestCase;
  *  - $cond 与《查询语言.where》中的用法一致。
  * ",
  * )
+ *
+ * @internal
  */
 final class JoinTest extends TestCase
 {

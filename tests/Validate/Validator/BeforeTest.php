@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/before",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class BeforeTest extends TestCase
 {

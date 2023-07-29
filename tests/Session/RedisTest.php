@@ -11,6 +11,9 @@ use Leevel\Session\Redis;
 use RedisException;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RedisTest extends TestCase
 {
     protected function setUp(): void

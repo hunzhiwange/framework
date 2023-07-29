@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/denyip",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class DenyIpTest extends TestCase
 {

@@ -168,6 +168,8 @@ use Tests\TestCase;
  * ```
  * ",
  * )
+ *
+ * @internal
  */
 final class OptionTest extends TestCase
 {

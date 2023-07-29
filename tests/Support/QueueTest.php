@@ -23,6 +23,8 @@ use Tests\TestCase;
  * 标准库文档见 <http://php.net/manual/zh/class.splqueue.php>。
  * ",
  * )
+ *
+ * @internal
  */
 final class QueueTest extends TestCase
 {

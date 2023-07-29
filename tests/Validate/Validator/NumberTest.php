@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/number",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class NumberTest extends TestCase
 {

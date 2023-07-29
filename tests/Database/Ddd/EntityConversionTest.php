@@ -20,6 +20,8 @@ use Tests\Database\Ddd\Entity\DemoEntity;
  * 我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
  * ",
  * )
+ *
+ * @internal
  */
 final class EntityConversionTest extends TestCase
 {

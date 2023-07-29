@@ -9,6 +9,9 @@ use Leevel\Event\Observer;
 use Leevel\Event\Subject;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class SubjectTest extends TestCase
 {
     public function testBaseUse(): void

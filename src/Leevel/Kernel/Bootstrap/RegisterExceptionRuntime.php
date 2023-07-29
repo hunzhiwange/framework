@@ -8,7 +8,6 @@ use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Log\Manager;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Throwable;
 
 /**
  * 注册异常运行时.

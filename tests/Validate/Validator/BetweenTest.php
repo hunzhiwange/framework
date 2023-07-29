@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/between",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class BetweenTest extends TestCase
 {

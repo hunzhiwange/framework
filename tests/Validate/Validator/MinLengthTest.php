@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/minlength",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class MinLengthTest extends TestCase
 {
