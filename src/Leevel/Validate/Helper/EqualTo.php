@@ -21,6 +21,6 @@ class EqualTo
             throw new \InvalidArgumentException($e);
         }
 
-        return $value === $validator->getFieldValue($param[0]);
+        return $value == $validator->getFieldValue($param[0]);
     }
 }

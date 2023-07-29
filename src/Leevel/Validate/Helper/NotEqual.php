@@ -21,6 +21,6 @@ class NotEqual
             throw new \InvalidArgumentException($e);
         }
 
-        return $value !== $param[0];
+        return $value != $param[0];
     }
 }

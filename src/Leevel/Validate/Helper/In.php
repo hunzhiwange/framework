@@ -19,6 +19,6 @@ class In
             throw new \InvalidArgumentException($e);
         }
 
-        return \in_array($value, $param, true);
+        return \in_array($value, $param);
     }
 }
