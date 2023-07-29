@@ -23,6 +23,8 @@ return (new PhpCsFixer\Config())
         'use_arrow_functions' => false, // TODO switch on when # of PR's is lower
         'php_unit_strict' => false,
         'php_unit_test_class_requires_covers' => false,
+        'strict_comparison' => false,
+        'strict_param' => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
