@@ -22,6 +22,8 @@ use Tests\TestCase;
  * ",
  *     zh-CN:note="",
  * )
+ *
+ * @internal
  */
 final class FunctionsTest extends TestCase
 {
@@ -71,7 +73,7 @@ final class FunctionsTest extends TestCase
     public function testLeevelWithContainerMethod(): void
     {
         $this->createContainer();
-        static::assertSame('foo', \Leevel::make('foo'));
+        static::assertNull(\Leevel::make('foo', throw: false));
     }
 
     /**
@@ -84,7 +86,7 @@ final class FunctionsTest extends TestCase
     public function testAppWithContainerMethod(): void
     {
         $this->createContainer();
-        static::assertSame('foo', Apps::make('foo'));
+        static::assertNull(Apps::make('foo', throw: false));
     }
 
     /**
@@ -97,7 +99,7 @@ final class FunctionsTest extends TestCase
     public function testFunctionLang(): void
     {
         $container = $this->createContainer();
-        static::assertSame('foo', Apps::make('foo'));
+        static::assertNull(Apps::make('foo', throw: false));
 
         $i18n = $this->createMock(II18n::class);
         $map = [

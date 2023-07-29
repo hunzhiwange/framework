@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/notequal",
  *     zh-CN:description="全等匹配，为了严禁。",
  * )
+ *
+ * @internal
  */
 final class NotEqualTest extends TestCase
 {
@@ -63,9 +65,6 @@ final class NotEqualTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['1', '1'],
-            ['23', '23'],
-            [(string) 3, 3],
         ];
     }
 
@@ -110,6 +109,9 @@ final class NotEqualTest extends TestCase
             [1.5, '1.5'],
             [1, true],
             ['', false],
+            ['1', '1'],
+            ['23', '23'],
+            [(string) 3, 3],
         ];
     }
 

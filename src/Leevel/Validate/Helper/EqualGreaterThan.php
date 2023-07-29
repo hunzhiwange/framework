@@ -7,7 +7,7 @@ namespace Leevel\Validate\Helper;
 class EqualGreaterThan
 {
     /**
-     * 大于或者全等.
+     * 大于等于.
      *
      * @throws \InvalidArgumentException
      */
@@ -19,6 +19,6 @@ class EqualGreaterThan
             throw new \InvalidArgumentException($e);
         }
 
-        return $value > $param[0] || $value === $param[0];
+        return $value >= $param[0];
     }
 }

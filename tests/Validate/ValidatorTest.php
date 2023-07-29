@@ -88,7 +88,7 @@ final class ValidatorTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]
@@ -144,7 +144,7 @@ final class ValidatorTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]
@@ -316,7 +316,7 @@ final class ValidatorTest extends TestCase
                     [
                         "min_length",
                         [
-                            1
+                            "1"
                         ]
                     ],
                     [
@@ -374,7 +374,7 @@ final class ValidatorTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]
@@ -693,7 +693,7 @@ final class ValidatorTest extends TestCase
                     [
                         "min_length",
                         [
-                            20
+                            "20"
                         ]
                     ]
                 ]

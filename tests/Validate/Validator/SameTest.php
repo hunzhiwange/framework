@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/same",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class SameTest extends TestCase
 {
@@ -54,9 +56,9 @@ final class SameTest extends TestCase
     public static function baseUseProvider(): array
     {
         return [
-            [3, 3],
-            [1.5, '1.5'],
-            [1, true],
+            [3, ':int:3'],
+            [1.5, ':float:1.5'],
+            ['1', true],
             ['', false],
         ];
     }
@@ -98,7 +100,7 @@ final class SameTest extends TestCase
     public static function badProvider(): array
     {
         return [
-            [(string) 3, 3],
+            [3, 3],
             [2, 3],
             ['1.1', '1.5'],
             ['1.5', '2'],
@@ -110,8 +112,8 @@ final class SameTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['1', '1'],
-            ['23', '23'],
+            [1, '1'],
+            [23, '23'],
         ];
     }
 

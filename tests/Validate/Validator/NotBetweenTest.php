@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/notbetween",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class NotBetweenTest extends TestCase
 {
@@ -99,7 +101,7 @@ final class NotBetweenTest extends TestCase
         return [
             ['a', 'a,z'],
             ['z', 'a,z'],
-            [1, '1,5'],
+            ['1', '1,5'],
             [5, '1,5'],
             ['1.1', '1,5'],
             ['2', '1,5'],

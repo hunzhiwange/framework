@@ -10,6 +10,9 @@ use Leevel\Validate\Provider\Register;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class RegisterTest extends TestCase
 {
     protected function setUp(): void
@@ -58,7 +61,7 @@ final class RegisterTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]

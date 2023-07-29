@@ -9,6 +9,9 @@ use Leevel\Validate\Proxy\Validate as ProxyValidate;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
 
+/**
+ * @internal
+ */
 final class ValidateTest extends TestCase
 {
     protected function setUp(): void
@@ -57,7 +60,7 @@ final class ValidateTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]
@@ -108,7 +111,7 @@ final class ValidateTest extends TestCase
                     [
                         "max_length",
                         [
-                            10
+                            "10"
                         ]
                     ]
                 ]

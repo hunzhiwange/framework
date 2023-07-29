@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/notsame",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class NotSameTest extends TestCase
 {
@@ -54,6 +56,9 @@ final class NotSameTest extends TestCase
     public static function baseUseProvider(): array
     {
         return [
+            [3, 3],
+            [1.5, '1.5'],
+            [1, true],
             [2, 3],
             [1.1, '1.5'],
             [1.5, '2'],
@@ -63,8 +68,6 @@ final class NotSameTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['1', '1'],
-            ['23', '23'],
         ];
     }
 
@@ -105,10 +108,9 @@ final class NotSameTest extends TestCase
     public static function badProvider(): array
     {
         return [
-            [3, 3],
-            [1.5, '1.5'],
-            [1, true],
             ['', false],
+            ['1', '1'],
+            ['23', '23'],
         ];
     }
 

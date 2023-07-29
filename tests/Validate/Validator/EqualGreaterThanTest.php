@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/equalgreaterthan",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class EqualGreaterThanTest extends TestCase
 {
@@ -66,6 +68,7 @@ final class EqualGreaterThanTest extends TestCase
             [1.1, '1.1'],
             [0, '0'],
             [0, 0],
+            ['0', '0'],
         ];
     }
 
@@ -115,7 +118,6 @@ final class EqualGreaterThanTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['0', '0'],
         ];
     }
 
@@ -130,8 +132,8 @@ final class EqualGreaterThanTest extends TestCase
     {
         $validate = new Validator();
         static::assertTrue($validate->equalGreaterThan('0', '0'));
-        static::assertFalse($validate->equalGreaterThan(0, '0'));
-        static::assertFalse($validate->equalGreaterThan('0', 0));
+        static::assertTrue($validate->equalGreaterThan(0, '0'));
+        static::assertTrue($validate->equalGreaterThan('0', 0));
     }
 
     /**

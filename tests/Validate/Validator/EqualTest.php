@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/equal",
  *     zh-CN:description="全等匹配，为了严禁。",
  * )
+ *
+ * @internal
  */
 final class EqualTest extends TestCase
 {
@@ -54,6 +56,8 @@ final class EqualTest extends TestCase
     public static function baseUseProvider(): array
     {
         return [
+            [(string) 3, 3],
+            [1, true],
             [3, 3],
             [1.5, '1.5'],
             [1, true],
@@ -98,8 +102,6 @@ final class EqualTest extends TestCase
     public static function badProvider(): array
     {
         return [
-            ['1', true],
-            [(string) 3, 3],
             [2, 3],
             ['1.1', '1.5'],
             ['1.5', '2'],
@@ -109,8 +111,8 @@ final class EqualTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
-            ['1', '1'],
-            ['23', '23'],
+            [1.2, '1'],
+            ['23.1', '23'],
         ];
     }
 

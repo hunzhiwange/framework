@@ -22,7 +22,6 @@ class BetweenEqual
             throw new \InvalidArgumentException($e);
         }
 
-        return ($value > $param[0] || $value === $param[0])
-            && ($value < $param[1] || $value === $param[1]);
+        return $value >= $param[0] && $value <= $param[1];
     }
 }

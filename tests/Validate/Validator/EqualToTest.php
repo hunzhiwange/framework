@@ -14,6 +14,8 @@ use Tests\TestCase;
  *     path="validate/validator/equalto",
  *     zh-CN:description="",
  * )
+ *
+ * @internal
  */
 final class EqualToTest extends TestCase
 {
@@ -59,6 +61,7 @@ final class EqualToTest extends TestCase
             ['foo', 'foo', 'name2'],
             ['bar', 'bar', 'name2'],
             ['test', '', 'name3'],
+            [new \stdClass(), new \stdClass(), 'name2'], // 非全等
         ];
     }
 
@@ -103,8 +106,6 @@ final class EqualToTest extends TestCase
         return [
             ['foo', 'foo2', 'name2'],
             ['bar', 'bar2', 'name2'],
-            [new \stdClass(), new \stdClass(), 'name2'], // 非全等
-            [new \stdClass(), '', 'name3'], // 非全等
             [['foo', 'bar'], '', 'name3'],
         ];
     }
