@@ -306,10 +306,10 @@ final class ContainerTest extends TestCase
     public function testOverridden(): void
     {
         $container = new Container();
-        $container['foo'] = 'bar';
+        $container['foo'] = fn () => 'bar';
         static::assertSame('bar', $container['foo']);
 
-        $container['foo'] = 'bar2';
+        $container['foo'] = fn () => 'bar2';
         static::assertSame('bar2', $container['foo']);
     }
 
@@ -653,6 +653,17 @@ final class ContainerTest extends TestCase
         $container->call(false);
     }
 
+    public function testServiceNotFound(): void
+    {
+        $this->expectException(\Leevel\Di\ServiceNotFoundException::class);
+        $this->expectExceptionMessage(
+            'Service hello was not found.'
+        );
+
+        $container = new Container();
+        $container->call(['hello', 'notfound']);
+    }
+
     public function testUnsupportedCallbackTypes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -661,7 +672,7 @@ final class ContainerTest extends TestCase
         );
 
         $container = new Container();
-        $container->call(['hello', 'notfound']);
+        $container->call(['stdClass', 'notfound']);
     }
 
     /**
@@ -879,7 +890,7 @@ final class ContainerTest extends TestCase
     public function testMagicGet(): void
     {
         $container = new Container();
-        $container->bind('foo', 'bar');
+        $container->instance('foo', 'bar');
 
         static::assertSame('bar', $container->foo);
     }
@@ -894,7 +905,9 @@ final class ContainerTest extends TestCase
     public function testMagicSet(): void
     {
         $container = new Container();
-        $container->foo = 'bar';
+        $container->foo = function (): string {
+            return 'bar';
+        };
 
         static::assertSame('bar', $container->foo);
     }
@@ -923,10 +936,10 @@ final class ContainerTest extends TestCase
         $container->instance('foo', 'bar');
 
         static::assertSame('bar', $container->make('foo'));
-        static::assertSame('notfound', $container->make('notfound'));
+        static::assertNull($container->make('notfound', throw: false));
 
         $container->clear();
-        static::assertSame('foo', $container->make('foo'));
+        static::assertNull($container->make('foo', throw: false));
     }
 
     /**
@@ -1050,8 +1063,8 @@ final class ContainerTest extends TestCase
         static::assertFalse($container->isBootstrap());
         $container->registerProviders([], $deferredProviders, $deferredAlias);
         static::assertTrue($container->isBootstrap());
-        static::assertSame('test_deferred', $container->make('bar'));
-        static::assertSame('test_deferred', $container->make('test_deferred'));
+        static::assertNull($container->make('bar', throw: false));
+        static::assertNull($container->make('test_deferred', throw: false));
         static::assertSame(1, $_SERVER['testDeferredProvider']);
 
         unset($_SERVER['testDeferredProvider']);

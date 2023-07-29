@@ -21,6 +21,8 @@ use Tests\TestCase;
  * 我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
  * ",
  * )
+ *
+ * @internal
  */
 final class ProviderTest extends TestCase
 {
@@ -94,7 +96,7 @@ final class ProviderTest extends TestCase
         $test->register();
 
         static::assertSame('bar', $container->make('world')->foo());
-        static::assertSame('hello', $container->make('hello'));
+        static::assertNull($container->make('hello', throw: false));
 
         $container->alias($test->providers());
 
@@ -156,6 +158,9 @@ final class ProviderTest extends TestCase
     }
 }
 
+/**
+ * @internal
+ */
 final class PrividerTest extends Provider
 {
     public function register(): void
