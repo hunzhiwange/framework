@@ -1805,7 +1805,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $result = [];
         foreach ($prop as $k => $option) {
             $isRelationProp = static::isRelation($k);
-            $value = $this->propGetter(static::unCamelizeProp($k), true);
+            $unCamelizeProp = static::unCamelizeProp($k);
+            $value = $this->propGetter($unCamelizeProp, true);
             if (null === $value) {
                 if (!\array_key_exists(self::SHOW_PROP_NULL, $option)) {
                     continue;
@@ -1821,6 +1822,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                     $value = $showPropEachCallback($value, $k);
                 }
                 $value = $value->toArray();
+            }
+
+            // 格式化后保留源数据
+            $shouleFormatRaw = $option[self::COLUMN_STRUCT]['format_raw'] ?? false;
+            if ($shouleFormatRaw) {
+                $result[$unCamelizeProp.'_format_raw'] = $this->getter($unCamelizeProp);
             }
 
             $result[$k] = $value;
