@@ -845,7 +845,7 @@ class Select
             ->query()
         ;
 
-        return \is_object($result) ? $result->{$alias} : $result[$alias];
+        return \is_object($result) ? ($result->{$alias} ?? 0) : ($result[$alias] ?? 0);
     }
 
     /**
