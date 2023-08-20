@@ -1825,8 +1825,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
 
             // 格式化后保留源数据
-            $shouleFormatRaw = $option[self::COLUMN_STRUCT]['format_raw'] ?? false;
-            if ($shouleFormatRaw) {
+            $shouldFormatRaw = $option[self::COLUMN_STRUCT]['format_raw'] ?? false;
+            if ($shouldFormatRaw) {
                 $result[$unCamelizeProp.'_format_raw'] = $this->getter($unCamelizeProp);
             }
 

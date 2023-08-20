@@ -54,7 +54,7 @@ final class HelperTest extends TestCase
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
         $out = 'You should eat fruits, vegetables, and fiber every .';
 
-        static::assertSame($out, Helper::deepReplace(['shoule', 'day'], $strings));
+        static::assertSame($out, Helper::deepReplace(['not found', 'day'], $strings));
     }
 
     /**
