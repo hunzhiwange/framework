@@ -30,7 +30,7 @@ class Autoload extends Command
         $this->line('Start to cache autoload.');
         $this->line($command = $this->normalizeComposerCommand());
         exec($command);
-        $this->info('Autoload cache successed.');
+        $this->info('Autoload cache succeed.');
 
         return self::SUCCESS;
     }

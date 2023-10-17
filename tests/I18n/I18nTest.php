@@ -32,8 +32,9 @@ use Tests\TestCase;
  * ### 语言目录
  *
  *  * 国际化语言配置位于 `option/i18n.php`，可以定义当前的语言。
- *  * 主要语言包文件位于 `i18n` 目录，包含 `zh-CN`、`zh-TW`、`en-US`。
- *  * 扩展语言包 `common/ui/i18n` 目录，在 `composer.json` 中定义。
+ *  * 主要语言包文件位于 `assets/i18n` 目录，包含 `zh-CN`、`zh-TW`、`en-US`。
+ *  * 扩展语言 `extra.leevel.i18ns` 目录，在 `composer.json` 中定义。
+ *  * 扩展语言包 `extra.leevel.i18n-paths` 目录，在 `composer.json` 中定义。
  *
  * QueryPHP 会自动扫面语言包文件完成翻译，无需人工干预。
  *
@@ -44,12 +45,20 @@ use Tests\TestCase;
  *     "extra": {
  *         "leevel": {
  *             "@i18ns": "The extend i18ns",
- *             "i18ns": {
- *                 "test": "common/ui/i18n"
+ *             "i18ns": [
+ *             ],
+ *             "i18n-paths": {
+ *                 "exception": [
+ *                     "assets/exceptions"
+ *                 ],
+ *                 "app": [
+ *                     "app"
+ *                 ]
  *             }
  *         }
  *     }
  * }
+ * ```
  *
  * 注意，其它软件包也可以采用这种方式自动注入扩展默认语言。
  *
@@ -66,10 +75,10 @@ use Tests\TestCase;
  * 返回结果
  *
  * ```
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-CN.php cache successed.
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-TW.php cache successed.
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/en-US.php cache successed.
- * I18n cache files cache successed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-CN.php cache succeed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-TW.php cache succeed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/en-US.php cache succeed.
+ * I18n cache files cache succeed.
  * ```
  *
  * ``` sh
@@ -80,10 +89,10 @@ use Tests\TestCase;
  *
  * ```
  * Start to clear i18n.
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-CN.php clear successed.
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-TW.php clear successed.
- * I18n cache file /data/codes/queryphp/bootstrap/i18n/en-US.php clear successed.
- * I18n cache files clear successed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-CN.php clear succeed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/zh-TW.php clear succeed.
+ * I18n cache file /data/codes/queryphp/bootstrap/i18n/en-US.php clear succeed.
+ * I18n cache files clear succeed.
  * ```
  * ",
  * )

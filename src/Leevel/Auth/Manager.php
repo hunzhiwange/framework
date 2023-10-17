@@ -91,7 +91,7 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 jwt 连接.
+     * 创建 JWT 连接.
      */
     protected function makeConnectJwt(string $connect, ?string $driverClass = null): Jwt
     {

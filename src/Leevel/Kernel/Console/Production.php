@@ -36,7 +36,7 @@ class Production extends Command
         $this->callView();
         $this->callAutoload();
         $this->line('');
-        $this->info('Optimize successed.');
+        $this->info('Optimize succeed.');
 
         return self::SUCCESS;
     }

@@ -53,7 +53,7 @@ final class CacheTest extends TestCase
             $result,
         );
         static::assertStringContainsString(
-            $this->normalizeContent('View files cache successed.'),
+            $this->normalizeContent('View files cache succeed.'),
             $result,
         );
 

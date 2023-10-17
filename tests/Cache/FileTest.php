@@ -58,6 +58,18 @@ final class FileTest extends TestCase
         static::assertSame(101, $file->increase('increase', 100));
     }
 
+    public function testIncrease2(): void
+    {
+        $filePath = __DIR__.'/cacheFile/increase.php';
+        $file = new File([
+            'path' => __DIR__.'/cacheFile',
+        ]);
+
+        static::assertSame(1, $file->increase('increase', 1, -50));
+        static::assertTrue(is_file($filePath));
+        static::assertSame(101, $file->increase('increase', 100));
+    }
+
     public function testDecrease(): void
     {
         $filePath = __DIR__.'/cacheFile/decrease.php';

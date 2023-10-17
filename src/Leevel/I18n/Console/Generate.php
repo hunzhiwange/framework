@@ -41,11 +41,11 @@ class Generate extends Command
 
         foreach ($generatedLanguageFiles as $namespace => $files) {
             foreach ($files as $file) {
-                $this->info(sprintf('I18n file %s generate successed at %s.', $namespace, $file));
+                $this->info(sprintf('I18n file %s generate succeed at %s.', $namespace, $file));
             }
         }
 
-        $this->info('I18n file generate successed.');
+        $this->info('I18n file generate succeed.');
 
         return self::SUCCESS;
     }

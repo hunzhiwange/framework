@@ -149,10 +149,6 @@ class Load
 
         $findApp = false;
         foreach ($files as $file) {
-            if (!str_ends_with($file, '.php')) {
-                continue;
-            }
-
             $type = substr($file, 0, -4);
             if (false === $findApp && 'app' === $type) {
                 $findApp = true;

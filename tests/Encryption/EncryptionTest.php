@@ -348,4 +348,24 @@ final class EncryptionTest extends TestCase
         $this->setTestProperty($encryption, 'cipher', 11);
         $this->invokeTestMethod($encryption, 'encryptData', [$value, $iv]);
     }
+
+    public function test1(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Gets the cipher iv length failed.'
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        $encryption = new Encryption(
+            'encode-key',
+            'AES-256-CBC'
+        );
+
+        $this->invokeTestMethod($encryption, 'createIv');
+        $this->setTestProperty($encryption, 'cipher', 'not found');
+        $this->invokeTestMethod($encryption, 'createIv');
+    }
 }

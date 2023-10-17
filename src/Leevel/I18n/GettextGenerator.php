@@ -15,6 +15,7 @@ use Gettext\Scanner\PhpFunctionsScanner;
 use Gettext\Scanner\PhpScanner;
 use Gettext\Translations;
 use Leevel\Filesystem\Helper\CreateDirectory;
+use Leevel\Support\Type;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -44,6 +45,10 @@ class GettextGenerator
         string $outputDir,
         bool $isTypePo,
     ): array {
+        if (!Type::arr($fileNames, ['string:array:string'])) {
+            throw new \InvalidArgumentException('Languages must be array<string, array<string>>.');
+        }
+
         $generatedLanguageFiles = [];
         foreach ($languages as $language) {
             foreach ($fileNames as $namespace => $dirs) {

@@ -65,7 +65,7 @@ final class ClearTest extends TestCase
             static::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache successed at %s.',
+                        'I18n cache succeed at %s.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -76,7 +76,7 @@ final class ClearTest extends TestCase
         }
 
         static::assertStringContainsString(
-            $this->normalizeContent('I18n cache successed.'),
+            $this->normalizeContent('I18n cache succeed.'),
             $result
         );
 
@@ -101,7 +101,7 @@ final class ClearTest extends TestCase
             static::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache files %s clear successed.',
+                        'I18n cache files %s clear succeed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -115,7 +115,7 @@ final class ClearTest extends TestCase
         }
 
         static::assertStringContainsString(
-            $this->normalizeContent('I18n cache files clear successed.'),
+            $this->normalizeContent('I18n cache files clear succeed.'),
             $result
         );
     }
@@ -145,7 +145,7 @@ final class ClearTest extends TestCase
             static::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
-                        'I18n cache files %s clear successed.',
+                        'I18n cache files %s clear succeed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
                 ),
@@ -161,7 +161,7 @@ final class ClearTest extends TestCase
         }
 
         static::assertStringContainsString(
-            $this->normalizeContent('I18n cache files clear successed.'),
+            $this->normalizeContent('I18n cache files clear succeed.'),
             $result
         );
     }

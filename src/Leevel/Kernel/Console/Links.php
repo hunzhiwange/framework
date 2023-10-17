@@ -34,7 +34,7 @@ class Links extends Command
         $this->callAttachments();
         $this->callDebugBar();
         $this->line('');
-        $this->info('Links created successed.');
+        $this->info('Links created succeed.');
 
         return self::SUCCESS;
     }

@@ -30,7 +30,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache session.');
         DeleteDirectory::handle($cachePath = $app->storagePath('session'));
-        $this->info(sprintf('Session cache files in path %s clear successed.', $cachePath));
+        $this->info(sprintf('Session cache files in path %s clear succeed.', $cachePath));
 
         return self::SUCCESS;
     }

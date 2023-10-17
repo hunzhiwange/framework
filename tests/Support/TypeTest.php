@@ -297,6 +297,21 @@ final class TypeTest extends TestCase
 
         static::assertTrue(Type::notFound());
     }
+
+    public function test1(): void
+    {
+        static::assertTrue(Type::arr([
+            'base' => [__DIR__.'/assert/lang'],
+        ], ['string:array']));
+
+        // static::assertTrue(Type::arr([
+        //     'base' => [__DIR__.'/assert/lang']
+        // ], ['string:array:int:string']));
+        //
+        // static::assertTrue(Type::arr([
+        //     'base' => [__DIR__.'/assert/lang']
+        // ], ['string:array:string']));
+    }
 }
 
 class Callback1

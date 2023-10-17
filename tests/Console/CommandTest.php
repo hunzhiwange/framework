@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Console;
 
 use Tests\Console\Command\CallOtherCommand;
+use Tests\Console\Command\DemoCommand;
 use Tests\Console\Load1\Test1;
 use Tests\TestCase;
 
@@ -77,5 +78,49 @@ final class CommandTest extends TestCase
 
         // error
         static::assertStringContainsString($this->normalizeContent('a error message'), $result);
+    }
+
+    public function test1(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Application was not set.'
+        );
+
+        $command = new DemoCommand();
+        $command->call('hello:notfound');
+    }
+
+    public function test2(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Container was not set.'
+        );
+
+        $command = new DemoCommand();
+        $command->getContainer();
+    }
+
+    public function test3(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Output was not set.'
+        );
+
+        $command = new DemoCommand();
+        $this->invokeTestMethod($command, 'getOutput');
+    }
+
+    public function test4(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Input was not set.'
+        );
+
+        $command = new DemoCommand();
+        $this->invokeTestMethod($command, 'getInput');
     }
 }

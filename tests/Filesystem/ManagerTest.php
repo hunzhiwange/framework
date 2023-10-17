@@ -92,6 +92,21 @@ final class ManagerTest extends TestCase
         $this->clearTempDir();
     }
 
+    public function test1(): void
+    {
+        $manager = $this->createManager();
+        $path = __DIR__.'/forManager';
+        $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
+
+        $connect = $manager->reconnect();
+        $connect->write('hellomanager.txt', 'manager');
+        $file = $path.'/hellomanager.txt';
+
+        static::assertTrue(is_file($file));
+        static::assertSame('manager', file_get_contents($file));
+        $this->clearTempDir();
+    }
+
     public function testZip(): void
     {
         $manager = $this->createManager('zip');

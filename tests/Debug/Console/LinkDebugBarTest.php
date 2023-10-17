@@ -49,11 +49,11 @@ final class LinkDebugBarTest extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar1` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar1` succeed.', __DIR__, __DIR__)),
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar2` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/debugbar` directory to `%s/assert_new/debugbar2` succeed.', __DIR__, __DIR__)),
             $result
         );
         static::assertTrue(is_file(__DIR__.'/assert_new/debugbar1'));

@@ -27,12 +27,12 @@ class AnnotationRouter
     /**
      * 扫描目录.
      */
-    protected array $scandirs = [];
+    protected array $scanDirs = [];
 
     /**
      * 支持的方法.
      */
-    protected array $methods = [
+    protected static array $methods = [
         'get',
         'delete',
         'post',
@@ -46,7 +46,7 @@ class AnnotationRouter
     /**
      * 支持的路由字段.
      */
-    protected array $routerField = [
+    protected static array $routerField = [
         'scheme',
         'domain',
         'port',
@@ -109,7 +109,7 @@ class AnnotationRouter
             throw new \InvalidArgumentException($e);
         }
 
-        $this->scandirs[] = $dir;
+        $this->scanDirs[] = $dir;
     }
 
     /**
@@ -142,7 +142,7 @@ class AnnotationRouter
     }
 
     /**
-     * 查找视图目录中的视图文件.
+     * 查找控制器文件.
      */
     protected function findFiles(array $paths): Finder
     {
@@ -178,7 +178,7 @@ class AnnotationRouter
      */
     protected function parseControllerAnnotationRouters(): array
     {
-        $finder = $this->findFiles($this->scandirs);
+        $finder = $this->findFiles($this->scanDirs);
         $classParser = new ClassParser();
         $routers = [];
         foreach ($finder as $file) {
@@ -197,6 +197,8 @@ class AnnotationRouter
 
     /**
      * 分析每一个控制器注解路由.
+     *
+     * @throws \Exception
      */
     protected function parseEachControllerAnnotationRouters(array &$routers, string $controllerClassName): void
     {
@@ -207,7 +209,7 @@ class AnnotationRouter
                 foreach ($routeAttributes as $routeAttribute) {
                     $router = $routeAttribute->getArguments();
                     if (empty($router['path'])) {
-                        continue;
+                        throw new \Exception(sprintf('The %s::%s() method annotation routing path cannot be empty.', $controllerClassName, $method->getName()));
                     }
                     $this->normalizeAnnotationRouterData($router, $controllerClassName.'@'.$method->getName());
                     $routers[$router['method']][] = $router;
@@ -250,7 +252,7 @@ class AnnotationRouter
      */
     protected function parseHttpMethodAnnotationRouters(array &$routers, string $httpMethod, array $annotationRouters): void
     {
-        if (!\in_array($httpMethod, $this->methods, true)) {
+        if (!\in_array($httpMethod, static::$methods, true)) {
             return;
         }
 
@@ -303,7 +305,7 @@ class AnnotationRouter
     protected function parseRouterField(array $method): array
     {
         $result = [];
-        foreach ($this->routerField as $f) {
+        foreach (static::$routerField as $f) {
             if (\array_key_exists($f, $method)) {
                 $result[$f] = $method[$f];
             }
@@ -547,9 +549,7 @@ class AnnotationRouter
     protected function parseBasePaths(array $basePathsSource): array
     {
         if (!Arr::handle($basePathsSource, ['string:array'])) {
-            $e = 'Router base paths and groups must be array:string:array.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Router base paths must be array:string:array.');
         }
 
         $basePaths = [];

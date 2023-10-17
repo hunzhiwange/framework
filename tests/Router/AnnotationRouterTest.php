@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
+use Leevel\Di\Container;
 use Leevel\Router\AnnotationRouter;
 use Leevel\Router\IRouter;
+use Leevel\Router\Matching\Annotation;
 use Leevel\Router\MiddlewareParser;
+use Leevel\Router\Router;
+use Symfony\Component\Finder\Finder;
 use Tests\TestCase;
 
 /**
@@ -53,6 +57,7 @@ final class AnnotationRouterTest extends TestCase
 
         $annotationRouter->addScandir($scandir);
         $annotationRouter->setControllerDir('');
+        static::assertSame($annotationRouter->getControllerDir(), '');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
@@ -191,7 +196,7 @@ final class AnnotationRouterTest extends TestCase
     public function testBasePathsIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
+        $this->expectExceptionMessage('Router base paths must be array:string:array.');
 
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
@@ -209,7 +214,7 @@ final class AnnotationRouterTest extends TestCase
     public function testGroupsIsInvalid(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Router base paths and groups must be array:string:array.');
+        $this->expectExceptionMessage('Router base paths must be array:string:array.');
 
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
@@ -219,6 +224,40 @@ final class AnnotationRouterTest extends TestCase
         );
 
         $scandir = __DIR__.'/Apps/AppWithoutBasePaths';
+
+        $annotationRouter->addScandir($scandir);
+        $annotationRouter->handle();
+    }
+
+    public function test1(): void
+    {
+        $annotation = new Annotation();
+        $result = $this->invokeTestMethod($annotation, 'matchSucceed', [[]]);
+        static::assertSame([], $result);
+    }
+
+    public function test2(): void
+    {
+        $router = new Router(new Container());
+        $middleware = new MiddlewareParser($router);
+        $annotation = new AnnotationRouter($middleware);
+        $annotation->setControllerDir('test');
+        $result = $this->invokeTestMethod($annotation, 'findFiles', [[]]);
+        $this->assertInstanceof(Finder::class, $result);
+    }
+
+    public function testAppWithoutPath(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The Tests\Router\Apps\AppWithoutPath\Controllers\Pet::demo() method annotation routing path cannot be empty.');
+
+        $annotationRouter = new AnnotationRouter(
+            $this->createMiddlewareParser(),
+            'queryphp.cn',
+            [],
+        );
+
+        $scandir = __DIR__.'/Apps/AppWithoutPath';
 
         $annotationRouter->addScandir($scandir);
         $annotationRouter->handle();

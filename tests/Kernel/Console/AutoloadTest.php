@@ -41,7 +41,7 @@ final class AutoloadTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent('Autoload cache successed.'),
+            $this->normalizeContent('Autoload cache succeed.'),
             $result
         );
     }
@@ -70,7 +70,7 @@ final class AutoloadTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent('Autoload cache successed.'),
+            $this->normalizeContent('Autoload cache succeed.'),
             $result
         );
     }

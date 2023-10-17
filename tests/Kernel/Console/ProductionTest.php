@@ -46,7 +46,7 @@ final class ProductionTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent('Optimize successed.'),
+            $this->normalizeContent('Optimize succeed.'),
             $result
         );
     }

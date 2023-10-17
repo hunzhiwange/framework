@@ -29,14 +29,14 @@ use Tests\TestCase;
  * 使用容器 logs 服务
  *
  * ``` php
- * \App::make('logs')->emergency(string $message, array $context = []): void;
- * \App::make('logs')->alert(string $message, array $context = []): void;
- * \App::make('logs')->critical(string $message, array $context = []): void;
- * \App::make('logs')->error(string $message, array $context = []): void;
- * \App::make('logs')->warning(string $message, array $context = []): void;
- * \App::make('logs')->notice(string $message, array $context = []): void;
- * \App::make('logs')->info(string $message, array $context = []): void;
- * \App::make('logs')->debug(string $message, array $context = []): void;
+ * \App::make('logs')->emergency(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->alert(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->critical(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->error(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->warning(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->notice(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->info(string|\Stringable $message, array $context = []): void;
+ * \App::make('logs')->debug(string|\Stringable $message, array $context = []): void;
  * ```
  *
  * 依赖注入
@@ -56,14 +56,14 @@ use Tests\TestCase;
  * 使用静态代理
  *
  * ``` php
- * \Leevel\Log\Proxy\Log::emergency(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::alert(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::critical(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::error(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::warning(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::notice(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::info(string $message, array $context = []): void;
- * \Leevel\Log\Proxy\Log::debug(string $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::emergency(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::alert(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::critical(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::error(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::warning(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::notice(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::info(string|\Stringable $message, array $context = []): void;
+ * \Leevel\Log\Proxy\Log::debug(string|\Stringable $message, array $context = []): void;
  * ```
  *
  * ## log 配置
@@ -82,12 +82,6 @@ use Tests\TestCase;
  * |:-|:-|
  * |level|允许记录的日志级别|
  * |channel|频道|
- * |buffer|是否启用缓冲|
- * |buffer_size|日志数量达到缓冲数量会执行一次 IO 操作|
- *
- * ::: warning 注意
- * QueryPHP 的日志如果启用了缓冲，会在日志数量达到缓冲数量会执行一次 IO 操作。
- * :::
  * ",
  * )
  *
@@ -210,6 +204,17 @@ final class LogTest extends TestCase
         $fileInfo2 = __DIR__.'/cacheLog/development.info/SQL-'.date('Y-m-d').'.log';
         static::assertTrue(is_file($fileInfo1));
         static::assertTrue(is_file($fileInfo2));
+    }
+
+    public function test1(): void
+    {
+        $this->expectException(\Psr\Log\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Level notFound is invalid.'
+        );
+
+        $log = $this->createFileConnect();
+        $log->log('notFound', 'hello world');
     }
 
     protected function createFileConnect(array $option = []): File

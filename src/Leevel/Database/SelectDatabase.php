@@ -18,7 +18,7 @@ trait SelectDatabase
         );
 
         $this->addOption(
-            'databaseindex',
+            'database-index',
             null,
             InputOption::VALUE_REQUIRED,
             'Select database index.',

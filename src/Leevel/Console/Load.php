@@ -77,7 +77,7 @@ class Load
             // PHAR 模式下不支持 glob 读取文件
             $currentFiles = scandir($dir);
             if (false === $currentFiles) {
-                throw new \Exception('Find path names failed.');
+                throw new \Exception('Find path names failed.'); // @codeCoverageIgnore
             }
 
             if ($currentFiles) {

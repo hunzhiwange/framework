@@ -38,7 +38,7 @@ class Development extends Command
         $this->callView();
         $this->callAutoload();
         $this->line('');
-        $this->info('Caches cleared successed.');
+        $this->info('Caches cleared succeed.');
 
         return self::SUCCESS;
     }

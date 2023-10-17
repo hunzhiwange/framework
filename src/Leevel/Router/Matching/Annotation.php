@@ -82,7 +82,7 @@ class Annotation extends BaseMatching implements IMatching
     {
         $pathInfo = $this->getPathInfo();
         if (isset($routers['static'][$pathInfo])) {
-            return $this->matchSuccessed($routers['static'][$pathInfo]);
+            return $this->matchSucceed($routers['static'][$pathInfo]);
         }
 
         return false;
@@ -132,7 +132,7 @@ class Annotation extends BaseMatching implements IMatching
             $matchedRouter = $routers['map'][$key][\count($matches)];
             $router = $routers[$matchedRouter];
 
-            return $this->matchSuccessed($router, $this->matchVariable($router, $matches));
+            return $this->matchSucceed($router, $this->matchVariable($router, $matches));
         }
 
         return false;
@@ -141,7 +141,7 @@ class Annotation extends BaseMatching implements IMatching
     /**
      * 注解路由匹配成功处理.
      */
-    protected function matchSuccessed(array $router, array $matcheVars = []): array
+    protected function matchSucceed(array $router, array $matchedVar = []): array
     {
         // 协议匹配
         if (!empty($router['scheme'])
@@ -161,7 +161,7 @@ class Annotation extends BaseMatching implements IMatching
         }
 
         // 未绑定
-        if (!$router['bind']) {
+        if (empty($router['bind'])) {
             return [];
         }
 
@@ -176,8 +176,8 @@ class Annotation extends BaseMatching implements IMatching
         }
 
         // 路由匹配参数 /v1/pet/{id}
-        if ($matcheVars) {
-            $result[$attributesKey] = array_merge($result[$attributesKey], $matcheVars);
+        if ($matchedVar) {
+            $result[$attributesKey] = array_merge($result[$attributesKey], $matchedVar);
         }
 
         // 额外参数 ['extend1' => 'foo']

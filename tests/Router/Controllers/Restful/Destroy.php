@@ -8,7 +8,7 @@ use Leevel\Router\IRouter;
 
 class Destroy
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello for restful '.IRouter::RESTFUL_DESTROY;
     }

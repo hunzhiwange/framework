@@ -51,11 +51,11 @@ class Cache extends Command
                 $data = $this->data($i18n);
                 $cachePath = $app->i18nCachedPath($i18n);
                 $this->writeCache($cachePath, $data);
-                $this->info(sprintf('I18n cache successed at %s.', $cachePath));
+                $this->info(sprintf('I18n cache succeed at %s.', $cachePath));
             }
         });
 
-        $this->info('I18n cache successed.');
+        $this->info('I18n cache succeed.');
 
         return self::SUCCESS;
     }

@@ -63,7 +63,7 @@ final class CacheTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache succeed at %s.', $cacheFile)),
             $result
         );
 
@@ -101,7 +101,7 @@ final class CacheTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache succeed at %s.', $cacheFile)),
             $result
         );
 
@@ -140,7 +140,7 @@ final class CacheTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Option cache successed at %s.', $cacheFile)),
+            $this->normalizeContent(sprintf('Option cache succeed at %s.', $cacheFile)),
             $result
         );
 

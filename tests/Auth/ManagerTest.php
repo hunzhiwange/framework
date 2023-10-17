@@ -21,7 +21,7 @@ use Tests\TestCase;
  *     zh-CN:description="
  * QueryPHP 提供了一组简单的认证组件用于登陆验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
  *
- * 内置支持的认证驱动类型包括 session、token，分别用于 web 和 api 的认证服务。
+ * 内置支持的认证驱动类型包括 session、token和JWT，分别用于 web 和 api 的认证服务。
  *
  * ## 使用方式
  *
@@ -111,6 +111,23 @@ final class ManagerTest extends TestCase
         static::assertSame([], $manager->getLogin());
     }
 
+    public function testReconnect(): void
+    {
+        $manager = $this->createManager();
+
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
+
+        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+
+        $auth = $manager->reconnect();
+        static::assertTrue($auth->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $auth->getLogin());
+    }
+
     /**
      * @api(
      *     zh-CN:title="setTokenName 设置认证名字",
@@ -134,6 +151,36 @@ final class ManagerTest extends TestCase
 
         static::assertNull($manager->logout());
 
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="JWT 认证",
+     *     zh-CN:description="",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testWithJwt(): void
+    {
+        $manager = $this->createManagerWithJwt();
+
+        $manager->setTokenName('token');
+
+        static::assertFalse($manager->isLogin());
+        static::assertSame([], $manager->getLogin());
+
+        $tokenResult = $manager->login(['foo' => 'bar', 'hello' => 'world'], 100);
+        $manager->setTokenName($tokenResult);
+
+        static::assertTrue($manager->isLogin());
+        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+
+        static::assertNull($manager->logout());
+
+        // JWT 无法注销，模拟实现
+        $manager->setTokenName('not found');
         static::assertFalse($manager->isLogin());
         static::assertSame([], $manager->getLogin());
     }
@@ -257,6 +304,48 @@ final class ManagerTest extends TestCase
 
         $container->singleton('option', $option);
         $container->singleton('cache', $this->createCache());
+        $container->singleton('request', $this->createRequest());
+
+        return $manager;
+    }
+
+    protected function createManagerWithJwt(): Manager
+    {
+        $container = new Container();
+        $manager = new Manager($container);
+
+        $this->assertInstanceof(IContainer::class, $manager->container());
+        $this->assertInstanceof(Container::class, $manager->container());
+
+        $option = new Option([
+            'auth' => [
+                'default' => 'api',
+                'web_default' => 'session',
+                'api_default' => 'jwt',
+                'connect' => [
+                    'session' => [
+                        'driver' => 'session',
+                        'token' => 'token',
+                    ],
+                    'token' => [
+                        'driver' => 'token',
+                        'token' => null,
+                        'input_token' => 'token',
+                    ],
+                    'jwt' => [
+                        'driver' => 'jwt',
+                        'token' => null,
+                        'expire' => null,
+                        'iss' => null,
+                        'aud' => null,
+                        'auth_key' => 'hello',
+                        'alg' => 'HS256',
+                    ],
+                ],
+            ],
+        ]);
+
+        $container->singleton('option', $option);
         $container->singleton('request', $this->createRequest());
 
         return $manager;

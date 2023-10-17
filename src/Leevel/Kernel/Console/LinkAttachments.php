@@ -41,6 +41,6 @@ class LinkAttachments extends Command
     protected function createLink(string $source, string $target): void
     {
         Link::handle($source, $target);
-        $this->info(sprintf('Linked `%s` directory to `%s` successed.', $source, $target));
+        $this->info(sprintf('Linked `%s` directory to `%s` succeed.', $source, $target));
     }
 }

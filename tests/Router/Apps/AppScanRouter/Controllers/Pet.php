@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Router\Apps\AppScanRouter\Controllers;
 
+use Leevel\Http\Request;
 use Leevel\Router\Route;
 
 class Pet
@@ -11,7 +12,7 @@ class Pet
     #[Route(
         path: '/api/v1/petLeevel/{petId:[A-Za-z]+}/',
     )]
-    private function petLeevel(): void
+    public function petLeevel(): void
     {
     }
 
@@ -19,7 +20,15 @@ class Pet
         path: '/web/petLeevelWithPort/',
         port: '9527',
     )]
-    private function petLeevelWithPort(): void
+    public function petLeevelWithPort(): void
+    {
+    }
+
+    #[Route(
+        path: '/web/petLeevelNotSupportedMethod/',
+        method: Request::METHOD_CONNECT,
+    )]
+    public function petLeevelNotSupportedMethod(): void
     {
     }
 }

@@ -43,7 +43,7 @@ final class LinksTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent('Links created successed.'),
+            $this->normalizeContent('Links created succeed.'),
             $result
         );
     }

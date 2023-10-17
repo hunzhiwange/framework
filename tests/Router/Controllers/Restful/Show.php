@@ -8,7 +8,7 @@ use Leevel\Router\IRouter;
 
 class Show
 {
-    public function handle()
+    public function handle(): string
     {
         return 'hello for restful '.IRouter::RESTFUL_SHOW;
     }

@@ -48,7 +48,7 @@ final class LinkStaticTest extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/static` directory to `%s/assert_new/static` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/static` directory to `%s/assert_new/static` succeed.', __DIR__, __DIR__)),
             $result
         );
         static::assertTrue(is_file(__DIR__.'/assert_new/static'));

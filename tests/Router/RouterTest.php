@@ -396,6 +396,36 @@ final class RouterTest extends TestCase
     }
 
     /**
+     * @api(
+     *     zh-CN:title="RESTFUL 控制器响应指定方法",
+     *     zh-CN:description="
+     * **fixture 定义**
+     *
+     * **Tests\Router\Controllers\Restful\Action**
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Restful\Action::class)]}
+     * ```
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testRestful2(): void
+    {
+        $pathInfo = '/app:tests/restful/5/action';
+        $attributes = [];
+        $method = 'get';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setControllerDir($controllerDir);
+        $result = $router->dispatch($request);
+
+        $this->assertInstanceof(Response::class, $result);
+        static::assertSame('hello action for restful show', $result->getContent());
+    }
+
+    /**
      * @dataProvider getNodeNotFoundData
      */
     public function testNodeNotFound(string $method, string $action): void

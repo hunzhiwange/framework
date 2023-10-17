@@ -12,6 +12,14 @@ use Tests\TestCase;
  */
 final class LoadTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {
+            error_reporting($GLOBALS['RUNTIME_ERROR_REPORTING']);
+            unset($GLOBALS['RUNTIME_ERROR_REPORTING']);
+        }
+    }
+
     public function testBaseUse(): void
     {
         $load = $this->createLoad('zh-CN');
@@ -244,6 +252,20 @@ final class LoadTest extends TestCase
         );
 
         (new Load([__DIR__.'/i18nNotExists']))->loadData();
+    }
+
+    public function test1(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('I18n load dir %s is invali', __DIR__.'/i18nNotExists')
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        $load = new Load();
+        $this->invokeTestMethod($load, 'getPoFiles', [__DIR__.'/i18nNotExists']);
     }
 
     protected function createLoad(string $lang): Load

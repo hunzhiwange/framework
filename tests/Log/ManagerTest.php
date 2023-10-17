@@ -36,6 +36,13 @@ final class ManagerTest extends TestCase
         $syslog->info('foo', ['bar']);
     }
 
+    public function test1(): void
+    {
+        $manager = $this->createManager();
+        $syslog = $manager->reconnect('syslog');
+        $syslog->info('foo', ['bar']);
+    }
+
     public function testMonolog(): void
     {
         $manager = $this->createManager();

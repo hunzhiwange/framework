@@ -82,7 +82,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         static::assertSame('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($app);
+        (new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testMergeComposerOptionException(): void
@@ -107,7 +107,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         static::assertSame('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($app);
+        (new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testEnvException(): void
@@ -131,7 +131,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env.notexist');
         static::assertSame('.env.notexist', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($app);
+        (new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testEnvException2(): void
@@ -156,7 +156,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env.wrong');
         static::assertSame('.env.wrong', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($app);
+        (new Load($appPath.'/option'))->loadData($app);
     }
 
     public function testMergeComposerOptionNewKey(): void
@@ -175,7 +175,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         static::assertSame('.env', $app->envFile());
 
-        $options = ($load = new Load($appPath.'/option'))->loadData($app);
+        $options = (new Load($appPath.'/option'))->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app5/option.json');
 
@@ -185,5 +185,24 @@ final class LoadTest extends TestCase
                 $options
             )
         );
+    }
+
+    public function test1(): void
+    {
+        $appPath = __DIR__.'/app6';
+
+        $app = $this->createMock(IApp::class);
+        $this->assertInstanceof(IApp::class, $app);
+
+        $app->method('path')->willReturn($appPath);
+        static::assertSame($appPath, $app->path());
+
+        $app->method('envPath')->willReturn($appPath);
+        static::assertSame($appPath, $app->envPath());
+
+        $app->method('envFile')->willReturn('.env');
+        static::assertSame('.env', $app->envFile());
+
+        (new Load($appPath.'/option'))->loadData($app);
     }
 }

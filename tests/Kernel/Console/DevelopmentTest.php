@@ -48,7 +48,7 @@ final class DevelopmentTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent('Caches cleared successed.'),
+            $this->normalizeContent('Caches cleared succeed.'),
             $result
         );
     }

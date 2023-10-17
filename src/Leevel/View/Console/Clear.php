@@ -30,7 +30,7 @@ class Clear extends Command
     {
         $this->line('Start to clear cache view.');
         DeleteDirectory::handle($cachePath = $app->storagePath('theme'));
-        $message = sprintf('View cache files in path %s clear successed.', $cachePath);
+        $message = sprintf('View cache files in path %s clear succeed.', $cachePath);
         $this->info($message);
 
         return self::SUCCESS;

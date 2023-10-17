@@ -30,7 +30,7 @@ class Clear extends Command
         $this->line('Start to clear cache option.');
         $cachePath = $app->optionCachedPath();
         $this->clearCache($cachePath);
-        $this->info(sprintf('Option cache files %s clear successed.', $cachePath));
+        $this->info(sprintf('Option cache files %s clear succeed.', $cachePath));
 
         return self::SUCCESS;
     }

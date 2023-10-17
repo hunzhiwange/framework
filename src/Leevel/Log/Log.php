@@ -62,12 +62,7 @@ abstract class Log extends AbstractLogger implements ILog
     }
 
     /**
-     * Logs with an arbitrary level.
-     *
-     * @param mixed   $level
-     * @param mixed[] $context
-     *
-     * @throws \Psr\Log\InvalidArgumentException
+     * {@inheritDoc}
      */
     public function log($level, string|\Stringable $message, array $context = []): void
     {

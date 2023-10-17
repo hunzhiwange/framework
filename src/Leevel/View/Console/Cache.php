@@ -59,7 +59,7 @@ class Cache extends Command
             $this->compiles($this->findFiles([$path]), $path);
         }
 
-        $this->info('View files cache successed.');
+        $this->info('View files cache succeed.');
 
         return self::SUCCESS;
     }

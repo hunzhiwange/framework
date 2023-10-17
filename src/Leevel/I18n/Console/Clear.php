@@ -35,11 +35,11 @@ class Clear extends Command
                 $i18n = $item->getFilename();
                 $cachePath = $app->i18nCachedPath($i18n);
                 $this->clearCache($cachePath);
-                $this->info(sprintf('I18n cache files %s clear successed.', $cachePath));
+                $this->info(sprintf('I18n cache files %s clear succeed.', $cachePath));
             }
         });
 
-        $this->info('I18n cache files clear successed.');
+        $this->info('I18n cache files clear succeed.');
 
         return self::SUCCESS;
     }

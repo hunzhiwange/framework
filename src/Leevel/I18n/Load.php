@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\I18n;
 
 /**
- * 语言包工具类导入类.
+ * 语言包工具导入类.
  */
 class Load
 {
@@ -95,13 +95,15 @@ class Load
 
     /**
      * 获取目录中的 PO 文件.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getPoFiles(string $dir): array
     {
         // PHAR 模式下不支持 glob 读取文件
         $files = scandir($dir);
         if (false === $files) {
-            return [];
+            throw new \InvalidArgumentException(sprintf('I18n load dir %s is invalid.', $dir));
         }
 
         $files = array_values(array_filter(

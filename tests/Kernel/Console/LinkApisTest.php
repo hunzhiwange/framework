@@ -49,7 +49,7 @@ final class LinkApisTest extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` successed.', __DIR__, __DIR__)),
+            $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` succeed.', __DIR__, __DIR__)),
             $result
         );
         static::assertTrue(is_file(__DIR__.'/assert_new/apis'));

@@ -42,7 +42,7 @@ final class ClearTest extends TestCase
             $result
         );
         static::assertStringContainsString(
-            $this->normalizeContent(sprintf('Log cache files in path %s clear successed.', $cacheDir)),
+            $this->normalizeContent(sprintf('Log cache files in path %s clear succeed.', $cacheDir)),
             $result
         );
     }

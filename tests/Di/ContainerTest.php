@@ -1122,4 +1122,12 @@ final class ContainerTest extends TestCase
 
         static::assertSame('info', $hello);
     }
+
+    public function test1(): void
+    {
+        $container = new Container();
+        $container->instance('foo', 'bar');
+        static::assertSame('bar', $container->make('foo'));
+        static::assertSame('bar', $container->get('foo'));
+    }
 }

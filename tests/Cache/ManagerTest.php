@@ -8,6 +8,7 @@ use Leevel\Cache\Manager;
 use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Option\Option;
 use RedisException;
 use Tests\TestCase;
@@ -21,7 +22,7 @@ final class ManagerTest extends TestCase
     {
         $path = __DIR__.'/cacheManager';
         if (is_dir($path)) {
-            rmdir($path);
+            DeleteDirectory::handle($path);
         }
     }
 
@@ -33,6 +34,20 @@ final class ManagerTest extends TestCase
 
         $manager->delete('manager-foo');
         static::assertFalse($manager->get('manager-foo'));
+    }
+
+    public function testReconnect(): void
+    {
+        $manager = $this->createManager();
+        $manager->set('manager-foo', 'bar');
+        static::assertSame('bar', $manager->get('manager-foo'));
+
+        $manager->delete('manager-foo');
+        static::assertFalse($manager->get('manager-foo'));
+
+        $cache = $manager->reconnect();
+        $cache->set('manager-foo', 'bar');
+        static::assertSame('bar', $cache->get('manager-foo'));
     }
 
     public function testRedis(): void

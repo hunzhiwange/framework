@@ -554,58 +554,54 @@ class Container implements IContainer, \ArrayAccess
         $required = 0;
         $param = $this->parseReflection($injection);
         $validArgs = \count($param);
-        foreach ($param as $key => $item) {
-            try {
-                switch (true) {
-                    case $argsClass = $this->parseParamClass($item):
-                        $argsClass = (string) $argsClass;
-                        if (isset($args[0]) && $args[0] instanceof $argsClass) {
-                            $data = array_shift($args);
-                        } elseif (\array_key_exists($argsClass, $args)) {
-                            $data = $args[$argsClass];
-                        } elseif ($item->isDefaultValueAvailable()) {
-                            $data = $item->getDefaultValue();
-                        } else {
-                            $data = $this->parseClassFromContainer($argsClass);
-                        }
+        foreach ($param as $item) {
+            switch (true) {
+                case $argsClass = $this->parseParamClass($item):
+                    $argsClass = (string) $argsClass;
+                    if (isset($args[0]) && $args[0] instanceof $argsClass) {
+                        $data = array_shift($args);
+                    } elseif (\array_key_exists($argsClass, $args)) {
+                        $data = $args[$argsClass];
+                    } elseif ($item->isDefaultValueAvailable()) {
+                        $data = $item->getDefaultValue();
+                    } else {
+                        $data = $this->parseClassFromContainer($argsClass);
+                    }
 
-                        ++$required;
+                    ++$required;
+                    ++$validArgs;
+
+                    break;
+
+                case $item->isDefaultValueAvailable():
+                    if (\array_key_exists($item->name, $args)) {
+                        $data = $args[$item->name];
+                    } elseif (isset($args[0])) {
+                        $data = array_shift($args);
+                    } else {
+                        $data = $item->getDefaultValue();
+                    }
+
+                    break;
+
+                default:
+                    $required++;
+                    if (\array_key_exists($item->name, $args)) {
+                        $data = $args[$item->name];
                         ++$validArgs;
-
-                        break;
-
-                    case $item->isDefaultValueAvailable():
-                        if (\array_key_exists($item->name, $args)) {
-                            $data = $args[$item->name];
-                        } elseif (isset($args[0])) {
+                    } else {
+                        if (isset($args[0])) {
                             $data = array_shift($args);
                         } else {
-                            $data = $item->getDefaultValue();
+                            --$validArgs;
+                            $data = null;
                         }
+                    }
 
-                        break;
-
-                    default:
-                        $required++;
-                        if (\array_key_exists($item->name, $args)) {
-                            $data = $args[$item->name];
-                            ++$validArgs;
-                        } else {
-                            if (isset($args[0])) {
-                                $data = array_shift($args);
-                            } else {
-                                --$validArgs;
-                                $data = null;
-                            }
-                        }
-
-                        break;
-                }
-
-                $result[$item->name] = $data;
-            } catch (\ReflectionException $e) {
-                throw new \InvalidArgumentException($e->getMessage());
+                    break;
             }
+
+            $result[$item->name] = $data;
         }
 
         if ($args) {

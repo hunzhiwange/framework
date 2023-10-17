@@ -100,7 +100,7 @@ use Tests\TestCase;
  *
  * ```
  * Start to cache option.
- * Option cache file /data/codes/queryphp/bootstrap/option.php cache successed.
+ * Option cache file /data/codes/queryphp/bootstrap/option.php cache succeed.
  * ```
  *
  * 清理配置缓存
@@ -113,7 +113,7 @@ use Tests\TestCase;
  *
  * ```
  * Start to clear cache option.
- * Option cache file /data/codes/queryphp/bootstrap/option.php cache clear successed.
+ * Option cache file /data/codes/queryphp/bootstrap/option.php cache clear succeed.
  * ```
  *
  * ## 配置定义

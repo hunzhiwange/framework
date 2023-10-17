@@ -111,6 +111,9 @@ class BootstrapSimple extends Bootstrap
 }
 
 if (!\function_exists(__NAMESPACE__.'\\__')) {
+    /**
+     * @codeCoverageIgnore
+     */
     function __(string $text, ...$data): string
     {
         if (!class_exists(Gettext::class)) {

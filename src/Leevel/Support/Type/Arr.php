@@ -11,6 +11,7 @@ class Arr
      *
      * - 数组支持 int,string 格式，值类型
      * - 数组支持 int:string,string:array 格式，键类型:值类型
+     * - 数组支持 string:array:string 格式，键类型:值类型:值类型（最后一级的键类型为整形）
      * - 数组支持 string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
      */
     public static function handle(array $data, array $types): bool
