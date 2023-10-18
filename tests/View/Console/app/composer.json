@@ -1,0 +1,11 @@
+{
+    "extra": {
+        "leevel-console" : {
+            "view-cache": {
+                "paths": [
+                    "path1"
+                ]
+            }
+        }
+    }
+}

@@ -68,6 +68,32 @@ final class ManagerTest extends TestCase
         static::assertTrue($manager->isStart());
     }
 
+    public function test1(): void
+    {
+        $manager = $this->createManager('file');
+        $connect = $manager->reconnect();
+
+        static::assertFalse($connect->isStart());
+        static::assertSame('', $connect->getId());
+        static::assertSame('UID', $connect->getName());
+
+        $connect->start();
+        static::assertTrue($connect->isStart());
+
+        $connect->set('hello', 'world');
+        static::assertSame(['hello' => 'world'], $connect->all());
+        static::assertTrue($connect->has('hello'));
+        static::assertSame('world', $connect->get('hello'));
+
+        $connect->delete('hello');
+        static::assertSame([], $connect->all());
+        static::assertFalse($connect->has('hello'));
+        static::assertNull($connect->get('hello'));
+
+        $connect->start();
+        static::assertTrue($connect->isStart());
+    }
+
     public function testConnectRedis(): void
     {
         $this->checkRedis();

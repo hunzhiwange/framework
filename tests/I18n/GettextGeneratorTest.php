@@ -19,6 +19,11 @@ final class GettextGeneratorTest extends TestCase
         if (is_dir($path)) {
             Helper::deleteDirectory($path);
         }
+
+        if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {
+            error_reporting($GLOBALS['RUNTIME_ERROR_REPORTING']);
+            unset($GLOBALS['RUNTIME_ERROR_REPORTING']);
+        }
     }
 
     public function test1(): void
@@ -71,6 +76,32 @@ final class GettextGeneratorTest extends TestCase
         $gettextGenerator = new GettextGenerator();
         $gettextGenerator->generatorPoFiles(
             [__DIR__.'/assert/lang'],
+            ['zh-CN', 'en-US'],
+            __DIR__.'/cacheFile'
+        );
+    }
+
+    public function test4(): void
+    {
+        $filePath = __DIR__.'/cacheFile/zh-CN/base.po';
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf('Failed to generate gettext file %s.', $filePath)
+        );
+
+        $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
+        error_reporting(0);
+
+        Helper\CreateDirectory::handle(\dirname($filePath));
+        file_put_contents($filePath, 'foo');
+        chmod($filePath, 0o444);
+
+        $gettextGenerator = new GettextGenerator();
+        $gettextGenerator->generatorPoFiles(
+            [
+                'base' => [__DIR__.'/assert/lang'],
+            ],
             ['zh-CN', 'en-US'],
             __DIR__.'/cacheFile'
         );

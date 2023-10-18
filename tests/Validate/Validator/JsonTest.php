@@ -40,7 +40,6 @@ final class JsonTest extends TestCase
      * ```
      *
      * 上面的数据是测试的数据提供者。
-     *
      * ",
      *     zh-CN:note="",
      * )
@@ -82,6 +81,12 @@ final class JsonTest extends TestCase
      * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\JsonTest::class, 'badProvider')]}
      * ```
      *
+     * `\Tests\Validate\Validator\TestJson2` 声明如下
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\Validator\TestJson2::class)]}
+     * ```
+     *
      * 上面的数据是测试的数据提供者。
      * ",
      *     zh-CN:note="",
@@ -112,6 +117,7 @@ final class JsonTest extends TestCase
             ['Foo'],
             ['hEllo'],
             [null],
+            [TestJson2::class],
         ];
     }
 }
@@ -122,4 +128,8 @@ class TestJson
     {
         return '{"hello":"world"}';
     }
+}
+
+class TestJson2
+{
 }

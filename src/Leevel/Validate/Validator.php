@@ -129,9 +129,7 @@ class Validator implements IValidator
             }
         }
 
-        $e = sprintf('Method %s is not exits.', $method);
-
-        throw new \BadMethodCallException($e);
+        throw new \BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 
     /**
@@ -684,8 +682,8 @@ class Validator implements IValidator
         }
 
         // 反义规则
-        $isNotRule = str_starts_with($rule, '!');
-        if ($isNotRule) {
+        $isAntisenseRule = str_starts_with($rule, '!');
+        if ($isAntisenseRule) {
             $rule = substr($rule, 1);
         }
 
@@ -701,12 +699,12 @@ class Validator implements IValidator
                 $validatorErrorMessage = $e->getMessage();
             }
 
-            if ($isNotRule) {
+            if ($isAntisenseRule) {
                 $validateResult = !$validateResult;
             }
 
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
+                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
 
                 return false;
             }
@@ -732,12 +730,12 @@ class Validator implements IValidator
                 $validatorErrorMessage = $e->getMessage();
             }
 
-            if ($isNotRule) {
+            if ($isAntisenseRule) {
                 $validateResult = !$validateResult;
             }
 
             if (false === $validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
+                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
 
                 return false;
             }
@@ -751,12 +749,12 @@ class Validator implements IValidator
                 $validatorErrorMessage = $e->getMessage();
             }
 
-            if ($isNotRule) {
+            if ($isAntisenseRule) {
                 $validateResult = !$validateResult;
             }
 
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isNotRule, $validatorErrorMessage);
+                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
 
                 return false;
             }
@@ -784,18 +782,18 @@ class Validator implements IValidator
     /**
      * 添加错误规则和验证错误消息.
      */
-    protected function addFailure(string $field, string $rule, array $param, bool $isNotRule = false, string $validatorErrorMessage = ''): void
+    protected function addFailure(string $field, string $rule, array $param, bool $isAntisenseRule = false, string $validatorErrorMessage = ''): void
     {
-        $this->addError($field, $rule, $param, $isNotRule, $validatorErrorMessage);
+        $this->addError($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
         $this->failedRules[$field][$rule] = $param;
     }
 
     /**
      * 添加验证错误消息.
      */
-    protected function addError(string $field, string $rule, array $param, bool $isNotRule = false, string $validatorErrorMessage = ''): void
+    protected function addError(string $field, string $rule, array $param, bool $isAntisenseRule = false, string $validatorErrorMessage = ''): void
     {
-        $message = $validatorErrorMessage ?: $this->getFieldRuleMessage($field, $rule, $isNotRule);
+        $message = $validatorErrorMessage ?: $this->getFieldRuleMessage($field, $rule, $isAntisenseRule);
         $replace = ['field' => $this->parseFieldName($field)];
 
         if ($this->isImplodeRuleParam($rule)) {
@@ -818,9 +816,9 @@ class Validator implements IValidator
     /**
      * 获取验证消息.
      */
-    protected function getFieldRuleMessage(string $field, string $rule, bool $isNotRule = false): string
+    protected function getFieldRuleMessage(string $field, string $rule, bool $isAntisenseRule = false): string
     {
-        if ($isNotRule) {
+        if ($isAntisenseRule) {
             $notRule = '!'.$rule;
             $message = $this->messages[$field.'.'.$notRule] ??
                 ($this->messages[$notRule] ?? (static::$defaultMessages[$notRule] ?? ''));
@@ -832,8 +830,8 @@ class Validator implements IValidator
         $message = $this->messages[$field.'.'.$rule] ??
             ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
 
-        if ($isNotRule) {
-            $message = sprintf('不满足【%s】的反义规则', $message);
+        if ($isAntisenseRule) {
+            $message = sprintf('不满足【%s】', $message);
         }
 
         return $message;
@@ -863,9 +861,7 @@ class Validator implements IValidator
     protected function callClassExtend(string $extend, array $param): bool
     {
         if (!$this->container) {
-            $e = 'Container was not set.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Container was not set.');
         }
 
         if (!str_contains($extend, '@')) {
@@ -906,9 +902,7 @@ class Validator implements IValidator
             return $this->callClassExtend($extends, $param);
         }
 
-        $e = sprintf('Extend in rule %s is not valid.', $rule);
-
-        throw new \InvalidArgumentException($e);
+        throw new \InvalidArgumentException(sprintf('Extend in rule %s is not valid.', $rule));
     }
 
     /**

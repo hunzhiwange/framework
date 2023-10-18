@@ -146,7 +146,7 @@ class Compiler
                 } elseif ('node' === $type) {
                     $name = $this->nodeMap[$tag] ?? $tag;
                 } else {
-                    throw new \Exception('Compiler was not found.');
+                    throw new \Exception('Compiler was not found.'); // @codeCoverageIgnore
                 }
                 $compilers[] = [$type, $name, $tag];
             }
@@ -352,8 +352,6 @@ class Compiler
 
     /**
      * include 编译器.
-     *
-     * @throws \Exception
      */
     public function includeNodeCompiler(array &$theme): void
     {
@@ -361,9 +359,6 @@ class Compiler
         $attr = $this->getNodeAttribute($theme);
 
         if (preg_match('/^\((.+)\)$/', $attr['file'], $matches)) {
-            if (empty($matches[1])) {
-                throw new \Exception('Include attr file must be set.');
-            }
             $attr['file'] = $matches[1];
         } else {
             // 后缀由主模板提供
@@ -588,25 +583,19 @@ class Compiler
 
         // 验证标签的属性值
         if (true !== $attribute['is_attribute']) {
-            $e = 'Tag attribute type validation failed.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Tag attribute type validation failed.');
         }
 
         // 验证必要属性
         $tag = $this->nodeTag;
         if (!isset($tag[$theme['name']])) {
-            $e = sprintf('The tag %s is undefined.', $theme['name']);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('The tag %s is undefined.', $theme['name']));
         }
 
         foreach ($tag[$theme['name']]['required'] as $name) {
             $name = strtolower($name);
             if (!isset($attribute['attribute_list'][$name])) {
-                $e = sprintf('The node %s lacks the required property: %s.', $theme['name'], $name);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('The node %s lacks the required property: %s.', $theme['name'], $name));
             }
         }
 
@@ -618,7 +607,7 @@ class Compiler
      */
     protected function getNodeAttribute(array $theme): array
     {
-        foreach ($theme['children'] as $child) {
+        foreach ($theme['children'] ?? [] as $child) {
             if (isset($child['is_attribute']) && true === $child['is_attribute']) {
                 return $child['attribute_list'];
             }
@@ -632,7 +621,7 @@ class Compiler
      */
     protected function getNodeBody(array $theme): string
     {
-        foreach ($theme['children'] as $child) {
+        foreach ($theme['children'] ?? [] as $child) {
             if (isset($child['is_body']) && true === $child['is_body']) {
                 return $child['content'];
             }

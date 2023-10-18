@@ -85,4 +85,24 @@ final class CompilerBaseExceptionTest extends TestCase
 
         static::assertSame('', $result);
     }
+
+    public function test1(): void
+    {
+        $compilers = new Compilers();
+        $result = $this->invokeTestMethod($compilers, 'getNodeBody', [
+            [
+                'children' => [],
+            ],
+        ]);
+        static::assertSame('', $result);
+    }
+
+    public function test3(): void
+    {
+        $compilers = new Compilers();
+        $result = $this->invokeTestMethod($compilers, 'getNodeBody', [
+            [],
+        ]);
+        static::assertSame('', $result);
+    }
 }

@@ -67,6 +67,7 @@ final class MinLengthTest extends TestCase
             ['中国no1', 5],
             [true, 1],
             [false, 0],
+            [null, 0],
         ];
     }
 

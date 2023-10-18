@@ -97,9 +97,7 @@ class GettextGenerator
 
         foreach ($phpScanner->getTranslations() as $translations) {
             if (false === $generator->generateFile($translations, $generatedLanguageFile)) {
-                $message = sprintf('Failed to generate gettext file %s.', $generatedLanguageFile);
-
-                throw new \RuntimeException($message);
+                throw new \RuntimeException(sprintf('Failed to generate gettext file %s.', $generatedLanguageFile));
             }
         }
     }

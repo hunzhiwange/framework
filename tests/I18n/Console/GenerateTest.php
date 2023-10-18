@@ -23,7 +23,7 @@ final class GenerateTest extends TestCase
 
     protected function tearDown(): void
     {
-        $path = __DIR__.'/../cacheFile';
+        $path = __DIR__.'/../cachePath';
         if (is_dir($path)) {
             Helper::deleteDirectory($path);
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
+use Leevel\Validate\Helper\Type;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
@@ -156,6 +157,12 @@ final class TypeTest extends TestCase
         );
 
         $validate->success();
+    }
+
+    public function test1(): void
+    {
+        $result = Type::handle('foo', [1]);
+        static::assertFalse($result);
     }
 }
 

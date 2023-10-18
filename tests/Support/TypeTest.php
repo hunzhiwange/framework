@@ -304,13 +304,13 @@ final class TypeTest extends TestCase
             'base' => [__DIR__.'/assert/lang'],
         ], ['string:array']));
 
-        // static::assertTrue(Type::arr([
-        //     'base' => [__DIR__.'/assert/lang']
-        // ], ['string:array:int:string']));
-        //
-        // static::assertTrue(Type::arr([
-        //     'base' => [__DIR__.'/assert/lang']
-        // ], ['string:array:string']));
+        static::assertTrue(Type::arr([
+            'base' => [__DIR__.'/assert/lang'],
+        ], ['string:array:int:string']));
+
+        static::assertTrue(Type::arr([
+            'base' => [__DIR__.'/assert/lang'],
+        ], ['string:array:string']));
     }
 }
 

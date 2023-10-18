@@ -8,6 +8,7 @@ use Leevel\Di\Container;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
+use Leevel\Validate\ValidatorException;
 use Tests\TestCase;
 
 /**
@@ -1065,7 +1066,7 @@ final class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => '']],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::MUST,
+                'name.sub.sub' => 'required|'.IValidator::MUST,
             ],
             [
                 'name' => '歌曲',
@@ -1125,7 +1126,7 @@ final class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => '']],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::MUST,
+                'name.sub.sub' => 'required|'.IValidator::MUST,
             ],
             [
                 'name' => '歌曲',
@@ -1178,7 +1179,7 @@ final class ValidatorTest extends TestCase
                 'name' => ['sub' => ['sub' => null]],
             ],
             [
-                'name.sub.sub' => 'required|'.Validator::MUST,
+                'name.sub.sub' => 'required|'.IValidator::MUST,
             ],
             [
                 'name' => '歌曲',
@@ -1657,10 +1658,11 @@ final class ValidatorTest extends TestCase
     public static function skipRuleProvider(): array
     {
         return [
-            [Validator::OPTIONAL],
-            [Validator::MUST],
-            [Validator::SKIP_SELF],
-            [Validator::SKIP_OTHER],
+            [IValidator::OPTIONAL],
+            [IValidator::OPTIONAL_STRING],
+            [IValidator::MUST],
+            [IValidator::SKIP_SELF],
+            [IValidator::SKIP_OTHER],
         ];
     }
 
@@ -1713,7 +1715,7 @@ final class ValidatorTest extends TestCase
             )
         );
 
-        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_OTHER]);
+        $validate->addRule(['name' => 'required|alpha|'.IValidator::SKIP_OTHER]);
 
         static::assertFalse($validate->success());
         static::assertTrue($validate->fail());
@@ -1783,7 +1785,7 @@ final class ValidatorTest extends TestCase
             )
         );
 
-        $validate->addRule(['name' => 'required|alpha|'.Validator::SKIP_SELF]);
+        $validate->addRule(['name' => 'required|alpha|'.IValidator::SKIP_SELF]);
 
         static::assertFalse($validate->success());
         static::assertTrue($validate->fail());
@@ -1823,7 +1825,51 @@ final class ValidatorTest extends TestCase
                 'name' => null,
             ],
             [
-                'name' => 'required|'.Validator::OPTIONAL,
+                'name' => 'required|'.IValidator::OPTIONAL,
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="值为 null或者空字符串 会跳过可选字符串验证规则",
+     *     zh-CN:description="
+     * 如果校验规则中有 `OPTIONAL_STRING` ，那么字段值为 `null` 或者空字符串则不会执行验证规则。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function testOptionalString(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => null,
+            ],
+            [
+                'name' => 'required|'.IValidator::OPTIONAL_STRING,
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+
+        $validate = new Validator(
+            [
+                'name' => '',
+            ],
+            [
+                'name' => 'required|'.IValidator::OPTIONAL_STRING,
             ],
             [
                 'name' => '地名',
@@ -1851,7 +1897,7 @@ final class ValidatorTest extends TestCase
                 'name' => null,
             ],
             [
-                'name' => 'required|'.Validator::OPTIONAL,
+                'name' => 'required|'.IValidator::OPTIONAL,
             ],
             [
                 'name' => '地名',
@@ -2285,6 +2331,378 @@ final class ValidatorTest extends TestCase
         static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
         static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
     }
+
+    public function test1(): void
+    {
+        $e = new ValidatorException('hello');
+        static::assertSame('hello', $e->getMessage());
+        static::assertFalse($e->reportable());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="类的静态方法验证规则支持",
+     *     zh-CN:description="
+     * 可以直接指定类的静态方法为验证规则，例如下面的例子。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
+     * ```
+     *
+     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator1` 方法将作为验证入口。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function test2(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 2,
+            ],
+            [
+                'name' => [
+                    ClassStaticDemo1::class.'@demoValidator1',
+                ],
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        static::assertTrue($validate->success());
+        $validate->data(['name' => 'foo']);
+        static::assertTrue($validate->success());
+    }
+
+    public function test3(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 2,
+            ],
+            [
+                'name' => [
+                    ClassStaticDemo1::class.'@demoValidator2',
+                ],
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        static::assertFalse($validate->success());
+        $validate->data(['name' => 'foo']);
+        static::assertFalse($validate->success());
+    }
+
+    public function test4(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 2,
+            ],
+            [
+                'name' => [
+                    ClassStaticDemo1::class,
+                ],
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        static::assertFalse($validate->success());
+        $validate->data(['name' => 'foo']);
+        static::assertFalse($validate->success());
+    }
+
+    public function test5(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 2,
+            ],
+            [
+                'name' => [
+                    ClassStaticDemo1::class.'@demoValidator3',
+                ],
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        static::assertFalse($validate->success());
+        $error = <<<'eot'
+{
+    "name": [
+        ""
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+        $validate->data(['name' => 'foo']);
+        static::assertTrue($validate->success());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="类的静态方法验证规则支持通过异常抛出错误",
+     *     zh-CN:description="
+     * 可以在类的静态方法中抛出异常消息，异常必须为\Leevel\Validate\ValidatorException，例如下面的例子。
+     *
+     * ``` php
+     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
+     * ```
+     *
+     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator4` 方法将作为验证入口。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function test6(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 2,
+            ],
+            [
+                'name' => [
+                    ClassStaticDemo1::class.'@demoValidator4',
+                ],
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        static::assertFalse($validate->success());
+        $error = <<<'eot'
+{
+    "name": [
+        "我的名字验证失败"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+        $validate->data(['name' => 'foo']);
+        static::assertFalse($validate->success());
+    }
+
+    /**
+     * @api(
+     *     zh-CN:title="验证器支持反义规则",
+     *     zh-CN:description="
+     * 定义反义规则，只需要在规则前面加上英文感叹号即可。
+     * ",
+     *     zh-CN:note="",
+     * )
+     */
+    public function test7(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => '!min:5',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "不满足【地名 值不能小于 5】"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    public function test8(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => 'demo',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "Demo is error."
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+
+        $validate = new Validator(
+            [
+                'name' => 'demo',
+            ],
+            [
+                'name' => 'demo',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+    }
+
+    public function test9(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => 'demo_two',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "Demo is error."
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+
+        $validate = new Validator(
+            [
+                'name' => 'demo',
+            ],
+            [
+                'name' => 'demo_two',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+    }
+
+    public function test10(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 'demo2',
+            ],
+            [
+                'name' => '!demo_two',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+    }
+
+    public function test11(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => 'demo_three',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "Demo is error."
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
 }
 
 class ExtendClassTest1
@@ -2317,5 +2735,33 @@ class ExtendClassTest2
         }
 
         return false;
+    }
+}
+
+class ClassStaticDemo1
+{
+    public static function handle(mixed $value, array $param, Validator $validator): bool
+    {
+        return false;
+    }
+
+    public static function demoValidator1(mixed $value, array $param, Validator $validator): bool
+    {
+        return true;
+    }
+
+    public static function demoValidator2(mixed $value, array $param, Validator $validator): bool
+    {
+        return false;
+    }
+
+    public static function demoValidator3(mixed $value, array $param, Validator $validator): bool
+    {
+        return 'foo' === $value;
+    }
+
+    public static function demoValidator4(mixed $value, array $param, Validator $validator): bool
+    {
+        throw new ValidatorException('我的名字验证失败');
     }
 }

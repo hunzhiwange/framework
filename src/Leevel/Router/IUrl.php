@@ -14,7 +14,7 @@ interface IUrl
     /**
      * 生成路由地址.
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string;
+    public function make(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string; /** @codeCoverageIgnore */
 
     /**
      * 返回 HTTP 请求.

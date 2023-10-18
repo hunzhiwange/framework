@@ -41,7 +41,7 @@ interface IValidator
     /**
      * 初始化验证器.
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): static;
+    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): static; /** @codeCoverageIgnore */
 
     /**
      * 验证是否成功.
@@ -139,7 +139,7 @@ interface IValidator
     public static function initMessages(array $messages): void;
 
     /**
-     * 尝试读取格式化条件.
+     * 获取解析后的验证规则.
      */
     public function getParseRule(string $field, array|string $rules): array;
 

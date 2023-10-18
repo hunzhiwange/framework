@@ -83,6 +83,56 @@ final class ComposerOptionTest extends TestCase
         );
     }
 
+    public function test1(): void
+    {
+        $options = ($composerOption = new ComposerOption(__DIR__.'/app8'))->loadData();
+
+        $data = <<<'eot'
+            {
+                "providers": [
+                    "Tests\\Option\\Providers\\Foo",
+                    "Tests\\Option\\Providers\\Bar",
+                    "Demo\\Provider\\Register",
+                    "Common\\Infra\\Provider\\Event",
+                    "Common\\Infra\\Provider\\Router"
+                ],
+                "ignores": [
+                    "Leevel\\Notexits\\Provider\\Register"
+                ],
+                "commands": [
+                    "Tests\\Option\\Commands\\Test",
+                    "Tests\\Option\\Commands\\Console",
+                    "Demo\\Demo\\Console",
+                    "Common\\App\\Console"
+                ],
+                "options": {
+                    "demo": "option\/extend\/test.php"
+                },
+                "i18ns": [
+                    "i18n\/extend"
+                ],
+                "i18n-paths": [],
+                "metas": {
+                    "foo": "bar"
+                }
+            }
+            eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $options
+            )
+        );
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $composerOption->loadData()
+            )
+        );
+    }
+
     public function testComposerNotFound(): void
     {
         $options = (new ComposerOption(__DIR__.'/app4'))->loadData();

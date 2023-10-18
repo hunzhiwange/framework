@@ -12,21 +12,6 @@ use Leevel\Filesystem\Helper\CreateFile;
 class Doc
 {
     /**
-     * 文档接口开始标记.
-     */
-    public const API_START_TAG = '@api(';
-
-    /**
-     * 文档接口结束标记.
-     */
-    public const API_END_TAG = ')';
-
-    /**
-     * 文档接口多行结束标记.
-     */
-    public const API_MULTI_END_TAG = '",';
-
-    /**
      * 解析文档保存基础路径.
      */
     protected string $basePath;
@@ -83,9 +68,10 @@ class Doc
     public function handle(string $className): string
     {
         // @phpstan-ignore-next-line
-        if (false === $lines = $this->parseFileContnet($reflection = new \ReflectionClass($className))) {
+        if (false === ($lines = $this->parseFileContnet($reflection = new \ReflectionClass($className)))) {
             return '';
         }
+
         $this->lines = $lines;
         $this->filePath = str_replace(['\\', 'Tests'], ['/', 'tests'], $className).'.php';
 
@@ -129,7 +115,7 @@ class Doc
     {
         $doc = new static('', '', '', '');
         // @phpstan-ignore-next-line
-        if (false === $lines = $doc->parseFileContnet(new \ReflectionClass($className))) {
+        if (false === ($lines = $doc->parseFileContnet(new \ReflectionClass($className)))) {
             return '';
         }
 
@@ -231,8 +217,11 @@ class Doc
      */
     protected function parseClassContent(\ReflectionClass $reflection): string
     {
-        if (!($comment = $reflection->getDocComment())
-            || !($info = $this->parseComment($comment, $reflection->getName()))) {
+        if (!($info = $this->parseClassOrMethodApi($reflection))) {
+            return '';
+        }
+
+        if (!($info = $this->parseComment($info, $reflection->getName()))) {
             return '';
         }
 
@@ -272,8 +261,11 @@ class Doc
      */
     protected function parseMethodContent(\ReflectionMethod $method, \ReflectionClass $reflectionClass): string
     {
-        if (!($comment = $method->getDocComment())
-            || !($info = $this->parseComment($comment, $reflectionClass->getName().'/'.$method->getName()))) {
+        if (!($info = $this->parseClassOrMethodApi($method))) {
+            return '';
+        }
+
+        if (!($info = $this->parseComment($info, $reflectionClass->getName().'/'.$method->getName()))) {
             return '';
         }
 
@@ -285,6 +277,28 @@ class Doc
         $data = array_filter($data);
 
         return implode(PHP_EOL, $data).PHP_EOL;
+    }
+
+    protected function parseClassOrMethodApi(\ReflectionMethod|\ReflectionClass $reflection): array
+    {
+        if (!($methodAttributes = $reflection->getAttributes())) {
+            return [];
+        }
+
+        $info = [];
+        foreach ($methodAttributes as $attribute) {
+            if (Api::class === $attribute->getName()) {
+                $info = $attribute->getArguments()[0] ?? [];
+
+                break;
+            }
+        }
+
+        if (!$info) {
+            return [];
+        }
+
+        return $info;
     }
 
     /**
@@ -485,124 +499,38 @@ class Doc
     }
 
     /**
-     * 获取 API 注解信息.
+     * 分析 API 注解信息.
      *
      * @throws \RuntimeException
      */
-    protected function parseComment(string $comment, string $logName): array
+    protected function parseComment(array $info, string $logName): array
     {
-        $findApi = $inMultiComment = false;
-        $result = [];
-        $code = ['$result = ['];
-        foreach (explode(PHP_EOL, $comment) as $v) {
-            $originalV = $v;
-            $v = trim($v, '* ');
+        $logName = str_replace('\\', '/', $logName).'.php';
 
-            // @api 开始
-            if (self::API_START_TAG === $v) {
-                $findApi = true;
-            } elseif (true === $findApi) {
-                // @api 结尾
-                if (self::API_END_TAG === $v) {
-                    break;
-                }
+        foreach ($info as &$v) {
+            $v = $this->parseExecutableCode($v);
+            $code = "\$v = \"{$v}\";";
 
-                // 匹配字段格式，以便于支持多行
-                if (false === $inMultiComment && preg_match('/^[a-zA-Z:-]+=\"/', $v)) {
-                    $code[] = $this->parseSingleComment($v);
-                } else {
-                    [$content, $inMultiComment] = $this->parseMultiComment($v, $originalV);
-                    $code[] = $content;
-                }
-            }
-        }
-
-        $code[] = '];';
-        $hasComment = \count($code) > 2;
-        $code = implode('', $code);
-
-        try {
-            $logName = str_replace('\\', '/', $logName).'.php';
-            if ($hasComment) {
+            try {
                 eval($code);
                 if ($this->logPath) {
                     $this->writeCache($this->logPath.'/logs/'.$logName, '<?php'.PHP_EOL.$code);
                 }
-            }
-        } catch (\Throwable $exception) {
-            if ($this->logPath) {
-                $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
-                $e = sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage());
+            } catch (\Throwable $exception) {
+                if ($this->logPath) {
+                    $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
+                    $e = sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage());
+
+                    throw new \RuntimeException($e);
+                }
+
+                $e = 'Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
 
                 throw new \RuntimeException($e);
             }
-
-            $e = 'Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
-
-            throw new \RuntimeException($e);
         }
 
-        return $result;
-    }
-
-    /**
-     * 分析多行注释.
-     */
-    protected function parseMultiComment(string $content, string $originalContent): array
-    {
-        $inMultiComment = true;
-        if ('' === $content) {
-            return [PHP_EOL, $inMultiComment];
-        }
-
-        $content = $originalContent;
-        if (str_starts_with($content, ' * ')) {
-            $content = substr($content, 3);
-        }
-        if (str_starts_with($content, '     * ')) {
-            $content = substr($content, 7);
-        }
-
-        // 多行结尾必须独立以便于区分
-        if (self::API_MULTI_END_TAG !== trim($content)) {
-            $content = $this->parseExecutableCode($content);
-        } else {
-            $inMultiComment = false;
-        }
-
-        $content = str_replace('$', '\$', $content).PHP_EOL;
-
-        return [$content, $inMultiComment];
-    }
-
-    /**
-     * 分析单行注释.
-     */
-    protected function parseSingleComment(string $content): string
-    {
-        $pos = strpos($content, '=');
-
-        /** @phpstan-ignore-next-line */
-        $left = '"'.substr($content, 0, $pos).'"';
-        $right = $this->normalizeSinggleRight(substr($content, $pos + 1));
-
-        return $left.'=>'.$right;
-    }
-
-    /**
-     * 整理单行注释右边值.
-     */
-    protected function normalizeSinggleRight(string $content): string
-    {
-        $content = $this->parseExecutableCode($content);
-        if (str_starts_with($content, '\"')) {
-            $content = substr($content, 1);
-        }
-        if (str_ends_with($content, '\",')) {
-            $content = substr($content, 0, \strlen($content) - 3).'",';
-        }
-
-        return str_replace('$', '\$', $content);
+        return $info;
     }
 
     /**
@@ -611,11 +539,13 @@ class Doc
     protected function parseExecutableCode(string $content): string
     {
         if (preg_match_all('/\{\[(.+)\]\}/', $content, $matches)) {
-            $content = str_replace(
-                $matches[1][0],
-                base64_encode($matches[1][0]),
-                $content,
-            );
+            foreach ($matches[1] as $tmp) {
+                $content = str_replace(
+                    $tmp,
+                    base64_encode($tmp),
+                    $content,
+                );
+            }
         }
 
         // 保护单引号不被转义

@@ -171,4 +171,34 @@ final class CompilerIncludeTest extends TestCase
 
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
+
+    public function test1(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The node include lacks the required property: file.'
+        );
+
+        $parser = $this->createParser();
+        $source = <<<'eot'
+            {% include %}
+            eot;
+
+        $parser->doCompile($source, null, true);
+    }
+
+    public function test2(): void
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+            {% include file="" %}
+            eot;
+
+        $compiled = <<<'eot'
+            <?php echo $this->display(''); ?>
+            eot;
+
+        static::assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 }

@@ -549,7 +549,6 @@ final class AppTest extends TestCase
     {
         $appPath = \dirname(__DIR__, 2);
         $app = $this->createApp($appPath);
-        $container = $app->container();
         static::assertSame(
             \dirname(__DIR__, 2).'/src/Leevel/Kernel/Console',
             realpath($app->namespacePath('Leevel\\Kernel\\Console'))
@@ -565,7 +564,6 @@ final class AppTest extends TestCase
 
         $appPath = \dirname(__DIR__, 2);
         $app = $this->createApp($appPath);
-        $container = $app->container();
         $app->namespacePath('not_found_class');
     }
 
@@ -591,7 +589,6 @@ final class AppTest extends TestCase
      */
     public function testIsDebug(): void
     {
-        $appPath = __DIR__.'/app';
         $app = $this->createApp();
         $container = $app->container();
 
@@ -621,7 +618,6 @@ final class AppTest extends TestCase
 
     public function testIsDebug2(): void
     {
-        $appPath = __DIR__.'/app';
         $app = $this->createApp();
         $container = $app->container();
 
@@ -658,7 +654,6 @@ final class AppTest extends TestCase
      */
     public function testIsDevelopment(): void
     {
-        $appPath = __DIR__.'/app';
         $app = $this->createApp();
         $container = $app->container();
 
@@ -676,7 +671,6 @@ final class AppTest extends TestCase
 
     public function testIsDevelopment2(): void
     {
-        $appPath = __DIR__.'/app';
         $app = $this->createApp();
         $container = $app->container();
 
@@ -701,7 +695,6 @@ final class AppTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $appPath = __DIR__.'/app';
         $app = $this->createApp();
         $container = $app->container();
 

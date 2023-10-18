@@ -98,6 +98,7 @@ final class DateFormatTest extends TestCase
         return [
             ['2018.6.1 13:00+01:00', 'j.n.Y H:iP'],
             ['29/Feb/23:2018:59:31', 'd/M/Y:H:i:s'],
+            [1, 'Y-m-d H:i:s'],
         ];
     }
 

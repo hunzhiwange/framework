@@ -745,6 +745,35 @@ final class RouterTest extends TestCase
         static::assertFalse($e->reportable());
     }
 
+    public function test1(): void
+    {
+        $pathInfo = '/hello';
+        $attributes = [];
+        $method = 'GET';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $response = new Response('content');
+        $router = $this->createRouter();
+        $router->throughTerminateMiddleware($request, $response);
+    }
+
+    public function test2(): void
+    {
+        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectExceptionMessage(
+            'The router App\\My\\Router\\Controllers\\Api\\V1\\Hello::index() was not found.'
+        );
+
+        $pathInfo = '/app:my/api/v1:hello';
+        $attributes = [];
+        $method = 'GET';
+        $controllerDir = 'Router\\Controllers';
+        $request = $this->createRequest($pathInfo, $attributes, $method);
+        $router = $this->createRouter();
+        $router->setWithDefaultAppNamespace(true);
+        $router->setControllerDir($controllerDir);
+        $router->dispatch($request);
+    }
+
     protected function createRouter(): Router
     {
         return new Router(new Container());

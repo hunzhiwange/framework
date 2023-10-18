@@ -127,15 +127,13 @@ class Cache extends Command
         $paths = $option['extra']['leevel-console']['view-cache']['paths'] ?? [];
         $path = $this->app->path();
 
-        return array_map(function (string $value) use ($path) {
+        return array_map(function (string $value) use ($path): string {
             if (!is_file($value)) {
                 $value = $path.'/'.$value;
             }
 
             if (!is_dir($value)) {
-                $e = sprintf('View dir %s is not exist.', $value);
-
-                throw new \RuntimeException($e);
+                throw new \RuntimeException(sprintf('View dir `%s` is not exist.', $value));
             }
 
             return $value;
