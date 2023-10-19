@@ -12,6 +12,7 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;

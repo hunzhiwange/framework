@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Docs;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'zh-CN:title' => '自动化测试',
     'path' => 'test/index',

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Router;
 
 use Leevel\Http\Request;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Router\Url;
 use Tests\TestCase;
 

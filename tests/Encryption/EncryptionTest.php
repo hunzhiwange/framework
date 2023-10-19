@@ -6,6 +6,7 @@ namespace Tests\Encryption;
 
 use Leevel\Encryption\Encryption;
 use Leevel\Encryption\IEncryption;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

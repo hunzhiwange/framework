@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Encryption;
 
 use Leevel\Encryption\Helper;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

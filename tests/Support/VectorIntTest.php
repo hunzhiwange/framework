@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Kernel\Utils\Api;
 use Leevel\Support\VectorInt;
 use Tests\TestCase;
 

@@ -8,6 +8,7 @@ use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Ddd\Select;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;

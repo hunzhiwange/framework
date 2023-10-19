@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Delete;
 
 use Leevel\Database\Condition;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([

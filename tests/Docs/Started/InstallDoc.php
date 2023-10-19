@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Docs\Started;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'title' => 'Install',
     'zh-CN:title' => '安装',

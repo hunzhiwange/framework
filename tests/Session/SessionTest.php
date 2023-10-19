@@ -6,6 +6,7 @@ namespace Tests\Session;
 
 use Leevel\Cache\File as CacheFile;
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;

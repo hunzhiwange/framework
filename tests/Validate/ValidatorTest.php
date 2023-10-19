@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;

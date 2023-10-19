@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'title' => 'Summary',
     'zh-CN:title' => '概述',

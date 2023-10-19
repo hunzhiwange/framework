@@ -10,6 +10,7 @@ use Leevel\Database\Condition;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Page\Page as BasePage;
 use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;

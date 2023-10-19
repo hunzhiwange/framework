@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\View\Compiler;
 
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

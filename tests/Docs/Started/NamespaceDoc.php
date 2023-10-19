@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Docs\Started;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'title' => 'Namespace',
     'zh-CN:title' => '命名空间',

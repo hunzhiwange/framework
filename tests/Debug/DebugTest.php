@@ -14,6 +14,7 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;

@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Condition;
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;

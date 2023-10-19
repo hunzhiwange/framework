@@ -9,6 +9,7 @@ use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
 

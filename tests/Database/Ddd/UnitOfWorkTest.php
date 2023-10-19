@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\UnitOfWork;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;

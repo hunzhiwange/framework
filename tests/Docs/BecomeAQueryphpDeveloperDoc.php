@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Docs;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'zh-CN:title' => '如何成为 QueryPHP 开发者',
     'path' => 'developer/index',

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Utils\Assert\Doc;
 
+use Leevel\Kernel\Utils\Api;
+
 #[Api([
     'zh-CN:title' => 'demo1',
     'path' => 'demo1',

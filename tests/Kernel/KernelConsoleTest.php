@@ -11,6 +11,7 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\KernelConsole;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

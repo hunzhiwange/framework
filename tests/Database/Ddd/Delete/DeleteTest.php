@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Delete;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoEntity;

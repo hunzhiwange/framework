@@ -10,6 +10,7 @@ use Leevel\Di\Provider;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

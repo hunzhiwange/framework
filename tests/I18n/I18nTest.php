@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\I18n;
 
 use Leevel\I18n\I18n;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

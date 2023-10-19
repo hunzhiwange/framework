@@ -6,6 +6,7 @@ namespace Tests\Support;
 
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Leevel\Support\Manager;
 use Tests\TestCase;

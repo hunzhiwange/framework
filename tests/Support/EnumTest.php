@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Kernel\Utils\Api;
 use Tests\Support\Fixtures\Enum1;
 use Tests\Support\Fixtures\RealEnumInt;
 use Tests\Support\Fixtures\RealEnumNoValue;

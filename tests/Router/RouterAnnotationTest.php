@@ -8,6 +8,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\ScanRouter;

@@ -8,6 +8,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Leevel\View\Manager;
 use Tests\TestCase;

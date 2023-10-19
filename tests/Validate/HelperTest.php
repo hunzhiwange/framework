@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
+use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Helper;
 use Tests\TestCase;
 

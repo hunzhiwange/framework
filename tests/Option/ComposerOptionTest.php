@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Option;
 
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\ComposerOption;
 use Tests\TestCase;
 

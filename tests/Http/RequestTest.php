@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\Request;
+use Leevel\Kernel\Utils\Api;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Tests\TestCase;
 

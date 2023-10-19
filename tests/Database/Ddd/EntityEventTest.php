@@ -7,6 +7,7 @@ namespace Tests\Database\Ddd;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEventEntity;
 

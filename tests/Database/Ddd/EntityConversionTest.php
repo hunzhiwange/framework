@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection as Collection;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;

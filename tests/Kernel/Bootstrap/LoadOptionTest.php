@@ -10,6 +10,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Tests\TestCase;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Kernel\Utils\Api;
 use Leevel\Support\VectorDto;
 use Tests\Support\DemoProject\Template;
 use Tests\Support\DemoProject\TemplateData;

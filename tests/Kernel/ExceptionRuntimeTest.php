@@ -14,6 +14,7 @@ use Leevel\Kernel\Exceptions\InternalServerErrorHttpException;
 use Leevel\Kernel\Exceptions\MethodNotAllowedHttpException;
 use Leevel\Kernel\Exceptions\NotFoundHttpException;
 use Leevel\Kernel\Exceptions\Runtime;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Log\ILog;
 use Leevel\Option\Option;
 use Symfony\Component\Console\Output\ConsoleOutput;

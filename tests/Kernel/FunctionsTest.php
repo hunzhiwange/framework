@@ -8,6 +8,7 @@ use App as Apps;
 use Leevel\Di\Container;
 use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

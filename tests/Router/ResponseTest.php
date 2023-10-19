@@ -10,6 +10,7 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;

@@ -6,6 +6,7 @@ namespace Tests\Console;
 
 use Leevel\Console\Make;
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Tests\Console\Command\MakeFile;
 use Tests\Console\Command\MakeFileWithGlobalReplace;
 use Tests\TestCase;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
+use Leevel\Kernel\Utils\Api;
 use Tests\Console\Command\CallOtherCommand;
 use Tests\Console\Command\DemoCommand;
 use Tests\Console\Load1\Test1;

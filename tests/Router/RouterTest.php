@@ -6,6 +6,7 @@ namespace Tests\Router;
 
 use Leevel\Di\Container;
 use Leevel\Http\Request;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Leevel\Router\RouterNotFoundException;

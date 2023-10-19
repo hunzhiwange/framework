@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Support;
 
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Support\Pipeline;
 use Tests\TestCase;
 

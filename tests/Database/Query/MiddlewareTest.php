@@ -6,6 +6,7 @@ namespace Tests\Database\Query;
 
 use Leevel\Database\Condition;
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Query\Database\Demo;
 use Tests\Database\Query\Database\ForceMaster;

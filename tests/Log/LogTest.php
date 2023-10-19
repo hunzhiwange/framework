@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Log;
 
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Monolog\Logger;

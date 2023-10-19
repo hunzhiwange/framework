@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Di;
 
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Tests\Di\Fixtures\ITest2;
 use Tests\Di\Fixtures\ITest3;
 use Tests\Di\Fixtures\ITest8;

@@ -9,6 +9,7 @@ use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Filesystem\Manager;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Tests\TestCase;
 

@@ -15,6 +15,7 @@ use Leevel\Kernel\Exceptions\Runtime;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernel;
 use Leevel\Kernel\Kernel;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IRouter;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\Response;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

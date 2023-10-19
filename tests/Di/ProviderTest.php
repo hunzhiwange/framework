@@ -7,6 +7,7 @@ namespace Tests\Di;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

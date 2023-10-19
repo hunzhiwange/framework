@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\JsonResponse;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Tests\TestCase;

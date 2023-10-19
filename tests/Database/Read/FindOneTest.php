@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Database\Read;
 
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([

@@ -7,6 +7,7 @@ namespace Tests\Event;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Leevel\Event\Observer;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use Leevel\Http\RedirectResponse;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 

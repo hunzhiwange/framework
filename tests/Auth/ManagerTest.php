@@ -9,6 +9,7 @@ use Leevel\Cache\File as CacheFile;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;

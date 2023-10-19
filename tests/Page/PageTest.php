@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Page;
 
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Page\Bootstrap;
 use Leevel\Page\Page;
 use Leevel\Page\Render;

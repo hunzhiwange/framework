@@ -11,6 +11,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 

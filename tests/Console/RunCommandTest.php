@@ -7,6 +7,7 @@ namespace Tests\Console;
 use Leevel\Console\Application;
 use Leevel\Console\RunCommand;
 use Leevel\Di\Container;
+use Leevel\Kernel\Utils\Api;
 use Tests\Console\Command\CallOtherCommand;
 use Tests\Console\Load1\Test1;
 use Tests\TestCase;

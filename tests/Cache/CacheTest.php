@@ -6,6 +6,7 @@ namespace Tests\Cache;
 
 use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
+use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
 #[Api([

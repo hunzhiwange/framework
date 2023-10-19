@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd\Relation;
 
 use Leevel\Database\Ddd\Relation\HasOne;
 use Leevel\Database\Ddd\Relation\Relation;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
