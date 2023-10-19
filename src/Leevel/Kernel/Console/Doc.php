@@ -83,7 +83,8 @@ class Doc extends Command
             return false;
         }
 
-        $result = $this->utilsDoc->handleAndSave($className);
+        $utilsDoc = clone $this->utilsDoc;
+        $result = $utilsDoc->handleAndSave($className);
         if (false !== $result) {
             /** @phpstan-ignore-next-line */
             $message = sprintf('Class <info>%s</info> was generate succeed at <info>%s</info>.', $className, $result[0]);
