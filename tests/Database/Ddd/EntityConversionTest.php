@@ -10,40 +10,21 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;
 
+#[Api([
+    'zh-CN:title' => '实体类型转换',
+    'path' => 'orm/conversion',
+    'zh-CN:description' => <<<'EOT'
+实体所有的属性设置和获取都会经过 `setter` 和 `setter` 处理，每个实体都有通用的 `setter` 和 `getter`，也支持自定义 `setter` 和 `getter`。
+
+我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="实体类型转换",
- *     path="orm/conversion",
- *     zh-CN:description="
- * 实体所有的属性设置和获取都会经过 `setter` 和 `setter` 处理，每个实体都有通用的 `setter` 和 `getter`，也支持自定义 `setter` 和 `getter`。
- *
- * 我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
- * ",
- * )
- *
  * @internal
  */
 final class EntityConversionTest extends TestCase
 {
     /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityConversionTest::class, 'makeEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoConversionEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConversionEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     *
      * @dataProvider getBaseUseData
      *
      * @param string $field
@@ -51,6 +32,22 @@ final class EntityConversionTest extends TestCase
      * @param mixed  $prop
      * @param mixed  $conversion
      */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityConversionTest::class, 'makeEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoConversionEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConversionEntity::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse($field, $source, $prop, $conversion): void
     {
         $entity = $this->makeEntity();

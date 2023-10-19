@@ -7,25 +7,25 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.having',
+    'zh-CN:title' => '查询语言.having',
+    'path' => 'database/query/having',
+    'zh-CN:description' => <<<'EOT'
+having 和 where 用法几乎一致。
+EOT,
+])]
 /**
- * @api(
- *     title="Query lang.having",
- *     zh-CN:title="查询语言.having",
- *     path="database/query/having",
- *     zh-CN:description="having 和 where 用法几乎一致。",
- * )
- *
  * @internal
  */
 final class HavingTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件",
-     *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件',
+        'zh-CN:description' => <<<'EOT'
+最基本的用法为字段 （表达式） 值。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -56,13 +56,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持数组方式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持数组方式',
+    ])]
     public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -92,13 +88,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orHaving 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orHaving 查询条件',
+    ])]
     public function testOrHaving(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -132,13 +124,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingBetween 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingBetween 查询条件',
+    ])]
     public function testHavingBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -215,13 +203,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingNotBetween 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingNotBetween 查询条件',
+    ])]
     public function testHavingNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -262,13 +246,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingIn 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingIn 查询条件',
+    ])]
     public function testHavingIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -309,13 +289,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingNotIn 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingNotIn 查询条件',
+    ])]
     public function testHavingNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -356,13 +332,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingNull 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingNull 查询条件',
+    ])]
     public function testHavingNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -390,13 +362,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingNotNull 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingNotNull 查询条件',
+    ])]
     public function testHavingNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -424,13 +392,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件未指定值默认为 null",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件未指定值默认为 null',
+    ])]
     public function testHavingDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -458,13 +422,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件指定值为 null",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件指定值为 null',
+    ])]
     public function testHavingEqualNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -491,13 +451,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingLike 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingLike 查询条件',
+    ])]
     public function testHavingLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -532,13 +488,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingNotLike 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingNotLike 查询条件',
+    ])]
     public function testHavingNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -573,13 +525,9 @@ final class HavingTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持分组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持分组',
+    ])]
     public function testHavingGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -622,13 +570,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持表达式',
+    ])]
     public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -654,13 +598,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持二维数组的键值为字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持二维数组的键值为字段',
+    ])]
     public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -720,13 +660,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持字符串语法 `:string`",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持字符串语法 `:string`',
+    ])]
     public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -753,13 +689,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` ",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持分组语法 `:subor` 和 `suband`',
+    ])]
     public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -797,13 +729,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套',
+    ])]
     public function testSupportSubandSuborMore(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1069,13 +997,12 @@ eot;
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件字段可以指定表",
-     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件字段可以指定表',
+        'zh-CN:description' => <<<'EOT'
+字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。
+EOT,
+    ])]
     public function testHavingFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1178,13 +1105,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="having 查询条件支持复杂的子查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'having 查询条件支持复杂的子查询',
+    ])]
     public function testHavingInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1642,13 +1565,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="havingRaw 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'havingRaw 查询条件',
+    ])]
     public function testHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1674,13 +1593,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orHavingRaw 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orHavingRaw 查询条件',
+    ])]
     public function testOrHavingRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();

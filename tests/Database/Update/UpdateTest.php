@@ -7,24 +7,21 @@ namespace Tests\Database\Update;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '更新数据.update',
+    'path' => 'database/update/update',
+])]
 /**
- * @api(
- *     zh-CN:title="更新数据.update",
- *     path="database/update/update",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class UpdateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="update 基本用法",
-     *     zh-CN:description="更新成功后，返回影响行数。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 基本用法',
+        'zh-CN:description' => <<<'EOT'
+更新成功后，返回影响行数。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -56,13 +53,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新指定条数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新指定条数',
+    ])]
     public function testWithLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -95,13 +88,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新排序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新排序',
+    ])]
     public function testWithOrderBy(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -134,13 +123,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新排序和指定条数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新排序和指定条数',
+    ])]
     public function testWithOrderAndLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -174,13 +159,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 连表更新",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 连表更新',
+    ])]
     public function testWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -213,13 +194,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新参数绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新参数绑定',
+    ])]
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -261,13 +238,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新支持表达式',
+    ])]
     public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();

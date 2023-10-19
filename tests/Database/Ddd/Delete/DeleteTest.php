@@ -13,41 +13,40 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 use Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField;
 
+#[Api([
+    'zh-CN:title' => '删除实体',
+    'path' => 'orm/delete',
+    'zh-CN:description' => <<<'EOT'
+将实体从数据库中删除。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="删除实体",
- *     path="orm/delete",
- *     zh-CN:description="
- * 将实体从数据库中删除。
- * ",
- * )
- *
  * @internal
  */
 final class DeleteTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="delete 删除一个实体",
-     *     zh-CN:description="
-     * **完整例子**
-     *
-     * ``` php
-     * $entity = new DemoEntity(['id' => 5]);
-     * $entity->delete()->flush();
-     * ```
-     *
-     * 调用 `delete` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待删除的数据。
-     *
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="通过 delete 方法删除一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 删除一个实体',
+        'zh-CN:description' => <<<'EOT'
+**完整例子**
+
+``` php
+$entity = new DemoEntity(['id' => 5]);
+$entity->delete()->flush();
+```
+
+调用 `delete` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待删除的数据。
+
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+通过 delete 方法删除一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 5, 'name' => 'foo']);
@@ -77,19 +76,16 @@ final class DeleteTest extends TestCase
         $entity->flush();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="softDelete 软删除一个实体",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'softDelete 软删除一个实体',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+```
+EOT,
+    ])]
     public function testSoftDelete(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -152,13 +148,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="softDestroy 根据主键 ID 软删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'softDestroy 根据主键 ID 软删除实体',
+    ])]
     public function testSoftDestroy(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -221,13 +213,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="destroy 根据主键 ID 删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'destroy 根据主键 ID 删除实体',
+    ])]
     public function testDestroy(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -288,13 +276,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceDestroy 根据主键 ID 强制删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceDestroy 根据主键 ID 强制删除实体',
+    ])]
     public function testForceDestroy(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -355,13 +339,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="softRestore 恢复软删除的实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'softRestore 恢复软删除的实体',
+    ])]
     public function testSoftRestore(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -439,13 +419,9 @@ final class DeleteTest extends TestCase
         static::assertSame(0, $post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 删除实体',
+    ])]
     public function testDelete(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -513,13 +489,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete.condition 删除实体配合设置扩展查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete.condition 删除实体配合设置扩展查询条件',
+    ])]
     public function testDeleteWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -587,13 +559,9 @@ final class DeleteTest extends TestCase
         static::assertSame(0, $post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 复合主键删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 复合主键删除实体',
+    ])]
     public function testDeleteForCompositeId(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -626,13 +594,9 @@ final class DeleteTest extends TestCase
         static::assertNull($entity->name);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceDelete 强制删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceDelete 强制删除实体',
+    ])]
     public function testForceDelete(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -696,13 +660,9 @@ final class DeleteTest extends TestCase
         static::assertNull($post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceDelete.condition 强制删除实体配合设置扩展查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceDelete.condition 强制删除实体配合设置扩展查询条件',
+    ])]
     public function testForceDeleteWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();

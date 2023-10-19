@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询数据.find',
+    'path' => 'database/read/find',
+])]
 /**
- * @api(
- *     zh-CN:title="查询数据.find",
- *     path="database/read/find",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class FindTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="find 查询基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'find 查询基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class FindTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="find 查询指定数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'find 查询指定数量',
+    ])]
     public function testFindLimit(): void
     {
         $connect = $this->createDatabaseConnectMock();

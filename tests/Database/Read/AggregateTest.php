@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '聚合查询.aggregate',
+    'path' => 'database/read/aggregate',
+])]
 /**
- * @api(
- *     zh-CN:title="聚合查询.aggregate",
- *     path="database/read/aggregate",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class AggregateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="findCount 查询数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findCount 查询数量',
+    ])]
     public function testCount(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="count.find 查询数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'count.find 查询数量',
+    ])]
     public function testCount2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -75,13 +65,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findCount 查询数量指定字段和别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findCount 查询数量指定字段和别名',
+    ])]
     public function testCount3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -104,13 +90,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findAvg 查询平均值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAvg 查询平均值',
+    ])]
     public function testAvg(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -132,13 +114,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="avg.find 查询平均值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'avg.find 查询平均值',
+    ])]
     public function testAvg2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -162,13 +140,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findAvg 查询平均值指定字段和别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAvg 查询平均值指定字段和别名',
+    ])]
     public function testAvg3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -191,13 +165,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMax 查询最大值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMax 查询最大值',
+    ])]
     public function testMax(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -219,13 +189,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="max.find 查询最大值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'max.find 查询最大值',
+    ])]
     public function testMax2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -249,13 +215,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMax 查询最大值指定字段和别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMax 查询最大值指定字段和别名',
+    ])]
     public function testMax3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -278,13 +240,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMin 查询最小值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMin 查询最小值',
+    ])]
     public function testMin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -306,13 +264,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="min.find 查询最小值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'min.find 查询最小值',
+    ])]
     public function testMin2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -336,13 +290,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMin 查询最小值指定字段和别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMin 查询最小值指定字段和别名',
+    ])]
     public function testMin3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -365,13 +315,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findSum 查询合计",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findSum 查询合计',
+    ])]
     public function testSum(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -393,13 +339,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="sum.find 查询合计",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'sum.find 查询合计',
+    ])]
     public function testSum2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -423,13 +365,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findSum 查询合计指定字段和别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findSum 查询合计指定字段和别名',
+    ])]
     public function testSum3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -452,13 +390,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findAvg 查询字段指定表名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAvg 查询字段指定表名',
+    ])]
     public function testAvgWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -480,13 +414,9 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="avg.find 查询字段指定表名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'avg.find 查询字段指定表名',
+    ])]
     public function testAvgWithTable2(): void
     {
         $connect = $this->createDatabaseConnectMock();

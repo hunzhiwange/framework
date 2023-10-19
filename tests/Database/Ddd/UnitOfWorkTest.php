@@ -13,13 +13,14 @@ use Tests\Database\Ddd\Entity\GuestbookRepository;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Throwable;
 
+#[Api([
+    'zh-CN:title' => '事务工作单元',
+    'path' => 'orm/unitofwork',
+    'zh-CN:description' => <<<'EOT'
+用事务工作单元更好地处理数据库相关工作。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="事务工作单元",
- *     path="orm/unitofwork",
- *     zh-CN:description="用事务工作单元更好地处理数据库相关工作。",
- * )
- *
  * @internal
  */
 final class UnitOfWorkTest extends TestCase
@@ -40,13 +41,12 @@ final class UnitOfWorkTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="保存一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="通过 persist 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '保存一个实体',
+        'zh-CN:note' => <<<'EOT'
+通过 persist 方法保存一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $work = UnitOfWork::make();
@@ -72,13 +72,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="保存多个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层会开启一个事务，只有全部保存成功才会真正持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '保存多个实体',
+        'zh-CN:note' => <<<'EOT'
+底层会开启一个事务，只有全部保存成功才会真正持久化到数据库。
+EOT,
+    ])]
     public function testPersist(): void
     {
         $work = UnitOfWork::make();
@@ -261,13 +260,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('foo bar', $post2->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="新增实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层执行的是 insert 语句，只有全部保存成功才会真正持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '新增实体',
+        'zh-CN:note' => <<<'EOT'
+底层执行的是 insert 语句，只有全部保存成功才会真正持久化到数据库。
+EOT,
+    ])]
     public function testCreate(): void
     {
         $work = UnitOfWork::make();
@@ -490,13 +488,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('foo bar', $post2->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="更新实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层执行的是 update 语句，只有全部保存成功才会真正持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '更新实体',
+        'zh-CN:note' => <<<'EOT'
+底层执行的是 update 语句，只有全部保存成功才会真正持久化到数据库。
+EOT,
+    ])]
     public function testUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -848,13 +845,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new post2 summary', $post2->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层执行的是 delete 语句，只有全部保存成功才会真正持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '删除实体',
+        'zh-CN:note' => <<<'EOT'
+底层执行的是 delete 语句，只有全部保存成功才会真正持久化到数据库。
+EOT,
+    ])]
     public function testDelete(): void
     {
         $work = UnitOfWork::make();
@@ -1633,13 +1629,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertNull($post2After->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="刷新实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层执行的是 select 语句，这个操作会读取数据库最新信息并刷新实体的属性。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '刷新实体',
+        'zh-CN:note' => <<<'EOT'
+底层执行的是 select 语句，这个操作会读取数据库最新信息并刷新实体的属性。
+EOT,
+    ])]
     public function testRefresh(): void
     {
         $work = UnitOfWork::make();
@@ -1732,13 +1727,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertNull($work->flush());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="手工启动事务 beginTransaction",
-     *     zh-CN:description="",
-     *     zh-CN:note="通常来说事务工作单元会自动帮你处理事务，可以通过手工 beginTransaction，成功 commit 或者失败 rollBack，系统提供了 API 让你也手工开启事务处理。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '手工启动事务 beginTransaction',
+        'zh-CN:note' => <<<'EOT'
+通常来说事务工作单元会自动帮你处理事务，可以通过手工 beginTransaction，成功 commit 或者失败 rollBack，系统提供了 API 让你也手工开启事务处理。
+EOT,
+    ])]
     public function testBeginTransaction(): void
     {
         $work = UnitOfWork::make();
@@ -1777,13 +1771,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new title', $post->getTitle());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="执行失败事务回滚 rollBack",
-     *     zh-CN:description="",
-     *     zh-CN:note="底层会自动运行一个事务，如果执行失败自动回滚，不会更新数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '执行失败事务回滚 rollBack',
+        'zh-CN:note' => <<<'EOT'
+底层会自动运行一个事务，如果执行失败自动回滚，不会更新数据库。
+EOT,
+    ])]
     public function testFlushButRollBack(): void
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
@@ -1815,13 +1808,12 @@ final class UnitOfWorkTest extends TestCase
         $work->flush();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="事务包裹在闭包中 transaction",
-     *     zh-CN:description="",
-     *     zh-CN:note="可以将事务包裹在一个闭包中，如果执行失败自动回滚，不会更新数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '事务包裹在闭包中 transaction',
+        'zh-CN:note' => <<<'EOT'
+可以将事务包裹在一个闭包中，如果执行失败自动回滚，不会更新数据库。
+EOT,
+    ])]
     public function testTransaction(): void
     {
         $work = UnitOfWork::make();
@@ -1855,13 +1847,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new title', $newPost->getTitle());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="事务包裹在闭包中失败回滚 transaction ",
-     *     zh-CN:description="",
-     *     zh-CN:note="可以将事务包裹在一个闭包中，执行失败自动回滚测试，不会更新数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '事务包裹在闭包中失败回滚 transaction',
+        'zh-CN:note' => <<<'EOT'
+可以将事务包裹在一个闭包中，执行失败自动回滚测试，不会更新数据库。
+EOT,
+    ])]
     public function testTransactionAndRollBack(): void
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
@@ -1899,13 +1890,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(0, $connect->table('post')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置实体 setEntity",
-     *     zh-CN:description="",
-     *     zh-CN:note="系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体还可以更改事务处理的数据库连接。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置实体 setEntity',
+        'zh-CN:note' => <<<'EOT'
+系统默认读取基础的数据库配置来处理数据相关信息，设置跟实体还可以更改事务处理的数据库连接。
+EOT,
+    ])]
     public function testSetRootEntity(): void
     {
         $work = UnitOfWork::make();
@@ -1946,13 +1936,12 @@ final class UnitOfWorkTest extends TestCase
         $work->setEntity($post, null);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="更改数据库连接 setConnect",
-     *     zh-CN:description="",
-     *     zh-CN:note="如果没有存在的连接，则会报错。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '更改数据库连接 setConnect',
+        'zh-CN:note' => <<<'EOT'
+如果没有存在的连接，则会报错。
+EOT,
+    ])]
     public function testSetConnectNotFoundWillThrowException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -1996,13 +1985,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertNull($work->flush());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="保持实体支持缓存",
-     *     zh-CN:description="",
-     *     zh-CN:note="保存两个一样的实体，第二个实体并不会被添加。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '保持实体支持缓存',
+        'zh-CN:note' => <<<'EOT'
+保存两个一样的实体，第二个实体并不会被添加。
+EOT,
+    ])]
     public function testPersistStageManagedEntityDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2024,13 +2012,12 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(1, $connect->table('post')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="重新保存已删除的实体实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="这样被删除的实体并不会被删除。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '重新保存已删除的实体实体',
+        'zh-CN:note' => <<<'EOT'
+这样被删除的实体并不会被删除。
+EOT,
+    ])]
     public function testPersistStageRemovedEntity(): void
     {
         $work = UnitOfWork::make();
@@ -2095,13 +2082,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(1, $connect->table('post')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="注册更新的实体不能重新被创建",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '注册更新的实体不能重新被创建',
+    ])]
     public function testCreateButAlreadyInUpdates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2118,13 +2101,9 @@ final class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="注册删除的实体不能重新被创建",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '注册删除的实体不能重新被创建',
+    ])]
     public function testCreateButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2141,13 +2120,9 @@ final class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="注册替换的实体不能重新被创建",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '注册替换的实体不能重新被创建',
+    ])]
     public function testCreateButAlreadyInReplaces(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2164,13 +2139,9 @@ final class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="不能多次创建同一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '不能多次创建同一个实体',
+    ])]
     public function testCreateManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2188,13 +2159,9 @@ final class UnitOfWorkTest extends TestCase
         $work->create($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已经删除的实体不能够被更新",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已经删除的实体不能够被更新',
+    ])]
     public function testUpdateButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2211,13 +2178,9 @@ final class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已经创建的实体不能够被更新",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已经创建的实体不能够被更新',
+    ])]
     public function testUpdateButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2234,13 +2197,9 @@ final class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已经替换的实体不能够被更新",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已经替换的实体不能够被更新',
+    ])]
     public function testUpdateButAlreadyInReplaces(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2257,13 +2216,9 @@ final class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 不能多次更新同一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 不能多次更新同一个实体',
+    ])]
     public function testUpdateManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2297,13 +2252,9 @@ final class UnitOfWorkTest extends TestCase
         $work->update($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete.create 已创建的实体可以被删除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete.create 已创建的实体可以被删除',
+    ])]
     public function testDeleteCreated(): void
     {
         $work = UnitOfWork::make();
@@ -2334,13 +2285,9 @@ final class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete.update 删除已更新的实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete.update 删除已更新的实体',
+    ])]
     public function testDeleteUpdated(): void
     {
         $work = UnitOfWork::make();
@@ -2376,13 +2323,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertNull($postNew->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete.replace 删除已替换的实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete.replace 删除已替换的实体',
+    ])]
     public function testDeleteReplaced(): void
     {
         $work = UnitOfWork::make();
@@ -2450,13 +2393,9 @@ final class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="repository 取得实体仓储",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'repository 取得实体仓储',
+    ])]
     public function testRepository(): void
     {
         $work = UnitOfWork::make();
@@ -2466,13 +2405,9 @@ final class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="repository 取得实体仓储支持实体实例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'repository 取得实体仓储支持实体实例',
+    ])]
     public function testRepository2(): void
     {
         $work = UnitOfWork::make();
@@ -2482,13 +2417,9 @@ final class UnitOfWorkTest extends TestCase
         $this->assertInstanceof(GuestbookRepository::class, $repository);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除未被管理的实体不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除未被管理的实体不做任何处理直接返回',
+    ])]
     public function testRemoveStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2500,13 +2431,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除管理的新增实体直接删除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除管理的新增实体直接删除',
+    ])]
     public function testRemoveStageCreateManaged(): void
     {
         $work = UnitOfWork::make();
@@ -2519,13 +2446,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除管理的更新实体直接删除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除管理的更新实体直接删除',
+    ])]
     public function testRemoveStageUpdateManaged(): void
     {
         $work = UnitOfWork::make();
@@ -2538,13 +2461,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除未被管理的实体到前置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除未被管理的实体到前置区域不做任何处理直接返回',
+    ])]
     public function testRemoveBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2556,13 +2475,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除未被管理的实体到后置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除未被管理的实体到后置区域不做任何处理直接返回',
+    ])]
     public function testRemoveAfterBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2574,13 +2489,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除未被管理的实体不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除未被管理的实体不做任何处理直接返回',
+    ])]
     public function testForceRemoveStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2592,13 +2503,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除未被管理的实体到前置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除未被管理的实体到前置区域不做任何处理直接返回',
+    ])]
     public function testForceRemoveBeforeStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2610,13 +2517,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除未被管理的实体到后置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除未被管理的实体到后置区域不做任何处理直接返回',
+    ])]
     public function testForceRemoveAfterStageNewDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2628,13 +2531,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已删除的实体不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已删除的实体不做任何处理直接返回',
+    ])]
     public function testRemoveStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2647,13 +2546,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已删除的实体到前置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已删除的实体到前置区域不做任何处理直接返回',
+    ])]
     public function testRemoveBeforeStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2666,13 +2561,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已删除的实体到后置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已删除的实体到后置区域不做任何处理直接返回',
+    ])]
     public function testRemoveAfterStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2685,13 +2576,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已删除的实体不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已删除的实体不做任何处理直接返回',
+    ])]
     public function testForceRemoveStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2704,13 +2591,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已删除的实体到前置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已删除的实体到前置区域不做任何处理直接返回',
+    ])]
     public function testForceRemoveBeforeStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2723,13 +2606,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已删除的实体到后置区域不做任何处理直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已删除的实体到后置区域不做任何处理直接返回',
+    ])]
     public function testForceRemoveAfterStageRemovedDoNothing(): void
     {
         $work = UnitOfWork::make();
@@ -2742,13 +2621,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2768,13 +2643,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveBeforeStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2794,13 +2665,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveAfterStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2820,13 +2687,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的新增实体将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2854,13 +2717,9 @@ final class UnitOfWorkTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的新增实体到前置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveBeforeStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2888,13 +2747,9 @@ final class UnitOfWorkTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的新增实体到后置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveAfterStageManagedWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2922,13 +2777,9 @@ final class UnitOfWorkTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2948,13 +2799,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveBeforeStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -2974,13 +2821,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testRemoveAfterStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3000,13 +2843,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的替换实体将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3026,13 +2865,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的替换实体到前置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveBeforeStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3052,13 +2887,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceRemove 强制移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceRemove 强制移除已经被管理的替换实体到后置区域将会清理已管理状态，但是不做删除然后直接返回',
+    ])]
     public function testForceRemoveAfterStageManagedReplaceWillDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3078,13 +2909,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="persist 保持实体自动识别为更新状态",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'persist 保持实体自动识别为更新状态',
+    ])]
     public function testPersistAsSaveUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3104,13 +2931,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(0, $connect->table('post')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="persist 保持实体为更新状态",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'persist 保持实体为更新状态',
+    ])]
     public function testPersistAsUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3130,13 +2953,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(0, $connect->table('post')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="persist 保持实体为替换状态",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'persist 保持实体为替换状态',
+    ])]
     public function testPersistAsReplace(): void
     {
         $work = UnitOfWork::make();
@@ -3174,13 +2993,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('old', $updatedPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="persist 已经持久化并且脱离管理的实体状态不能被再次保持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'persist 已经持久化并且脱离管理的实体状态不能被再次保持',
+    ])]
     public function testPersistStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3199,13 +3014,9 @@ final class UnitOfWorkTest extends TestCase
         $work->persist($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 已经持久化并且脱离管理的实体状态不能被再次移除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 已经持久化并且脱离管理的实体状态不能被再次移除',
+    ])]
     public function testRemoveStageDetachedEntity(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3224,13 +3035,9 @@ final class UnitOfWorkTest extends TestCase
         $work->remove($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="on 保持的实体回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'on 保持的实体回调',
+    ])]
     public function testOnCallbacks(): void
     {
         $work = UnitOfWork::make();
@@ -3257,13 +3064,9 @@ final class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="on 替换的实体回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'on 替换的实体回调',
+    ])]
     public function testOnCallbacksForReplace(): void
     {
         $work = UnitOfWork::make();
@@ -3290,13 +3093,9 @@ final class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="on 更新的实体回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'on 更新的实体回调',
+    ])]
     public function testOnCallbacksForUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3386,13 +3185,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertNull($work->flush($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="on 删除的实体回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'on 删除的实体回调',
+    ])]
     public function testOnCallbacksForDelete(): void
     {
         $work = UnitOfWork::make();
@@ -3425,13 +3220,9 @@ final class UnitOfWorkTest extends TestCase
         $work->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="replace 注册替换实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'replace 注册替换实体',
+    ])]
     public function testReplace(): void
     {
         $work = UnitOfWork::make();
@@ -3490,13 +3281,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new2', $createPost->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="replace 注册替换实体到前置区域",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'replace 注册替换实体到前置区域',
+    ])]
     public function testReplaceBefore(): void
     {
         $work = UnitOfWork::make();
@@ -3555,13 +3342,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new2', $createPost->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="replace 注册替换实体到后置区域",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'replace 注册替换实体到后置区域',
+    ])]
     public function testReplaceAfter(): void
     {
         $work = UnitOfWork::make();
@@ -3620,13 +3403,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new2', $createPost->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="replace 注册替换实体更新例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'replace 注册替换实体更新例子',
+    ])]
     public function testReplaceAsUpdate(): void
     {
         $work = UnitOfWork::make();
@@ -3664,13 +3443,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame('new', $updatedPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已创建的实体不能够被替换",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已创建的实体不能够被替换',
+    ])]
     public function testReplaceButAlreadyInCreates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3687,13 +3462,9 @@ final class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已更新的实体不能够被替换",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已更新的实体不能够被替换',
+    ])]
     public function testReplaceButAlreadyInUpdates(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3710,13 +3481,9 @@ final class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="同一个实体不能被替换多次",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '同一个实体不能被替换多次',
+    ])]
     public function testReplaceManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3734,13 +3501,9 @@ final class UnitOfWorkTest extends TestCase
         $work->replace($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="已删除的实体不能够被替换",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '已删除的实体不能够被替换',
+    ])]
     public function testReplaceButAlreadyInDeletes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3771,13 +3534,9 @@ final class UnitOfWorkTest extends TestCase
         $work->delete($post);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="同一个实体不能够被删除多次",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '同一个实体不能够被删除多次',
+    ])]
     public function testDeleteManyTimes(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -3807,13 +3566,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="不能多次创建同一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '不能多次创建同一个实体',
+    ])]
     public function testPersistAsCompositeIdReplace2(): void
     {
         $work = UnitOfWork::make();
@@ -3833,13 +3588,9 @@ final class UnitOfWorkTest extends TestCase
         static::assertSame(1, $connect->table('composite_id')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="persist 保持实体为替换支持复合主键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'persist 保持实体为替换支持复合主键',
+    ])]
     public function testPersistAsCompositeIdReplace(): void
     {
         $work = UnitOfWork::make();

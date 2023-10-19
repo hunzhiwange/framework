@@ -13,42 +13,43 @@ use Tests\Database\Ddd\Entity\DemoReadonlyUpdateEntity;
 use Tests\Database\Ddd\Entity\DemoUpdateAutoFillEntity;
 use Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity;
 
+#[Api([
+    'zh-CN:title' => '更新实体',
+    'path' => 'orm/update',
+    'zh-CN:description' => <<<'EOT'
+将实体变更持久化到数据库。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="更新实体",
- *     path="orm/update",
- *     zh-CN:description="将实体变更持久化到数据库。",
- * )
- *
  * @internal
  */
 final class UpdateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="save 更新一个实体",
-     *     zh-CN:description="
-     * 存在主键数据，则可以通过 `save` 方法更新一个实体。
-     *
-     * **完整例子**
-     *
-     * ``` php
-     * $entity = new DemoEntity(['id' => 1], true);
-     * $entity->name = 'foo';
-     * $entity->save()->flush();
-     * ```
-     *
-     * 调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
-     *
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="通过 save 方法更新一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'save 更新一个实体',
+        'zh-CN:description' => <<<'EOT'
+存在主键数据，则可以通过 `save` 方法更新一个实体。
+
+**完整例子**
+
+``` php
+$entity = new DemoEntity(['id' => 1], true);
+$entity->name = 'foo';
+$entity->save()->flush();
+```
+
+调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
+
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+通过 save 方法更新一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 1], true);
@@ -80,13 +81,12 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="通过 update 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新一个实体',
+        'zh-CN:note' => <<<'EOT'
+通过 update 方法保存一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testUpdateBaseUse(): void
     {
         $entity = new DemoEntity(['id' => 1], true);
@@ -144,21 +144,18 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="更新一个实体支持更新属性白名单",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity::class)]}
-     * ```
-     *
-     * 调用 `\Leevel\Database\Ddd\Entity::UPDATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了更新属性白名单只有通过了白名单的字段才能够更新模型属性。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '更新一个实体支持更新属性白名单',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity::class)]}
+```
+
+调用 `\Leevel\Database\Ddd\Entity::UPDATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了更新属性白名单只有通过了白名单的字段才能够更新模型属性。
+EOT,
+    ])]
     public function testUpdatePropBlackAndWhite(): void
     {
         $entity = new DemoUpdatePropWhiteEntity(['id' => 5], true);
@@ -229,19 +226,19 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fill 设置允许自动填充字段",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdateAutoFillEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="默认情况下，不会自动填充，除非指定允许填充字段。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fill 设置允许自动填充字段',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoUpdateAutoFillEntity::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+默认情况下，不会自动填充，除非指定允许填充字段。
+EOT,
+    ])]
     public function testUpdateAutoFillWithCustomField(): void
     {
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
@@ -301,13 +298,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fillAll 设置允许自动填充字段为所有字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fillAll 设置允许自动填充字段为所有字段',
+    ])]
     public function testUpdateAutoFillWithAll(): void
     {
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
@@ -339,19 +332,16 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="save 自动判断操作快捷方式支持添加数据",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'save 自动判断操作快捷方式支持添加数据',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
+```
+EOT,
+    ])]
     public function testSaveWithProp(): void
     {
         $entity = new DemoDatabaseEntity(['id' => 1], true);
@@ -376,13 +366,9 @@ final class UpdateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新快捷方式支持添加数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新快捷方式支持添加数据',
+    ])]
     public function testUpdateWithProp(): void
     {
         $entity = new DemoDatabaseEntity(['id' => 1]);
@@ -414,13 +400,9 @@ final class UpdateTest extends TestCase
         static::assertNull($entity->flushData());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新快捷方式存在更新数据才能够保存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新快捷方式存在更新数据才能够保存',
+    ])]
     public function testUpdateWithNoDataAndDoNothing(): void
     {
         $entity = new DemoDatabaseEntity(['id' => 1]);
@@ -428,13 +410,9 @@ final class UpdateTest extends TestCase
         static::assertNull($entity->flushData());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新快捷方式存在主键数据才能够保存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新快捷方式存在主键数据才能够保存',
+    ])]
     public function testUpdateWithPrimaryKeyData(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
@@ -444,19 +422,16 @@ final class UpdateTest extends TestCase
         $entity->update();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="save 自动判断操作快捷方式复合主键例子",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'save 自动判断操作快捷方式复合主键例子',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
+```
+EOT,
+    ])]
     public function testSaveWithCompositeId(): void
     {
         $connect = $this->createDatabaseConnect();

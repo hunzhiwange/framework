@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '动态查询.find.findStart.findBy.findAllBy',
+    'path' => 'database/read/finddynamics',
+])]
 /**
- * @api(
- *     zh-CN:title="动态查询.find.findStart.findBy.findAllBy",
- *     path="database/read/finddynamics",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class FindDynamicsTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="find[0-9] 查询指定条数数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'find[0-9] 查询指定条数数据',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class FindDynamicsTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="find[0-9]start[0-9] 查询指定开始位置指定条数数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'find[0-9]start[0-9] 查询指定开始位置指定条数数据',
+    ])]
     public function testFindStart(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -74,13 +64,12 @@ final class FindDynamicsTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findBy 字段条件查询单条数据",
-     *     zh-CN:description="方法遵循驼峰法，相应的字段为下划线。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findBy 字段条件查询单条数据',
+        'zh-CN:description' => <<<'EOT'
+方法遵循驼峰法，相应的字段为下划线。
+EOT,
+    ])]
     public function testFindByField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -107,13 +96,12 @@ final class FindDynamicsTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findBy 字段条件查询单条数据，字段保持原样",
-     *     zh-CN:description="方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findBy 字段条件查询单条数据，字段保持原样',
+        'zh-CN:description' => <<<'EOT'
+方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。
+EOT,
+    ])]
     public function testFindByFieldWithoutCamelize(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -140,13 +128,12 @@ final class FindDynamicsTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findAllBy 字段条件查询多条数据，字段保持原样",
-     *     zh-CN:description="方法遵循驼峰法，相应的字段为下划线。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAllBy 字段条件查询多条数据，字段保持原样',
+        'zh-CN:description' => <<<'EOT'
+方法遵循驼峰法，相应的字段为下划线。
+EOT,
+    ])]
     public function testTestfindAllByField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -176,13 +163,12 @@ final class FindDynamicsTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findAllBy 字段条件查询多条数据，字段保持原样",
-     *     zh-CN:description="方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAllBy 字段条件查询多条数据，字段保持原样',
+        'zh-CN:description' => <<<'EOT'
+方法遵循驼峰法，尾巴加一个下划线 `_`，相应的字段保持原样。
+EOT,
+    ])]
     public function testTestfindAllByFieldWithoutCamelize(): void
     {
         $connect = $this->createDatabaseConnectMock();

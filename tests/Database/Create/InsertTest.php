@@ -7,24 +7,21 @@ namespace Tests\Database\Create;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '插入单条数据.insert',
+    'path' => 'database/create/insert',
+])]
 /**
- * @api(
- *     zh-CN:title="插入单条数据.insert",
- *     path="database/create/insert",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class InsertTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="insert 基本用法",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 基本用法',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -56,13 +53,12 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 绑定参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="位置占位符会自动转为命名占位符，以增强灵活性。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 绑定参数',
+        'zh-CN:note' => <<<'EOT'
+位置占位符会自动转为命名占位符，以增强灵活性。
+EOT,
+    ])]
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -150,13 +146,9 @@ final class InsertTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bind.insert 绑定参数写入数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bind.insert 绑定参数写入数据',
+    ])]
     public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -189,13 +181,9 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 支持 replace 用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 支持 replace 用法',
+    ])]
     public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -225,13 +213,12 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 支持 ON DUPLICATE KEY UPDATE 用法",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 支持 ON DUPLICATE KEY UPDATE 用法',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testInsertSupportDuplicateKeyUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -263,13 +250,12 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 支持 ON DUPLICATE KEY UPDATE 表达式用法",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 支持 ON DUPLICATE KEY UPDATE 表达式用法',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testInsertSupportDuplicateKeyUpdate2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -307,13 +293,9 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 支持字段指定表名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 支持字段指定表名',
+    ])]
     public function testInsertSupportTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -343,13 +325,9 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 空数据写入示例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 空数据写入示例',
+    ])]
     public function testInsertWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -374,13 +352,9 @@ final class InsertTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert.replace 空数据写入示例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert.replace 空数据写入示例',
+    ])]
     public function testReplaceWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();

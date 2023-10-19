@@ -20,15 +20,14 @@ use Tests\Database\Ddd\Entity\StatusEnum;
 use Tests\Database\Ddd\Entity\WithoutPrimarykey;
 use Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey;
 
+#[Api([
+    'zh-CN:title' => '实体',
+    'path' => 'orm/entity',
+    'zh-CN:description' => <<<'EOT'
+实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="实体",
- *     path="orm/entity",
- *     zh-CN:description="
- * 实体是整个系统最为核心的基本单位，实体封装了一些常用的功能。
- * ",
- * )
- *
  * @internal
  */
 final class EntityTest extends TestCase
@@ -77,13 +76,9 @@ final class EntityTest extends TestCase
         $entity->create()->flush();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withProps 批量设置属性数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withProps 批量设置属性数据',
+    ])]
     public function testWithProps(): void
     {
         $entity = new Post();
@@ -97,21 +92,18 @@ final class EntityTest extends TestCase
         static::assertSame(['title', 'summary'], $entity->changed());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="description 获取枚举值对应的描述",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\EntityWithEnum**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'description 获取枚举值对应的描述',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\EntityWithEnum**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum::class)]}
+```
+EOT,
+    ])]
     public function testEntityWithEnumDescription(): void
     {
         $this->initI18n();
@@ -250,13 +242,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="hasChanged 检测属性是否已经改变",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'hasChanged 检测属性是否已经改变',
+    ])]
     public function testHasChanged(): void
     {
         $entity = new Post();
@@ -265,13 +253,9 @@ eot;
         static::assertTrue($entity->hasChanged('title'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="addChanged 添加指定属性为已改变",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'addChanged 添加指定属性为已改变',
+    ])]
     public function testAddChanged(): void
     {
         $entity = new Post();
@@ -337,13 +321,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="deleteChanged 删除已改变属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'deleteChanged 删除已改变属性',
+    ])]
     public function testDeleteChanged(): void
     {
         $entity = new Post();
@@ -392,13 +372,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clearChanged 清空已改变属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clearChanged 清空已改变属性',
+    ])]
     public function testClearChanged(): void
     {
         $entity = new Post();
@@ -493,13 +469,9 @@ eot;
         $entity->singlePrimaryKey();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="idCondition 获取查询主键条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'idCondition 获取查询主键条件',
+    ])]
     public function testIdCondition(): void
     {
         $entity = new Post(['id' => 5]);
@@ -517,13 +489,9 @@ eot;
         static::assertNull($entity->idCondition());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetExists 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetExists 支持',
+    ])]
     public function testArrayAccessOffsetExists(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
@@ -531,13 +499,9 @@ eot;
         static::assertFalse(isset($entity['user_id']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetSet 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetSet 支持',
+    ])]
     public function testArrayAccessOffsetSet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -548,13 +512,9 @@ eot;
         static::assertSame('world', $entity->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetGet 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetGet 支持',
+    ])]
     public function testArrayAccessOffsetGet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -563,13 +523,9 @@ eot;
         static::assertSame('world', $entity['title']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性数组访问 ArrayAccess.offsetUnset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetUnset 支持',
+    ])]
     public function testArrayAccessOffsetUnset(): void
     {
         $entity = new Post(['id' => 5]);
@@ -580,13 +536,9 @@ eot;
         static::assertNull($entity['title']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性访问魔术方法 __isset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性访问魔术方法 __isset 支持',
+    ])]
     public function testMagicIsset(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
@@ -594,13 +546,9 @@ eot;
         static::assertFalse(isset($entity->userId));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性访问魔术方法 __set 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性访问魔术方法 __set 支持',
+    ])]
     public function testMagicSet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -611,13 +559,9 @@ eot;
         static::assertSame('world', $entity->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性访问魔术方法 __get 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性访问魔术方法 __get 支持',
+    ])]
     public function testMagicGet(): void
     {
         $entity = new Post(['id' => 5]);
@@ -626,13 +570,9 @@ eot;
         static::assertSame('world', $entity->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性访问魔术方法 __unset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性访问魔术方法 __unset 支持',
+    ])]
     public function testMagicUnset(): void
     {
         $entity = new Post(['id' => 5]);
@@ -643,13 +583,9 @@ eot;
         static::assertNull($entity->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setter 设置属性值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setter 设置属性值',
+    ])]
     public function testCallSetter(): void
     {
         $entity = new Post(['id' => 5]);
@@ -661,13 +597,9 @@ eot;
         static::assertSame(5, $entity->userId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getter 获取属性值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getter 获取属性值',
+    ])]
     public function testCallGetter(): void
     {
         $entity = new Post(['id' => 5]);
@@ -711,13 +643,9 @@ eot;
         Post::notFoundMethod();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="find 获取实体查询对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'find 获取实体查询对象',
+    ])]
     public function testStaticFind(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -740,13 +668,9 @@ eot;
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="connectSandbox 数据库连接沙盒",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'connectSandbox 数据库连接沙盒',
+    ])]
     public function testConnectSandbox(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -797,13 +721,9 @@ eot;
         });
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="newed 确定对象是否对应数据库中的一条记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'newed 确定对象是否对应数据库中的一条记录',
+    ])]
     public function testNewed(): void
     {
         $entity = new Post();
@@ -816,13 +736,9 @@ eot;
         static::assertFalse($entity->newed());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withNewed 设置确定对象是否对应数据库中的一条记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withNewed 设置确定对象是否对应数据库中的一条记录',
+    ])]
     public function testWithNewed(): void
     {
         $entity = new Post();
@@ -841,13 +757,9 @@ eot;
         static::assertTrue($entity->newed());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="original 获取原始数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'original 获取原始数据',
+    ])]
     public function testOriginal(): void
     {
         $entity = new Post();
@@ -863,13 +775,9 @@ eot;
         static::assertSame('world', $entity->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="id 获取主键值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'id 获取主键值',
+    ])]
     public function testId(): void
     {
         $entity = new Post();
@@ -879,21 +787,18 @@ eot;
         static::assertSame(['id' => 5], $entity->id());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="id 获取复合主键值",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\CompositeId**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'id 获取复合主键值',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\CompositeId**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\CompositeId::class)]}
+```
+EOT,
+    ])]
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
@@ -909,13 +814,9 @@ eot;
         static::assertSame(['id1' => 5, 'id2' => 8], $entity->id());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="refresh 从数据库重新读取当前对象的属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'refresh 从数据库重新读取当前对象的属性',
+    ])]
     public function testRefresh(): void
     {
         $post1 = new Post();
@@ -935,13 +836,9 @@ eot;
         static::assertSame(0, $post1->delete_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="refresh 从数据库重新读取当前对象的属性支持复合主键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'refresh 从数据库重新读取当前对象的属性支持复合主键',
+    ])]
     public function testRefreshWithCompositeId(): void
     {
         $entity = new CompositeId(['id1' => 1, 'id2' => 3]);
@@ -1050,38 +947,32 @@ eot;
         $post->flush();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="构造器支持忽略未定义属性",
-     *     zh-CN:description="
-     * `$ignoreUndefinedProp` 用于数据库添加了字段，但是我们的实体并没有更新字段，查询得到的实体对象将会忽略掉新增的字段而不报错。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '构造器支持忽略未定义属性',
+        'zh-CN:description' => <<<'EOT'
+`$ignoreUndefinedProp` 用于数据库添加了字段，但是我们的实体并没有更新字段，查询得到的实体对象将会忽略掉新增的字段而不报错。
+EOT,
+    ])]
     public function testIgnoreUndefinedProp(): void
     {
         $entity = new Post(['undefined_prop' => 5], true, true);
         static::assertSame([], $entity->toArray());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新数据带上版本号",
-     *     zh-CN:description="
-     * 可以用于并发控制，例如商品库存，客户余额等。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\DemoVersion**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoVersion::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新数据带上版本号',
+        'zh-CN:description' => <<<'EOT'
+可以用于并发控制，例如商品库存，客户余额等。
+
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\DemoVersion**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoVersion::class)]}
+```
+EOT,
+    ])]
     public function testUpdateWithVersion(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1124,15 +1015,12 @@ eot;
         static::assertSame('SQL: [227] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新数据不含版本数据则不会带上版本号",
-     *     zh-CN:description="
-     * version 对应的字段无数据，将会忽略版本号。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新数据不含版本数据则不会带上版本号',
+        'zh-CN:description' => <<<'EOT'
+version 对应的字段无数据，将会忽略版本号。
+EOT,
+    ])]
     public function testUpdateNoVersionDataWithoutVersion(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1178,13 +1066,9 @@ eot;
         static::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'version.condition 设置是否启用乐观锁版本字段配合设置扩展查询条件',
+    ])]
     public function testUpdateWithVersionAndWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1220,13 +1104,9 @@ eot;
         static::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=2 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="version 设置是否启用乐观锁版本字段支持取消",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'version 设置是否启用乐观锁版本字段支持取消',
+    ])]
     public function testUpdateWithVersionAndWithoutVersionCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1259,13 +1139,9 @@ eot;
         static::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="condition 设置扩展查询条件支持直接设置版本查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'condition 设置扩展查询条件支持直接设置版本查询条件',
+    ])]
     public function testUpdateWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1301,31 +1177,28 @@ eot;
         static::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 9999 AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体设置虚拟主键可以解决没有主键的表数据更新问题",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **without_primarykey**
-     *
-     * ``` sql
-     * CREATE TABLE `without_primarykey` (
-     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
-     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
-     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\WithoutPrimarykey**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykey::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体设置虚拟主键可以解决没有主键的表数据更新问题',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**without_primarykey**
+
+``` sql
+CREATE TABLE `without_primarykey` (
+    `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+    `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+    `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+```
+
+**Tests\Database\Ddd\Entity\WithoutPrimarykey**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykey::class)]}
+```
+EOT,
+    ])]
     public function testUpdateWithoutPrimarykey(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1352,31 +1225,28 @@ eot;
         static::assertSame('SQL: [170] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :named_param_description WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id LIMIT 1 | Params:  2 | Key: Name: [24] :named_param_description | paramno=0 | name=[24] ":named_param_description" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'world\' WHERE `without_primarykey`.`goods_id` = 1 LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体未设置主键所有非关联字段将变为虚拟主键",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **without_primarykey**
-     *
-     * ``` sql
-     * CREATE TABLE `without_primarykey` (
-     *     `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
-     *     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
-     *     `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体未设置主键所有非关联字段将变为虚拟主键',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**without_primarykey**
+
+``` sql
+CREATE TABLE `without_primarykey` (
+    `goods_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '商品 ID',
+    `description` varchar(255) NOT NULL DEFAULT '' COMMENT '商品描述',
+    `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='没有主键的表';
+```
+
+**Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey::class)]}
+```
+EOT,
+    ])]
     public function testUpdateWithoutPrimarykeyAndAllAreKey(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1416,15 +1286,12 @@ eot;
         static::assertSame('SQL: [288] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="__clone 实体克隆",
-     *     zh-CN:description="
-     * 复制的实体没有主键值，保存数据时将会在数据库新增一条记录。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '__clone 实体克隆',
+        'zh-CN:description' => <<<'EOT'
+复制的实体没有主键值，保存数据时将会在数据库新增一条记录。
+EOT,
+    ])]
     public function testEntityClone(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1459,13 +1326,9 @@ eot;
         static::assertSame('world', $post->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 创建实例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 创建实例',
+    ])]
     public function testEntityMake(): void
     {
         $post = Post::make([
@@ -1499,13 +1362,9 @@ eot;
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="createAssign 新增批量赋值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'createAssign 新增批量赋值',
+    ])]
     public function testEntityCreateAssign(): void
     {
         $post = Post::createAssign([
@@ -1522,13 +1381,9 @@ eot;
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="updateAssign 更新批量赋值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateAssign 更新批量赋值',
+    ])]
     public function testEntityUpdateAssign(): void
     {
         $post = Post::updateAssign([

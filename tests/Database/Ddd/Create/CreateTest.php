@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Create;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoConstructPropBlackEntity;
@@ -14,42 +15,43 @@ use Tests\Database\Ddd\Entity\DemoCreatePropWhiteEntity;
 use Tests\Database\Ddd\Entity\DemoDatabaseEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;
 
+#[Api([
+    'zh-CN:title' => '保存实体',
+    'path' => 'orm/create',
+    'zh-CN:description' => <<<'EOT'
+将实体持久化到数据库。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="保存实体",
- *     path="orm/create",
- *     zh-CN:description="将实体持久化到数据库。",
- * )
- *
  * @internal
  */
 final class CreateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="save 创建一个实体",
-     *     zh-CN:description="
-     * 没有主键数据，则可以通过 `save` 方法创建一个实体。
-     *
-     * **完整例子**
-     *
-     * ``` php
-     * $entity = new DemoEntity();
-     * $entity->name = 'foo';
-     * $entity->save()->flush();
-     * ```
-     *
-     * 调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
-     *
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'save 创建一个实体',
+        'zh-CN:description' => <<<'EOT'
+没有主键数据，则可以通过 `save` 方法创建一个实体。
+
+**完整例子**
+
+``` php
+$entity = new DemoEntity();
+$entity->name = 'foo';
+$entity->save()->flush();
+```
+
+调用 `save` 方法并没有立刻真正持久化到数据库，这一个步骤计算好了待保存的数据。
+
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoEntity::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+通过 save 方法保存一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $entity = new DemoEntity();
@@ -78,13 +80,12 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="create 创建一个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'create 创建一个实体',
+        'zh-CN:note' => <<<'EOT'
+通过 create 方法保存一个实体，并通过 flush 将实体持久化到数据库。
+EOT,
+    ])]
     public function testCreateBaseUse(): void
     {
         $entity = new DemoEntity();
@@ -114,21 +115,18 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="创建一个实体支持构造器白名单",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropWhiteEntity::class)]}
-     * ```
-     *
-     * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_WHITE => true` 来设置字段白名单，一旦设置了构造器白名单只有通过了白名单的字段才能够更新模型属性。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '创建一个实体支持构造器白名单',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropWhiteEntity::class)]}
+```
+
+调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_WHITE => true` 来设置字段白名单，一旦设置了构造器白名单只有通过了白名单的字段才能够更新模型属性。
+EOT,
+    ])]
     public function testConsturctPropWhite(): void
     {
         $entity = new DemoConstructPropWhiteEntity([
@@ -140,21 +138,18 @@ final class CreateTest extends TestCase
         static::assertNull($entity->getName());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="创建一个实体支持构造器黑名单",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropBlackEntity::class)]}
-     * ```
-     *
-     * 调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_BLACK => true` 来设置字段黑名单，一旦设置了构造器黑名单处于黑名单的字段无法更新模型属性。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '创建一个实体支持构造器黑名单',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoConstructPropBlackEntity::class)]}
+```
+
+调用 `\Leevel\Database\Ddd\Entity::CONSTRUCT_PROP_BLACK => true` 来设置字段黑名单，一旦设置了构造器黑名单处于黑名单的字段无法更新模型属性。
+EOT,
+    ])]
     public function testConsturctPropBlack(): void
     {
         $entity = new DemoConstructPropBlackEntity([
@@ -166,21 +161,18 @@ final class CreateTest extends TestCase
         static::assertSame('foo', $entity->getName());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="创建一个实体支持创建属性白名单",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreatePropWhiteEntity::class)]}
-     * ```
-     *
-     * 调用 `\Leevel\Database\Ddd\Entity::CREATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了创建属性白名单只有通过了白名单的字段才能够更新模型属性。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '创建一个实体支持创建属性白名单',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreatePropWhiteEntity::class)]}
+```
+
+调用 `\Leevel\Database\Ddd\Entity::CREATE_PROP_WHITE => true` 来设置字段白名单，一旦设置了创建属性白名单只有通过了白名单的字段才能够更新模型属性。
+EOT,
+    ])]
     public function testSavePropBlackAndWhite(): void
     {
         $entity = new DemoCreatePropWhiteEntity([
@@ -257,19 +249,19 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fill 设置允许自动填充字段",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreateAutoFillEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="默认情况下，不会自动填充，除非指定允许填充字段。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fill 设置允许自动填充字段',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoCreateAutoFillEntity::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+默认情况下，不会自动填充，除非指定允许填充字段。
+EOT,
+    ])]
     public function testCreateAutoFill(): void
     {
         $entity = new DemoCreateAutoFillEntity();
@@ -292,13 +284,9 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fillAll 设置允许自动填充字段为所有字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fillAll 设置允许自动填充字段为所有字段',
+    ])]
     public function testAutoFillWithAll(): void
     {
         $entity = new DemoCreateAutoFillEntity();
@@ -355,13 +343,9 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fill 设置允许自动填充字段指定字段例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fill 设置允许自动填充字段指定字段例子',
+    ])]
     public function testAutoFillWithCustomField(): void
     {
         $entity = new DemoCreateAutoFillEntity();
@@ -410,19 +394,16 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="save 自动判断操作快捷方式支持添加数据",
-     *     zh-CN:description="
-     * **完整模型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'save 自动判断操作快捷方式支持添加数据',
+        'zh-CN:description' => <<<'EOT'
+**完整模型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoDatabaseEntity::class)]}
+```
+EOT,
+    ])]
     public function testSaveWithProp(): void
     {
         $entity = new DemoDatabaseEntity();
@@ -444,13 +425,9 @@ final class CreateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="create 新增快捷方式支持添加数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'create 新增快捷方式支持添加数据',
+    ])]
     public function testCreateWithProp(): void
     {
         $entity = new DemoDatabaseEntity();

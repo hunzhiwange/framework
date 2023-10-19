@@ -6,25 +6,19 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.forceIndex',
+    'zh-CN:title' => '查询语言.forceIndex',
+    'path' => 'database/query/forceindex',
+])]
 /**
- * @api(
- *     title="Query lang.forceIndex",
- *     zh-CN:title="查询语言.forceIndex",
- *     path="database/query/forceindex",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class ForceIndexTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="forceIndex,ignoreIndex 基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceIndex,ignoreIndex 基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -55,13 +49,9 @@ final class ForceIndexTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceIndex 数组支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceIndex 数组支持',
+    ])]
     public function testForceIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -91,13 +81,9 @@ final class ForceIndexTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="ignoreIndex 数组支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'ignoreIndex 数组支持',
+    ])]
     public function testIgnoreIndexWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();

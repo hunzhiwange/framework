@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询多条数据.findAll',
+    'path' => 'database/read/findall',
+])]
 /**
- * @api(
- *     zh-CN:title="查询多条数据.findAll",
- *     path="database/read/findall",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class FindAllTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="findAll 查询多条数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findAll 查询多条数据',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class FindAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findArray 以数组返回所有记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findArray 以数组返回所有记录',
+    ])]
     public function testFindArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -73,13 +63,9 @@ final class FindAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findCollection 以集合返回所有记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findCollection 以集合返回所有记录',
+    ])]
     public function testFindCollection(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -101,13 +87,9 @@ final class FindAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="all.find 查询多条数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'all.find 查询多条数据',
+    ])]
     public function testAllFind(): void
     {
         $connect = $this->createDatabaseConnectMock();

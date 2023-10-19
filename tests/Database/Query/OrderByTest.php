@@ -7,25 +7,19 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.orderBy',
+    'zh-CN:title' => '查询语言.orderBy',
+    'path' => 'database/query/orderby',
+])]
 /**
- * @api(
- *     title="Query lang.orderBy",
- *     zh-CN:title="查询语言.orderBy",
- *     path="database/query/orderby",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class OrderByTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 排序基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 排序基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -51,13 +45,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 指定表排序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 指定表排序',
+    ])]
     public function testWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -83,13 +73,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 表达式排序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 表达式排序',
+    ])]
     public function testWithExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -116,13 +102,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 表达式和普通排序混合",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 表达式和普通排序混合',
+    ])]
     public function testWithExpressionAndNormal(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -148,13 +130,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 排序支持数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 排序支持数组',
+    ])]
     public function testWithArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -180,13 +158,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 排序数组支持自定义升降",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 排序数组支持自定义升降',
+    ])]
     public function testWithArrayAndSetType(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -212,13 +186,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="latest 快捷降序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'latest 快捷降序',
+    ])]
     public function testLatest(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -243,13 +213,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="latest 快捷降序支持自定义字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'latest 快捷降序支持自定义字段',
+    ])]
     public function testLatestWithCustomField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -275,13 +241,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="oldest 快捷升序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'oldest 快捷升序',
+    ])]
     public function testOldest(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -307,13 +269,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="oldest 快捷升序支持自定义字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'oldest 快捷升序支持自定义字段',
+    ])]
     public function testOldestWithCustomField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -339,13 +297,9 @@ final class OrderByTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orderBy 表达式排序默认为升序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orderBy 表达式排序默认为升序',
+    ])]
     public function testOrderByExpressionNotSetWithDefaultAsc(): void
     {
         $connect = $this->createDatabaseConnectMock();

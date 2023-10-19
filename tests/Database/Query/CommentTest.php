@@ -6,25 +6,19 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.comment',
+    'zh-CN:title' => '查询语言.comment',
+    'path' => 'database/query/comment',
+])]
 /**
- * @api(
- *     title="Query lang.comment",
- *     zh-CN:title="查询语言.comment",
- *     path="database/query/comment",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class CommentTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="comment 基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'comment 基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();

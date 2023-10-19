@@ -7,25 +7,19 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.bind',
+    'zh-CN:title' => '查询语言.bind',
+    'path' => 'database/query/bind',
+])]
 /**
- * @api(
- *     title="Query lang.bind",
- *     zh-CN:title="查询语言.bind",
- *     path="database/query/bind",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class BindTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="命名参数绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '命名参数绑定',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -55,13 +49,9 @@ final class BindTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="命名参数绑定，支持绑定类型",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '命名参数绑定，支持绑定类型',
+    ])]
     public function testBindWithType(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -93,13 +83,9 @@ final class BindTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="命名参数绑定，绑定值支持类型定义",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '命名参数绑定，绑定值支持类型定义',
+    ])]
     public function testWithTypeAndValueCanBeArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -131,13 +117,9 @@ final class BindTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="命名参数绑定，支持多个字段绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '命名参数绑定，支持多个字段绑定',
+    ])]
     public function testNameBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -173,13 +155,9 @@ final class BindTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="问号 `?` 参数绑定，支持多个字段绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '问号 `?` 参数绑定，支持多个字段绑定',
+    ])]
     public function testQuestionMarkBind(): void
     {
         $connect = $this->createDatabaseConnectMock();

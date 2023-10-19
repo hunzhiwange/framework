@@ -15,38 +15,34 @@ use Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\User;
 
+#[Api([
+    'zh-CN:title' => '实体导出数组',
+    'path' => 'orm/toarray',
+    'zh-CN:description' => <<<'EOT'
+我们可以将实体导出为数组来方便处理数据。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="实体导出数组",
- *     path="orm/toarray",
- *     zh-CN:description="
- * 我们可以将实体导出为数组来方便处理数据。
- * ",
- * )
- *
  * @internal
  */
 final class EntityToArrayTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="toArray 基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayEntity::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $entity = $this->makeEntity();
@@ -69,15 +65,12 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持白名单",
-     *     zh-CN:description="
-     * `toArray` 第一个参数为白名单，设置了白名单，只有白名单的字段才能够转换为数组数据。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持白名单',
+        'zh-CN:description' => <<<'EOT'
+`toArray` 第一个参数为白名单，设置了白名单，只有白名单的字段才能够转换为数组数据。
+EOT,
+    ])]
     public function testWithWhite(): void
     {
         $entity = $this->makeEntity();
@@ -151,15 +144,12 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持黑名单",
-     *     zh-CN:description="
-     * `toArray` 第二个参数为白名单，设置了黑名单但是没有设置白名单，只有不属于黑名单的字段才能够转换为数组数据。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持黑名单',
+        'zh-CN:description' => <<<'EOT'
+`toArray` 第二个参数为白名单，设置了黑名单但是没有设置白名单，只有不属于黑名单的字段才能够转换为数组数据。
+EOT,
+    ])]
     public function testWithBlack(): void
     {
         $entity = $this->makeEntity();
@@ -275,31 +265,28 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持字段设置为白名单",
-     *     zh-CN:description="
-     * 可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_WHITE` 来设置字段白名单。
-     *
-     * 值得注意的是， `toArray` 的第一个参数白名单优先级更高。
-     *
-     * 如果设置了白名单，只有白名单的字段才能够转换为数组数据。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeWhiteEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持字段设置为白名单',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_WHITE` 来设置字段白名单。
+
+值得注意的是， `toArray` 的第一个参数白名单优先级更高。
+
+如果设置了白名单，只有白名单的字段才能够转换为数组数据。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeWhiteEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayWhiteEntity::class)]}
+```
+EOT,
+    ])]
     public function testWithWhiteEntity(): void
     {
         $entity = $this->makeWhiteEntity();
@@ -319,31 +306,28 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持字段设置为黑名单",
-     *     zh-CN:description="
-     * 可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_BLACK` 来设置字段黑名单。
-     *
-     * 值得注意的是， `toArray` 的第二个参数黑名单优先级更高。
-     *
-     * 如果设置了黑名单，设置了黑名单但是没有设置白名单，只有不属于黑名单的字段才能够转换为数组数据。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeBlackEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayBlackEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayBlackEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持字段设置为黑名单',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `STRUCT` 中的定义 `\Leevel\Database\Ddd\Entity::SHOW_PROP_BLACK` 来设置字段黑名单。
+
+值得注意的是， `toArray` 的第二个参数黑名单优先级更高。
+
+如果设置了黑名单，设置了黑名单但是没有设置白名单，只有不属于黑名单的字段才能够转换为数组数据。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeBlackEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayBlackEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayBlackEntity::class)]}
+```
+EOT,
+    ])]
     public function testWithBlackEntity(): void
     {
         $entity = $this->makeBlackEntity();
@@ -364,31 +348,28 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持转换关联实体数据",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeRelationEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\User**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\Post**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持转换关联实体数据',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeRelationEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\User**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\Post**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+```
+EOT,
+    ])]
     public function testWithRelation(): void
     {
         $entity = $this->makeRelationEntity();
@@ -414,15 +395,12 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持转换关联实体数据（黑白名单）",
-     *     zh-CN:description="
-     * `toArray` 第三个参数为关联实体的黑白名单。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持转换关联实体数据（黑白名单）',
+        'zh-CN:description' => <<<'EOT'
+`toArray` 第三个参数为关联实体的黑白名单。
+EOT,
+    ])]
     public function testWithRelationWhiteAndBlack(): void
     {
         $entity = $this->makeRelationEntity();
@@ -455,25 +433,22 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持 NULL 值字段默认指定数据",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeShowPropNullEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持 NULL 值字段默认指定数据',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeShowPropNullEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullEntity::class)]}
+```
+EOT,
+    ])]
     public function testWithShowPropNull(): void
     {
         $entity = $this->makeShowPropNullEntity();
@@ -496,31 +471,28 @@ final class EntityToArrayTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 实体对象转数组支持 NULL 值字段默认指定数据（关联模型）",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeRelationShowPropNullEntity')]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationTargetEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationTargetEntity::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 实体对象转数组支持 NULL 值字段默认指定数据（关联模型）',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityToArrayTest::class, 'makeRelationShowPropNullEntity')]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationTargetEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationTargetEntity::class)]}
+```
+
+**Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity::class)]}
+```
+EOT,
+    ])]
     public function testWithShowPropNullForRelation(): void
     {
         $entity = $this->makeRelationShowPropNullEntity();

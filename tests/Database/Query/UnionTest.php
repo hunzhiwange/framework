@@ -6,25 +6,22 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.union',
+    'zh-CN:title' => '查询语言.union',
+    'path' => 'database/query/union',
+])]
 /**
- * @api(
- *     title="Query lang.union",
- *     zh-CN:title="查询语言.union",
- *     path="database/query/union",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class UnionTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="union 联合查询基本用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="参数支持字符串、子查询器以及它们构成的一维数组。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'union 联合查询基本用法',
+        'zh-CN:note' => <<<'EOT'
+参数支持字符串、子查询器以及它们构成的一维数组。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -90,13 +87,9 @@ final class UnionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="union 联合查询支持条件构造器自身为子查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'union 联合查询支持条件构造器自身为子查询',
+    ])]
     public function testConditionSelfAsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -158,13 +151,9 @@ final class UnionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="unionAll 联合查询不去重",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'unionAll 联合查询不去重',
+    ])]
     public function testUnionAll(): void
     {
         $connect = $this->createDatabaseConnectMock();

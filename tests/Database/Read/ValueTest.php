@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询一个字段的值.value',
+    'path' => 'database/read/value',
+])]
 /**
- * @api(
- *     zh-CN:title="查询一个字段的值.value",
- *     path="database/read/value",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class ValueTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="value 查询基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'value 查询基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();

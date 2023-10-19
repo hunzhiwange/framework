@@ -10,49 +10,45 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostContent;
 
+#[Api([
+    'zh-CN:title' => '关联',
+    'path' => 'orm/relation',
+    'zh-CN:description' => <<<'EOT'
+将相关实体连接起来，可以更加方便地操作数据。
+
+**关联支持类型**
+
+|  关联类型   | 说明  |
+|  ----  | ----  |
+| belongsTo  | 从属关联 |
+| hasOne  | 一对一关联 |
+| hasMany  | 一对多关联 |
+| manyMany  | 多对多关联 |
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="关联",
- *     path="orm/relation",
- *     zh-CN:description="
- * 将相关实体连接起来，可以更加方便地操作数据。
- *
- * **关联支持类型**
- *
- * |  关联类型   | 说明  |
- * |  ----  | ----  |
- * | belongsTo  | 从属关联 |
- * | hasOne  | 一对一关联 |
- * | hasMany  | 一对多关联 |
- * | manyMany  | 多对多关联 |
- * ",
- * )
- *
  * @internal
  */
 final class RelationTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\Relation\Post**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\PostContent**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\Relation\Post**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\PostContent**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\PostContent::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $post = Post::select()->where('id', 1)->findOne();

@@ -11,46 +11,42 @@ use Tests\Database\Ddd\Entity\Relation\Role;
 use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 
+#[Api([
+    'zh-CN:title' => 'nested 嵌套预加载关联',
+    'path' => 'orm/nested',
+    'zh-CN:description' => <<<'EOT'
+预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="nested 嵌套预加载关联",
- *     path="orm/nested",
- *     zh-CN:description="
- * 预加载关联可以减少查询，并且支持嵌套，通过 `.` 分隔嵌套关联。
- * ",
- * )
- *
  * @internal
  */
 final class NestedTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\Relation\Post**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\UserRole**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\Role**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\Relation\Post**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Post::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\UserRole**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\Role**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
+```
+EOT,
+    ])]
     public function testBase(): void
     {
         $posts = Post::select()->limit(5)->findAll();

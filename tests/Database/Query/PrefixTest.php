@@ -6,25 +6,19 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.prefix',
+    'zh-CN:title' => '查询语言.prefix',
+    'path' => 'database/query/prefix',
+])]
 /**
- * @api(
- *     title="Query lang.prefix",
- *     zh-CN:title="查询语言.prefix",
- *     path="database/query/prefix",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class PrefixTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="prefix 基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'prefix 基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -54,13 +48,9 @@ final class PrefixTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="prefix 示例用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'prefix 示例用法',
+    ])]
     public function testSqlNoCache(): void
     {
         $connect = $this->createDatabaseConnectMock();

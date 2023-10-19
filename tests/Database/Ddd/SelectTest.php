@@ -8,30 +8,26 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
+use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
+#[Api([
+    'zh-CN:title' => '实体查询',
+    'path' => 'orm/select',
+    'zh-CN:description' => <<<'EOT'
+在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="实体查询",
- *     path="orm/select",
- *     zh-CN:description="
- * 在设计实体的时候，我们是这样想的，查询不属于实体的一部分而应该是独立的，所以实体查询被抽象出来了。
- * ",
- * )
- *
  * @internal
  */
 final class SelectTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+    ])]
     public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -60,13 +56,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Entity::class, $entity);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findEntity 通过主键查找实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findEntity 通过主键查找实体',
+    ])]
     public function testFindEntity(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -93,13 +85,9 @@ final class SelectTest extends TestCase
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="复合主键请使用 where 条件查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '复合主键请使用 where 条件查询',
+    ])]
     public function testFindEntityForCompositeId(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -123,13 +111,9 @@ final class SelectTest extends TestCase
         static::assertSame('hello liu', $entity->name);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findOrFail 通过主键查找实体，未找到则抛出异常',
+    ])]
     public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -156,13 +140,9 @@ final class SelectTest extends TestCase
         static::assertSame('post summary', $post->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findOrFail 通过主键查找实体，未找到则抛出异常例子',
+    ])]
     public function testFindOrFailThrowsException(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
@@ -174,13 +154,9 @@ final class SelectTest extends TestCase
         $post = $select->findOrFail(1);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMany 通过主键查找多个实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMany 通过主键查找多个实体',
+    ])]
     public function testFindMany(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -237,13 +213,9 @@ final class SelectTest extends TestCase
         static::assertCount(0, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findMany 通过主键查找多个实体未找到数据返回空集合",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findMany 通过主键查找多个实体未找到数据返回空集合',
+    ])]
     public function testFindManyWithoutResults(): void
     {
         $select = new Select(new Post());
@@ -253,13 +225,9 @@ final class SelectTest extends TestCase
         static::assertCount(0, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体查询默认不带软删除数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体查询默认不带软删除数据',
+    ])]
     public function testEntityDefaultWithoutSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -330,13 +298,9 @@ final class SelectTest extends TestCase
         static::assertCount(1, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withSoftDeleted 包含软删除数据的实体查询对象（实体发起）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withSoftDeleted 包含软删除数据的实体查询对象（实体发起）',
+    ])]
     public function testEntityWithSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -407,13 +371,9 @@ final class SelectTest extends TestCase
         static::assertCount(2, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体发起）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体发起）',
+    ])]
     public function testEntityOnlySoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -484,13 +444,9 @@ final class SelectTest extends TestCase
         static::assertCount(1, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="onlySoftDeleted 包含软删除数据的实体查询对象（实体查询发起）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'onlySoftDeleted 包含软删除数据的实体查询对象（实体查询发起）',
+    ])]
     public function testWithSoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -561,13 +517,9 @@ final class SelectTest extends TestCase
         static::assertCount(2, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体查询发起）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'onlySoftDeleted 仅仅包含软删除数据的实体查询对象（实体查询发起）',
+    ])]
     public function testOnlySoftDeleted(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -770,13 +722,9 @@ final class SelectTest extends TestCase
         static::assertCount(0, $posts);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getLastSql 获取最近一次查询的 SQL 语句",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getLastSql 获取最近一次查询的 SQL 语句',
+    ])]
     public function testLastSql(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -812,13 +760,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withoutPreLoadsResult 获取不执行预载入的查询结果",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withoutPreLoadsResult 获取不执行预载入的查询结果',
+    ])]
     public function testWithoutPreLoadsResult(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -859,13 +803,9 @@ final class SelectTest extends TestCase
         });
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="eager 添加预载入关联查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'eager 添加预载入关联查询',
+    ])]
     public function testPreLoadPage(): void
     {
         $connect = $this->createDatabaseConnect();

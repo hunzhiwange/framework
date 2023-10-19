@@ -6,25 +6,22 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.flow',
+    'zh-CN:title' => '查询语言.flow',
+    'path' => 'database/query/flow',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。
+EOT,
+])]
 /**
- * @api(
- *     title="Query lang.flow",
- *     zh-CN:title="查询语言.flow",
- *     path="database/query/flow",
- *     zh-CN:description="QueryPHP 数据构造器支持条件运算符，可以根据不同条件做不同的事情，支持所有的构造器函数，即返回 `$this`。",
- * )
- *
  * @internal
  */
 final class FlowTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="limit 限制条数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'limit 限制条数',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -176,13 +173,12 @@ final class FlowTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="else",
-     *     zh-CN:description="",
-     *     zh-CN:note="命令遵循 shell 命令风格，即 if,elif,else,fi。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'else',
+        'zh-CN:note' => <<<'EOT'
+命令遵循 shell 命令风格，即 if,elif,else,fi。
+EOT,
+    ])]
     public function testElse(): void
     {
         $connect = $this->createDatabaseConnectMock();

@@ -7,25 +7,19 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.table',
+    'zh-CN:title' => '查询语言.table',
+    'path' => 'database/query/table',
+])]
 /**
- * @api(
- *     title="Query lang.table",
- *     zh-CN:title="查询语言.table",
- *     path="database/query/table",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class TableTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -49,13 +43,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询指定数据库的表",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询指定数据库的表',
+    ])]
     public function testWithDatabaseName(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -80,13 +70,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表，表支持别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表，表支持别名',
+    ])]
     public function testWithAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -111,13 +97,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表指定字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表指定字段',
+    ])]
     public function testField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -141,13 +123,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表指定字段，字段支持别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表指定字段，字段支持别名',
+    ])]
     public function testWithFieldAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -242,13 +220,9 @@ final class TableTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询',
+    ])]
     public function testSub(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -273,13 +247,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库查询对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询,子查询可以为数据库查询对象',
+    ])]
     public function testSubIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -304,13 +274,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为数据库条件对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询,子查询可以为数据库条件对象',
+    ])]
     public function testSubIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -335,13 +301,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询,子查询可以为闭包',
+    ])]
     public function testSubIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -367,13 +329,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,未指定别名默认为自身",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询,子查询可以为闭包,未指定别名默认为自身',
+    ])]
     public function testSubIsClosureWithItSeltAsAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -399,13 +357,9 @@ final class TableTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Table 查询数据库表支持子查询,子查询可以为闭包,还可以进行 join 查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Table 查询数据库表支持子查询,子查询可以为闭包,还可以进行 join 查询',
+    ])]
     public function testSubIsClosureWithJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();

@@ -7,24 +7,21 @@ namespace Tests\Database\Create;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '批量写入数据.insertAll',
+    'path' => 'database/create/insertall',
+])]
 /**
- * @api(
- *     zh-CN:title="批量写入数据.insertAll",
- *     path="database/create/insertall",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class InsertAllTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 基本用法",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 基本用法',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -80,13 +77,12 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 支持自定义 KEY",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持自定义 KEY',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testCustomerKey(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -142,13 +138,12 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 支持自动根据 KEY 调整顺序",
-     *     zh-CN:description="写入成功后，返回 `lastInsertId`。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持自动根据 KEY 调整顺序',
+        'zh-CN:description' => <<<'EOT'
+写入成功后，返回 `lastInsertId`。
+EOT,
+    ])]
     public function testKeySort(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -204,13 +199,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 绑定参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 绑定参数',
+    ])]
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -313,13 +304,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bind.insertAll 绑定参数批量写入数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bind.insertAll 绑定参数批量写入数据',
+    ])]
     public function testWithBindFunction(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -376,13 +363,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 支持 replace 用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持 replace 用法',
+    ])]
     public function testReplace(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -479,13 +462,9 @@ final class InsertAllTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 空数据批量写入示例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 空数据批量写入示例',
+    ])]
     public function testInsertWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -515,13 +494,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll.replace 空数据写入示例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll.replace 空数据写入示例',
+    ])]
     public function testReplaceWithEmptyData(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -551,13 +526,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 支持 ON DUPLICATE KEY UPDATE 用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持 ON DUPLICATE KEY UPDATE 用法',
+    ])]
     public function testInsertAllSupportDuplicateKeyUpdate(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -614,13 +585,9 @@ final class InsertAllTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insertAll 支持 ON DUPLICATE KEY UPDATE 表达式用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持 ON DUPLICATE KEY UPDATE 表达式用法',
+    ])]
     public function testInsertAllSupportDuplicateKeyUpdate2(): void
     {
         $connect = $this->createDatabaseConnectMock();

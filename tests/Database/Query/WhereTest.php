@@ -7,25 +7,22 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.where',
+    'zh-CN:title' => '查询语言.where',
+    'path' => 'database/query/where',
+])]
 /**
- * @api(
- *     title="Query lang.where",
- *     zh-CN:title="查询语言.where",
- *     path="database/query/where",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class WhereTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件",
-     *     zh-CN:description="最基本的用法为字段 （表达式） 值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件',
+        'zh-CN:description' => <<<'EOT'
+最基本的用法为字段 （表达式） 值。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -55,13 +52,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件默认为等于 `=`",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件默认为等于 `=`',
+    ])]
     public function testBaseUse2(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -91,13 +84,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持多次调用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持多次调用',
+    ])]
     public function testBaseUse3(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -164,13 +153,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持数组方式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持数组方式',
+    ])]
     public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -199,13 +184,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持二维数组多个条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持二维数组多个条件',
+    ])]
     public function testMultiDimensionalArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -241,13 +222,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orWhere 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orWhere 查询条件',
+    ])]
     public function testOrWhere(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -280,13 +257,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereBetween 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereBetween 查询条件',
+    ])]
     public function testWhereBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -381,13 +354,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNotBetween 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNotBetween 查询条件',
+    ])]
     public function testWhereNotBetween(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -446,13 +415,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereIn 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereIn 查询条件',
+    ])]
     public function testWhereIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -538,13 +503,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNotIn 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNotIn 查询条件',
+    ])]
     public function testWhereNotIn(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -603,13 +564,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNull 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNull 查询条件',
+    ])]
     public function testWhereNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -646,13 +603,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNotNull 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNotNull 查询条件',
+    ])]
     public function testWhereNotNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -689,13 +642,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件未指定值默认为 null",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件未指定值默认为 null',
+    ])]
     public function testWhereDefaultNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -720,13 +669,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件指定值为 null",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件指定值为 null',
+    ])]
     public function testWhereEqualNull(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -751,13 +696,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereLike 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereLike 查询条件',
+    ])]
     public function testWhereLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -798,13 +739,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNotLike 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNotLike 查询条件',
+    ])]
     public function testWhereNotLike(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -845,13 +782,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereExists 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereExists 查询条件',
+    ])]
     public function testWhereExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -959,13 +892,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereNotExists 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereNotExists 查询条件',
+    ])]
     public function testWhereNotExists(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1001,13 +930,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持分组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持分组',
+    ])]
     public function testWhereGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1088,13 +1013,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持表达式',
+    ])]
     public function testConditionalExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1119,13 +1040,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持二维数组的键值为字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持二维数组的键值为字段',
+    ])]
     public function testArrayKeyAsField(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1183,13 +1100,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持字符串语法 `:string`",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持字符串语法 `:string`',
+    ])]
     public function testSupportString(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1238,13 +1151,9 @@ final class WhereTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` ",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持分组语法 `:subor` 和 `suband`',
+    ])]
     public function testSupportSubandSubor(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1278,13 +1187,9 @@ final class WhereTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持分组语法 `:subor` 和 `suband` 任意嵌套',
+    ])]
     public function testSupportSubandSuborMore(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1667,13 +1572,12 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件字段可以指定表",
-     *     zh-CN:description="字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件字段可以指定表',
+        'zh-CN:description' => <<<'EOT'
+字段条件用法和 table 中的字段用法一致，详情可以查看《查询语言.table》。
+EOT,
+    ])]
     public function testWhereFieldWithTable(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1770,13 +1674,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="where 查询条件支持复杂的子查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'where 查询条件支持复杂的子查询',
+    ])]
     public function testWhereInArrayItemIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -2555,13 +2455,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereRaw 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereRaw 查询条件',
+    ])]
     public function testWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -2586,13 +2482,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="orWhereRaw 查询条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'orWhereRaw 查询条件',
+    ])]
     public function testOrWhereRaw(): void
     {
         $connect = $this->createDatabaseConnectMock();

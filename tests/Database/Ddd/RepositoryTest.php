@@ -16,26 +16,21 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoUnique;
 use Tests\Database\Ddd\Entity\Relation\Post;
 
+#[Api([
+    'zh-CN:title' => '仓储',
+    'path' => 'orm/repository',
+    'zh-CN:description' => <<<'EOT'
+仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="仓储",
- *     path="orm/repository",
- *     zh-CN:description="
- * 仓储层可以看作是对实体的一种包装，通过构造器注入的实体。
- * ",
- * )
- *
  * @internal
  */
 final class RepositoryTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+    ])]
     public function testBase(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -64,13 +59,9 @@ final class RepositoryTest extends TestCase
         $this->assertInstanceof(Post::class, $repository->entity());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findEntity 通过主键查找实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findEntity 通过主键查找实体',
+    ])]
     public function testFindEntity(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -98,13 +89,9 @@ final class RepositoryTest extends TestCase
         static::assertSame('post summary', $newPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findOrFail 通过主键查找实体，未找到则抛出异常',
+    ])]
     public function testFindOrFail(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -132,13 +119,9 @@ final class RepositoryTest extends TestCase
         static::assertSame('post summary', $newPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findOrFail 通过主键查找实体，未找到则抛出异常例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findOrFail 通过主键查找实体，未找到则抛出异常例子',
+    ])]
     public function testFindOrFailNotFound(): void
     {
         $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
@@ -151,13 +134,9 @@ final class RepositoryTest extends TestCase
         $newPost = $repository->findOrFail(1);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="规约闭包查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '规约闭包查询',
+    ])]
     public function testSpecWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -209,27 +188,24 @@ final class RepositoryTest extends TestCase
         static::assertCount(4, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="from 转换为标准规约查询",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Demo1Specification**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo1Specification::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Demo2Specification**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo2Specification::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'from 转换为标准规约查询',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Demo1Specification**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo1Specification::class)]}
+```
+
+**Tests\Database\Ddd\Demo2Specification**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Demo2Specification::class)]}
+```
+EOT,
+    ])]
     public function testSpecWithClass(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -609,13 +585,9 @@ final class RepositoryTest extends TestCase
         static::assertSame(4, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="not 规约反操作",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'not 规约反操作',
+    ])]
     public function testFindAllBySpecWithClosureForNot(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -706,13 +678,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(7, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="or 规约或操作",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'or 规约或操作',
+    ])]
     public function testSpecWithOrFirstIsNo(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -858,13 +826,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(10, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 创建规约表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 创建规约表达式',
+    ])]
     public function testSpecMake(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1170,13 +1134,9 @@ final class RepositoryTest extends TestCase
         static::assertSame(10, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="and 规约与操作",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'and 规约与操作',
+    ])]
     public function testFindCountWithAndFirstIsYes(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1409,13 +1369,9 @@ final class RepositoryTest extends TestCase
         static::assertSame(7, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="__call 魔术方法访问实体查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '__call 魔术方法访问实体查询',
+    ])]
     public function testCall(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1446,13 +1402,9 @@ final class RepositoryTest extends TestCase
         static::assertNull($newPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="createEntity 新增实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'createEntity 新增实体',
+    ])]
     public function testCreateTwice(): void
     {
         $repository = new Repository(new Post());
@@ -1485,13 +1437,9 @@ final class RepositoryTest extends TestCase
         static::assertSame('', $newPost->title);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="updateEntity 更新实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateEntity 更新实体',
+    ])]
     public function testUpdateTwiceAndDoNothing(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1516,13 +1464,9 @@ final class RepositoryTest extends TestCase
         static::assertNull($repository->updateEntity($post));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="replaceEntity 替换实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'replaceEntity 替换实体',
+    ])]
     public function testReplaceTwiceAndFindExistData(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1653,13 +1597,9 @@ final class RepositoryTest extends TestCase
         static::assertSame('hello', $testUniqueData->identity);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="deleteEntity 响应删除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'deleteEntity 响应删除',
+    ])]
     public function testSoftDeleteTwice(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1703,13 +1643,9 @@ final class RepositoryTest extends TestCase
         static::assertNull($newPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forceDeleteEntity 强制删除实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forceDeleteEntity 强制删除实体',
+    ])]
     public function testForceDeleteTwice(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1741,13 +1677,9 @@ final class RepositoryTest extends TestCase
         static::assertNull($newPost->summary);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="condition 条件查询器支持闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'condition 条件查询器支持闭包',
+    ])]
     public function testConditionIsClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1788,13 +1720,9 @@ final class RepositoryTest extends TestCase
         $repository->condition(5);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPage 分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPage 分页查询',
+    ])]
     public function testFindPage(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1822,13 +1750,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(10, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPage 分页查询支持条件过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPage 分页查询支持条件过滤',
+    ])]
     public function testFindPageWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1862,13 +1786,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(7, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPageMacro 创建一个无限数据的分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPageMacro 创建一个无限数据的分页查询',
+    ])]
     public function testFindPageMacro(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1896,13 +1816,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(10, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPageMacro 创建一个无限数据的分页查询支持条件过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPageMacro 创建一个无限数据的分页查询支持条件过滤',
+    ])]
     public function testFindPageMacroWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1936,13 +1852,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(7, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPagePrevNext 创建一个只有上下页的分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPagePrevNext 创建一个只有上下页的分页查询',
+    ])]
     public function testFindPagePrevNext(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1970,13 +1882,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(10, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findPagePrevNext 创建一个只有上下页的分页查询支持条件过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findPagePrevNext 创建一个只有上下页的分页查询支持条件过滤',
+    ])]
     public function testFindPagePrevNextWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -2010,13 +1918,9 @@ final class RepositoryTest extends TestCase
         static::assertCount(7, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findList 返回一列数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findList 返回一列数据',
+    ])]
     public function testFindList(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -2107,13 +2011,9 @@ final class RepositoryTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="findList 返回一列数据支持条件过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findList 返回一列数据支持条件过滤',
+    ])]
     public function testFindListWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();

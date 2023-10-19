@@ -6,25 +6,19 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.reset',
+    'zh-CN:title' => '查询语言.reset',
+    'path' => 'database/query/reset',
+])]
 /**
- * @api(
- *     title="Query lang.reset",
- *     zh-CN:title="查询语言.reset",
- *     path="database/query/reset",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class ResetTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="重置所有",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '重置所有',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -57,13 +51,9 @@ final class ResetTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="重置某一项",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '重置某一项',
+    ])]
     public function testResetItem(): void
     {
         $connect = $this->createDatabaseConnectMock();

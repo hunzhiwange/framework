@@ -14,13 +14,11 @@ use Leevel\Page\Page as BasePage;
 use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '数据库查询',
+    'path' => 'database/select',
+])]
 /**
- * @api(
- *     zh-CN:title="数据库查询",
- *     path="database/select",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class SelectTest extends TestCase
@@ -35,13 +33,9 @@ final class SelectTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="master 设置是否查询主服务器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'master 设置是否查询主服务器',
+    ])]
     public function testMaster(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -90,21 +84,18 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="asSome 设置以某种包装返会结果",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\AsSomeDemo**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\AsSomeDemo::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'asSome 设置以某种包装返会结果',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\AsSomeDemo**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\AsSomeDemo::class)]}
+```
+EOT,
+    ])]
     public function testAsSome(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -221,13 +212,9 @@ final class SelectTest extends TestCase
         static::assertIsArray($result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="asCollection 设置是否以集合返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'asCollection 设置是否以集合返回',
+    ])]
     public function testAsCollectionAsDefaultFindAll(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -369,13 +356,9 @@ final class SelectTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="asArray 设置返会结果为数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'asArray 设置返会结果为数组',
+    ])]
     public function testAsArray(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -416,13 +399,9 @@ final class SelectTest extends TestCase
         static::assertSame('I love movie.', $result['content']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="asArray 设置返会结果为数组支持闭包处理",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'asArray 设置返会结果为数组支持闭包处理',
+    ])]
     public function testAsArrayWithClosure(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -468,13 +447,9 @@ final class SelectTest extends TestCase
         static::assertSame('I love movie.', $result['content']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="value 返回一个字段的值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'value 返回一个字段的值',
+    ])]
     public function testValue(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -504,13 +479,9 @@ final class SelectTest extends TestCase
         static::assertSame('I love movie.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 返回一列数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 返回一列数据',
+    ])]
     public function testList(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -544,13 +515,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 返回一列数据支持 2 个字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 返回一列数据支持 2 个字段',
+    ])]
     public function testList2(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -584,13 +551,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 返回一列数据支持英文逗号分隔字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 返回一列数据支持英文逗号分隔字段',
+    ])]
     public function testList3(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -657,13 +620,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="chunk 数据分块处理",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'chunk 数据分块处理',
+    ])]
     public function testChunk(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -701,13 +660,9 @@ final class SelectTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="chunk 数据分块处理支持返回 false 中断",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'chunk 数据分块处理支持返回 false 中断',
+    ])]
     public function testChunkWhenReturnFalseAndBreak(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -750,13 +705,9 @@ final class SelectTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="each 数据分块处理依次回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'each 数据分块处理依次回调',
+    ])]
     public function testEach(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -793,13 +744,9 @@ final class SelectTest extends TestCase
         static::assertSame(7, $n);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="each 数据分块处理依次回调支持返回 false 中断",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'each 数据分块处理依次回调支持返回 false 中断',
+    ])]
     public function testEachBreak(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -840,13 +787,9 @@ final class SelectTest extends TestCase
         static::assertSame(3, $n);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="pageCount 取得分页查询记录数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'pageCount 取得分页查询记录数量',
+    ])]
     public function testPageCount(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -882,13 +825,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="page 分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'page 分页查询',
+    ])]
     public function testPage(): void
     {
         $this->initI18n();
@@ -986,13 +925,9 @@ final class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="page 分页带条件查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'page 分页带条件查询',
+    ])]
     public function testPageWithCondition(): void
     {
         $this->initI18n();
@@ -1097,13 +1032,9 @@ final class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="pageMacro 创建一个无限数据的分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'pageMacro 创建一个无限数据的分页查询',
+    ])]
     public function testPageMacro(): void
     {
         $this->initI18n();
@@ -1201,13 +1132,9 @@ final class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="pagePrevNext 创建一个只有上下页的分页查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'pagePrevNext 创建一个只有上下页的分页查询',
+    ])]
     public function testPagePrevNext(): void
     {
         $this->initI18n();
@@ -1305,13 +1232,9 @@ final class SelectTest extends TestCase
         $this->clearI18n();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="forPage 根据分页设置条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'forPage 根据分页设置条件',
+    ])]
     public function testForPage(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1359,13 +1282,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="makeSql 获得查询字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'makeSql 获得查询字符串',
+    ])]
     public function testMakeSql(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1388,13 +1307,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="makeSql 获得查询字符串支持集合为一个条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'makeSql 获得查询字符串支持集合为一个条件',
+    ])]
     public function testMakeSqlWithLogicGroup(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -1469,19 +1384,16 @@ final class SelectTest extends TestCase
         $connect->findPage();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存",
-     *     zh-CN:description="
-     * **cache 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Select::class, 'cache', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存',
+        'zh-CN:description' => <<<'EOT'
+**cache 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Select::class, 'cache', 'define')]}
+```
+EOT,
+    ])]
     public function testCache(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1533,13 +1445,9 @@ final class SelectTest extends TestCase
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持过期时间",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持过期时间',
+    ])]
     public function testCacheWithExpire(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1591,13 +1499,9 @@ final class SelectTest extends TestCase
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持缓存连接",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持缓存连接',
+    ])]
     public function testCacheWithConnect(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1656,13 +1560,9 @@ final class SelectTest extends TestCase
         static::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持查询多条记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持查询多条记录',
+    ])]
     public function testCacheFindAll(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1711,13 +1611,9 @@ final class SelectTest extends TestCase
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持查询单条记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持查询单条记录',
+    ])]
     public function testCacheFindOne(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1767,13 +1663,9 @@ final class SelectTest extends TestCase
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持查询总记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持查询总记录',
+    ])]
     public function testCacheFindCount(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1816,13 +1708,9 @@ final class SelectTest extends TestCase
         static::assertSame($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持 select 查询方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持 select 查询方法',
+    ])]
     public function testCacheSelect(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1869,17 +1757,14 @@ final class SelectTest extends TestCase
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存支持分页查询",
-     *     zh-CN:description="
-     * 分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
-     *
-     * 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存支持分页查询',
+        'zh-CN:description' => <<<'EOT'
+分页查询会生成两个缓存 KEY，一种是缓存数据本身，一个是缓存分页统计数量。
+
+分页统计数量缓存 KEY 需要加一个后缀与分页数据区分，KEY 后缀为 `\Leevel\Database\Select::PAGE_COUNT_CACHE_SUFFIX`。
+EOT,
+    ])]
     public function testCachePage(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1923,21 +1808,18 @@ final class SelectTest extends TestCase
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存不支持 query 查询方法",
-     *     zh-CN:description="
-     * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
-     *
-     * **query 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存不支持 query 查询方法',
+        'zh-CN:description' => <<<'EOT'
+`query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
+
+**query 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
+```
+EOT,
+    ])]
     public function testCacheQuery(): void
     {
         $manager = $this->createDatabaseManager();
@@ -1982,21 +1864,18 @@ final class SelectTest extends TestCase
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cache 设置查询缓存不支持 procedure 查询方法",
-     *     zh-CN:description="
-     * `procedure` 是一个底层查询方法支持直接设置缓存。
-     *
-     * **procedure 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cache 设置查询缓存不支持 procedure 查询方法',
+        'zh-CN:description' => <<<'EOT'
+`procedure` 是一个底层查询方法支持直接设置缓存。
+
+**procedure 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
+```
+EOT,
+    ])]
     public function testCacheProcedure(): void
     {
         static::markTestSkipped('Skip procedure.');

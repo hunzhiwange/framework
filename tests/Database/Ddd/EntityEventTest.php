@@ -10,15 +10,14 @@ use Leevel\Event\Dispatch;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEventEntity;
 
+#[Api([
+    'zh-CN:title' => '实体事件',
+    'path' => 'orm/event',
+    'zh-CN:description' => <<<'EOT'
+实体在新增和更新时，预植了事件监听器，可以定义一些事件。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="实体事件",
- *     path="orm/event",
- *     zh-CN:description="
- * 实体在新增和更新时，预植了事件监听器，可以定义一些事件。
- * ",
- * )
- *
  * @internal
  */
 final class EntityEventTest extends TestCase
@@ -28,13 +27,9 @@ final class EntityEventTest extends TestCase
         Entity::withEventDispatch(null);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="事件基本使用方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '事件基本使用方法',
+    ])]
     public function testBaseUse(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -73,20 +68,18 @@ final class EntityEventTest extends TestCase
     }
 
     /**
-     * @api(
-     *     zh-CN:title="实体支持的事件",
-     *     zh-CN:description="
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityEventTest::class, 'getSupportedEvent')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     *
      * @dataProvider getSupportedEvent
      *
      * @param string $event
      */
+    #[Api([
+        'zh-CN:title' => '实体支持的事件',
+        'zh-CN:description' => <<<'EOT'
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\EntityEventTest::class, 'getSupportedEvent')]}
+```
+EOT,
+    ])]
     public function testSupportEvent($event): void
     {
         $dispatch = new Dispatch(new Container());
@@ -116,13 +109,9 @@ final class EntityEventTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="不受支持的事件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '不受支持的事件',
+    ])]
     public function testEventWasNotSupport(): void
     {
         $this->expectException(\InvalidArgumentException::class);

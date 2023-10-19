@@ -15,58 +15,54 @@ use Tests\Database\Ddd\Entity\Relation\User;
 use Tests\Database\Ddd\Entity\Relation\UserRole;
 use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 
+#[Api([
+    'zh-CN:title' => 'manyMany 多对多关联',
+    'path' => 'orm/manymany',
+    'zh-CN:description' => <<<'EOT'
+多对多的关联是一种常用的关联，比如用户与角色属于多对多的关系。
+
+**多对多关联支持类型关联项**
+
+|  关联项   | 说明  |    例子   |
+|  ----  | ----  | ----  |
+| \Leevel\Database\Ddd\Entity::MANY_MANY  | 多对多关联实体 |  \Tests\Database\Ddd\Entity\Relation\Role::class  |
+| \Leevel\Database\Ddd\Entity::MIDDLE_ENTITY  | 关联查询中间实体 |  \Tests\Database\Ddd\Entity\Relation\UserRole::class  |
+| \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | user_id |
+| \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | id |
+| \Leevel\Database\Ddd\Entity::MIDDLE_SOURCE_KEY  | 关联查询中间实体源键字段 | id |
+| \Leevel\Database\Ddd\Entity::MIDDLE_TARGET_KEY  | 关联查询中间实体目标键字段 | id |
+| \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | middleField |
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="manyMany 多对多关联",
- *     path="orm/manymany",
- *     zh-CN:description="
- * 多对多的关联是一种常用的关联，比如用户与角色属于多对多的关系。
- *
- * **多对多关联支持类型关联项**
- *
- * |  关联项   | 说明  |    例子   |
- * |  ----  | ----  | ----  |
- * | \Leevel\Database\Ddd\Entity::MANY_MANY  | 多对多关联实体 |  \Tests\Database\Ddd\Entity\Relation\Role::class  |
- * | \Leevel\Database\Ddd\Entity::MIDDLE_ENTITY  | 关联查询中间实体 |  \Tests\Database\Ddd\Entity\Relation\UserRole::class  |
- * | \Leevel\Database\Ddd\Entity::SOURCE_KEY  | 关联查询源键字段 | user_id |
- * | \Leevel\Database\Ddd\Entity::TARGET_KEY  | 关联目标键字段 | id |
- * | \Leevel\Database\Ddd\Entity::MIDDLE_SOURCE_KEY  | 关联查询中间实体源键字段 | id |
- * | \Leevel\Database\Ddd\Entity::MIDDLE_TARGET_KEY  | 关联查询中间实体目标键字段 | id |
- * | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | middleField |
- * ",
- * )
- *
  * @internal
  */
 final class ManyManyTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\Relation\User**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\UserRole**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\Role**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\Relation\User**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\UserRole**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRole::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\Role**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\Role::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -181,13 +177,9 @@ final class ManyManyTest extends TestCase
         static::assertSame(3, $middle->roleId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="eager 预加载关联",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'eager 预加载关联',
+    ])]
     public function testEager(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -304,13 +296,9 @@ final class ManyManyTest extends TestCase
         static::assertSame(3, $middle->roleId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="eager 预加载关联支持查询条件过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤',
+    ])]
     public function testEagerWithCondition(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -416,13 +404,9 @@ final class ManyManyTest extends TestCase
         static::assertCount(0, $role);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="relation 读取关联",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'relation 读取关联',
+    ])]
     public function testRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -541,13 +525,9 @@ final class ManyManyTest extends TestCase
         static::assertCount(0, $role);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="relation 关联模型数据不存在返回空集合",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'relation 关联模型数据不存在返回空集合',
+    ])]
     public function testRelationDataWasNotFound(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -797,33 +777,30 @@ final class ManyManyTest extends TestCase
         $user->manyMany(Role::class, UserRole::class, 'id', 'id', 'not_found_middle_target_key', 'user_id');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="关联软删除",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Database\Ddd\Entity\Relation\User**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted::class)]}
-     * ```
-     *
-     * **Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '关联软删除',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\Relation\User**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\User::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted::class)]}
+```
+
+**Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\Relation\RoleSoftDeleted::class)]}
+```
+EOT,
+    ])]
     public function testSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1073,21 +1050,18 @@ eot;
         static::assertSame(1, $middle->roleId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="middleWithSoftDeleted 中间实体包含软删除数据的数据库查询集合对象",
-     *     zh-CN:description="
-     * 通过关联作用域来设置中间实体包含软删除数据的数据库查询集合对象。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeWithSoftDeleted')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleWithSoftDeleted 中间实体包含软删除数据的数据库查询集合对象',
+        'zh-CN:description' => <<<'EOT'
+通过关联作用域来设置中间实体包含软删除数据的数据库查询集合对象。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeWithSoftDeleted')]}
+```
+EOT,
+    ])]
     public function testWithMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1220,21 +1194,18 @@ eot;
         static::assertSame(3, $middle->roleId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="middleOnlySoftDeleted 中间实体仅仅包含软删除数据的数据库查询集合对象",
-     *     zh-CN:description="
-     * 通过关联作用域来设置中间实体仅仅包含软删除数据的数据库查询集合对象。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeOnlySoftDeleted')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleOnlySoftDeleted 中间实体仅仅包含软删除数据的数据库查询集合对象',
+        'zh-CN:description' => <<<'EOT'
+通过关联作用域来设置中间实体仅仅包含软删除数据的数据库查询集合对象。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeOnlySoftDeleted')]}
+```
+EOT,
+    ])]
     public function testOnlyMiddleSoftDeletedAndMiddleEntityHasSoftDeleted(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1356,21 +1327,18 @@ eot;
         static::assertSame(3, $middle->roleId);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="middleOnlySoftDeleted.middleField.where 组合条件查询例子",
-     *     zh-CN:description="
-     * 通过关联作用域来设置组合查询条件。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleOnlySoftDeleted.middleField.where 组合条件查询例子',
+        'zh-CN:description' => <<<'EOT'
+通过关联作用域来设置组合查询条件。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition')]}
+```
+EOT,
+    ])]
     public function testMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition(): void
     {
         $user = User::select()->where('id', 1)->findOne();
@@ -1496,21 +1464,18 @@ eot;
         $user->roleRelationScopeFoundButPrivate;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="middleField 中间实体查询字段",
-     *     zh-CN:description="
-     * 通过关联作用域来设置中间实体查询字段。
-     *
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleField')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleField 中间实体查询字段',
+        'zh-CN:description' => <<<'EOT'
+通过关联作用域来设置中间实体查询字段。
+
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database\Ddd\Entity\Relation\User::class, 'relationScopeMiddleField')]}
+```
+EOT,
+    ])]
     public function testMiddleField(): void
     {
         $user = User::select()->where('id', 1)->findOne();

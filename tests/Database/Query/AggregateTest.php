@@ -7,37 +7,35 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.aggregate',
+    'zh-CN:title' => '查询语言.aggregate',
+    'path' => 'database/query/aggregate',
+    'zh-CN:description' => <<<'EOT'
+数据库聚合查询功能。
+EOT,
+])]
 /**
- * @api(
- *     title="Query lang.aggregate",
- *     zh-CN:title="查询语言.aggregate",
- *     path="database/query/aggregate",
- *     zh-CN:description="数据库聚合查询功能。",
- * )
- *
  * @internal
  */
 final class AggregateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="记录数量 count",
-     *     zh-CN:description="
-     * 计算记录数量。
-     *
-     * `函数原型`
-     *
-     * ``` php
-     * public function findCount(string $field = '*', string $alias = 'row_count');
-     * ```
-     *
-     * ::: tip
-     * 可使用 `findCount()` 或者 `count()->find()` 来统计记录行。
-     * :::
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '记录数量 count',
+        'zh-CN:description' => <<<'EOT'
+计算记录数量。
+
+`函数原型`
+
+``` php
+public function findCount(string $field = '*', string $alias = 'row_count');
+```
+
+::: tip
+可使用 `findCount()` 或者 `count()->find()` 来统计记录行。
+:::
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -122,13 +120,12 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="平均值 avg",
-     *     zh-CN:description="计算平均值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '平均值 avg',
+        'zh-CN:description' => <<<'EOT'
+计算平均值。
+EOT,
+    ])]
     public function testAvg(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -153,13 +150,12 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="最大值 max",
-     *     zh-CN:description="计算最大值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '最大值 max',
+        'zh-CN:description' => <<<'EOT'
+计算最大值。
+EOT,
+    ])]
     public function testMax(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -184,13 +180,12 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="最小值 min",
-     *     zh-CN:description="计算最小值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '最小值 min',
+        'zh-CN:description' => <<<'EOT'
+计算最小值。
+EOT,
+    ])]
     public function testMin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -215,13 +210,12 @@ final class AggregateTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="合计 sum",
-     *     zh-CN:description="计算合计。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '合计 sum',
+        'zh-CN:description' => <<<'EOT'
+计算合计。
+EOT,
+    ])]
     public function testSum(): void
     {
         $connect = $this->createDatabaseConnectMock();

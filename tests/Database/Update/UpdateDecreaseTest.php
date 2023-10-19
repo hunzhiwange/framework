@@ -7,24 +7,21 @@ namespace Tests\Database\Update;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '更新字段递减.updateDecrease',
+    'path' => 'database/update/updatedecrease',
+])]
 /**
- * @api(
- *     zh-CN:title="更新字段递减.updateDecrease",
- *     path="database/update/updatedecrease",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class UpdateDecreaseTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="updateDecrease 基本用法",
-     *     zh-CN:description="更新成功后，返回影响行数，`updateDecrease` 实际上调用的是 `updateColumn` 方法。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateDecrease 基本用法',
+        'zh-CN:description' => <<<'EOT'
+更新成功后，返回影响行数，`updateDecrease` 实际上调用的是 `updateColumn` 方法。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -53,13 +50,9 @@ final class UpdateDecreaseTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="updateDecrease 支持参数绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateDecrease 支持参数绑定',
+    ])]
     public function testBind(): void
     {
         $connect = $this->createDatabaseConnectMock();

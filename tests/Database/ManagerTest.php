@@ -6,35 +6,33 @@ namespace Tests\Database;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '数据库配置',
+    'path' => 'database/config',
+    'zh-CN:description' => <<<'EOT'
+我们可以在 `option/database.php` 文件中定义数据库连接。
+EOT,
+])]
 /**
- * @api(
- *     zh-CN:title="数据库配置",
- *     path="database/config",
- *     zh-CN:description="我们可以在 `option/database.php` 文件中定义数据库连接。",
- * )
- *
  * @internal
  */
 final class ManagerTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本配置",
-     *     zh-CN:description="
-     * 数据库配置基本定义功能展示。
-     *
-     * `数据库配置`
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database::class, 'createDatabaseManager')]}
-     * ```
-     *
-     * 请使用这样的格式来定义连接，系统会自动帮你访问数据库。
-     * 系统底层实质上会使用 `\Leevel\Option\Option` 来管理配置信息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本配置',
+        'zh-CN:description' => <<<'EOT'
+数据库配置基本定义功能展示。
+
+`数据库配置`
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Database::class, 'createDatabaseManager')]}
+```
+
+请使用这样的格式来定义连接，系统会自动帮你访问数据库。
+系统底层实质上会使用 `\Leevel\Option\Option` 来管理配置信息。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $manager = $this->createDatabaseManager();
@@ -57,17 +55,14 @@ final class ManagerTest extends TestCase
         static::assertSame('I love movie.', $result->content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据库主从设置",
-     *     zh-CN:description="
-     * QueryPHP 允许用户一个主数据库作为写入、更新以及删除,外加多个附属从数据库作为只读数据库来共同提供数据库服务。
-     * 多个数据库需要需要开启 `distributed`，而 `separate` 主要用于读写分离。
-     * `master` 为主数据库，`slave` 为附属从数据库设置。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据库主从设置',
+        'zh-CN:description' => <<<'EOT'
+QueryPHP 允许用户一个主数据库作为写入、更新以及删除,外加多个附属从数据库作为只读数据库来共同提供数据库服务。
+多个数据库需要需要开启 `distributed`，而 `separate` 主要用于读写分离。
+`master` 为主数据库，`slave` 为附属从数据库设置。
+EOT,
+    ])]
     public function testParseDatabaseOptionDistributedIsTrue(): void
     {
         $manager = $this->createDatabaseManager();
@@ -144,13 +139,12 @@ final class ManagerTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="附属从数据库支持二维数组",
-     *     zh-CN:description="从数据库支持多个，支持二维数组",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '附属从数据库支持二维数组',
+        'zh-CN:description' => <<<'EOT'
+从数据库支持多个，支持二维数组
+EOT,
+    ])]
     public function testParseDatabaseOptionDistributedIsTrueWithTwoDimensionalArray(): void
     {
         $manager = $this->createDatabaseManager();
@@ -246,13 +240,12 @@ final class ManagerTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据库设置只支持数组",
-     *     zh-CN:description="数据库主从连接只支持数组。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据库设置只支持数组',
+        'zh-CN:description' => <<<'EOT'
+数据库主从连接只支持数组。
+EOT,
+    ])]
     public function testParseDatabaseOptionMasterAndSlaveMustBeAnArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);

@@ -6,25 +6,19 @@ namespace Tests\Database\Query;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.whereDate',
+    'zh-CN:title' => '查询语言.whereDate',
+    'path' => 'database/query/wheredate',
+])]
 /**
- * @api(
- *     title="Query lang.whereDate",
- *     zh-CN:title="查询语言.whereDate",
- *     path="database/query/wheredate",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class TimeTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="whereDate 时间查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereDate 时间查询',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -59,13 +53,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereDay 时间查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereDay 时间查询',
+    ])]
     public function testWhereDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -249,13 +239,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereMonth 时间查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereMonth 时间查询',
+    ])]
     public function testWhereMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -361,13 +347,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="whereYear 时间查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'whereYear 时间查询',
+    ])]
     public function testWhereYear(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -470,13 +452,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="time().where.endTime 时间查询，等价于 whereDate",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'time().where.endTime 时间查询，等价于 whereDate',
+    ])]
     public function testTime(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -513,13 +491,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="time(date).where.endTime 时间查询，等价于 whereDate",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'time(date).where.endTime 时间查询，等价于 whereDate',
+    ])]
     public function testTimeDateIsDefault(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -556,13 +530,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="time(day).where.endTime 时间查询，等价于 whereDay",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'time(day).where.endTime 时间查询，等价于 whereDay',
+    ])]
     public function testTimeDay(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -600,13 +570,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="time(month).where.endTime 时间查询，等价于 whereMonth",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'time(month).where.endTime 时间查询，等价于 whereMonth',
+    ])]
     public function testTimeMonth(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -644,13 +610,9 @@ final class TimeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="time(year).where.endTime 时间查询，等价于 whereYear",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'time(year).where.endTime 时间查询，等价于 whereYear',
+    ])]
     public function testTimeYear(): void
     {
         $connect = $this->createDatabaseConnectMock();

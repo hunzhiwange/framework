@@ -6,24 +6,21 @@ namespace Tests\Database\Delete;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '清空数据.truncate',
+    'path' => 'database/delete/truncate',
+])]
 /**
- * @api(
- *     zh-CN:title="清空数据.truncate",
- *     path="database/delete/truncate",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class TruncateTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="truncate 基本用法",
-     *     zh-CN:description="清理没有返回值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'truncate 基本用法',
+        'zh-CN:description' => <<<'EOT'
+清理没有返回值。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();

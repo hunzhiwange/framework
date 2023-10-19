@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询数据.select',
+    'path' => 'database/read/select',
+])]
 /**
- * @api(
- *     zh-CN:title="查询数据.select",
- *     path="database/read/select",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class SelectTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="select 查询指定 SQL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 查询指定 SQL',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -48,13 +42,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="select 直接查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 直接查询',
+    ])]
     public function testSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -77,13 +67,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="select 查询支持闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 查询支持闭包',
+    ])]
     public function testSelectClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -112,13 +98,9 @@ final class SelectTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="select 查询支持 \Leevel\Database\Select 对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 查询支持 \Leevel\Database\Select 对象',
+    ])]
     public function testSelectObject(): void
     {
         $connect = $this->createDatabaseConnectMock();

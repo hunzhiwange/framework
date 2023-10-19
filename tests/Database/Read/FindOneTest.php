@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询单条数据.findOne',
+    'path' => 'database/read/findone',
+])]
 /**
- * @api(
- *     zh-CN:title="查询单条数据.findOne",
- *     path="database/read/findone",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class FindOneTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="findOne 查询单条数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'findOne 查询单条数据',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class FindOneTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="one.find 查询单条数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'one.find 查询单条数据',
+    ])]
     public function testOneFind(): void
     {
         $connect = $this->createDatabaseConnectMock();

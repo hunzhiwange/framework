@@ -7,34 +7,29 @@ namespace Tests\Database\Query;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'title' => 'Query lang.join',
+    'zh-CN:title' => '查询语言.join',
+    'path' => 'database/query/join',
+    'zh-CN:description' => <<<'EOT'
+## join 函数原型
+
+``` php
+join($table, $cols, ...$cond);
+```
+
+ - 其中 $table 和 $cols 与 《查询语言.table》中的用法一致。
+ - $cond 与《查询语言.where》中的用法一致。
+EOT,
+])]
 /**
- * @api(
- *     title="Query lang.join",
- *     zh-CN:title="查询语言.join",
- *     path="database/query/join",
- *     zh-CN:description="
- * ## join 函数原型
- *
- * ``` php
- * join($table, $cols, ...$cond);
- * ```
- *
- *  - 其中 $table 和 $cols 与 《查询语言.table》中的用法一致。
- *  - $cond 与《查询语言.where》中的用法一致。
- * ",
- * )
- *
  * @internal
  */
 final class JoinTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="join 基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -91,13 +86,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 附加条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 附加条件',
+    ])]
     public function testWithCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -127,13 +118,12 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 附加条件支持数组和表达式",
-     *     zh-CN:description="实质上 where 支持语法特性都支持。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 附加条件支持数组和表达式',
+        'zh-CN:description' => <<<'EOT'
+实质上 where 支持语法特性都支持。
+EOT,
+    ])]
     public function testWithConditionSupportArrayAndExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -163,13 +153,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 附加条件支持闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 附加条件支持闭包',
+    ])]
     public function testWithConditionIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -207,13 +193,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="innerJoin 查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'innerJoin 查询',
+    ])]
     public function testInnerJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -242,13 +224,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="leftJoin 查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'leftJoin 查询',
+    ])]
     public function testLeftJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -277,13 +255,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="rightJoin 查询",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'rightJoin 查询',
+    ])]
     public function testRightJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -312,13 +286,12 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="crossJoin 查询",
-     *     zh-CN:description="自然连接不用设置 on 条件。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'crossJoin 查询',
+        'zh-CN:description' => <<<'EOT'
+自然连接不用设置 on 条件。
+EOT,
+    ])]
     public function testCrossJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -343,13 +316,12 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="naturalJoin 查询",
-     *     zh-CN:description="自然连接不用设置 on 条件。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'naturalJoin 查询',
+        'zh-CN:description' => <<<'EOT'
+自然连接不用设置 on 条件。
+EOT,
+    ])]
     public function testNaturalJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -780,13 +752,9 @@ final class JoinTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持查询对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持查询对象',
+    ])]
     public function testInnerJoinWithTableIsSelect(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -817,13 +785,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持查询条件对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持查询条件对象',
+    ])]
     public function testInnerJoinWithTableIsCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -857,13 +821,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持闭包',
+    ])]
     public function testInnerJoinWithTableIsClosure(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -894,13 +854,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持数组别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持数组别名',
+    ])]
     public function testInnerJoinWithTableIsArrayCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -955,13 +911,9 @@ final class JoinTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持表达式',
+    ])]
     public function testInnerJsonWithTableNameIsExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -986,13 +938,9 @@ final class JoinTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="join 查询支持表支持表达式别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'join 查询支持表支持表达式别名',
+    ])]
     public function testInnerJsonWithTableNameIsExpressionWithAsCustomAlias(): void
     {
         $connect = $this->createDatabaseConnectMock();

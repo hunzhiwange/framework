@@ -7,24 +7,21 @@ namespace Tests\Database\Delete;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '删除数据.delete',
+    'path' => 'database/delete/delete',
+])]
 /**
- * @api(
- *     zh-CN:title="删除数据.delete",
- *     path="database/delete/delete",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class DeleteTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="delete 基本用法",
-     *     zh-CN:description="删除成功后，返回影响行数。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 基本用法',
+        'zh-CN:description' => <<<'EOT'
+删除成功后，返回影响行数。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -54,13 +51,12 @@ final class DeleteTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 不带条件的删除",
-     *     zh-CN:description="删除成功后，返回影响行数。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 不带条件的删除',
+        'zh-CN:description' => <<<'EOT'
+删除成功后，返回影响行数。
+EOT,
+    ])]
     public function testWithoutCondition(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -83,13 +79,9 @@ final class DeleteTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete.join 连表删除",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete.join 连表删除',
+    ])]
     public function testJoin(): void
     {
         $connect = $this->createDatabaseConnectMock();

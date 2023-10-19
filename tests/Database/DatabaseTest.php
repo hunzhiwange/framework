@@ -9,17 +9,14 @@ use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
 use Leevel\Filesystem\Helper;
-use PDO;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
 
+#[Api([
+    'zh-CN:title' => '数据库连接',
+    'path' => 'database/database',
+])]
 /**
- * @api(
- *     zh-CN:title="数据库连接",
- *     path="database/database",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class DatabaseTest extends TestCase
@@ -34,13 +31,9 @@ final class DatabaseTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -121,13 +114,9 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData->create_at);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="query 查询数据记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'query 查询数据记录',
+    ])]
     public function testQuery(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -170,21 +159,18 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="query 查询数据记录支持缓存",
-     *     zh-CN:description="
-     * `query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
-     *
-     * **query 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'query 查询数据记录支持缓存',
+        'zh-CN:description' => <<<'EOT'
+`query` 是一个底层查询方法支持直接设置缓存，实际上其它的查询都会走这个 `query` 查询方法。
+
+**query 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'query', 'define')]}
+```
+EOT,
+    ])]
     public function testQueryCache(): void
     {
         $manager = $this->createDatabaseManager();
@@ -260,13 +246,9 @@ final class DatabaseTest extends TestCase
         $connect->query('select * from guest_book where id_not_found=?', [1]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="execute 执行 SQL 语句",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'execute 执行 SQL 语句',
+    ])]
     public function testExecute(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -325,21 +307,18 @@ final class DatabaseTest extends TestCase
         static::assertSame(0, $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cursor 游标查询",
-     *     zh-CN:description="
-     * `cursor` 游标查询可以节省内存。
-     *
-     * **cursor 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'cursor', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cursor 游标查询',
+        'zh-CN:description' => <<<'EOT'
+`cursor` 游标查询可以节省内存。
+
+**cursor 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'cursor', 'define')]}
+```
+EOT,
+    ])]
     public function testCursor(): void
     {
         $manager = $this->createDatabaseManager();
@@ -364,13 +343,9 @@ final class DatabaseTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="select 原生 SQL 查询数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 原生 SQL 查询数据',
+    ])]
     public function testSelect(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -393,13 +368,9 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="select 原生 SQL 查询数据支持参数绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'select 原生 SQL 查询数据支持参数绑定',
+    ])]
     public function testSelectWithBind(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -422,13 +393,9 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="insert 插入数据 insert (支持原生 SQL)",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'insert 插入数据 insert (支持原生 SQL)',
+    ])]
     public function testInsert(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -444,13 +411,9 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="update 更新数据 update (支持原生 SQL)",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'update 更新数据 update (支持原生 SQL)',
+    ])]
     public function testUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -476,13 +439,9 @@ final class DatabaseTest extends TestCase
         static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 删除数据 delete (支持原生 SQL)",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 删除数据 delete (支持原生 SQL)',
+    ])]
     public function testDelete(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -501,13 +460,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="transaction 执行数据库事务",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'transaction 执行数据库事务',
+    ])]
     public function testTransaction(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -544,13 +499,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="transaction 执行数据库事务回滚例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'transaction 执行数据库事务回滚例子',
+    ])]
     public function testTransactionRollback(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -588,13 +539,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'beginTransaction.commit 启动事务和用于非自动提交状态下面的查询提交',
+    ])]
     public function testTransactionByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -625,13 +572,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="beginTransaction.rollBack 启动事务和事务回滚",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'beginTransaction.rollBack 启动事务和事务回滚',
+    ])]
     public function testTransactionRollbackByCustom(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -677,13 +620,9 @@ final class DatabaseTest extends TestCase
         static::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="procedure 查询存储过程数据记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'procedure 查询存储过程数据记录',
+    ])]
     public function testCallProcedure(): void
     {
         static::markTestSkipped('Skip procedure.');
@@ -727,13 +666,9 @@ final class DatabaseTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="procedure 查询存储过程数据记录支持参数绑定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'procedure 查询存储过程数据记录支持参数绑定',
+    ])]
     public function testCallProcedure2(): void
     {
         static::markTestSkipped('Skip procedure.');
@@ -776,13 +711,9 @@ final class DatabaseTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="查询存储过程数据支持原生方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '查询存储过程数据支持原生方法',
+    ])]
     public function testCallProcedure3(): void
     {
         static::markTestSkipped('Skip procedure.');
@@ -832,21 +763,18 @@ final class DatabaseTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="查询存储过程数据支持缓存",
-     *     zh-CN:description="
-     * `procedure` 是一个底层查询方法支持直接设置缓存。
-     *
-     * **procedure 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '查询存储过程数据支持缓存',
+        'zh-CN:description' => <<<'EOT'
+`procedure` 是一个底层查询方法支持直接设置缓存。
+
+**procedure 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'procedure', 'define')]}
+```
+EOT,
+    ])]
     public function testCacheProcedure(): void
     {
         static::markTestSkipped('Skip procedure.');
@@ -922,13 +850,9 @@ final class DatabaseTest extends TestCase
         $connect->procedure('CALL test_procedure(0)', [], false, 'testcachekey');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="pdo 返回 PDO 查询连接",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'pdo 返回 PDO 查询连接',
+    ])]
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -953,14 +877,11 @@ final class DatabaseTest extends TestCase
     }
 
     /**
-     * @api(
-     *     zh-CN:title="setSavepoints 设置是否启用部分事务回滚保存点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     *
      * @group ignoredGroup
      */
+    #[Api([
+        'zh-CN:title' => 'setSavepoints 设置是否启用部分事务回滚保存点',
+    ])]
     public function testBeginTransactionWithCreateSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1020,14 +941,11 @@ final class DatabaseTest extends TestCase
     }
 
     /**
-     * @api(
-     *     zh-CN:title="setSavepoints 设置是否启用部分事务提交保存点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     *
      * @group ignoredGroup
      */
+    #[Api([
+        'zh-CN:title' => 'setSavepoints 设置是否启用部分事务提交保存点',
+    ])]
     public function testCommitWithReleaseSavepoint(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1079,13 +997,9 @@ final class DatabaseTest extends TestCase
         $connect->rollBack();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="numRows 返回影响记录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'numRows 返回影响记录',
+    ])]
     public function testNumRows(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1116,15 +1030,12 @@ final class DatabaseTest extends TestCase
         static::assertSame(1, $connect->numRows());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据库主从",
-     *     zh-CN:description="
-     * 数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据库主从',
+        'zh-CN:description' => <<<'EOT'
+数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
+EOT,
+    ])]
     public function testReadConnectDistributed(): void
     {
         $connect = $this->createDatabaseConnectMock([
@@ -1252,15 +1163,12 @@ final class DatabaseTest extends TestCase
         $connect->close();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据库读写分离",
-     *     zh-CN:description="
-     * 数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据库读写分离',
+        'zh-CN:description' => <<<'EOT'
+数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
+EOT,
+    ])]
     public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
     {
         $connect = $this->createDatabaseConnectMock([
@@ -1447,26 +1355,18 @@ final class DatabaseTest extends TestCase
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="databaseSelect 返回查询对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'databaseSelect 返回查询对象',
+    ])]
     public function testDatabaseSelectIsNotInit(): void
     {
         $connect = $this->createDatabaseConnect();
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getTableNames 取得数据库表名列表",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getTableNames 取得数据库表名列表',
+    ])]
     public function testGetTableNames(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1474,13 +1374,9 @@ final class DatabaseTest extends TestCase
         static::assertTrue(\in_array('guest_book', $result, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getTableColumns 取得数据库表字段信息",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getTableColumns 取得数据库表字段信息',
+    ])]
     public function testGetTableColumns(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1612,13 +1508,9 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getUniqueIndex 取得数据库表唯一索引信息",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getUniqueIndex 取得数据库表唯一索引信息',
+    ])]
     public function testGetUniqueIndex(): void
     {
         $connect = $this->createDatabaseConnect();
@@ -1649,21 +1541,18 @@ eot;
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getRawSql 游标查询",
-     *     zh-CN:description="
-     * `getRawSql` 返回原生查询真实 SQL，以便于更加直观。
-     *
-     * **getRawSql 原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'getRawSql', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getRawSql 游标查询',
+        'zh-CN:description' => <<<'EOT'
+`getRawSql` 返回原生查询真实 SQL，以便于更加直观。
+
+**getRawSql 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Database\Database::class, 'getRawSql', 'define')]}
+```
+EOT,
+    ])]
     public function testGetRawSql(): void
     {
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [

@@ -10,31 +10,26 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Query\Database\Demo;
 use Tests\Database\Query\Database\ForceMaster;
 
+#[Api([
+    'title' => 'Query lang.middleware',
+    'zh-CN:title' => '查询语言.middleware',
+    'path' => 'database/query/middleware',
+])]
 /**
- * @api(
- *     title="Query lang.middleware",
- *     zh-CN:title="查询语言.middleware",
- *     path="database/query/middleware",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class MiddlewareTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="middleware 基础用法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Query\Database\ForceMaster::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleware 基础用法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Query\Database\ForceMaster::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -65,19 +60,16 @@ final class MiddlewareTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="middleware 支持参数传递",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Query\Database\Demo::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'middleware 支持参数传递',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Query\Database\Demo::class)]}
+```
+EOT,
+    ])]
     public function testBaseUseWithArgs(): void
     {
         $connect = $this->createDatabaseConnectMock();

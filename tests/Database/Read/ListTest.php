@@ -6,24 +6,18 @@ namespace Tests\Database\Read;
 
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '查询一列数据.list',
+    'path' => 'database/read/list',
+])]
 /**
- * @api(
- *     zh-CN:title="查询一列数据.list",
- *     path="database/read/list",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class ListTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="list 查询基础用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 查询基础用法',
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -45,13 +39,9 @@ final class ListTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 查询字段逗号分隔",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 查询字段逗号分隔',
+    ])]
     public function testStringByCommaSeparation(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -74,13 +64,9 @@ final class ListTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 查询字段多个字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 查询字段多个字符串',
+    ])]
     public function testMoreString(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -103,13 +89,9 @@ final class ListTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 查询字段数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 查询字段数组',
+    ])]
     public function testArray(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -132,13 +114,9 @@ final class ListTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="list 查询字段数组和字符串混合",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'list 查询字段数组和字符串混合',
+    ])]
     public function testArrayAndString(): void
     {
         $connect = $this->createDatabaseConnectMock();

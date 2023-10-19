@@ -7,24 +7,21 @@ namespace Tests\Database\Update;
 use Leevel\Database\Condition;
 use Tests\Database\DatabaseTestCase as TestCase;
 
+#[Api([
+    'zh-CN:title' => '更新字段.updateColumn',
+    'path' => 'database/update/updatecolumn',
+])]
 /**
- * @api(
- *     zh-CN:title="更新字段.updateColumn",
- *     path="database/update/updatecolumn",
- *     zh-CN:description="",
- * )
- *
  * @internal
  */
 final class UpdateColumnTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="updateColumn 基本用法",
-     *     zh-CN:description="更新成功后，返回影响行数，`updateColumn` 实际上调用的是 `update` 方法。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateColumn 基本用法',
+        'zh-CN:description' => <<<'EOT'
+更新成功后，返回影响行数，`updateColumn` 实际上调用的是 `update` 方法。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -55,13 +52,9 @@ final class UpdateColumnTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="updateColumn 支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'updateColumn 支持表达式',
+    ])]
     public function testExpression(): void
     {
         $connect = $this->createDatabaseConnectMock();
