@@ -552,6 +552,7 @@ class Doc
         $content = str_replace($singleQuote = '\'', $singleQuoteEncoded = base64_encode('single-quote'), $content);
         $content = addslashes($content);
         $content = str_replace($singleQuoteEncoded, $singleQuote, $content);
+        $content = str_replace('$', '\$', $content);
 
         if (!empty($matches)) {
             foreach ($matches[1] as $tmp) {
