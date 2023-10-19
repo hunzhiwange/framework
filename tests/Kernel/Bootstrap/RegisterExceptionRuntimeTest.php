@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Bootstrap;
 
-use Error;
-use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;

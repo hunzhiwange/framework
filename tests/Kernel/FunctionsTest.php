@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Kernel;
 
 use App as Apps;
-use Leevel;
 use Leevel\Di\Container;
 use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
