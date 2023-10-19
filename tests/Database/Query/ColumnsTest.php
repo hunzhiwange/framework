@@ -12,9 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.columns',
     'path' => 'database/query/columns',
 ])]
-/**
- * @internal
- */
 final class ColumnsTest extends TestCase
 {
     #[Api([

@@ -18,9 +18,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '数据库查询',
     'path' => 'database/select',
 ])]
-/**
- * @internal
- */
 final class SelectTest extends TestCase
 {
     protected function tearDown(): void

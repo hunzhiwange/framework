@@ -12,9 +12,6 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class LinkAttachmentsTest extends TestCase
 {
     use BaseCommand;

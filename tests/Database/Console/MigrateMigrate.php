@@ -10,9 +10,6 @@ use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class MigrateMigrate extends TestCase
 {
     use BaseCommand;

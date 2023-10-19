@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.prefix',
     'path' => 'database/query/prefix',
 ])]
-/**
- * @internal
- */
 final class PrefixTest extends TestCase
 {
     #[Api([

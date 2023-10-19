@@ -6,26 +6,20 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="For 循环",
- *     path="template/for",
- *     zh-CN:description="如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'For 循环',
+    'path' => 'template/for',
+    'zh-CN:description' => <<<'EOT'
+如果我们需要在模板中使用 for 循环，那么通过 for 标签可以很方便地输出。
+EOT,
+])]
 final class CompilerForTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="node 简单版",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'node 简单版',
+    ])]
     public function testForNode(): void
     {
         $parser = $this->createParser();
@@ -45,13 +39,9 @@ final class CompilerForTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="node 完整版",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'node 完整版',
+    ])]
     public function testForNode2(): void
     {
         $parser = $this->createParser();

@@ -28,9 +28,6 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | foo |
 EOT,
 ])]
-/**
- * @internal
- */
 final class HasOneTest extends TestCase
 {
     #[Api([

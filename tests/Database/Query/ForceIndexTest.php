@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.forceIndex',
     'path' => 'database/query/forceindex',
 ])]
-/**
- * @internal
- */
 final class ForceIndexTest extends TestCase
 {
     #[Api([

@@ -9,58 +9,51 @@ use Leevel\Event\Dispatch;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="事件",
- *     path="architecture/event",
- *     zh-CN:description="
- * QueryPHP 提供了一个事件组件 `\Leevel\Event\Dispatch` 对象。
- *
- * 事件适合一些业务后续处理的扩展，比如提交订单的后续通知消息接入，不但提高了可扩展性，而且还降低了系统的耦合性。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '事件',
+    'path' => 'architecture/event',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了一个事件组件 `\Leevel\Event\Dispatch` 对象。
+
+事件适合一些业务后续处理的扩展，比如提交订单的后续通知消息接入，不但提高了可扩展性，而且还降低了系统的耦合性。
+EOT,
+])]
 final class DispatchTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="事件基本使用",
-     *     zh-CN:description="
-     * 事件系统使用 `register` 注册监听器，`handle` 会执行一个事件。
-     *
-     * **register 函数原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'register', 'define')]}
-     * ```
-     *
-     * **handle 函数原型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'handle', 'define')]}
-     * ```
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\Listener1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener1::class)]}
-     * ```
-     *
-     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
-     *
-     * **Tests\Event\Listener**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '事件基本使用',
+        'zh-CN:description' => <<<'EOT'
+事件系统使用 `register` 注册监听器，`handle` 会执行一个事件。
+
+**register 函数原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'register', 'define')]}
+```
+
+**handle 函数原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Event\Dispatch::class, 'handle', 'define')]}
+```
+
+**fixture 定义**
+
+**Tests\Event\Listener1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener1::class)]}
+```
+
+一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+
+**Tests\Event\Listener**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         if (isset($_SERVER['test'])) {
@@ -81,23 +74,20 @@ final class DispatchTest extends TestCase
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register 注册监听器支持监听器对象实例",
-     *     zh-CN:description="
-     * 第二个参数 `$listener` 支持传递对象实例。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\Listener2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register 注册监听器支持监听器对象实例',
+        'zh-CN:description' => <<<'EOT'
+第二个参数 `$listener` 支持传递对象实例。
+
+**fixture 定义**
+
+**Tests\Event\Listener2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener2::class)]}
+```
+EOT,
+    ])]
     public function testListenerInstance(): void
     {
         if (isset($_SERVER['test'])) {
@@ -113,29 +103,26 @@ final class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register 注册监听器支持事件对象实例",
-     *     zh-CN:description="
-     * 第一个参数 `$event` 支持传递对象实例。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\Event1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Event1::class)]}
-     * ```
-     *
-     * **Tests\Event\Listener3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener3::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register 注册监听器支持事件对象实例',
+        'zh-CN:description' => <<<'EOT'
+第一个参数 `$event` 支持传递对象实例。
+
+**fixture 定义**
+
+**Tests\Event\Event1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Event1::class)]}
+```
+
+**Tests\Event\Listener3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener3::class)]}
+```
+EOT,
+    ])]
     public function testEventInstance(): void
     {
         if (isset($_SERVER['test'])) {
@@ -151,13 +138,9 @@ final class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register 注册监听器支持同时为多个事件绑定监听器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register 注册监听器支持同时为多个事件绑定监听器',
+    ])]
     public function testEventAsArray(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -170,29 +153,26 @@ final class DispatchTest extends TestCase
         unset($_SERVER['test']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register 注册监听器支持优先级",
-     *     zh-CN:description="
-     * 第三个参数 `$priority` 表示注册的监听器的优先级，越小越靠前执行，默认为 500。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\Listener4**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener4::class)]}
-     * ```
-     *
-     * **Tests\Event\Listener5**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener5::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register 注册监听器支持优先级',
+        'zh-CN:description' => <<<'EOT'
+第三个参数 `$priority` 表示注册的监听器的优先级，越小越靠前执行，默认为 500。
+
+**fixture 定义**
+
+**Tests\Event\Listener4**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener4::class)]}
+```
+
+**Tests\Event\Listener5**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\Listener5::class)]}
+```
+EOT,
+    ])]
     public function testPriority(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -219,23 +199,20 @@ final class DispatchTest extends TestCase
         static::assertNull($dispatch->handle('notFound'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register 注册监听器支持事件通配符",
-     *     zh-CN:description="
-     * `*` 表示通配符事件，匹配的事件会执行对应的监听器。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\WildcardsListener**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\WildcardsListener::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register 注册监听器支持事件通配符',
+        'zh-CN:description' => <<<'EOT'
+`*` 表示通配符事件，匹配的事件会执行对应的监听器。
+
+**fixture 定义**
+
+**Tests\Event\WildcardsListener**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\WildcardsListener::class)]}
+```
+EOT,
+    ])]
     public function testWildcards(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -256,21 +233,18 @@ final class DispatchTest extends TestCase
         unset($_SERVER['wildcard']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 删除事件所有监听器",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Event\ForRemoveListener**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ForRemoveListener::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 删除事件所有监听器',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Event\ForRemoveListener**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ForRemoveListener::class)]}
+```
+EOT,
+    ])]
     public function testDeleteListeners(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -286,13 +260,9 @@ final class DispatchTest extends TestCase
         static::assertFalse(isset($_SERVER['remove']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete 删除通配符事件所有监听器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete 删除通配符事件所有监听器',
+    ])]
     public function testDeleteWildcardListeners(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -308,13 +278,9 @@ final class DispatchTest extends TestCase
         static::assertFalse(isset($_SERVER['wildcard']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="has 判断事件监听器是否存在",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'has 判断事件监听器是否存在',
+    ])]
     public function testHas(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -328,21 +294,18 @@ final class DispatchTest extends TestCase
         static::assertTrue($dispatch->has('testevent'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="独立类监听器必须包含 handle 方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Event\ListenerWithoutRunOrHandleMethod**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerWithoutRunOrHandleMethod::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '独立类监听器必须包含 handle 方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Event\ListenerWithoutRunOrHandleMethod**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerWithoutRunOrHandleMethod::class)]}
+```
+EOT,
+    ])]
     public function testListenerWithoutRunOrHandleMethod(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -367,25 +330,22 @@ final class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="独立类监听器自动转换为 \Leevel\Event\Observer",
-     *     zh-CN:description="
-     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
-     *
-     * 如果是未继承的独立类，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Event\ListenerNotExtends**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtends::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '独立类监听器自动转换为 \Leevel\Event\Observer',
+        'zh-CN:description' => <<<'EOT'
+一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+
+如果是未继承的独立类，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
+
+**fixture 定义**
+
+**Tests\Event\ListenerNotExtends**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtends::class)]}
+```
+EOT,
+    ])]
     public function testListenerNotInstanceofSplObserverWillAutoChange(): void
     {
         $dispatch = new Dispatch(new Container());
@@ -396,21 +356,18 @@ final class DispatchTest extends TestCase
         unset($_SERVER['autochange']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="独立类监听器必须包含 handle 方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Event\ListenerNotExtendsWithoutHandle**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtendsWithoutHandle::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '独立类监听器必须包含 handle 方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Event\ListenerNotExtendsWithoutHandle**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Event\ListenerNotExtendsWithoutHandle::class)]}
+```
+EOT,
+    ])]
     public function testListenerNotInstanceofSplObserverWithoutHandle(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -435,17 +392,14 @@ final class DispatchTest extends TestCase
         $dispatch->handle('testevent');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="监听器支持闭包",
-     *     zh-CN:description="
-     * 一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
-     *
-     * 如果是闭包，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '监听器支持闭包',
+        'zh-CN:description' => <<<'EOT'
+一般来说监听器需要继承至 `\Leevel\Event\Observer`，本质上事件使用的是观察者设计模式，而监听器是观察者角色。
+
+如果是闭包，系统会自动转换成 `\Leevel\Event\Observer` 而成为一个观察者角色。
+EOT,
+    ])]
     public function testListenerIsClosure(): void
     {
         $dispatch = new Dispatch(new Container());

@@ -10,71 +10,67 @@ use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Session",
- *     path="component/session",
- *     zh-CN:description="
- * QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。
- *
- * 内置支持的 session 驱动类型包括 file、redis，未来可能增加其他驱动。
- *
- * ## 使用方式
- *
- * 使用容器 sessions 服务
- *
- * ``` php
- * \App::make('sessions')->set(string $name, $value): void;
- * \App::make('sessions')->get(string $name, $defaults = null);
- * ```
- *
- * 依赖注入
- *
- * ``` php
- * class Demo
- * {
- *     private \Leevel\Session\Manager $session;
- *
- *     public function __construct(\Leevel\Session\Manager $session)
- *     {
- *         $this->session = $session;
- *     }
- * }
- * ```
- *
- * 使用静态代理
- *
- * ``` php
- * \Leevel\Session\Proxy\Session::set(string $name, $value): void;
- * \Leevel\Session\Proxy\Session::get(string $name, $value = null);
- * ```
- *
- * ## session 配置
- *
- * 系统的 session 配置位于应用下面的 `option/session.php` 文件。
- *
- * 可以定义多个缓存连接，并且支持切换，每一个连接支持驱动设置。
- *
- * ``` php
- * {[file_get_contents('option/session.php')]}
- * ```
- *
- * session 参数根据不同的连接会有所区别，通用的 sesion 参数如下：
- *
- * |配置项|配置描述|
- * |:-|:-|
- * |id|相当于 session_id|
- * |name|相当于 session_name|
- * |cookie_expire|COOKIE 过期时间|
- *
- * ::: warning 注意
- * QueryPHP 并没有使用 PHP 原生 SESSION，而是模拟原生 SESSION 自己实现的一套，使用方法与原生用法几乎一致。与原生 SESSION 不一样的是，QueryPHP 会在最后通过 session 中间件统一写入。
- * :::
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Session',
+    'path' => 'component/session',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。
+
+内置支持的 session 驱动类型包括 file、redis，未来可能增加其他驱动。
+
+## 使用方式
+
+使用容器 sessions 服务
+
+``` php
+\App::make('sessions')->set(string $name, $value): void;
+\App::make('sessions')->get(string $name, $defaults = null);
+```
+
+依赖注入
+
+``` php
+class Demo
+{
+    private \Leevel\Session\Manager $session;
+
+    public function __construct(\Leevel\Session\Manager $session)
+    {
+        $this->session = $session;
+    }
+}
+```
+
+使用静态代理
+
+``` php
+\Leevel\Session\Proxy\Session::set(string $name, $value): void;
+\Leevel\Session\Proxy\Session::get(string $name, $value = null);
+```
+
+## session 配置
+
+系统的 session 配置位于应用下面的 `option/session.php` 文件。
+
+可以定义多个缓存连接，并且支持切换，每一个连接支持驱动设置。
+
+``` php
+{[file_get_contents('option/session.php')]}
+```
+
+session 参数根据不同的连接会有所区别，通用的 sesion 参数如下：
+
+|配置项|配置描述|
+|:-|:-|
+|id|相当于 session_id|
+|name|相当于 session_name|
+|cookie_expire|COOKIE 过期时间|
+
+::: warning 注意
+QueryPHP 并没有使用 PHP 原生 SESSION，而是模拟原生 SESSION 自己实现的一套，使用方法与原生用法几乎一致。与原生 SESSION 不一样的是，QueryPHP 会在最后通过 session 中间件统一写入。
+:::
+EOT,
+])]
 final class SessionTest extends TestCase
 {
     protected function setUp(): void
@@ -90,33 +86,30 @@ final class SessionTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="session 基本使用",
-     *     zh-CN:description="
-     * session 的使用方法和原生差不多。
-     *
-     * **设置 session**
-     *
-     * ``` php
-     * set(string $name, $value): void;
-     * ```
-     *
-     * **是否存在 session**
-     *
-     * ``` php
-     * has(string $name): bool;
-     * ```
-     *
-     * **删除 session**
-     *
-     * ``` php
-     * delete(string $name): void;
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'session 基本使用',
+        'zh-CN:description' => <<<'EOT'
+session 的使用方法和原生差不多。
+
+**设置 session**
+
+``` php
+set(string $name, $value): void;
+```
+
+**是否存在 session**
+
+``` php
+has(string $name): bool;
+```
+
+**删除 session**
+
+``` php
+delete(string $name): void;
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $session = $this->createFileSessionHandler();
@@ -231,19 +224,16 @@ final class SessionTest extends TestCase
         $session->save();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setExpire 设置过期时间",
-     *     zh-CN:description="
-     * 过期时间规则如下：
-     *
-     *   * null 表示默认 session 缓存时间
-     *   * 小与等于 0 表示永久缓存
-     *   * 其它表示缓存多少时间，单位秒
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setExpire 设置过期时间',
+        'zh-CN:description' => <<<'EOT'
+过期时间规则如下：
+
+  * null 表示默认 session 缓存时间
+  * 小与等于 0 表示永久缓存
+  * 其它表示缓存多少时间，单位秒
+EOT,
+    ])]
     public function testSetExpire(): void
     {
         $session = $this->createFileSessionHandler();
@@ -262,13 +252,9 @@ final class SessionTest extends TestCase
         static::assertStringContainsString('[50,', file_get_contents($filePath));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="put 批量插入",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'put 批量插入',
+    ])]
     public function testPut(): void
     {
         $session = $this->createFileSessionHandler();
@@ -283,13 +269,9 @@ final class SessionTest extends TestCase
         static::assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clear 清空 session",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clear 清空 session',
+    ])]
     public function testClear(): void
     {
         $session = $this->createFileSessionHandler();
@@ -301,13 +283,9 @@ final class SessionTest extends TestCase
         static::assertSame([], $session->all());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="flash 闪存一个数据，当前请求和下一个请求可用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'flash 闪存一个数据，当前请求和下一个请求可用',
+    ])]
     public function testFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -355,13 +333,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="flashs 批量闪存数据，当前请求和下一个请求可用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'flashs 批量闪存数据，当前请求和下一个请求可用',
+    ])]
     public function testFlashs(): void
     {
         $session = $this->createFileSessionHandler();
@@ -388,13 +362,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="nowFlash 闪存一个 flash 用于当前请求使用,下一个请求将无法获取",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'nowFlash 闪存一个 flash 用于当前请求使用,下一个请求将无法获取',
+    ])]
     public function testNowFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -418,13 +388,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="nowFlashs 批量闪存数据,用于当前请求使用，下一个请求将无法获取",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'nowFlashs 批量闪存数据,用于当前请求使用，下一个请求将无法获取',
+    ])]
     public function testNowFlashs(): void
     {
         $session = $this->createFileSessionHandler();
@@ -450,13 +416,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="rebuildFlash 保持所有闪存数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'rebuildFlash 保持所有闪存数据',
+    ])]
     public function testRebuildFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -503,13 +465,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="keepFlash 保持闪存数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'keepFlash 保持闪存数据',
+    ])]
     public function testKeepFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -602,13 +560,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getFlash 返回闪存数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getFlash 返回闪存数据',
+    ])]
     public function testGetFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -627,13 +581,6 @@ final class SessionTest extends TestCase
         static::assertNull($session->getFlash('test\\notFound'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="deleteFlash 删除闪存数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
     public function deleteFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -726,13 +673,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clearFlash 清理所有闪存数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clearFlash 清理所有闪存数据',
+    ])]
     public function testClearFlash(): void
     {
         $session = $this->createFileSessionHandler();
@@ -830,13 +773,9 @@ final class SessionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setPrevUrl.prevUrl 设置和返回前一个请求地址",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setPrevUrl.prevUrl 设置和返回前一个请求地址',
+    ])]
     public function testPrevUrl(): void
     {
         $session = $this->createFileSessionHandler();
@@ -845,13 +784,9 @@ final class SessionTest extends TestCase
         static::assertSame('foo', $session->prevUrl());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="destroySession 终止会话",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'destroySession 终止会话',
+    ])]
     public function testDestroy(): void
     {
         $session = $this->createFileSessionHandler();

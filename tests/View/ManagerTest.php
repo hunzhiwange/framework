@@ -12,65 +12,60 @@ use Leevel\Option\Option;
 use Leevel\View\Manager;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="View",
- *     path="component/view",
- *     zh-CN:description="
- * 视图统一由视图组件完成，通常我们使用代理 `\Leevel\View\Proxy\View` 类进行静态调用。
- *
- * 内置支持的视图驱动类型包括 html、phpui，未来可能增加其他驱动。
- *
- * ## 使用方式
- *
- * 使用容器 view 服务
- *
- * ``` php
- * \App::make('views')->setVar(array|string $name, mixed $value = null): void;
- * ```
- *
- * 依赖注入
- *
- * ``` php
- * class Demo
- * {
- *     private \Leevel\View\Manager $view;
- *
- *     public function __construct(\Leevel\View\Manager $view)
- *     {
- *         $this->view = $view;
- *     }
- * }
- * ```
- *
- * 使用静态代理
- *
- * ``` php
- * \Leevel\Router\Proxy\View::setVar(array|string $name, mixed $value = null): void;
- * ```
- *
- * ## view 配置
- *
- * 系统的 view 配置位于应用下面的 `option/view.php` 文件。
- *
- * 可以定义多个视图连接，并且支持切换，每一个连接支持驱动设置。
- *
- * ``` php
- * {[file_get_contents('option/view.php')]}
- * ```
- *
- * 视图参数根据不同的连接会有所区别，通用的 view 参数如下：
- *
- * |配置项|配置描述|
- * |:-|:-|
- * |fail|错误模板|
- * |success|成功模板|
- * ",
- * note="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'View',
+    'path' => 'component/view',
+    'zh-CN:description' => <<<'EOT'
+视图统一由视图组件完成，通常我们使用代理 `\Leevel\View\Proxy\View` 类进行静态调用。
+
+内置支持的视图驱动类型包括 html、phpui，未来可能增加其他驱动。
+
+## 使用方式
+
+使用容器 view 服务
+
+``` php
+\App::make('views')->setVar(array|string $name, mixed $value = null): void;
+```
+
+依赖注入
+
+``` php
+class Demo
+{
+    private \Leevel\View\Manager $view;
+
+    public function __construct(\Leevel\View\Manager $view)
+    {
+        $this->view = $view;
+    }
+}
+```
+
+使用静态代理
+
+``` php
+\Leevel\Router\Proxy\View::setVar(array|string $name, mixed $value = null): void;
+```
+
+## view 配置
+
+系统的 view 配置位于应用下面的 `option/view.php` 文件。
+
+可以定义多个视图连接，并且支持切换，每一个连接支持驱动设置。
+
+``` php
+{[file_get_contents('option/view.php')]}
+```
+
+视图参数根据不同的连接会有所区别，通用的 view 参数如下：
+
+|配置项|配置描述|
+|:-|:-|
+|fail|错误模板|
+|success|成功模板|
+EOT,
+])]
 final class ManagerTest extends TestCase
 {
     protected function tearDown(): void
@@ -80,13 +75,9 @@ final class ManagerTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="视图基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '视图基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
@@ -95,13 +86,9 @@ final class ManagerTest extends TestCase
         static::assertSame('hello html,bar.', $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="PHP 自身作为模板",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'PHP 自身作为模板',
+    ])]
     public function testPhpUi(): void
     {
         $manager = $this->createManager('phpui');
@@ -111,13 +98,9 @@ final class ManagerTest extends TestCase
         static::assertSame('world', $manager->connect('phpui')->getVar('hello'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getVar 获取变量值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getVar 获取变量值',
+    ])]
     public function testGetVar(): void
     {
         $manager = $this->createManager();
@@ -127,13 +110,9 @@ final class ManagerTest extends TestCase
         static::assertNull($manager->getVar('hello2'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getVar 获取所有变量值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getVar 获取所有变量值',
+    ])]
     public function testGetVarAll(): void
     {
         $manager = $this->createManager();
@@ -142,13 +121,9 @@ final class ManagerTest extends TestCase
         static::assertSame(['hello' => 'world'], $manager->getVar());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="deleteVar 删除变量值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'deleteVar 删除变量值',
+    ])]
     public function testDeleteVar(): void
     {
         $manager = $this->createManager('phpui');
@@ -162,13 +137,9 @@ final class ManagerTest extends TestCase
         static::assertNull($manager->connect('phpui')->getVar('hello'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clearVar 清空变量值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clearVar 清空变量值',
+    ])]
     public function testClearVar(): void
     {
         $manager = $this->createManager();
@@ -182,13 +153,9 @@ final class ManagerTest extends TestCase
         static::assertNull($manager->connect('html')->getVar('foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="display 加载视图文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'display 加载视图文件',
+    ])]
     public function testDisplay(): void
     {
         $manager = $this->createManager('phpui');

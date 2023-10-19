@@ -9,9 +9,6 @@ use Leevel\Cache\File;
 use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class TokenTest extends TestCase
 {
     protected function tearDown(): void

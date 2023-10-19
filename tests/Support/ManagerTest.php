@@ -10,56 +10,49 @@ use Leevel\Option\Option;
 use Leevel\Support\Manager;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Manager",
- *     path="architecture/manager",
- *     zh-CN:description="
- * QueryPHP 为驱动类组件统一抽象了一个基础管理类 `\Leevel\Manager\Manager`，驱动类组件可以轻松接入。
- *
- * 系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Manager',
+    'path' => 'architecture/manager',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 为驱动类组件统一抽象了一个基础管理类 `\Leevel\Manager\Manager`，驱动类组件可以轻松接入。
+
+系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
+EOT,
+])]
 final class ManagerTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基础使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Manager\Test1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Test1::class)]}
-     * ```
-     *
-     * **Tests\Manager\IConnect**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IConnect::class)]}
-     * ```
-     *
-     * **Tests\Manager\Foo**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Foo::class)]}
-     * ```
-     *
-     * **Tests\Manager\Bar**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Bar::class)]}
-     * ```
-     *
-     * 可以通过 `connect` 方法连接并返回连接对象，然后可以执行相应的操作。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基础使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Manager\Test1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Test1::class)]}
+```
+
+**Tests\Manager\IConnect**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IConnect::class)]}
+```
+
+**Tests\Manager\Foo**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Foo::class)]}
+```
+
+**Tests\Manager\Bar**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Bar::class)]}
+```
+
+可以通过 `connect` 方法连接并返回连接对象，然后可以执行相应的操作。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $manager = $this->createManager();
@@ -88,21 +81,21 @@ final class ManagerTest extends TestCase
         static::assertSame('hello bar 2', $bar->bar('2'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="extend 扩展自定义连接",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Manager\FooExtend**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FooExtend::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="如果驱动存在则会替换，否则新增驱动。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'extend 扩展自定义连接',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Manager\FooExtend**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FooExtend::class)]}
+```
+EOT,
+        'zh-CN:note' => <<<'EOT'
+如果驱动存在则会替换，否则新增驱动。
+EOT,
+    ])]
     public function testExtend(): void
     {
         $manager = $this->createManager();
@@ -121,13 +114,9 @@ final class ManagerTest extends TestCase
         static::assertSame('hello extend foo bar', $foo->bar('bar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="connect 连接并返回连接对象支持缓存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'connect 连接并返回连接对象支持缓存',
+    ])]
     public function testConnectCache(): void
     {
         $manager = $this->createManager();
@@ -141,13 +130,9 @@ final class ManagerTest extends TestCase
         static::assertSame($bar, $bar2);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="reconnect 重新连接",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'reconnect 重新连接',
+    ])]
     public function testReconnect(): void
     {
         $manager = $this->createManager();
@@ -161,13 +146,9 @@ final class ManagerTest extends TestCase
         static::assertFalse($bar === $bar2);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="disconnect 删除连接",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'disconnect 删除连接',
+    ])]
     public function testDisconnect(): void
     {
         $manager = $this->createManager();
@@ -185,13 +166,9 @@ final class ManagerTest extends TestCase
         static::assertFalse($bar === $bar2);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="manager 默认连接调用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'manager 默认连接调用',
+    ])]
     public function testCallWithDefaultDriver(): void
     {
         $manager = $this->createManager();
@@ -202,13 +179,9 @@ final class ManagerTest extends TestCase
         static::assertSame('hello foo 2', $manager->bar('2'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="getConnects 取回所有连接",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getConnects 取回所有连接',
+    ])]
     public function testGetConnects(): void
     {
         $manager = $this->createManager();
@@ -225,13 +198,9 @@ final class ManagerTest extends TestCase
         static::assertCount(0, $manager->getConnects());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setDefaultConnect 设置默认驱动",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setDefaultConnect 设置默认驱动',
+    ])]
     public function testSetDefaultDriver(): void
     {
         $manager = $this->createManager();

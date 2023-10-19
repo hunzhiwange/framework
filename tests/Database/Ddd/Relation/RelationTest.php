@@ -26,9 +26,6 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 | manyMany  | 多对多关联 |
 EOT,
 ])]
-/**
- * @internal
- */
 final class RelationTest extends TestCase
 {
     #[Api([

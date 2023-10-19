@@ -14,9 +14,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 对数据库悲观锁的支持，排它锁和共享锁。
 EOT,
 ])]
-/**
- * @internal
- */
 final class ForUpdateTest extends TestCase
 {
     #[Api([

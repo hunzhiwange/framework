@@ -20,9 +20,6 @@ use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class DebugTest extends TestCase
 {
     public function testBaseUse(): void

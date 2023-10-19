@@ -17,9 +17,6 @@ use Tests\Database\Ddd\Entity\DemoEventEntity;
 实体在新增和更新时，预植了事件监听器，可以定义一些事件。
 EOT,
 ])]
-/**
- * @internal
- */
 final class EntityEventTest extends TestCase
 {
     protected function tearDown(): void

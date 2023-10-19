@@ -10,9 +10,6 @@ use Leevel\Event\EventProvider;
 use Leevel\Event\Observer;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class EventProviderTest extends TestCase
 {
     public function testBaseUse(): void

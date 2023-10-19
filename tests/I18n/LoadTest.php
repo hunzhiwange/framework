@@ -7,9 +7,6 @@ namespace Tests\I18n;
 use Leevel\I18n\Load;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class LoadTest extends TestCase
 {
     protected function tearDown(): void

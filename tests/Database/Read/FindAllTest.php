@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询多条数据.findAll',
     'path' => 'database/read/findall',
 ])]
-/**
- * @internal
- */
 final class FindAllTest extends TestCase
 {
     #[Api([

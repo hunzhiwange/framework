@@ -34,9 +34,6 @@ use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | middleField |
 EOT,
 ])]
-/**
- * @internal
- */
 final class ManyManyTest extends TestCase
 {
     #[Api([

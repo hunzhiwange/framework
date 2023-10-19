@@ -15,9 +15,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 having 和 where 用法几乎一致。
 EOT,
 ])]
-/**
- * @internal
- */
 final class HavingTest extends TestCase
 {
     #[Api([

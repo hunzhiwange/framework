@@ -7,30 +7,22 @@ namespace Tests\Support;
 use Leevel\Support\LinkedList;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="双向链表",
- *     path="component/linkedlist",
- *     zh-CN:description="
- * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
- *
- * 阻止链表返回空数据时抛出异常的默认行为。
- *
- * 底层基于 spldoublylinkedlist 开发，相关文档 <http://php.net/manual/zh/class.spldoublylinkedlist.php>。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '双向链表',
+    'path' => 'component/linkedlist',
+    'zh-CN:description' => <<<'EOT'
+在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
+
+阻止链表返回空数据时抛出异常的默认行为。
+
+底层基于 spldoublylinkedlist 开发，相关文档 <http://php.net/manual/zh/class.spldoublylinkedlist.php>。
+EOT,
+])]
 final class LinkedListTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="链表基本使用方法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '链表基本使用方法',
+    ])]
     public function testBaseUse(): void
     {
         $linkedList = new LinkedList();
@@ -40,13 +32,9 @@ final class LinkedListTest extends TestCase
         static::assertNull($linkedList->pop());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="push 链表尾部弹出元素",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'push 链表尾部弹出元素',
+    ])]
     public function testPush(): void
     {
         $linkedList = new LinkedList();
@@ -59,13 +47,9 @@ final class LinkedListTest extends TestCase
         static::assertSame(0, $linkedList->count());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="unshift 链表头插入元素",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'unshift 链表头插入元素',
+    ])]
     public function testUnshift(): void
     {
         $linkedList = new LinkedList();
@@ -78,13 +62,9 @@ final class LinkedListTest extends TestCase
         static::assertSame(0, $linkedList->count());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="add 链表指定位置插入新值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'add 链表指定位置插入新值',
+    ])]
     public function testAdd(): void
     {
         $linkedList = new LinkedList();
@@ -99,13 +79,9 @@ final class LinkedListTest extends TestCase
         static::assertSame('bar', $linkedList->offsetGet(3));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="offsetSet 更新链表指定位置链表的值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'offsetSet 更新链表指定位置链表的值',
+    ])]
     public function testOffsetSet(): void
     {
         $linkedList = new LinkedList();
@@ -125,13 +101,9 @@ final class LinkedListTest extends TestCase
         static::assertSame('bar2', $linkedList->offsetGet(3));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="链表支持元素类型限定",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '链表支持元素类型限定',
+    ])]
     public function testValidateType(): void
     {
         $this->expectException(\UnexpectedValueException::class);

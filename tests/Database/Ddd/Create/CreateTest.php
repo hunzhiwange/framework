@@ -22,9 +22,6 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 将实体持久化到数据库。
 EOT,
 ])]
-/**
- * @internal
- */
 final class CreateTest extends TestCase
 {
     #[Api([

@@ -7,15 +7,10 @@ namespace Tests\Filesystem;
 use Leevel\Filesystem\Helper;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="文件系统助手函数",
- *     path="component/filesystem/helper",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '文件系统助手函数',
+    'path' => 'component/filesystem/helper',
+])]
 final class HelperTest extends TestCase
 {
     protected function setUp(): void
@@ -38,13 +33,9 @@ final class HelperTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="create_directory 创建目录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'create_directory 创建目录',
+    ])]
     public function testCreateDirectory(): void
     {
         $dir = __DIR__.'/createDirectory';
@@ -61,13 +52,9 @@ final class HelperTest extends TestCase
         Helper::deleteDirectory($dir);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="delete_directory 删除目录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'delete_directory 删除目录',
+    ])]
     public function testDeleteDirectory(): void
     {
         $dir = __DIR__.'/deleteDirectory/dir';
@@ -108,13 +95,9 @@ final class HelperTest extends TestCase
         static::assertDirectoryDoesNotExist($topDir);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="traverse_directory 遍历目录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'traverse_directory 遍历目录',
+    ])]
     public function testTraverseDirectory(): void
     {
         $sourcePath = __DIR__.'/traverseDirectory';
@@ -157,13 +140,9 @@ final class HelperTest extends TestCase
         });
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="tidy_path 整理目录斜线风格",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'tidy_path 整理目录斜线风格',
+    ])]
     public function testTidyPath(): void
     {
         $sourcePath = '/home\goods/name/';
@@ -172,13 +151,9 @@ final class HelperTest extends TestCase
         static::assertSame('\home\goods\name', Helper::tidyPath($sourcePath, false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="is_absolute_path 判断是否为绝对路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'is_absolute_path 判断是否为绝对路径',
+    ])]
     public function testIsAbsolutePath(): void
     {
         static::assertTrue(Helper::isAbsolutePath('c://'));
@@ -186,13 +161,9 @@ final class HelperTest extends TestCase
         static::assertFalse(Helper::isAbsolutePath('hello'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="distributed 根据 ID 获取打散目录",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'distributed 根据 ID 获取打散目录',
+    ])]
     public function testDistributed(): void
     {
         static::assertSame(['000/00/00/', '01'], Helper::distributed(1));
@@ -200,13 +171,9 @@ final class HelperTest extends TestCase
         static::assertSame(['090/00/00/', '00'], Helper::distributed(90000000));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="create_file 创建文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'create_file 创建文件',
+    ])]
     public function testCreateFile(): void
     {
         $sourcePath = __DIR__.'/createFile';
@@ -300,13 +267,9 @@ final class HelperTest extends TestCase
         Helper::deleteDirectory($sourcePath);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="get_extension 获取上传文件扩展名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'get_extension 获取上传文件扩展名',
+    ])]
     public function testGetExtension(): void
     {
         $file = __DIR__.'/HelperTest.pHp';

@@ -12,9 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.where',
     'path' => 'database/query/where',
 ])]
-/**
- * @internal
- */
 final class WhereTest extends TestCase
 {
     #[Api([

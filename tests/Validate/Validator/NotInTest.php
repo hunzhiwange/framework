@@ -7,37 +7,29 @@ namespace Tests\Validate\Validator;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.not_in",
- *     zh-CN:title="验证器.是否不处于某个范围",
- *     path="validate/validator/notin",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.是否不处于某个范围',
+    'path' => 'validate/validator/notin',
+])]
 final class NotInTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotInTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotInTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, string $param): void
     {
         $validate = new Validator(
@@ -69,21 +61,19 @@ final class NotInTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotInTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\NotInTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, string $param): void
     {
         $validate = new Validator(
@@ -115,13 +105,9 @@ final class NotInTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="not_in 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'not_in 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

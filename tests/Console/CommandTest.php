@@ -19,9 +19,6 @@ QueryPHP 内置控制台命名，底层采用 `Symfony/console` 开发，用法�
 Console 组件是 Symfony 里面的一个控制台命令组件，可以轻松地编写出运行在 CLI 上面的命名。
 EOT,
 ])]
-/**
- * @internal
- */
 final class CommandTest extends TestCase
 {
     use BaseCommand;

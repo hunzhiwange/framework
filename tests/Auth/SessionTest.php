@@ -10,9 +10,6 @@ use Leevel\Cache\File as CacheFile;
 use Leevel\Session\File;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class SessionTest extends TestCase
 {
     public function testBaseUse(): void

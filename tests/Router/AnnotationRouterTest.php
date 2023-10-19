@@ -13,9 +13,6 @@ use Leevel\Router\Router;
 use Symfony\Component\Finder\Finder;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class AnnotationRouterTest extends TestCase
 {
     public function testBaseUse(): void

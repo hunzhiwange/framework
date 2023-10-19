@@ -6,26 +6,23 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="变量",
- *     path="template/var",
- *     zh-CN:description="变量是最基本的用法，这里模板引擎做了大量的工作支持更好。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '变量',
+    'path' => 'template/var',
+    'zh-CN:description' => <<<'EOT'
+变量是最基本的用法，这里模板引擎做了大量的工作支持更好。
+EOT,
+])]
 final class CompilerVarTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="最简单一个普通变量",
-     *     zh-CN:description="",
-     *     zh-CN:note="模板标签的 “{双花括号{” 和 “$” 之间可以有空格，建议保持一个空格，保持整洁。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '最简单一个普通变量',
+        'zh-CN:note' => <<<'EOT'
+模板标签的 “{双花括号{” 和 “$” 之间可以有空格，建议保持一个空格，保持整洁。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -42,13 +39,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出一个数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出一个数组',
+    ])]
     public function testArraySupport(): void
     {
         $parser = $this->createParser();
@@ -65,13 +58,12 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出一个对象",
-     *     zh-CN:description="我们编写这样子一个简单对象，然后再赋值。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出一个对象',
+        'zh-CN:description' => <<<'EOT'
+我们编写这样子一个简单对象，然后再赋值。
+EOT,
+    ])]
     public function testObject(): void
     {
         $parser = $this->createParser();
@@ -88,13 +80,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="无限级支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '无限级支持',
+    ])]
     public function testLevel(): void
     {
         $parser = $this->createParser();
@@ -111,13 +99,12 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="运算符.加减法运算",
-     *     zh-CN:description="我们有的时候需要进行一些字符串的操作，以及变量之间的运算，当然直接使用 PHP 可以进行这样子的操作。这里，我们给出的是另一种简单的语法规则。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '运算符.加减法运算',
+        'zh-CN:description' => <<<'EOT'
+我们有的时候需要进行一些字符串的操作，以及变量之间的运算，当然直接使用 PHP 可以进行这样子的操作。这里，我们给出的是另一种简单的语法规则。
+EOT,
+    ])]
     public function testOperator(): void
     {
         $parser = $this->createParser();
@@ -136,13 +123,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="运算符.乘除余数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '运算符.乘除余数',
+    ])]
     public function testOperator2(): void
     {
         $parser = $this->createParser();
@@ -167,13 +150,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="运算符.连接字符",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '运算符.连接字符',
+    ])]
     public function testOperator3(): void
     {
         $parser = $this->createParser();
@@ -190,28 +169,28 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持",
-     *     zh-CN:description="
-     * 仅仅是输出变量并不能满足模板输出的需要，内置模板引擎支持对模板变量使用调节器和格式化功能，其实也就是提供函数支持，并支持多个函数同时使用。
-     *
-     * 用于模板标签的函数可以是PHP 内置函数或者是用户自定义函数，和 smarty 不同的是用于模板的函数不需要特别的定义。
-     *
-     * ### 函数调用格式
-     *
-     * ``` php
-     * {{ $varName|function1|function2=arg1,arg2,** }}
-     * ```
-     *
-     * 说明：
-     *
-     * * 表示模板变量本身的参数位置
-     * * 支持多个函数，函数之间支持空格
-     * ",
-     *     zh-CN:note="函数的定义和使用顺序的对应关系，通常来说函数的第一个参数就是前面的变量或者前一个函数使用的结果，如果你的变量并不是函数的第一个参数，需要使用定位符号 “**”。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持',
+        'zh-CN:description' => <<<'EOT'
+仅仅是输出变量并不能满足模板输出的需要，内置模板引擎支持对模板变量使用调节器和格式化功能，其实也就是提供函数支持，并支持多个函数同时使用。
+
+用于模板标签的函数可以是PHP 内置函数或者是用户自定义函数，和 smarty 不同的是用于模板的函数不需要特别的定义。
+
+### 函数调用格式
+
+``` php
+{{ $varName|function1|function2=arg1,arg2,** }}
+```
+
+说明：
+
+* 表示模板变量本身的参数位置
+* 支持多个函数，函数之间支持空格
+EOT,
+        'zh-CN:note' => <<<'EOT'
+函数的定义和使用顺序的对应关系，通常来说函数的第一个参数就是前面的变量或者前一个函数使用的结果，如果你的变量并不是函数的第一个参数，需要使用定位符号 “**”。
+EOT,
+    ])]
     public function testFunction(): void
     {
         $parser = $this->createParser();
@@ -239,13 +218,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.基本用法",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.基本用法',
+    ])]
     public function testFunction2(): void
     {
         $parser = $this->createParser();
@@ -262,13 +237,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.占位符",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.占位符',
+    ])]
     public function testFunction3(): void
     {
         $parser = $this->createParser();
@@ -285,13 +256,12 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.快捷方法",
-     *     zh-CN:description="并且还提供了在模板文件中直接调用函数的快捷方法，无需通过模板变量，包括两种方式：",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.快捷方法',
+        'zh-CN:description' => <<<'EOT'
+并且还提供了在模板文件中直接调用函数的快捷方法，无需通过模板变量，包括两种方式：
+EOT,
+    ])]
     public function testFunction4(): void
     {
         $parser = $this->createParser();
@@ -308,13 +278,12 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.静态方法",
-     *     zh-CN:description="使用静态函数来格式化参数。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.静态方法',
+        'zh-CN:description' => <<<'EOT'
+使用静态函数来格式化参数。
+EOT,
+    ])]
     public function testFunction5(): void
     {
         $parser = $this->createParser();
@@ -333,13 +302,9 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.执行方法但不输出",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.执行方法但不输出',
+    ])]
     public function testFunction6(): void
     {
         $parser = $this->createParser();
@@ -367,13 +332,15 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.对象方法",
-     *     zh-CN:description="如果我们需要在模板中使用对象的方法，那么通过代码版本的变量语法可以很方便地输出。",
-     *     zh-CN:note="程序编译后默认是输出值，所以最好在类的方法中最好不要直接输出值，直接返回，这样可以交给模版来做数据处理。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.对象方法',
+        'zh-CN:description' => <<<'EOT'
+如果我们需要在模板中使用对象的方法，那么通过代码版本的变量语法可以很方便地输出。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+程序编译后默认是输出值，所以最好在类的方法中最好不要直接输出值，直接返回，这样可以交给模版来做数据处理。
+EOT,
+    ])]
     public function testFunction7(): void
     {
         $parser = $this->createParser();
@@ -390,21 +357,21 @@ final class CompilerVarTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数支持.默认值",
-     *     zh-CN:description="
-     * 如果输出的模板变量没有值，但是我们需要在显示的时候赋予一个默认值的话，可以使用 default 语法，格式：
-     *
-     * ``` php
-     * {{ $变量|default="默认值" }}
-     * ```
-     *
-     * > 这里的 default 不是函数，而是系统的一个语法规则。
-     * ",
-     *     zh-CN:note="“default=” 之间不能有空格，否则无法识别。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数支持.默认值',
+        'zh-CN:description' => <<<'EOT'
+如果输出的模板变量没有值，但是我们需要在显示的时候赋予一个默认值的话，可以使用 default 语法，格式：
+
+``` php
+{{ $变量|default="默认值" }}
+```
+
+> 这里的 default 不是函数，而是系统的一个语法规则。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+“default=” 之间不能有空格，否则无法识别。
+EOT,
+    ])]
     public function testFunction8(): void
     {
         $parser = $this->createParser();

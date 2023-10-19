@@ -7,16 +7,10 @@ namespace Tests\Validate\Validator;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.equal_less_than",
- *     zh-CN:title="验证器.小于或者全等",
- *     path="validate/validator/equallessthan",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.小于或者全等',
+    'path' => 'validate/validator/equallessthan',
+])]
 final class EqualLessThanTest extends TestCase
 {
     /**
@@ -24,21 +18,19 @@ final class EqualLessThanTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualLessThanTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualLessThanTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, $param): void
     {
         $validate = new Validator(
@@ -77,21 +69,19 @@ final class EqualLessThanTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualLessThanTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualLessThanTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, $param): void
     {
         $validate = new Validator(
@@ -121,13 +111,12 @@ final class EqualLessThanTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="特殊例子的数据校验",
-     *     zh-CN:description="特别注意字符串和数字的严格区分。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '特殊例子的数据校验',
+        'zh-CN:description' => <<<'EOT'
+特别注意字符串和数字的严格区分。
+EOT,
+    ])]
     public function testSpecial(): void
     {
         $validate = new Validator();
@@ -136,13 +125,9 @@ final class EqualLessThanTest extends TestCase
         static::assertTrue($validate->equalLessThan('0', 0));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="equal_less_than 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'equal_less_than 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

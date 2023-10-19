@@ -8,32 +8,24 @@ use Leevel\Http\Request;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="URL 生成",
- *     path="router/url",
- *     zh-CN:description="
- * QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
- *
- * 使用容器 url 服务
- *
- * ``` php
- * \App::make('url')->make(string $url, array $attributes = [], string $subdomain = 'www', $suffix = null): string;
- * ```
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'URL 生成',
+    'path' => 'router/url',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 支持路由 URL 地址的统一生成，提供一套简洁的生成方法，无需记忆即可学会使用。
+
+使用容器 url 服务
+
+``` php
+\App::make('url')->make(string $url, array $attributes = [], string $subdomain = 'www', $suffix = null): string;
+```
+EOT,
+])]
 final class UrlTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本 URL 生成",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本 URL 生成',
+    ])]
     public function testMakeUrl(): void
     {
         $request = $this->makeRequest();
@@ -45,13 +37,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make('/hello-world'), '/hello-world');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成带参数的 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成带参数的 URL',
+    ])]
     public function testMakeUrlWithParams(): void
     {
         $request = $this->makeRequest();
@@ -62,13 +50,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make('test/sub1/sub2/hello', ['arg1' => 1, 'arg2' => 3]), '/test/sub1/sub2/hello?arg1=1&arg2=3');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成带后缀的 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成带后缀的 URL',
+    ])]
     public function testMakeUrlWithSuffix(): void
     {
         $request = $this->makeRequest();
@@ -78,13 +62,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make('hello/world', [], '', '.jsp'), '/hello/world.jsp');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成 URL 支持变量替换",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成 URL 支持变量替换',
+    ])]
     public function testMakeUrlSupportVar(): void
     {
         $request = $this->makeRequest();
@@ -96,13 +76,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom?hello=bar&arg1=5');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成指定应用的 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成指定应用的 URL',
+    ])]
     public function testMakeUrlForApp(): void
     {
         $request = $this->makeRequest();
@@ -112,13 +88,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make(':myapp/test'), '/:myapp/test');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成首页地址",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成首页地址',
+    ])]
     public function testMakeUrlForHome(): void
     {
         $request = $this->makeRequest();
@@ -128,13 +100,9 @@ final class UrlTest extends TestCase
         static::assertSame($url->make(''), '/');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成带域名的 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成带域名的 URL',
+    ])]
     public function testWithDomainTop(): void
     {
         $request = $this->makeRequest();
@@ -166,13 +134,9 @@ final class UrlTest extends TestCase
         static::assertSame('/hello/{foo}', $url->make('hello/{foo}', []));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="生成带 HTTPS 的 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '生成带 HTTPS 的 URL',
+    ])]
     public function testSecureWithDomainTop(): void
     {
         $request = $this->makeRequest(true);

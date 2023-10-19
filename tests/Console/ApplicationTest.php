@@ -9,9 +9,6 @@ use Leevel\Console\Command;
 use Leevel\Di\Container;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class ApplicationTest extends TestCase
 {
     public function testBaseUse(): void

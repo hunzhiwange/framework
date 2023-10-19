@@ -6,29 +6,24 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Foreach 增强循环",
- *     path="template/foreachplus",
- *     zh-CN:description="foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Foreach 增强循环',
+    'path' => 'template/foreachplus',
+    'zh-CN:description' => <<<'EOT'
+foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。
+EOT,
+])]
 final class CompilerForeachPlusTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="普通输出",
-     *     zh-CN:description="
-     * foreach+ 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
-     * `id` 表示当前的循环变量，可以随意指定，但确保不要和 name 属性冲突。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '普通输出',
+        'zh-CN:description' => <<<'EOT'
+foreach+ 标签的 `name` 属性表示模板赋值的变量名称，因此不可随意在模板文件中改变。
+`id` 表示当前的循环变量，可以随意指定，但确保不要和 name 属性冲突。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -60,13 +55,12 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="部分输出指定开始位置和长度的记录",
-     *     zh-CN:description="支持输出部分数据，例如输出其中的第 2～4 条记录。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '部分输出指定开始位置和长度的记录',
+        'zh-CN:description' => <<<'EOT'
+支持输出部分数据，例如输出其中的第 2～4 条记录。
+EOT,
+    ])]
     public function testOffsetLength(): void
     {
         $parser = $this->createParser();
@@ -98,13 +92,12 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="部分输出指定开始位置到结尾的所有记录",
-     *     zh-CN:description="支持输出部分数据，例如输出指定开始位置到结尾的所有记录。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '部分输出指定开始位置到结尾的所有记录',
+        'zh-CN:description' => <<<'EOT'
+支持输出部分数据，例如输出指定开始位置到结尾的所有记录。
+EOT,
+    ])]
     public function testOffset(): void
     {
         $parser = $this->createParser();
@@ -136,13 +129,15 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出偶数记录",
-     *     zh-CN:description="foreach+ 还支持偶数记录的输出，基于 `mod` 属性来控制。",
-     *     zh-CN:note="奇数记录和偶数记录规定如下，我们以数组的 0 为开始，0、2、4为偶记录，其它的都为基数记录。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出偶数记录',
+        'zh-CN:description' => <<<'EOT'
+foreach+ 还支持偶数记录的输出，基于 `mod` 属性来控制。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+奇数记录和偶数记录规定如下，我们以数组的 0 为开始，0、2、4为偶记录，其它的都为基数记录。
+EOT,
+    ])]
     public function testMod(): void
     {
         $parser = $this->createParser();
@@ -178,13 +173,15 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出奇数记录",
-     *     zh-CN:description="foreach+ 还支持奇数记录的输出，基于 `mod` 属性来控制。",
-     *     zh-CN:note="奇数记录和偶数记录规定如下，我们以数组索引的 0 为开始，0、2、4 为偶数记录，1、3、5 为基数记录。",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出奇数记录',
+        'zh-CN:description' => <<<'EOT'
+foreach+ 还支持奇数记录的输出，基于 `mod` 属性来控制。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+奇数记录和偶数记录规定如下，我们以数组索引的 0 为开始，0、2、4 为偶数记录，1、3、5 为基数记录。
+EOT,
+    ])]
     public function testMod2(): void
     {
         $parser = $this->createParser();
@@ -220,13 +217,12 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="控制换行",
-     *     zh-CN:description="mod 属性还用于控制一定记录的换行。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '控制换行',
+        'zh-CN:description' => <<<'EOT'
+mod 属性还用于控制一定记录的换行。
+EOT,
+    ])]
     public function testMod3(): void
     {
         $parser = $this->createParser();
@@ -264,13 +260,12 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="mod 支持变量",
-     *     zh-CN:description="mod 属性支持变量。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'mod 支持变量',
+        'zh-CN:description' => <<<'EOT'
+mod 属性支持变量。
+EOT,
+    ])]
     public function testModCanBeVar(): void
     {
         $parser = $this->createParser();
@@ -306,13 +301,9 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出循环索引",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出循环索引',
+    ])]
     public function testIndex(): void
     {
         $parser = $this->createParser();
@@ -344,13 +335,12 @@ final class CompilerForeachPlusTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="输出数组的键值",
-     *     zh-CN:description="如果要输出数组的键值，可以直接使用 `key` 变量，和循环变量不同的是，这个 `key` 是由数据本身决定，而不是循环控制的，这个 `key` 可以通过 `key` 属性指定。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '输出数组的键值',
+        'zh-CN:description' => <<<'EOT'
+如果要输出数组的键值，可以直接使用 `key` 变量，和循环变量不同的是，这个 `key` 是由数据本身决定，而不是循环控制的，这个 `key` 可以通过 `key` 属性指定。
+EOT,
+    ])]
     public function testKey(): void
     {
         $parser = $this->createParser();

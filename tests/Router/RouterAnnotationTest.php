@@ -20,17 +20,13 @@ use Tests\Router\Middlewares\DemoForAll;
 use Tests\Router\Middlewares\DemoForBasePath;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="注解路由",
- *     path="router/annotation",
- *     zh-CN:description="
- * QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '注解路由',
+    'path' => 'router/annotation',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 除了传统的自动匹配 MVC 路由之外，也支持自定义的注解路由。
+EOT,
+])]
 final class RouterAnnotationTest extends TestCase
 {
     protected function setUp(): void
@@ -64,29 +60,26 @@ final class RouterAnnotationTest extends TestCase
         static::assertSame('hello plus base use', $result->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="注解路由扫描",
-     *     zh-CN:description="
-     * QueryPHP 系统会根据路由服务提供者信息，扫描系统的注解生成框架的注解路由，并且支持缓存到文件。
-     *
-     * **fixture 定义**
-     *
-     * **路由服务提供者 Tests\Router\RouterProviderAnnotation**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProviderAnnotation::class)]}
-     * ```
-     *
-     * **路由注解缓存结果 tests/Router/Apps/AppForAnnotation/data.json**
-     *
-     * ``` json
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppForAnnotation/data.json')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '注解路由扫描',
+        'zh-CN:description' => <<<'EOT'
+QueryPHP 系统会根据路由服务提供者信息，扫描系统的注解生成框架的注解路由，并且支持缓存到文件。
+
+**fixture 定义**
+
+**路由服务提供者 Tests\Router\RouterProviderAnnotation**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProviderAnnotation::class)]}
+```
+
+**路由注解缓存结果 tests/Router/Apps/AppForAnnotation/data.json**
+
+``` json
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppForAnnotation/data.json')]}
+```
+EOT,
+    ])]
     public function testBaseRouterData(): void
     {
         $container = $this->createContainer();
@@ -112,27 +105,24 @@ final class RouterAnnotationTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Pet::class, 'petLeevel', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\PetLeevel::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Pet::class, 'petLeevel', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\PetLeevel::class)]}
+```
+EOT,
+    ])]
     public function testMatchedPetLeevel(): void
     {
         $pathInfo = '/api/v1/petLeevel/hello';
@@ -232,27 +222,24 @@ final class RouterAnnotationTest extends TestCase
         static::assertSame('petLeevelNotInGroup', $response->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基础路径匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\BasePath::class, 'foo', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\BasePath::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基础路径匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\BasePath::class, 'foo', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\Controllers\Annotation\BasePath::class)]}
+```
+EOT,
+    ])]
     public function testMatchedBasePathNormalize(): void
     {
         $pathInfo = '/basePath/normalize';
@@ -545,27 +532,24 @@ final class RouterAnnotationTest extends TestCase
         $router->dispatch($request);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Scheme 协议匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Scheme 协议匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Scheme::class, 'barMatchedScheme')]}
+```
+EOT,
+    ])]
     public function testMatchedAndSchemeMatched(): void
     {
         $pathInfo = '/scheme/test2';
@@ -621,27 +605,24 @@ final class RouterAnnotationTest extends TestCase
         $router->dispatch($request);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Domain 域名匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Domain 域名匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomain')]}
+```
+EOT,
+    ])]
     public function testMatchedAndDomainMatched(): void
     {
         $pathInfo = '/domain/test2';
@@ -671,27 +652,24 @@ final class RouterAnnotationTest extends TestCase
         static::assertSame('barMatchedDomain', $result->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Domain 域名匹配支持变量",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Domain 域名匹配支持变量',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Domain::class, 'barMatchedDomainWithVar')]}
+```
+EOT,
+    ])]
     public function testMatchedAndDomainWithVarMatched(): void
     {
         $pathInfo = '/domain/test3';
@@ -788,27 +766,24 @@ final class RouterAnnotationTest extends TestCase
         $router->dispatch($request);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Port 端口匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Port 端口匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Port::class, 'barMatchedPort')]}
+```
+EOT,
+    ])]
     public function testMatchedAndPortMatched(): void
     {
         $pathInfo = '/port/test2';
@@ -838,27 +813,24 @@ final class RouterAnnotationTest extends TestCase
         static::assertSame('barMatchedPort', $result->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Attributes 扩展变量匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Attributes 扩展变量匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\ExtendVar::class, 'withExtendVar')]}
+```
+EOT,
+    ])]
     public function testMatchedWithExtendVar(): void
     {
         $pathInfo = '/extendVar/test';
@@ -952,27 +924,24 @@ final class RouterAnnotationTest extends TestCase
         $router->dispatch($request);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Middlewares 中间件匹配",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Middlewares 中间件匹配',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'foo')]}
+```
+EOT,
+    ])]
     public function testMiddleware(): void
     {
         $pathInfo = '/middleware/test';
@@ -1042,27 +1011,24 @@ final class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Middlewares 中间件匹配支持数组",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Middlewares 中间件匹配支持数组',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'bar')]}
+```
+EOT,
+    ])]
     public function testMiddleware2(): void
     {
         $pathInfo = '/middleware/test2';
@@ -1207,27 +1173,24 @@ final class RouterAnnotationTest extends TestCase
         unset($GLOBALS['demo_middlewares']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Middlewares 中间件匹配支持类名",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **路由定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world', 'define')]}
-     * ```
-     *
-     * **控制器**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Middlewares 中间件匹配支持类名',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**路由定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world', 'define')]}
+```
+
+**控制器**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Router\Apps\AppForAnnotation\Controllers\Middleware::class, 'world')]}
+```
+EOT,
+    ])]
     public function testMiddleware4(): void
     {
         $pathInfo = '/middleware/test4';

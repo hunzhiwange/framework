@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '插入单条数据.insert',
     'path' => 'database/create/insert',
 ])]
-/**
- * @internal
- */
 final class InsertTest extends TestCase
 {
     #[Api([

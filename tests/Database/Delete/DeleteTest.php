@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '删除数据.delete',
     'path' => 'database/delete/delete',
 ])]
-/**
- * @internal
- */
 final class DeleteTest extends TestCase
 {
     #[Api([

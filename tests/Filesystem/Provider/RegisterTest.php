@@ -10,9 +10,6 @@ use Leevel\Filesystem\Provider\Register;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

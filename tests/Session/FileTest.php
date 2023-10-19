@@ -9,9 +9,6 @@ use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class FileTest extends TestCase
 {
     protected function tearDown(): void

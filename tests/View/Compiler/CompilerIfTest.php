@@ -6,26 +6,20 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="流程控制",
- *     path="template/if",
- *     zh-CN:description="条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '流程控制',
+    'path' => 'template/if',
+    'zh-CN:description' => <<<'EOT'
+条件表达式是最基本流程控制语句，这个在任何地方都是相当的实用。
+EOT,
+])]
 final class CompilerIfTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="Node 语法流程控制",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Node 语法流程控制',
+    ])]
     public function testNodeStyle(): void
     {
         $parser = $this->createParser();
@@ -47,13 +41,12 @@ final class CompilerIfTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="cond 可省略",
-     *     zh-CN:description="默认第一个条件会自动解析为 cond。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'cond 可省略',
+        'zh-CN:description' => <<<'EOT'
+默认第一个条件会自动解析为 cond。
+EOT,
+    ])]
     public function testNodeSimple(): void
     {
         $parser = $this->createParser();
@@ -75,13 +68,9 @@ final class CompilerIfTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Node 语法流程控制支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Node 语法流程控制支持表达式',
+    ])]
     public function testNodeStyleSupportExpression(): void
     {
         $parser = $this->createParser();

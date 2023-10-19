@@ -10,19 +10,15 @@ use Leevel\Page\Page;
 use Leevel\Page\Render;
 use Tests\TestCase;
 
-/**
- * @api(
- *     title="Page",
- *     zh-CN:title="分页",
- *     zh-TW:title="分頁",
- *     path="component/page",
- *     zh-CN:description="
- * QueryPHP 提供的分页组件，可以轻松地对数据进行分页处理。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'title' => 'Page',
+    'zh-CN:title' => '分页',
+    'zh-TW:title' => '分頁',
+    'path' => 'component/page',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供的分页组件，可以轻松地对数据进行分页处理。
+EOT,
+])]
 final class PageTest extends TestCase
 {
     protected function setUp(): void
@@ -40,13 +36,9 @@ final class PageTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 分页基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 分页基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $page = new Page(1, 10, 52);
@@ -135,13 +127,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="分页页码必须大于 0",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '分页页码必须大于 0',
+    ])]
     public function testCurrentPageIsZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -217,13 +205,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fragment.getFragment 分页 URL 描点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fragment.getFragment 分页 URL 描点',
+    ])]
     public function testFragment(): void
     {
         $page = new Page(1, 10, 52);
@@ -259,13 +243,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="perPage.getPerPage 每页分页数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'perPage.getPerPage 每页分页数量',
+    ])]
     public function testPerPage(): void
     {
         $page = new Page(1, 10, 52);
@@ -301,13 +281,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="分页渲染配置",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '分页渲染配置',
+    ])]
     public function testSetSmallTemplate(): void
     {
         $page = new Page(1, 10, 52, [
@@ -342,13 +318,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="append.addParam.appends 追加分页条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'append.addParam.appends 追加分页条件',
+    ])]
     public function testAppend(): void
     {
         $page = new Page(1, 5, 3);
@@ -395,13 +367,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="renderOption 设置渲染参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'renderOption 设置渲染参数',
+    ])]
     public function testRenderOption(): void
     {
         $page = new Page(1, 5, 3);
@@ -458,13 +426,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="url 设置 URL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'url 设置 URL',
+    ])]
     public function testUrl(): void
     {
         $page = new Page(1, 3, 5);
@@ -480,13 +444,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setRender 设置渲染组件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setRender 设置渲染组件',
+    ])]
     public function testSetRender(): void
     {
         $page = new Page(1, 3, 5);
@@ -502,13 +462,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="默认每页分页数量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '默认每页分页数量',
+    ])]
     public function testDefaultPerPage(): void
     {
         $page = new Page(1, null, 25);
@@ -523,13 +479,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="pageName.getPageName 分页名字",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'pageName.getPageName 分页名字',
+    ])]
     public function testPageName(): void
     {
         $page = new Page(1, 10, 25);
@@ -603,13 +555,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="range 分页范围",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'range 分页范围',
+    ])]
     public function testRange(): void
     {
         $page = new Page(1, 3, 40);
@@ -644,13 +592,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="MACRO 无限数据分页",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'MACRO 无限数据分页',
+    ])]
     public function testMacro(): void
     {
         $page = new Page(1, 3, Page::MACRO);
@@ -718,13 +662,9 @@ final class PageTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bootstrap 分页尺寸设置",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bootstrap 分页尺寸设置',
+    ])]
     public function testPageBootstrapSize(): void
     {
         $page = new Page(1, 3, 40);

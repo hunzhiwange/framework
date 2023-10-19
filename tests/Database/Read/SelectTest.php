@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询数据.select',
     'path' => 'database/read/select',
 ])]
-/**
- * @internal
- */
 final class SelectTest extends TestCase
 {
     #[Api([

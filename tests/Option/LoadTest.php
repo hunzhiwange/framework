@@ -8,9 +8,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Load;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class LoadTest extends TestCase
 {
     public function testBaseUse(): void

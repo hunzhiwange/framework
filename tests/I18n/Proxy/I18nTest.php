@@ -9,9 +9,6 @@ use Leevel\I18n\I18n;
 use Leevel\I18n\Proxy\I18n as ProxyI18n;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class I18nTest extends TestCase
 {
     protected function setUp(): void

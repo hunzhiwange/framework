@@ -12,9 +12,6 @@ use Leevel\Filesystem\Helper;
 use Tests\Console\BaseMake;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * @internal
- */
 final class EntityTest extends TestCase
 {
     use BaseMake;

@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.reset',
     'path' => 'database/query/reset',
 ])]
-/**
- * @internal
- */
 final class ResetTest extends TestCase
 {
     #[Api([

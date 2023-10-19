@@ -9,46 +9,39 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="服务提供者",
- *     path="architecture/provider",
- *     zh-CN:description="
- * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
- *
- * 服务提供者将服务注入到 IOC 容器中，通常来说服务会依赖一些配置和调用其它服务等完成组装，还有有一定复杂度。
- *
- * 我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '服务提供者',
+    'path' => 'architecture/provider',
+    'zh-CN:description' => <<<'EOT'
+IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
+
+服务提供者将服务注入到 IOC 容器中，通常来说服务会依赖一些配置和调用其它服务等完成组装，还有有一定复杂度。
+
+我们可以为服务定义一组配套的服务提供者，可以免去配置服务的成本，开发起来很愉悦。
+EOT,
+])]
 final class ProviderTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * 服务提供者通过 `register` 完成服务注册。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Di\PrividerTest**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest::class)]}
-     * ```
-     *
-     * **Tests\Di\PrividerService1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+服务提供者通过 `register` 完成服务注册。
+
+**fixture 定义**
+
+**Tests\Di\PrividerTest**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest::class)]}
+```
+
+**Tests\Di\PrividerService1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService1::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $test = new PrividerTest($container = new Container());
@@ -65,27 +58,24 @@ final class ProviderTest extends TestCase
         static::assertFalse($test->isDeferred());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="延迟服务提供者",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\PrividerTest2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest2::class)]}
-     * ```
-     *
-     * **Tests\Di\PrividerService2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '延迟服务提供者',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\PrividerTest2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerTest2::class)]}
+```
+
+**Tests\Di\PrividerService2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\PrividerService2::class)]}
+```
+EOT,
+    ])]
     public function testDeferred(): void
     {
         $test = new PrividerTest2($container = new Container());
@@ -114,13 +104,9 @@ final class ProviderTest extends TestCase
         $test->register();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bootstrap 服务注册后的引导程序",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bootstrap 服务注册后的引导程序',
+    ])]
     public function testBootstrap(): void
     {
         $test = new PrividerTest(new Container());
@@ -158,9 +144,6 @@ final class ProviderTest extends TestCase
     }
 }
 
-/**
- * @internal
- */
 final class PrividerTest extends Provider
 {
     public function register(): void

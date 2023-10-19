@@ -12,9 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.orderBy',
     'path' => 'database/query/orderby',
 ])]
-/**
- * @internal
- */
 final class OrderByTest extends TestCase
 {
     #[Api([

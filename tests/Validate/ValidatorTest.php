@@ -11,30 +11,26 @@ use Leevel\Validate\Validator;
 use Leevel\Validate\ValidatorException;
 use Tests\TestCase;
 
-/**
- * @api(
- *     title="Validate",
- *     zh-CN:title="验证器",
- *     zh-TW:title="驗證器",
- *     path="validate/index",
- *     zh-CN:description="
- * **构造器函数原型**
- *
- * ``` php
- * public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = []);
- * ```
- *
- *   * $data 验证的数据
- *   * $rules 验证规则
- *   * $names 校验名字隐射
- *   * $messages 校验失败消息
- *
- * 可以通过构造器传递参数，也可以通过 `name`,`message` 等方法传入。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'title' => 'Validate',
+    'zh-CN:title' => '验证器',
+    'zh-TW:title' => '驗證器',
+    'path' => 'validate/index',
+    'zh-CN:description' => <<<'EOT'
+**构造器函数原型**
+
+``` php
+public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = []);
+```
+
+  * $data 验证的数据
+  * $rules 验证规则
+  * $names 校验名字隐射
+  * $messages 校验失败消息
+
+可以通过构造器传递参数，也可以通过 `name`,`message` 等方法传入。
+EOT,
+])]
 final class ValidatorTest extends TestCase
 {
     protected function setUp(): void
@@ -54,15 +50,12 @@ final class ValidatorTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器基本使用方法",
-     *     zh-CN:description="
-     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $validate = new Validator(
@@ -110,15 +103,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器规则支持数组写法",
-     *     zh-CN:description="
-     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器规则支持数组写法',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+EOT,
+    ])]
     public function testRuleIsArray(): void
     {
         $validate = new Validator(
@@ -166,15 +156,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数非数组兼容为数组)",
-     *     zh-CN:description="
-     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数非数组兼容为数组)',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+EOT,
+    ])]
     public function testRuleIsArray2(): void
     {
         $validate = new Validator(
@@ -222,15 +209,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数数组用法)",
-     *     zh-CN:description="
-     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器规则支持数组写法:每一项都是一个数组(第一个是规则，第一个是参数数组用法)',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+EOT,
+    ])]
     public function testRuleIsArray3(): void
     {
         $validate = new Validator(
@@ -278,15 +262,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器规则支持数组每一项字符串支持分隔:可以用于实际业务中合并验证规则的需求",
-     *     zh-CN:description="
-     * 可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器规则支持数组每一项字符串支持分隔:可以用于实际业务中合并验证规则的需求',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `success` 判断是否通过验证，`error` 返回错误消息。
+EOT,
+    ])]
     public function testRuleIsArrayStringMixed(): void
     {
         $validate = new Validator(
@@ -344,13 +325,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 创建验证器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 创建验证器',
+    ])]
     public function testMake(): void
     {
         $validate = Validator::make(
@@ -396,13 +373,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器校验错误",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器校验错误',
+    ])]
     public function testError(): void
     {
         $validate = new Validator(
@@ -436,13 +409,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置校验数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置校验数据',
+    ])]
     public function testData(): void
     {
         $validate = new Validator(
@@ -481,13 +450,9 @@ final class ValidatorTest extends TestCase
         static::assertFalse($validate->fail());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加校验数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加校验数据',
+    ])]
     public function testAddData(): void
     {
         $validate = new Validator(
@@ -525,13 +490,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置校验规则",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置校验规则',
+    ])]
     public function testRule(): void
     {
         $validate = new Validator(
@@ -574,13 +535,12 @@ final class ValidatorTest extends TestCase
         static::assertFalse($validate->fail());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置校验规则支持条件",
-     *     zh-CN:description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置校验规则支持条件',
+        'zh-CN:description' => <<<'EOT'
+第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。
+EOT,
+    ])]
     public function testRuleIf(): void
     {
         $validate = new Validator(
@@ -659,13 +619,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加校验规则",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加校验规则',
+    ])]
     public function testAddRule(): void
     {
         $validate = new Validator(
@@ -727,13 +683,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加校验规则支持条件",
-     *     zh-CN:description="第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加校验规则支持条件',
+        'zh-CN:description' => <<<'EOT'
+第一个闭包条件参数不为空，如果闭包返回 `true` 则添加改验证规则，否则忽略。
+EOT,
+    ])]
     public function testAddRuleIf(): void
     {
         $validate = new Validator(
@@ -812,13 +767,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置验证消息",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置验证消息',
+    ])]
     public function testMessage(): void
     {
         $validate = new Validator(
@@ -872,13 +823,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加验证消息",
-     *     zh-CN:description="设置规则所有字段的验证消息。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加验证消息',
+        'zh-CN:description' => <<<'EOT'
+设置规则所有字段的验证消息。
+EOT,
+    ])]
     public function testAddMessage(): void
     {
         $validate = new Validator(
@@ -932,13 +882,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加指定字段验证规则消息",
-     *     zh-CN:description="可以单独为某个字段指定验证消息规则，其它字段验证消息保持不变。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加指定字段验证规则消息',
+        'zh-CN:description' => <<<'EOT'
+可以单独为某个字段指定验证消息规则，其它字段验证消息保持不变。
+EOT,
+    ])]
     public function testAddMessageForOneField(): void
     {
         $validate = new Validator(
@@ -992,13 +941,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加指定字段验证规则消息(圆点分隔)",
-     *     zh-CN:description="通过圆点 `.` 分隔开来。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加指定字段验证规则消息(圆点分隔)',
+        'zh-CN:description' => <<<'EOT'
+通过圆点 `.` 分隔开来。
+EOT,
+    ])]
     public function testAddMessageForOneFieldSeparateByDot(): void
     {
         $validate = new Validator(
@@ -1052,13 +1000,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加指定多层子字段验证规则消息(圆点分隔)",
-     *     zh-CN:description="通过圆点 `.` 分隔开来。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加指定多层子字段验证规则消息(圆点分隔)',
+        'zh-CN:description' => <<<'EOT'
+通过圆点 `.` 分隔开来。
+EOT,
+    ])]
     public function testSubDataWithSubMessage(): void
     {
         $validate = new Validator(
@@ -1112,13 +1059,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加通配符字段验证规则消息",
-     *     zh-CN:description="通过 `*` 来代表通配符。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加通配符字段验证规则消息',
+        'zh-CN:description' => <<<'EOT'
+通过 `*` 来代表通配符。
+EOT,
+    ])]
     public function testWildcardSubDataWithSubMessage(): void
     {
         $validate = new Validator(
@@ -1205,13 +1151,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="设置验证字段隐射",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '设置验证字段隐射',
+    ])]
     public function testName(): void
     {
         $validate = new Validator(
@@ -1266,13 +1208,9 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="添加验证字段隐射",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '添加验证字段隐射',
+    ])]
     public function testAddName(): void
     {
         $validate = new Validator(
@@ -1327,13 +1265,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证后回调",
-     *     zh-CN:description="无论成功或者失败都会执行回调。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证后回调',
+        'zh-CN:description' => <<<'EOT'
+无论成功或者失败都会执行回调。
+EOT,
+    ])]
     public function testAfter(): void
     {
         $validate = new Validator(
@@ -1356,13 +1293,9 @@ final class ValidatorTest extends TestCase
         static::assertFalse($validate->fail());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="自定义扩展验证规则",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '自定义扩展验证规则',
+    ])]
     public function testExtend(): void
     {
         $validate = new Validator(
@@ -1394,13 +1327,9 @@ final class ValidatorTest extends TestCase
         static::assertTrue($validate->fail());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="直接调用验证规则",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '直接调用验证规则',
+    ])]
     public function testCall(): void
     {
         $validate = new Validator();
@@ -1412,13 +1341,9 @@ final class ValidatorTest extends TestCase
         static::assertTrue($validate->alpha('cd'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="直接调用自定义验证规则",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '直接调用自定义验证规则',
+    ])]
     public function testCallCustom(): void
     {
         $validate = new Validator();
@@ -1492,21 +1417,18 @@ final class ValidatorTest extends TestCase
         $validate->success();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="自定义扩展验证规则(类)",
-     *     zh-CN:description="
-     * 自定义扩展规则可以为一个独立的类，例如下面的例子。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
-     * ```
-     *
-     * 默认情况下，此时自定义类的 `handle` 方法将作为验证入口。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '自定义扩展验证规则(类)',
+        'zh-CN:description' => <<<'EOT'
+自定义扩展规则可以为一个独立的类，例如下面的例子。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
+```
+
+默认情况下，此时自定义类的 `handle` 方法将作为验证入口。
+EOT,
+    ])]
     public function testCallExtendClass(): void
     {
         $validate = new Validator(
@@ -1529,21 +1451,18 @@ final class ValidatorTest extends TestCase
         static::assertFalse($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="自定义扩展验证规则(类)，指定验证方法",
-     *     zh-CN:description="
-     * 自定义扩展规则可以为一个独立的类，例如下面的例子。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
-     * ```
-     *
-     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `handle2` 方法将作为验证入口。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '自定义扩展验证规则(类)，指定验证方法',
+        'zh-CN:description' => <<<'EOT'
+自定义扩展规则可以为一个独立的类，例如下面的例子。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ExtendClassTest1::class)]}
+```
+
+指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `handle2` 方法将作为验证入口。
+EOT,
+    ])]
     public function testCallExtendClassWithCustomMethod(): void
     {
         $validate = new Validator(
@@ -1666,15 +1585,12 @@ final class ValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证失败则跳过其它验证规则",
-     *     zh-CN:description="
-     * 只需要在校验规则中加入 `SKIP_OTHER` 即可。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证失败则跳过其它验证规则',
+        'zh-CN:description' => <<<'EOT'
+只需要在校验规则中加入 `SKIP_OTHER` 即可。
+EOT,
+    ])]
     public function testShouldSkipOther(): void
     {
         $validate = new Validator(
@@ -1736,15 +1652,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证失败则跳过自身其它验证规则",
-     *     zh-CN:description="
-     * 只需要在校验规则中加入 `SKIP_SELF` 即可，只会跳过当前字段的其他验证规则，而其它字段的验证规则不受影响。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证失败则跳过自身其它验证规则',
+        'zh-CN:description' => <<<'EOT'
+只需要在校验规则中加入 `SKIP_SELF` 即可，只会跳过当前字段的其他验证规则，而其它字段的验证规则不受影响。
+EOT,
+    ])]
     public function testShouldSkipSelf(): void
     {
         $validate = new Validator(
@@ -1809,15 +1722,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="值为 null 会跳过可选验证规则",
-     *     zh-CN:description="
-     * 如果校验规则中有 `OPTIONAL` ，那么字段值为 `null` 则不会执行验证规则。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '值为 null 会跳过可选验证规则',
+        'zh-CN:description' => <<<'EOT'
+如果校验规则中有 `OPTIONAL` ，那么字段值为 `null` 则不会执行验证规则。
+EOT,
+    ])]
     public function testOptional(): void
     {
         $validate = new Validator(
@@ -1837,15 +1747,12 @@ final class ValidatorTest extends TestCase
         static::assertSame(['name' => '地名'], $validate->getName());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="值为 null或者空字符串 会跳过可选字符串验证规则",
-     *     zh-CN:description="
-     * 如果校验规则中有 `OPTIONAL_STRING` ，那么字段值为 `null` 或者空字符串则不会执行验证规则。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '值为 null或者空字符串 会跳过可选字符串验证规则',
+        'zh-CN:description' => <<<'EOT'
+如果校验规则中有 `OPTIONAL_STRING` ，那么字段值为 `null` 或者空字符串则不会执行验证规则。
+EOT,
+    ])]
     public function testOptionalString(): void
     {
         $validate = new Validator(
@@ -1881,15 +1788,12 @@ final class ValidatorTest extends TestCase
         static::assertSame(['name' => '地名'], $validate->getName());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="值为 null 默认必须验证",
-     *     zh-CN:description="
-     * 我们加入 `MUST` 或者默认不指定，那么 `null` 也会执行验证。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '值为 null 默认必须验证',
+        'zh-CN:description' => <<<'EOT'
+我们加入 `MUST` 或者默认不指定，那么 `null` 也会执行验证。
+EOT,
+    ])]
     public function testMustRequired(): void
     {
         $validate = new Validator(
@@ -2169,15 +2073,12 @@ final class ValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="通配符验证规则支持",
-     *     zh-CN:description="
-     * 可以通过 `*` 来表示通配符验证规则。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '通配符验证规则支持',
+        'zh-CN:description' => <<<'EOT'
+可以通过 `*` 来表示通配符验证规则。
+EOT,
+    ])]
     public function testWildcardRule(): void
     {
         $validate = new Validator(
@@ -2339,21 +2240,18 @@ final class ValidatorTest extends TestCase
         static::assertFalse($e->reportable());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="类的静态方法验证规则支持",
-     *     zh-CN:description="
-     * 可以直接指定类的静态方法为验证规则，例如下面的例子。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
-     * ```
-     *
-     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator1` 方法将作为验证入口。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '类的静态方法验证规则支持',
+        'zh-CN:description' => <<<'EOT'
+可以直接指定类的静态方法为验证规则，例如下面的例子。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
+```
+
+指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator1` 方法将作为验证入口。
+EOT,
+    ])]
     public function test2(): void
     {
         $validate = new Validator(
@@ -2460,21 +2358,18 @@ eot;
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="类的静态方法验证规则支持通过异常抛出错误",
-     *     zh-CN:description="
-     * 可以在类的静态方法中抛出异常消息，异常必须为\Leevel\Validate\ValidatorException，例如下面的例子。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
-     * ```
-     *
-     * 指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator4` 方法将作为验证入口。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '类的静态方法验证规则支持通过异常抛出错误',
+        'zh-CN:description' => <<<'EOT'
+可以在类的静态方法中抛出异常消息，异常必须为\Leevel\Validate\ValidatorException，例如下面的例子。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Validate\ClassStaticDemo1::class)]}
+```
+
+指定方法情况下,通过 `@` 分隔开来，此时自定义类的 `demoValidator4` 方法将作为验证入口。
+EOT,
+    ])]
     public function test6(): void
     {
         $validate = new Validator(
@@ -2512,15 +2407,12 @@ eot;
         static::assertFalse($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="验证器支持反义规则",
-     *     zh-CN:description="
-     * 定义反义规则，只需要在规则前面加上英文感叹号即可。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '验证器支持反义规则',
+        'zh-CN:description' => <<<'EOT'
+定义反义规则，只需要在规则前面加上英文感叹号即可。
+EOT,
+    ])]
     public function test7(): void
     {
         $validate = new Validator(

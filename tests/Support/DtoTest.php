@@ -13,24 +13,18 @@ use Tests\Support\Fixtures\DtoToArray2;
 use Tests\Support\Fixtures\DtoToArray3;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="数据传输对象",
- *     path="component/support/dto",
- *     zh-CN:description="QueryPHP 提供了一个简单的数据传输对象组件。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '数据传输对象',
+    'path' => 'component/support/dto',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了一个简单的数据传输对象组件。
+EOT,
+])]
 final class DtoTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="all 获取全部属性数据（下划线属性命名风格）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'all 获取全部属性数据（下划线属性命名风格）',
+    ])]
     public function testAllUnCamelizeStyle(): void
     {
         $dto1 = new Dto1([
@@ -54,13 +48,9 @@ final class DtoTest extends TestCase
         static::assertTrue($data['demo_mixed_prop']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="all 获取全部属性数据（驼峰属性命名风格）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'all 获取全部属性数据（驼峰属性命名风格）',
+    ])]
     public function testAllCamelizeStyle(): void
     {
         $dto1 = new Dto1([
@@ -84,13 +74,9 @@ final class DtoTest extends TestCase
         static::assertTrue($data['demoMixedProp']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="默认忽略丢失的值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '默认忽略丢失的值',
+    ])]
     public function testDefaultIgnoreMissingValues(): void
     {
         $dto1 = new Dto1([
@@ -106,13 +92,9 @@ final class DtoTest extends TestCase
         static::assertSame('foo', $dto1->demo_string_prop);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="strict 从数组或者数据传输对象创建不可变数据传输对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'strict 从数组或者数据传输对象创建不可变数据传输对象',
+    ])]
     public function testStrict(): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -131,13 +113,9 @@ final class DtoTest extends TestCase
         ]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="only 设置白名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'only 设置白名单属性',
+    ])]
     public function testOnly(): void
     {
         $dto1 = new Dto1([
@@ -161,13 +139,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="only 设置白名单属性，合并默认白名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'only 设置白名单属性，合并默认白名单属性',
+    ])]
     public function testOnlyWithOnlyPropertys(): void
     {
         $dto1 = new DtoToArray([
@@ -190,13 +164,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="only 设置白名单属性，覆盖默认白名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'only 设置白名单属性，覆盖默认白名单属性',
+    ])]
     public function testOnlyWithOnlyPropertysOverrideProperty(): void
     {
         $dto1 = new DtoToArray([
@@ -217,13 +187,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="except 设置黑名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'except 设置黑名单属性',
+    ])]
     public function testExcept(): void
     {
         $dto1 = new Dto1([
@@ -250,13 +216,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="except 设置黑名单属性，合并默认黑名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'except 设置黑名单属性，合并默认黑名单属性',
+    ])]
     public function testExceptWithExceptPropertys(): void
     {
         $dto1 = new DtoToArray2([
@@ -274,13 +236,9 @@ final class DtoTest extends TestCase
         static::assertSame([], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="except 设置黑名单属性，覆盖默认黑名单属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'except 设置黑名单属性，覆盖默认黑名单属性',
+    ])]
     public function testExceptWithExceptPropertysOverrideProperty(): void
     {
         $dto1 = new DtoToArray2([
@@ -301,13 +259,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withoutNull 设置转换数组时忽略 NULL 值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withoutNull 设置转换数组时忽略 NULL 值',
+    ])]
     public function testWithoutNull(): void
     {
         $dto1 = new DtoToArray3([
@@ -328,13 +282,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 对象转数组（下划线属性命名风格）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 对象转数组（下划线属性命名风格）',
+    ])]
     public function testToArrayUnCamelizeStyle(): void
     {
         $dto1 = new Dto1([
@@ -358,13 +308,9 @@ final class DtoTest extends TestCase
         static::assertTrue($data['demo_mixed_prop']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray.camelizeNamingStyle 对象转数组（驼峰属性命名风格）",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray.camelizeNamingStyle 对象转数组（驼峰属性命名风格）',
+    ])]
     public function testToArrayCamelizeStyle(): void
     {
         $dto1 = new Dto1([
@@ -388,13 +334,9 @@ final class DtoTest extends TestCase
         static::assertTrue($data['demoMixedProp']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="toArray 对象转数组带有白名单属性设置",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'toArray 对象转数组带有白名单属性设置',
+    ])]
     public function testToArrayWithOnlyPropertys(): void
     {
         $dto1 = new DtoToArray([
@@ -410,13 +352,9 @@ final class DtoTest extends TestCase
         ], $data);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性数组访问 ArrayAccess.offsetExists 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetExists 支持',
+    ])]
     public function testOffsetExists(): void
     {
         $dto1 = new Dto1([
@@ -432,13 +370,9 @@ final class DtoTest extends TestCase
         static::assertTrue(isset($dto1['demoStringProp']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性数组访问 ArrayAccess.offsetSet 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetSet 支持',
+    ])]
     public function testOffsetSet(): void
     {
         $dto1 = new Dto1([
@@ -459,13 +393,9 @@ final class DtoTest extends TestCase
         static::assertSame('hello_world2', $dto1['demoStringProp']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性数组访问 ArrayAccess.offsetGet 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetGet 支持',
+    ])]
     public function testOffsetGet(): void
     {
         $dto1 = new Dto1([
@@ -481,13 +411,9 @@ final class DtoTest extends TestCase
         static::assertSame('foo', $dto1['demoStringProp']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性数组访问 ArrayAccess.offsetUnset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetUnset 支持',
+    ])]
     public function testOffsetUnset(): void
     {
         $this->expectException(\TypeError::class);
@@ -510,13 +436,9 @@ final class DtoTest extends TestCase
         unset($dto1['demo_string_prop']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性访问魔术方法 __isset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性访问魔术方法 __isset 支持',
+    ])]
     public function testMagicIsset(): void
     {
         $dto1 = new Dto1([
@@ -531,13 +453,9 @@ final class DtoTest extends TestCase
         static::assertTrue(isset($dto1->demo_int_prop));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性访问魔术方法 __set 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性访问魔术方法 __set 支持',
+    ])]
     public function testMagicSet(): void
     {
         $dto1 = new Dto1([
@@ -554,13 +472,9 @@ final class DtoTest extends TestCase
         static::assertSame('hello', $dto1->demo_string_prop);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数据传输对象属性访问魔术方法 __get 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数据传输对象属性访问魔术方法 __get 支持',
+    ])]
     public function testMagicGet(): void
     {
         $dto1 = new Dto1([
@@ -574,13 +488,9 @@ final class DtoTest extends TestCase
         static::assertSame('foo', $dto1->demo_string_prop);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实体属性访问魔术方法 __unset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实体属性访问魔术方法 __unset 支持',
+    ])]
     public function testMagicUnset(): void
     {
         $this->expectException(\TypeError::class);

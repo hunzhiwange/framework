@@ -8,24 +8,18 @@ use Leevel\Http\RedirectResponse;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Redirect Response",
- *     path="component/http/redirectresponse",
- *     zh-CN:description="QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Redirect Response',
+    'path' => 'component/http/redirectresponse',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。
+EOT,
+])]
 final class RedirectResponseTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="with 闪存一个数据片段到 SESSION",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'with 闪存一个数据片段到 SESSION',
+    ])]
     public function testWith(): void
     {
         $response = new RedirectResponse('foo.bar');
@@ -36,13 +30,9 @@ final class RedirectResponseTest extends TestCase
         static::assertSame($response->getSession()->getFlash('foo'), 'bar');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="withErrors 闪存错误信息",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'withErrors 闪存错误信息',
+    ])]
     public function testWithError(): void
     {
         $errorsDefault = [

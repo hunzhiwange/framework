@@ -11,20 +11,15 @@ use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="内核助手函数",
- *     path="architecture/kernel/functions",
- *     zh-CN:description="
- * QueryPHP 在内核助手函数中为代理应用 `\Leevel\Kernel\Proxy\App` 提供了两个别名类 `\App` 和 `\Leevel`，提供简洁的静态访问入口。
- *
- * 例外还提供了一个语言包函数 `__`，为应用提供国际化支持。
- * ",
- *     zh-CN:note="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '内核助手函数',
+    'path' => 'architecture/kernel/functions',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 在内核助手函数中为代理应用 `\Leevel\Kernel\Proxy\App` 提供了两个别名类 `\App` 和 `\Leevel`，提供简洁的静态访问入口。
+
+例外还提供了一个语言包函数 `__`，为应用提供国际化支持。
+EOT,
+])]
 final class FunctionsTest extends TestCase
 {
     protected function setUp(): void
@@ -37,65 +32,45 @@ final class FunctionsTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Leevel 应用静态代理别名类调用应用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Leevel 应用静态代理别名类调用应用',
+    ])]
     public function testLeevel(): void
     {
         $this->createContainer();
         static::assertSame(App::VERSION, \Leevel::version());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="App 应用静态代理别名类调用应用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'App 应用静态代理别名类调用应用',
+    ])]
     public function testApp(): void
     {
         $this->createContainer();
         static::assertSame(App::VERSION, Apps::version());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Leevel 应用静态代理别名类调用 IOC 容器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Leevel 应用静态代理别名类调用 IOC 容器',
+    ])]
     public function testLeevelWithContainerMethod(): void
     {
         $this->createContainer();
         static::assertNull(\Leevel::make('foo', throw: false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="App 应用静态代理别名类调用 IOC 容器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'App 应用静态代理别名类调用 IOC 容器',
+    ])]
     public function testAppWithContainerMethod(): void
     {
         $this->createContainer();
         static::assertNull(Apps::make('foo', throw: false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="全局语言函数 __()",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '全局语言函数 __()',
+    ])]
     public function testFunctionLang(): void
     {
         $container = $this->createContainer();

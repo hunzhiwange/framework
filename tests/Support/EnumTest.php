@@ -10,24 +10,18 @@ use Tests\Support\Fixtures\RealEnumNoValue;
 use Tests\Support\Fixtures\RealEnumString;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="枚举",
- *     path="component/support/enum",
- *     zh-CN:description="QueryPHP 提供了一个简单的枚举组件。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '枚举',
+    'path' => 'component/support/enum',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了一个简单的枚举组件。
+EOT,
+])]
 final class EnumTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="description 获取枚举值对应的描述",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'description 获取枚举值对应的描述',
+    ])]
     public function testDescription(): void
     {
         static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
@@ -44,13 +38,9 @@ final class EnumTest extends TestCase
         static::assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="未设置注解将会被忽略",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '未设置注解将会被忽略',
+    ])]
     public function testDescriptionButNoAttributes(): void
     {
         $this->expectException(\OutOfBoundsException::class);
@@ -61,25 +51,17 @@ final class EnumTest extends TestCase
         Enum1::description(Enum1::NO_ATTRIBUTES);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="注解为指定描述则为空",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '注解为指定描述则为空',
+    ])]
     public function testDescriptionButAttributesDescriptionNotFound(): void
     {
         static::assertSame('', Enum1::description(Enum1::NO_MSG));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="值不存在枚举中会抛出异常",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '值不存在枚举中会抛出异常',
+    ])]
     public function testDescriptionButValueNotFound(): void
     {
         $this->expectException(\OutOfBoundsException::class);
@@ -90,26 +72,21 @@ final class EnumTest extends TestCase
         static::assertSame('', Enum1::description(999999999999999));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="相同枚举值会匹配第一个",
-     *     zh-CN:description="基于 array_search 查找，第一个会被找到并返回。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '相同枚举值会匹配第一个',
+        'zh-CN:description' => <<<'EOT'
+基于 array_search 查找，第一个会被找到并返回。
+EOT,
+    ])]
     public function testDescriptionSameValueDescriptionWillBeFristOne(): void
     {
         static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
         static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="descriptions 获取全部分组枚举描述",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'descriptions 获取全部分组枚举描述',
+    ])]
     public function testDescriptions(): void
     {
         $value = Enum1::descriptions('');
@@ -190,13 +167,9 @@ final class EnumTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="values 获取分组枚举值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'values 获取分组枚举值',
+    ])]
     public function testValues(): void
     {
         $value = Enum1::values('status');
@@ -215,13 +188,9 @@ final class EnumTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="valueDescriptionMap 获取分组枚举值和描述映射",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'valueDescriptionMap 获取分组枚举值和描述映射',
+    ])]
     public function testValueDescriptionMap(): void
     {
         $value = Enum1::valueDescription();
@@ -297,13 +266,9 @@ final class EnumTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="descriptions 获取指定分组枚举描述",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'descriptions 获取指定分组枚举描述',
+    ])]
     public function testGetOneGroupDescriptions(): void
     {
         $value = Enum1::descriptions('status');
@@ -328,13 +293,9 @@ final class EnumTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="descriptions 获取指定分组枚举描述不存在将抛出异常",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'descriptions 获取指定分组枚举描述不存在将抛出异常',
+    ])]
     public function testGetOneGroupDescriptionsButNotFound(): void
     {
         $this->expectException(\OutOfBoundsException::class);
@@ -345,13 +306,9 @@ final class EnumTest extends TestCase
         Enum1::descriptions('not_found');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="description 验证是否为有效的枚举值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'description 验证是否为有效的枚举值',
+    ])]
     public function testIsValid(): void
     {
         static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
@@ -359,39 +316,27 @@ final class EnumTest extends TestCase
         static::assertFalse(Enum1::isValid(9999999));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isValidKey 验证是否为有效的键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isValidKey 验证是否为有效的键',
+    ])]
     public function testIsValidKey(): void
     {
         static::assertTrue(Enum1::isValidKey('ERROR_ONE'));
         static::assertFalse(Enum1::isValidKey('NOT_FOUND'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="searchKey 获取给定值的键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'searchKey 获取给定值的键',
+    ])]
     public function testSearchKey(): void
     {
         static::assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
         static::assertFalse(Enum1::searchKey(88));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="description 获取真实枚举值对应的描述",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'description 获取真实枚举值对应的描述',
+    ])]
     public function testRealEnumDescription(): void
     {
         static::assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));

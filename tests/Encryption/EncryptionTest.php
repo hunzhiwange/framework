@@ -8,15 +8,13 @@ use Leevel\Encryption\Encryption;
 use Leevel\Encryption\IEncryption;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="加密解密",
- *     path="component/encryption",
- *     zh-CN:description="字符串加密解密支持。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '加密解密',
+    'path' => 'component/encryption',
+    'zh-CN:description' => <<<'EOT'
+字符串加密解密支持。
+EOT,
+])]
 final class EncryptionTest extends TestCase
 {
     protected function tearDown(): void
@@ -27,13 +25,9 @@ final class EncryptionTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="加密解密基本功能",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '加密解密基本功能',
+    ])]
     public function testBaseUse(): void
     {
         $encryption = new Encryption('encode-key');
@@ -62,13 +56,9 @@ final class EncryptionTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="加密解密 AES-128-CBC",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '加密解密 AES-128-CBC',
+    ])]
     public function testUse128(): void
     {
         $encryption = new Encryption('encode-key', 'AES-128-CBC');
@@ -136,13 +126,9 @@ final class EncryptionTest extends TestCase
         static::assertSame('', $encryption->decrypt($data));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="加密解密支持过期时间",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '加密解密支持过期时间',
+    ])]
     public function testDecryptButExpired(): void
     {
         $encryption = new Encryption('encode-key');
@@ -158,13 +144,9 @@ final class EncryptionTest extends TestCase
         static::assertFalse($encryption->decrypt($data));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="加密解密支持 RSA 校验",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '加密解密支持 RSA 校验',
+    ])]
     public function testWithPublicAndPrimaryKey(): void
     {
         $encryption = new Encryption(

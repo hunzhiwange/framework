@@ -68,9 +68,6 @@ auth 参数根据不同的连接会有所区别，通用的 auth 参数如下：
 |api_default|API 认证驱动连接|
 EOT,
 ])]
-/**
- * @internal
- */
 final class ManagerTest extends TestCase
 {
     #[Api([

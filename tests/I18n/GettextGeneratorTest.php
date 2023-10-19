@@ -8,9 +8,6 @@ use Leevel\Filesystem\Helper;
 use Leevel\I18n\GettextGenerator;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class GettextGeneratorTest extends TestCase
 {
     protected function tearDown(): void

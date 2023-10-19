@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '聚合查询.aggregate',
     'path' => 'database/read/aggregate',
 ])]
-/**
- * @internal
- */
 final class AggregateTest extends TestCase
 {
     #[Api([

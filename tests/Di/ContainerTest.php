@@ -30,34 +30,27 @@ use Tests\Di\Fixtures\Test8;
 use Tests\Di\Fixtures\Test9;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="IOC 容器",
- *     path="architecture/ioc",
- *     zh-CN:description="
- * IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
- *
- * 目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'IOC 容器',
+    'path' => 'architecture/ioc',
+    'zh-CN:description' => <<<'EOT'
+IOC 容器是整个框架最核心的部分，负责服务的管理和解耦。
+
+目前系统所有的关键服务都接入了 IOC 容器，包括控制器、Console 命令行。
+EOT,
+])]
 final class ContainerTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="闭包绑定",
-     *     zh-CN:description="
-     * 闭包属于惰性，真正使用的时候才会执行。
-     *
-     * 我们可以通过 `bind` 来绑定一个闭包，通过 `make` 来运行服务，第二次运行如果是单例则直接使用生成后的结果，否则会每次执行闭包的代码。
-     *
-     * 通常来说，系统大部分服务都是单例来提升性能和共享。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '闭包绑定',
+        'zh-CN:description' => <<<'EOT'
+闭包属于惰性，真正使用的时候才会执行。
+
+我们可以通过 `bind` 来绑定一个闭包，通过 `make` 来运行服务，第二次运行如果是单例则直接使用生成后的结果，否则会每次执行闭包的代码。
+
+通常来说，系统大部分服务都是单例来提升性能和共享。
+EOT,
+    ])]
     public function testBindClosure(): void
     {
         $container = new Container();
@@ -69,13 +62,9 @@ final class ContainerTest extends TestCase
         static::assertSame('bar', $container->make('foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="闭包绑定单例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '闭包绑定单例',
+    ])]
     public function testSingletonClosure(): void
     {
         $container = new Container();
@@ -88,23 +77,20 @@ final class ContainerTest extends TestCase
         static::assertSame($singleton, $container->make('singleton'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="类直接生成本身",
-     *     zh-CN:description="
-     * 一个独立的类可以直接生成，而不需要提前注册到容器中。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '类直接生成本身',
+        'zh-CN:description' => <<<'EOT'
+一个独立的类可以直接生成，而不需要提前注册到容器中。
+
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test1::class)]}
+```
+EOT,
+    ])]
     public function testClass(): void
     {
         $container = new Container();
@@ -112,13 +98,12 @@ final class ContainerTest extends TestCase
         static::assertInstanceOf(Test1::class, $container->make(Test1::class));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="类单例",
-     *     zh-CN:description="类也可以注册为单例。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '类单例',
+        'zh-CN:description' => <<<'EOT'
+类也可以注册为单例。
+EOT,
+    ])]
     public function testSingletonClass(): void
     {
         $container = new Container();
@@ -127,29 +112,26 @@ final class ContainerTest extends TestCase
         static::assertSame($container->make(Test1::class), $container->make(Test1::class));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="接口绑定",
-     *     zh-CN:description="
-     * 可以为接口绑定实现。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\ITest2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '接口绑定',
+        'zh-CN:description' => <<<'EOT'
+可以为接口绑定实现。
+
+**fixture 定义**
+
+**Tests\Di\Fixtures\ITest2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest2::class)]}
+```
+
+**Tests\Di\Fixtures\Test2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test2::class)]}
+```
+EOT,
+    ])]
     public function testInterface(): void
     {
         $container = new Container();
@@ -159,25 +141,22 @@ final class ContainerTest extends TestCase
         static::assertInstanceOf(ITest2::class, $container->make(Test2::class));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="接口绑定接口作为构造器参数",
-     *     zh-CN:description="
-     * 接口可以作为控制器参数来做依赖注入。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)]}
-     * ```
-     *
-     * 通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '接口绑定接口作为构造器参数',
+        'zh-CN:description' => <<<'EOT'
+接口可以作为控制器参数来做依赖注入。
+
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test3::class)]}
+```
+
+通过 `Test3` 的构造函数注入 `ITest2` 的实现 `Test2`，通过 IOC 容器可以实现代码解耦。
+EOT,
+    ])]
     public function testInterface2(): void
     {
         $container = new Container();
@@ -197,13 +176,9 @@ final class ContainerTest extends TestCase
         static::assertInstanceOf(ITest2::class, $test4->arg1->arg1);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="绑定闭包第一个参数为 IOC 容器本身",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '绑定闭包第一个参数为 IOC 容器本身',
+    ])]
     public function testContainerAsFirstArgs(): void
     {
         $container = new Container();
@@ -214,13 +189,9 @@ final class ContainerTest extends TestCase
         static::assertSame($container, $container->make('test'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="数组访问 ArrayAccess 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '数组访问 ArrayAccess 支持',
+    ])]
     public function testArrayAccess(): void
     {
         $container = new Container();
@@ -234,13 +205,9 @@ final class ContainerTest extends TestCase
         static::assertFalse(isset($container['foo']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="alias 设置别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'alias 设置别名',
+    ])]
     public function testAliases(): void
     {
         $container = new Container();
@@ -259,13 +226,9 @@ final class ContainerTest extends TestCase
         static::assertNull($container->make('foo7', throw: false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 创建容器服务并返回支持参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 创建容器服务并返回支持参数',
+    ])]
     public function testMakeWithArgs(): void
     {
         $container = new Container();
@@ -279,13 +242,9 @@ final class ContainerTest extends TestCase
         static::assertSame([1, 2], $container->make('foo', [1, 2, 3]));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="get 创建容器服务并返回",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'get 创建容器服务并返回',
+    ])]
     public function testGet(): void
     {
         $container = new Container();
@@ -296,13 +255,9 @@ final class ContainerTest extends TestCase
         static::assertSame([1, 2], $container->make('foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bind 注册到容器支持覆盖",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bind 注册到容器支持覆盖',
+    ])]
     public function testOverridden(): void
     {
         $container = new Container();
@@ -313,13 +268,9 @@ final class ContainerTest extends TestCase
         static::assertSame('bar2', $container['foo']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="instance 注册为实例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'instance 注册为实例',
+    ])]
     public function testInstance(): void
     {
         $container = new Container();
@@ -329,27 +280,24 @@ final class ContainerTest extends TestCase
         static::assertSame($instance, $container->make('foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="默认参数支持",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test5**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test5::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\ITest3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest3::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '默认参数支持',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test5**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test5::class)]}
+```
+
+**Tests\Di\Fixtures\ITest3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ITest3::class)]}
+```
+EOT,
+    ])]
     public function testDefaultArgs(): void
     {
         $container = new Container();
@@ -361,21 +309,18 @@ final class ContainerTest extends TestCase
         static::assertSame('hello default', $test5->arg2);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="必填参数校验",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test6**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test6::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '必填参数校验',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test6**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test6::class)]}
+```
+EOT,
+    ])]
     public function testArgsRequiredContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
@@ -387,13 +332,9 @@ final class ContainerTest extends TestCase
         $container->make(Test6::class, []);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="接口必须绑定服务",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '接口必须绑定服务',
+    ])]
     public function testInterfaceContainerInvalidArgumentException(): void
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
@@ -405,27 +346,24 @@ final class ContainerTest extends TestCase
         $container->make(ITest2::class, []);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="call 回调自动依赖注入",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test7**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test7::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test8**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test8::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'call 回调自动依赖注入',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test7**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test7::class)]}
+```
+
+**Tests\Di\Fixtures\Test8**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test8::class)]}
+```
+EOT,
+    ])]
     public function testCall(): void
     {
         $container = new Container();
@@ -475,13 +413,9 @@ final class ContainerTest extends TestCase
         $container->call('Test8');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="call 回调自动依赖注入支持字符串或者数组类回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'call 回调自动依赖注入支持字符串或者数组类回调',
+    ])]
     public function testCallWithArrayOrString(): void
     {
         $container = new Container();
@@ -512,13 +446,9 @@ final class ContainerTest extends TestCase
         static::assertSame('bar', $result[2]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="call 回调自动依赖注入支持实例和方法数组回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'call 回调自动依赖注入支持实例和方法数组回调',
+    ])]
     public function testCallWithCallableArray(): void
     {
         $container = new Container();
@@ -528,13 +458,9 @@ final class ContainerTest extends TestCase
         static::assertSame(['foo', 'bar'], $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="call 回调自动依赖注入支持静态回调",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'call 回调自动依赖注入支持静态回调',
+    ])]
     public function testCallStatic(): void
     {
         $container = new Container();
@@ -554,13 +480,9 @@ final class ContainerTest extends TestCase
         $container->call([1, 'bar']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="remove 删除服务和实例",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'remove 删除服务和实例',
+    ])]
     public function testRemove(): void
     {
         $container = new Container();
@@ -573,13 +495,9 @@ final class ContainerTest extends TestCase
         static::assertFalse($container->exists(Test8::class));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="exists 或者 has 服务或者实例是否存在",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'exists 或者 has 服务或者实例是否存在',
+    ])]
     public function testExistsOrHas(): void
     {
         $container = new Container();
@@ -594,13 +512,9 @@ final class ContainerTest extends TestCase
         static::assertFalse($container->has(Test8::class));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="实例数组访问 ArrayAccess.offsetUnset 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '实例数组访问 ArrayAccess.offsetUnset 支持',
+    ])]
     public function testUnsetInstances(): void
     {
         $container = new Container();
@@ -620,21 +534,18 @@ final class ContainerTest extends TestCase
         static::assertFalse(isset($container['foo3']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="类依赖注入构造器必须为 public",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test9**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test9::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '类依赖注入构造器必须为 public',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test9**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test9::class)]}
+```
+EOT,
+    ])]
     public function testNotInstantiable(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -675,13 +586,9 @@ final class ContainerTest extends TestCase
         $container->call(['stdClass', 'notfound']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bind 注册到容器可以支持各种数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bind 注册到容器可以支持各种数据',
+    ])]
     public function testMakeServiceBool(): void
     {
         $container = new Container();
@@ -690,13 +597,9 @@ final class ContainerTest extends TestCase
         static::assertFalse($container->make('foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bind 注册到容器支持传递数组来设置别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bind 注册到容器支持传递数组来设置别名',
+    ])]
     public function testBindArrayAsAlias(): void
     {
         $container = new Container();
@@ -706,21 +609,18 @@ final class ContainerTest extends TestCase
         static::assertFalse($container->make('bar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="依赖注入的方法中类参数不存在例子",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test10**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test10::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '依赖注入的方法中类参数不存在例子',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test10**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test10::class)]}
+```
+EOT,
+    ])]
     public function testParseReflectionException(): void
     {
         $this->expectException(\Leevel\Di\ServiceNotFoundException::class);
@@ -732,13 +632,9 @@ final class ContainerTest extends TestCase
         $container->call([new Test10(), 'hello']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="instance 注册为实例支持传递数组来设置别名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'instance 注册为实例支持传递数组来设置别名',
+    ])]
     public function testInstanceWithArray(): void
     {
         $container = new Container();
@@ -749,19 +645,16 @@ final class ContainerTest extends TestCase
         static::assertSame($instance, $container->make('bar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="instance 注册为实例未传递第二个参数会注册自身",
-     *     zh-CN:description="
-     * 比如说系统中中间件注册。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Session\Provider\Register::class, 'middleware', 'define')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'instance 注册为实例未传递第二个参数会注册自身',
+        'zh-CN:description' => <<<'EOT'
+比如说系统中中间件注册。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Session\Provider\Register::class, 'middleware', 'define')]}
+```
+EOT,
+    ])]
     public function testInstanceItSelf(): void
     {
         $container = new Container();
@@ -772,33 +665,30 @@ final class ContainerTest extends TestCase
         static::assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="参数为类实例例子",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test20**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test20::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test21**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test21::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test22**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test22::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '参数为类实例例子',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test20**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test20::class)]}
+```
+
+**Tests\Di\Fixtures\Test21**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test21::class)]}
+```
+
+**Tests\Di\Fixtures\Test22**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test22::class)]}
+```
+EOT,
+    ])]
     public function testCallWithClassArgsAndItInstance(): void
     {
         $container = new Container();
@@ -809,33 +699,30 @@ final class ContainerTest extends TestCase
         static::assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="参数为类实例例子和其它参数混合",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test23**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test23::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test24**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test24::class)]}
-     * ```
-     *
-     * **Tests\Di\Fixtures\Test25**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test25::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '参数为类实例例子和其它参数混合',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test23**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test23::class)]}
+```
+
+**Tests\Di\Fixtures\Test24**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test24::class)]}
+```
+
+**Tests\Di\Fixtures\Test25**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test25::class)]}
+```
+EOT,
+    ])]
     public function testCallWithClassArgsAndItInstanceAndMore(): void
     {
         $container = new Container();
@@ -858,21 +745,18 @@ final class ContainerTest extends TestCase
         $container->make(Test28::class);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 创建容器服务并返回支持类名生成服务",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\Test28**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test28::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 创建容器服务并返回支持类名生成服务',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\Test28**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\Test28::class)]}
+```
+EOT,
+    ])]
     public function testClassArgsASingleClass(): void
     {
         $container = new Container();
@@ -880,13 +764,9 @@ final class ContainerTest extends TestCase
         static::assertSame('world', $test->hello());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="魔术方法 __get 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '魔术方法 __get 支持',
+    ])]
     public function testMagicGet(): void
     {
         $container = new Container();
@@ -895,13 +775,9 @@ final class ContainerTest extends TestCase
         static::assertSame('bar', $container->foo);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="魔术方法 __set 支持",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '魔术方法 __set 支持',
+    ])]
     public function testMagicSet(): void
     {
         $container = new Container();
@@ -923,13 +799,9 @@ final class ContainerTest extends TestCase
         $container->callNotFound();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clear 清理容器",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clear 清理容器',
+    ])]
     public function testClear(): void
     {
         $container = new Container();
@@ -942,13 +814,9 @@ final class ContainerTest extends TestCase
         static::assertNull($container->make('foo', throw: false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="IOC 容器禁止克隆",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'IOC 容器禁止克隆',
+    ])]
     public function testClone(): void
     {
         $this->expectException(\RuntimeException::class);
@@ -960,21 +828,18 @@ final class ContainerTest extends TestCase
         $container2 = clone $container;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="makeProvider 创建服务提供者",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\ProviderTest1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'makeProvider 创建服务提供者',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\ProviderTest1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest1::class)]}
+```
+EOT,
+    ])]
     public function testMakeProvider(): void
     {
         $container = new Container();
@@ -984,21 +849,18 @@ final class ContainerTest extends TestCase
         unset($_SERVER['testMakeProvider']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="callProviderBootstrap 执行服务提供者 bootstrap",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\ProviderTest2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'callProviderBootstrap 执行服务提供者 bootstrap',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\ProviderTest2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\ProviderTest2::class)]}
+```
+EOT,
+    ])]
     public function testCallProviderBootstrap(): void
     {
         $container = new Container();
@@ -1012,13 +874,9 @@ final class ContainerTest extends TestCase
         unset($_SERVER['testCallProviderBootstrap']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="registerProviders 注册服务提供者",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'registerProviders 注册服务提供者',
+    ])]
     public function testRegisterProviders(): void
     {
         $container = new Container();
@@ -1031,21 +889,18 @@ final class ContainerTest extends TestCase
         $container->registerProviders([], [], []);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="registerProviders 注册服务提供者支持延迟写入",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Di\Fixtures\DeferredProvider**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\DeferredProvider::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'registerProviders 注册服务提供者支持延迟写入',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Di\Fixtures\DeferredProvider**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Di\Fixtures\DeferredProvider::class)]}
+```
+EOT,
+    ])]
     public function testDeferredProvider(): void
     {
         $deferredProviders = [

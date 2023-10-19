@@ -15,9 +15,6 @@ use Leevel\Session\File;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class AuthTest extends TestCase
 {
     public function testBaseUse(): void

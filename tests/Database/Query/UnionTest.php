@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.union',
     'path' => 'database/query/union',
 ])]
-/**
- * @internal
- */
 final class UnionTest extends TestCase
 {
     #[Api([

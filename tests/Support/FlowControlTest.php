@@ -7,38 +7,32 @@ namespace Tests\Support;
 use Leevel\Support\FlowControl;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Flow Control",
- *     zh-CN:title="流程控制",
- *     path="component/flow",
- *     zh-CN:description="
- * QueryPHP 为流程控制类统一抽象了一个基础流程控制类 `\Leevel\Support\FlowControl`，流程控制类可以轻松接入。
- *
- * 系统一些关键服务，比如说数据库查询条件、HTTP 响应等流程控制类均接入了统一的抽象层。
- * ",
- * note="你可以根据不同场景灵活运用，以满足产品需求。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '流程控制',
+    'path' => 'component/flow',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 为流程控制类统一抽象了一个基础流程控制类 `\Leevel\Support\FlowControl`，流程控制类可以轻松接入。
+
+系统一些关键服务，比如说数据库查询条件、HTTP 响应等流程控制类均接入了统一的抽象层。
+EOT,
+    'note' => <<<'EOT'
+你可以根据不同场景灵活运用，以满足产品需求。
+EOT,
+])]
 final class FlowControlTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基础使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Flow\Test1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FlowTest1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基础使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Flow\Test1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\FlowTest1::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $test = new FlowTest1();
@@ -59,13 +53,9 @@ final class FlowControlTest extends TestCase
         static::assertSame('condition1', $value);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="else 条件语句",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'else 条件语句',
+    ])]
     public function testElse(): void
     {
         $test = new FlowTest1();
@@ -86,19 +76,17 @@ final class FlowControlTest extends TestCase
 
     /**
      * @dataProvider getElseData
-     *
-     * @api(
-     *     zh-CN:title="else 条件语句例子",
-     *     zh-CN:description="
-     * **测试例子**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\FlowControlTest::class, 'getElseData')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => 'else 条件语句例子',
+        'zh-CN:description' => <<<'EOT'
+**测试例子**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\FlowControlTest::class, 'getElseData')]}
+```
+EOT,
+    ])]
     public function testElseMulti(int $condition, string $result): void
     {
         $test = new FlowTest1();
@@ -134,13 +122,9 @@ final class FlowControlTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="elif 条件语句",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'elif 条件语句',
+    ])]
     public function testElseIfs(): void
     {
         $test = new FlowTest1();
@@ -159,13 +143,9 @@ final class FlowControlTest extends TestCase
         static::assertSame('condition2', $value);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="条件语句支持嵌套",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '条件语句支持嵌套',
+    ])]
     public function testNested(): void
     {
         $queryBuilder = new QueryBuilderFlowControl();

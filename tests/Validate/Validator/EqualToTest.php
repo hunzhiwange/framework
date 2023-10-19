@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
+use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.equal_to",
- *     zh-CN:title="验证器.两个字段是否相同",
- *     path="validate/validator/equalto",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.两个字段是否相同',
+    'path' => 'validate/validator/equalto',
+])]
 final class EqualToTest extends TestCase
 {
     /**
@@ -24,21 +19,19 @@ final class EqualToTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $valueCompare
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualToTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualToTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
@@ -70,21 +63,19 @@ final class EqualToTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $valueCompare
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualToTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualToTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, $valueCompare, string $param): void
     {
         $validate = new Validator(
@@ -110,13 +101,9 @@ final class EqualToTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="equal_to 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'equal_to 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

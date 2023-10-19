@@ -18,20 +18,15 @@ use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="初始化注册异常运行时",
- *     path="architecture/kernel/bootstrap/registerexceptionruntime",
- *     zh-CN:description="
- * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
- *
- * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
- * ",
- *     zh-CN:note="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '初始化注册异常运行时',
+    'path' => 'architecture/kernel/bootstrap/registerexceptionruntime',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
+
+内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+EOT,
+])]
 final class RegisterExceptionRuntimeTest extends TestCase
 {
     protected int $oldErrorReporting;
@@ -47,13 +42,9 @@ final class RegisterExceptionRuntimeTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="set_error_handler 设置错误处理函数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'set_error_handler 设置错误处理函数',
+    ])]
     public function testSetErrorHandle(): void
     {
         $this->expectException(\ErrorException::class);
@@ -84,13 +75,9 @@ final class RegisterExceptionRuntimeTest extends TestCase
         static::assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="set_exception_handler 设置异常处理函数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'set_exception_handler 设置异常处理函数',
+    ])]
     public function testSetExceptionHandler(): void
     {
         $this->backupSystemEnvironment();
@@ -139,13 +126,9 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $this->restoreSystemEnvironment();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="register_shutdown_function 设置请求关闭处理函数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'register_shutdown_function 设置请求关闭处理函数',
+    ])]
     public function testRegisterShutdownFunction(): void
     {
         $bootstrap = new RegisterExceptionRuntime2();

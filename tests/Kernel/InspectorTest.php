@@ -7,9 +7,6 @@ namespace Tests\Kernel;
 use Leevel\Kernel\Inspector;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class InspectorTest extends TestCase
 {
     public function testBaseUse(): void

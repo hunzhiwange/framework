@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '清空数据.truncate',
     'path' => 'database/delete/truncate',
 ])]
-/**
- * @internal
- */
 final class TruncateTest extends TestCase
 {
     #[Api([

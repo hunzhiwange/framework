@@ -20,9 +20,6 @@ use Tests\Database\Ddd\Entity\DemoUpdatePropWhiteEntity;
 将实体变更持久化到数据库。
 EOT,
 ])]
-/**
- * @internal
- */
 final class UpdateTest extends TestCase
 {
     #[Api([

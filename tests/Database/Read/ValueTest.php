@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询一个字段的值.value',
     'path' => 'database/read/value',
 ])]
-/**
- * @internal
- */
 final class ValueTest extends TestCase
 {
     #[Api([

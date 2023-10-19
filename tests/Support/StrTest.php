@@ -7,24 +7,18 @@ namespace Tests\Support;
 use Leevel\Support\Str;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="字符串",
- *     path="component/support/str",
- *     zh-CN:description="这里为系统提供的字符串使用的功能文档说明。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '字符串',
+    'path' => 'component/support/str',
+    'zh-CN:description' => <<<'EOT'
+这里为系统提供的字符串使用的功能文档说明。
+EOT,
+])]
 final class StrTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="随机字母数字",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机字母数字',
+    ])]
     public function testBaseUse(): void
     {
         static::assertSame('', Str::randAlphaNum(0));
@@ -42,13 +36,15 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机小写字母和数字",
-     *     zh-CN:description="利用本方法可以生成随机数小写字母。",
-     *     zh-CN:note="支持位数和指定字符范围",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机小写字母和数字',
+        'zh-CN:description' => <<<'EOT'
+利用本方法可以生成随机数小写字母。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+支持位数和指定字符范围
+EOT,
+    ])]
     public function testRandAlphaNumLowercase(): void
     {
         static::assertSame('', Str::randAlphaNumLowercase(0));
@@ -66,13 +62,15 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机大写字母和数字",
-     *     zh-CN:description="利用本方法可以生成随机数大写字母。",
-     *     zh-CN:note="支持位数和指定字符范围",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机大写字母和数字',
+        'zh-CN:description' => <<<'EOT'
+利用本方法可以生成随机数大写字母。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+支持位数和指定字符范围
+EOT,
+    ])]
     public function testRandAlphaNumUppercase(): void
     {
         static::assertSame('', Str::randAlphaNumUppercase(0));
@@ -90,13 +88,15 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机字母",
-     *     zh-CN:description="利用本方法可以生成随机字母。",
-     *     zh-CN:note="支持位数和指定字符范围",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机字母',
+        'zh-CN:description' => <<<'EOT'
+利用本方法可以生成随机字母。
+EOT,
+        'zh-CN:note' => <<<'EOT'
+支持位数和指定字符范围
+EOT,
+    ])]
     public function testRandAlpha(): void
     {
         static::assertSame('', Str::randAlpha(0));
@@ -114,13 +114,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机小写字母",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机小写字母',
+    ])]
     public function testRandAlphaLowercase(): void
     {
         static::assertSame('', Str::randAlphaLowercase(0));
@@ -138,13 +134,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机大写字母",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机大写字母',
+    ])]
     public function testRandAlphaUppercase(): void
     {
         static::assertSame('', Str::randAlphaUppercase(0));
@@ -162,13 +154,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机数字",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机数字',
+    ])]
     public function testRandNum(): void
     {
         static::assertSame('', Str::randNum(0));
@@ -186,13 +174,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机字中文",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机字中文',
+    ])]
     public function testRandChinese(): void
     {
         static::assertSame('', Str::randChinese(0));
@@ -210,13 +194,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="随机字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '随机字符串',
+    ])]
     public function testRandStr(): void
     {
         static::assertSame('', Str::randStr(0, ''));
@@ -227,13 +207,9 @@ final class StrTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="日期格式化",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '日期格式化',
+    ])]
     public function testFormatDate(): void
     {
         $time = time();
@@ -253,13 +229,9 @@ final class StrTest extends TestCase
         static::assertTrue(\in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="文件大小格式化",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '文件大小格式化',
+    ])]
     public function testFormatBytes(): void
     {
         static::assertSame('2.4G', Str::formatBytes(2573741824));
@@ -275,13 +247,9 @@ final class StrTest extends TestCase
         static::assertSame('100', Str::formatBytes(100, false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="下划线转驼峰",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '下划线转驼峰',
+    ])]
     public function testCamelize(): void
     {
         static::assertSame('helloWorld', Str::camelize('helloWorld'));
@@ -292,13 +260,9 @@ final class StrTest extends TestCase
         static::assertSame('hello3World', Str::camelize('hello3_world'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="驼峰转下划线",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '驼峰转下划线',
+    ])]
     public function testUnCamelize(): void
     {
         static::assertSame('hello_world', Str::unCamelize('hello_world'));

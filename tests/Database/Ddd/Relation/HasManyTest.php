@@ -27,9 +27,6 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 | \Leevel\Database\Ddd\Entity::RELATION_SCOPE  | 关联查询作用域 | comment |
 EOT,
 ])]
-/**
- * @internal
- */
 final class HasManyTest extends TestCase
 {
     #[Api([

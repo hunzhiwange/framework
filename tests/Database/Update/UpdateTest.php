@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '更新数据.update',
     'path' => 'database/update/update',
 ])]
-/**
- * @internal
- */
 final class UpdateTest extends TestCase
 {
     #[Api([

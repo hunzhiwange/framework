@@ -10,9 +10,6 @@ use Leevel\Router\Proxy\Url as ProxyUrl;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class UrlTest extends TestCase
 {
     protected function setUp(): void

@@ -14,9 +14,6 @@ use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class GenerateTest extends TestCase
 {
     use BaseCommand;

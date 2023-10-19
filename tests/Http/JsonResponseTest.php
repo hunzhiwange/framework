@@ -9,37 +9,27 @@ use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="JSON Response",
- *     path="component/http/jsonresponse",
- *     zh-CN:description="QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'JSON Response',
+    'path' => 'component/http/jsonresponse',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。
+EOT,
+])]
 final class JsonResponseTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="getEncodingOptions 获取 JSON 编码参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'getEncodingOptions 获取 JSON 编码参数',
+    ])]
     public function testGetEncodingOptions(): void
     {
         $response = new JsonResponse();
         static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setData 设置 JSON 数据支持 JSON 编码参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setData 设置 JSON 数据支持 JSON 编码参数',
+    ])]
     public function testSetDataWithEncodingOptions(): void
     {
         $response = new JsonResponse();
@@ -56,31 +46,28 @@ final class JsonResponseTest extends TestCase
         static::assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="支持 JSON 的对象",
-     *     zh-CN:description="
-     * 测试实现了 `\Leevel\Support\IArray` 的对象
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyArray::class)]}
-     * ```
-     *
-     * 测试实现了 `\Leevel\Support\IJson` 的对象
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJson::class)]}
-     * ```
-     *
-     * 测试实现了 `\JsonSerializable` 的对象
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJsonSerializable::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '支持 JSON 的对象',
+        'zh-CN:description' => <<<'EOT'
+测试实现了 `\Leevel\Support\IArray` 的对象
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyArray::class)]}
+```
+
+测试实现了 `\Leevel\Support\IJson` 的对象
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJson::class)]}
+```
+
+测试实现了 `\JsonSerializable` 的对象
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Http\JsonResponseMyJsonSerializable::class)]}
+```
+EOT,
+    ])]
     public function testSetEncodingOptions(): void
     {
         $response = new JsonResponse();

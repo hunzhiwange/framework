@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '动态查询.find.findStart.findBy.findAllBy',
     'path' => 'database/read/finddynamics',
 ])]
-/**
- * @internal
- */
 final class FindDynamicsTest extends TestCase
 {
     #[Api([

@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询一列数据.list',
     'path' => 'database/read/list',
 ])]
-/**
- * @internal
- */
 final class ListTest extends TestCase
 {
     #[Api([

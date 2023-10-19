@@ -20,9 +20,6 @@ use Throwable;
 用事务工作单元更好地处理数据库相关工作。
 EOT,
 ])]
-/**
- * @internal
- */
 final class UnitOfWorkTest extends TestCase
 {
     protected function setUp(): void

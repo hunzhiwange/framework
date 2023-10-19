@@ -7,24 +7,21 @@ namespace Tests\Support;
 use Leevel\Support\Tree;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="树 tree",
- *     path="component/tree",
- *     zh-CN:description="树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '树 tree',
+    'path' => 'component/tree',
+    'zh-CN:description' => <<<'EOT'
+树组件 `tree` 提供了一些实用方法，用于整理数据为一棵树，并提供一些方法来获取树相关节点的信息。
+EOT,
+])]
 final class TreeTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="Tree 基本使用",
-     *     zh-CN:description="将子父节点整理为树结构。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree 基本使用',
+        'zh-CN:description' => <<<'EOT'
+将子父节点整理为树结构。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $tree = new Tree([
@@ -55,13 +52,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.toJson 树结构输出为 JSON 格式字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.toJson 树结构输出为 JSON 格式字符串',
+    ])]
     public function testToJson(): void
     {
         $tree = new Tree([
@@ -79,13 +72,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.setNode 设置节点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.setNode 设置节点',
+    ])]
     public function testSetNode(): void
     {
         $tree = new Tree([
@@ -123,13 +112,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.setNode 在头部设置节点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.setNode 在头部设置节点',
+    ])]
     public function testSetNodeAtHeader(): void
     {
         $tree = new Tree([
@@ -167,13 +152,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.setNode 设置子节点",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.setNode 设置子节点',
+    ])]
     public function testSetNodeAsChildren(): void
     {
         $tree = new Tree([
@@ -222,24 +203,20 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getChildrenTree 获取节点子树",
-     *     zh-CN:description="
-     *
-     * `测试树数据`
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\TreeTest::class, 'providerTree')]}
-     * ```
-     *
-     * ::: warning
-     * 后面的测试，也会用到这个测试树数据。
-     * :::
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getChildrenTree 获取节点子树',
+        'zh-CN:description' => <<<'EOT'
+`测试树数据`
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Support\TreeTest::class, 'providerTree')]}
+```
+
+::: warning
+后面的测试，也会用到这个测试树数据。
+:::
+EOT,
+    ])]
     public function testGetChildrenTree(): void
     {
         $tree = $this->providerTree();
@@ -309,13 +286,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getChild 获取一级子节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getChild 获取一级子节点 ID',
+    ])]
     public function testGetChild(): void
     {
         $tree = $this->providerTree();
@@ -334,13 +307,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getChildren 获取所有子节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getChildren 获取所有子节点 ID',
+    ])]
     public function testGetChildren(): void
     {
         $tree = $this->providerTree();
@@ -360,13 +329,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.hasChild 是否存在一级子节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.hasChild 是否存在一级子节点 ID',
+    ])]
     public function testHasChild(): void
     {
         $tree = $this->providerTree();
@@ -380,13 +345,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.hasChildren 是否存在子节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.hasChildren 是否存在子节点 ID',
+    ])]
     public function testHasChildren(): void
     {
         $tree = $this->providerTree();
@@ -415,13 +376,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getParent 获取一级父节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getParent 获取一级父节点 ID',
+    ])]
     public function testGetParent(): void
     {
         $tree = $this->providerTree();
@@ -467,13 +424,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getParent 不存在的节点父级 ID 为空数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getParent 不存在的节点父级 ID 为空数组',
+    ])]
     public function testGetParentButNodeNotFound(): void
     {
         $tree = $this->providerTree();
@@ -485,13 +438,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getParents 获取所有父节点 ID",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getParents 获取所有父节点 ID',
+    ])]
     public function testGetParents(): void
     {
         $tree = $this->providerTree();
@@ -526,13 +475,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getLevel 获取节点所在的层级",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getLevel 获取节点所在的层级',
+    ])]
     public function testGetLevel(): void
     {
         $tree = $this->providerTree();
@@ -563,13 +508,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.getData.setData 设置和获取节点数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.getData.setData 设置和获取节点数据',
+    ])]
     public function testGetSetData(): void
     {
         $tree = new Tree([
@@ -634,13 +575,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.normalize 返回整理树节点数据结构",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.normalize 返回整理树节点数据结构',
+    ])]
     public function testNormalize(): void
     {
         $tree = new Tree([
@@ -724,13 +661,9 @@ final class TreeTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="Tree.normalize 返回整理树某个节点及下级的数据结构",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'Tree.normalize 返回整理树某个节点及下级的数据结构',
+    ])]
     public function testNormalizeNode(): void
     {
         // 可以返回子树

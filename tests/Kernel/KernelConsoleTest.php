@@ -16,87 +16,80 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="命令行内核",
- *     path="architecture/kernel/kernelconsole",
- *     zh-CN:description="
- * QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
- *
- * 入口文件 `leevel`
- *
- * ``` php
- * {[file_get_contents('leevel')]}
- * ```
- *
- * 内核通过 \Leevel\Kernel\KernelConsole 的 handle 方法来实现请求。
- *
- * **handle 原型**
- *
- * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\KernelConsole::class, 'handle', 'define')]}
- * ```
- * ",
- *     zh-CN:note="
- * 命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '命令行内核',
+    'path' => 'architecture/kernel/kernelconsole',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
+
+入口文件 `leevel`
+
+``` php
+{[file_get_contents('leevel')]}
+```
+
+内核通过 \Leevel\Kernel\KernelConsole 的 handle 方法来实现请求。
+
+**handle 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\KernelConsole::class, 'handle', 'define')]}
+```
+EOT,
+    'zh-CN:note' => <<<'EOT'
+命令行内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernelConsole` 即可，然后在入口文件替换即可。
+EOT,
+])]
 final class KernelConsoleTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\AppKernelConsole**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppKernelConsole::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Application1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Application1::class)]}
-     * ```
-     *
-     * **Tests\Kernel\KernelConsole1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\KernelConsole1::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Commands\Test**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Test::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Commands\Console\Foo**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Foo::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Commands\Console\Bar**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
-     * ```
-     *
-     * **Tests\Kernel\DemoBootstrapForKernelConsole**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernelConsole::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\AppKernelConsole**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppKernelConsole::class)]}
+```
+
+**Tests\Kernel\Application1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Application1::class)]}
+```
+
+**Tests\Kernel\KernelConsole1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\KernelConsole1::class)]}
+```
+
+**Tests\Kernel\Commands\Test**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Test::class)]}
+```
+
+**Tests\Kernel\Commands\Console\Foo**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Foo::class)]}
+```
+
+**Tests\Kernel\Commands\Console\Bar**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Console\Bar::class)]}
+```
+
+**Tests\Kernel\DemoBootstrapForKernelConsole**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernelConsole::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $app = new AppKernelConsole($container = new Container(), '');

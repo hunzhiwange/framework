@@ -16,9 +16,6 @@ use Tests\Database\Ddd\Entity\DemoEntity;
 替换实体，将实体变更持久化到数据库。
 EOT,
 ])]
-/**
- * @internal
- */
 final class ReplaceTest extends TestCase
 {
     #[Api([

@@ -7,32 +7,27 @@ namespace Tests\Option;
 use Leevel\Option\ComposerOption;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Composer 扩展配置",
- *     path="component/option/composer",
- *     zh-CN:description="QueryPHP 系统服务提供者、应用命令、扩展配置和扩展语言包等都在 `composer` 中进行定义。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Composer 扩展配置',
+    'path' => 'component/option/composer',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 系统服务提供者、应用命令、扩展配置和扩展语言包等都在 `composer` 中进行定义。
+EOT,
+])]
 final class ComposerOptionTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="composer.json ",
-     *     zh-CN:description="
-     * 示例配置
-     *
-     * ``` json
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Option/app1/composer.json')]}
-     * ```
-     *
-     * 相关配置约定在 `leevel` 字段中，可以非常方便地扩展系统。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'composer.json',
+        'zh-CN:description' => <<<'EOT'
+示例配置
+
+``` json
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Option/app1/composer.json')]}
+```
+
+相关配置约定在 `leevel` 字段中，可以非常方便地扩展系统。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $options = ($composerOption = new ComposerOption(__DIR__.'/app1'))->loadData();

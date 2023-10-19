@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.whereDate',
     'path' => 'database/query/wheredate',
 ])]
-/**
- * @internal
- */
 final class TimeTest extends TestCase
 {
     #[Api([

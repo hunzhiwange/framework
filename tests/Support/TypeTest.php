@@ -7,37 +7,27 @@ namespace Tests\Support;
 use Leevel\Support\Type;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="类型",
- *     path="component/support/type",
- *     zh-CN:description="QueryPHP 提供了增加 PHP 自身类型的辅助方法。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '类型',
+    'path' => 'component/support/type',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了增加 PHP 自身类型的辅助方法。
+EOT,
+])]
 final class TypeTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为字符串',
+    ])]
     public function testTypeString(): void
     {
         static::assertTrue(Type::type('foo', 'string'));
         static::assertFalse(Type::type(1, 'string'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为整型",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为整型',
+    ])]
     public function testTypeInt(): void
     {
         static::assertTrue(Type::type(1, 'int'));
@@ -45,13 +35,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(true, 'int'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为浮点数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为浮点数',
+    ])]
     public function testTypeFloat(): void
     {
         static::assertTrue(Type::type(1.1, 'float'));
@@ -59,13 +45,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(true, 'double'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为布尔值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为布尔值',
+    ])]
     public function testTypeBool(): void
     {
         static::assertTrue(Type::type(true, 'bool'));
@@ -73,13 +55,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(4, 'bool'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为数字",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为数字',
+    ])]
     public function testTypeNumeric(): void
     {
         static::assertTrue(Type::type(1.2, 'numeric'));
@@ -88,13 +66,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(false, 'numeric'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为标量",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为标量',
+    ])]
     public function testTypeScalar(): void
     {
         static::assertTrue(Type::type(1, 'scalar'));
@@ -107,13 +81,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(null, 'scalar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为资源",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为资源',
+    ])]
     public function testTypeResource(): void
     {
         $testFile = __DIR__.'/test.txt';
@@ -125,13 +95,9 @@ final class TypeTest extends TestCase
         unlink($testFile);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为闭包",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为闭包',
+    ])]
     public function testTypeClosure(): void
     {
         static::assertTrue(Type::type(function (): void {
@@ -139,20 +105,17 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(true, 'Closure'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为数组",
-     *     zh-CN:description="
-     * 格式支持
-     *
-     *  * 支持 PHP 内置或者自定义的 is_array,is_int,is_custom 等函数
-     *  * 数组支持 array:int,string 格式，值类型
-     *  * 数组支持 array:int:string,string:array 格式，键类型:值类型
-     *  * 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为数组',
+        'zh-CN:description' => <<<'EOT'
+格式支持
+
+ * 支持 PHP 内置或者自定义的 is_array,is_int,is_custom 等函数
+ * 数组支持 array:int,string 格式，值类型
+ * 数组支持 array:int:string,string:array 格式，键类型:值类型
+ * 数组支持 array:string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
+EOT,
+    ])]
     public function testTypeArray(): void
     {
         static::assertTrue(Type::type([], 'array'));
@@ -167,45 +130,34 @@ final class TypeTest extends TestCase
         static::assertTrue(Type::type(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], 'array:string:array:string:array:string:int'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为对象",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为对象',
+    ])]
     public function testTypeObject(): void
     {
         static::assertTrue(Type::type(new \stdClass(), 'object'));
         static::assertFalse(Type::type(null, 'object'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为 NULL",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为 NULL',
+    ])]
     public function testTypeNull(): void
     {
         static::assertTrue(Type::type(null, 'null'));
         static::assertFalse(Type::type(1, 'null'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为回调",
-     *     zh-CN:description="
-     * **\Tests\Support\Callback1 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Callback1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为回调',
+        'zh-CN:description' => <<<'EOT'
+**\Tests\Support\Callback1 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Callback1::class)]}
+```
+EOT,
+    ])]
     public function testTypeCallback(): void
     {
         static::assertTrue(Type::type(function (): void {
@@ -216,25 +168,22 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(1, 'callable'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为对象实例",
-     *     zh-CN:description="
-     * **\Tests\Support\Callback2 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Callback2::class)]}
-     * ```
-     *
-     * **\Tests\Support\IInterface 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IInterface::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为对象实例',
+        'zh-CN:description' => <<<'EOT'
+**\Tests\Support\Callback2 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Callback2::class)]}
+```
+
+**\Tests\Support\IInterface 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\IInterface::class)]}
+```
+EOT,
+    ])]
     public function testTypeInstance(): void
     {
         static::assertTrue(Type::type(new \stdClass(), \stdClass::class));
@@ -243,13 +192,9 @@ final class TypeTest extends TestCase
         static::assertFalse(Type::type(1, 'callback'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为指定的几种类型",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为指定的几种类型',
+    ])]
     public function testTypeThese(): void
     {
         static::assertTrue(Type::these('foo', ['string']));
@@ -263,19 +208,16 @@ final class TypeTest extends TestCase
         static::assertTrue(Type::these('foo', [[]]));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="判断是否为数组元素类型",
-     *     zh-CN:description="
-     * 格式支持
-     *
-     *  * 数组支持 int,string 格式，值类型
-     *  * 数组支持 int:string,string:array 格式，键类型:值类型
-     *  * 数组支持 string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '判断是否为数组元素类型',
+        'zh-CN:description' => <<<'EOT'
+格式支持
+
+ * 数组支持 int,string 格式，值类型
+ * 数组支持 int:string,string:array 格式，键类型:值类型
+ * 数组支持 string:array:string:array:string:int 无限层级格式，键类型:值类型:键类型:值类型...(值类型|键类型:值类型)
+EOT,
+    ])]
     public function testTypeStrictArray(): void
     {
         static::assertTrue(Type::arr(['foo'], ['string']));

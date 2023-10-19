@@ -6,26 +6,20 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="跳出循环",
- *     path="template/break",
- *     zh-CN:description="break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '跳出循环',
+    'path' => 'template/break',
+    'zh-CN:description' => <<<'EOT'
+break 和 continue 是各种循环中非常重要的两个流程标记语言，框架当然也会支持它们。
+EOT,
+])]
 final class CompilerBreakTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="break 标签",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'break 标签',
+    ])]
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -53,13 +47,9 @@ final class CompilerBreakTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="ontinue 标签",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'ontinue 标签',
+    ])]
     public function testContinue(): void
     {
         $parser = $this->createParser();

@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '更新字段递减.updateDecrease',
     'path' => 'database/update/updatedecrease',
 ])]
-/**
- * @internal
- */
 final class UpdateDecreaseTest extends TestCase
 {
     #[Api([

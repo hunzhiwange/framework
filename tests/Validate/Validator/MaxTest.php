@@ -7,16 +7,13 @@ namespace Tests\Validate\Validator;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.max",
- *     zh-CN:title="验证器.验证值上限",
- *     path="validate/validator/max",
- *     zh-CN:description="小于或者全等",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.验证值上限',
+    'path' => 'validate/validator/max',
+    'zh-CN:description' => <<<'EOT'
+小于或者全等
+EOT,
+])]
 final class MaxTest extends TestCase
 {
     /**
@@ -24,21 +21,19 @@ final class MaxTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, $param): void
     {
         $validate = new Validator(
@@ -75,21 +70,19 @@ final class MaxTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\MaxTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, $param): void
     {
         $validate = new Validator(
@@ -119,13 +112,9 @@ final class MaxTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="max 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'max 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

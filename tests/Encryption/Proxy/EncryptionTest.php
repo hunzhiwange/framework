@@ -9,9 +9,6 @@ use Leevel\Encryption\Encryption;
 use Leevel\Encryption\Proxy\Encryption as ProxyEncryption;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class EncryptionTest extends TestCase
 {
     protected function setUp(): void

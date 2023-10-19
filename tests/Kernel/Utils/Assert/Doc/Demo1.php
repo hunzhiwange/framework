@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Utils\Assert\Doc;
 
-/**
- * @api(
- *     zh-CN:title="demo1",
- *     path="demo1",
- *     zh-CN:description="
- * demo doc
- * just test
- * ",
- * )
- */
+#[Api([
+    'zh-CN:title' => 'demo1',
+    'path' => 'demo1',
+    'zh-CN:description' => <<<'EOT'
+demo doc
+just test
+EOT,
+])]
 class Demo1
 {
-    /**
-     * @api(
-     *     zh-CN:title="title",
-     *     zh-CN:description="
-     * hello
-     * world
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'title',
+        'zh-CN:description' => <<<'EOT'
+hello
+world
+EOT,
+    ])]
     public function test1(): void
     {
     }

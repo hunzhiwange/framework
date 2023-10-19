@@ -12,39 +12,30 @@ use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;
 
-/**
- * @api(
- *     zh-CN:title="Validator.unique",
- *     zh-CN:title="验证器.是否可接受的",
- *     path="validate/validator/unique",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.是否可接受的',
+    'path' => 'validate/validator/unique',
+])]
 final class UniqueTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="唯一值基本使用方法",
-     *     zh-CN:description="
-     * 框架提供了一个唯一值创建生成规则方法
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\UniqueRule::class, 'rule', 'define')]}
-     * ```
-     *
-     *   * entity 实体
-     *   * field 指定数据库字段，未指定默认为待验证的字段作为数据库字段
-     *   * exceptId 排除主键，一般用于编辑数据项校验
-     *   * primaryKey 指定主键
-     *   * additional 附加查询条件，成对出现
-     *
-     * 唯一值是一个非常常用的功能，框架强化了这一功能。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '唯一值基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+框架提供了一个唯一值创建生成规则方法
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\UniqueRule::class, 'rule', 'define')]}
+```
+
+  * entity 实体
+  * field 指定数据库字段，未指定默认为待验证的字段作为数据库字段
+  * exceptId 排除主键，一般用于编辑数据项校验
+  * primaryKey 指定主键
+  * additional 附加查询条件，成对出现
+
+唯一值是一个非常常用的功能，框架强化了这一功能。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $validate = new Validator(
@@ -64,13 +55,9 @@ final class UniqueTest extends TestCase
         static::assertSame($sql, $sqlResult);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="排除主键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '排除主键',
+    ])]
     public function testValidateWithExceptId(): void
     {
         $validate = new Validator(
@@ -103,13 +90,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="排除主键，并且指定主键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '排除主键，并且指定主键',
+    ])]
     public function testValidateWithExceptIdAndPrimaryKey(): void
     {
         $validate = new Validator(
@@ -142,13 +125,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="排除主键，复合主键将会被忽略",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '排除主键，复合主键将会被忽略',
+    ])]
     public function testValidateWithExceptIdAndCompositeIdAndIgnore(): void
     {
         $validate = new Validator(
@@ -180,13 +159,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="不排除主键",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '不排除主键',
+    ])]
     public function testValidateWithoutExceptId(): void
     {
         $validate = new Validator(
@@ -219,13 +194,9 @@ final class UniqueTest extends TestCase
         static::assertFalse($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="unique 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'unique 参数缺失',
+    ])]
     public function testCheckParamLengthException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -332,13 +303,9 @@ final class UniqueTest extends TestCase
         $rule->handle('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="指定验证数据库字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '指定验证数据库字段',
+    ])]
     public function testValidateWithValidateField(): void
     {
         $validate = new Validator(
@@ -371,13 +338,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="指定验证数据库字段，支持多个字段",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '指定验证数据库字段，支持多个字段',
+    ])]
     public function testValidateWithValidateMultiField(): void
     {
         $validate = new Validator(
@@ -410,13 +373,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="带附加条件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '带附加条件',
+    ])]
     public function testValidateWithParseAdditional(): void
     {
         $validate = new Validator(
@@ -513,13 +472,9 @@ final class UniqueTest extends TestCase
         static::assertTrue($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="带附加条件，附加条件支持表达式",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '带附加条件，附加条件支持表达式',
+    ])]
     public function testValidateWithParseAdditionalCustomOperate(): void
     {
         $validate = new Validator(
@@ -632,13 +587,9 @@ final class UniqueTest extends TestCase
         static::assertFalse($validate->success());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="带附加条件，附加条件区分整数和浮点数的字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '带附加条件，附加条件区分整数和浮点数的字符串',
+    ])]
     public function testValidateWithStringFloatAndStringInt(): void
     {
         $validate = new Validator(
@@ -658,13 +609,9 @@ final class UniqueTest extends TestCase
         static::assertSame($sql, $sqlResult);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="带附加条件，附加条件为整数和浮点数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '带附加条件，附加条件为整数和浮点数',
+    ])]
     public function testValidateWithFloatAndInt(): void
     {
         $validate = new Validator(

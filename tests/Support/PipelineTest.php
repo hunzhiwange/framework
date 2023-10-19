@@ -8,44 +8,37 @@ use Leevel\Di\Container;
 use Leevel\Support\Pipeline;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="管道模式",
- *     path="component/pipeline",
- *     zh-CN:description="
- * QueryPHP 提供了一个管道模式组件 `\Leevel\Pipeline\Pipeline` 对象。
- *
- * QueryPHP 管道模式提供的几个 API 命名参考了 Laravel，底层核心采用迭代器实现。
- *
- * 管道就像流水线，将复杂的问题分解为一个个小的单元，依次传递并处理，前一个单元的处理结果作为第二个单元的输入。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '管道模式',
+    'path' => 'component/pipeline',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 提供了一个管道模式组件 `\Leevel\Pipeline\Pipeline` 对象。
+
+QueryPHP 管道模式提供的几个 API 命名参考了 Laravel，底层核心采用迭代器实现。
+
+管道就像流水线，将复杂的问题分解为一个个小的单元，依次传递并处理，前一个单元的处理结果作为第二个单元的输入。
+EOT,
+])]
 final class PipelineTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="管道模式基本使用方法",
-     *     zh-CN:description="
-     * fixture 定义
-     *
-     * **Tests\Pipeline\First**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\First::class)]}
-     * ```
-     *
-     * **Tests\Pipeline\Second**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Second::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '管道模式基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+fixture 定义
+
+**Tests\Pipeline\First**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\First::class)]}
+```
+
+**Tests\Pipeline\Second**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Second::class)]}
+```
+EOT,
+    ])]
     public function testPipelineBasic(): void
     {
         $result = (new Pipeline(new Container()))
@@ -60,13 +53,9 @@ final class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="then 执行管道工序并返回响应结果",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'then 执行管道工序并返回响应结果',
+    ])]
     public function testPipelineWithThen(): void
     {
         $thenCallback = function (\Closure $next, $send): void {
@@ -86,13 +75,9 @@ final class PipelineTest extends TestCase
         unset($_SERVER['test.first'], $_SERVER['test.second'], $_SERVER['test.then']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="管道工序支持返回值",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '管道工序支持返回值',
+    ])]
     public function testPipelineWithReturn(): void
     {
         $pipe1 = function (\Closure $next, $send) {
@@ -124,27 +109,24 @@ final class PipelineTest extends TestCase
         unset($_SERVER['test.1'], $_SERVER['test.2']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="then 管道工序支持依赖注入",
-     *     zh-CN:description="
-     * fixture 定义
-     *
-     * **Tests\Pipeline\DiConstruct**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DiConstruct::class)]}
-     * ```
-     *
-     * **Tests\Pipeline\TestClass**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestClass::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'then 管道工序支持依赖注入',
+        'zh-CN:description' => <<<'EOT'
+fixture 定义
+
+**Tests\Pipeline\DiConstruct**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DiConstruct::class)]}
+```
+
+**Tests\Pipeline\TestClass**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\TestClass::class)]}
+```
+EOT,
+    ])]
     public function testPipelineWithDiConstruct(): void
     {
         $result = (new Pipeline(new Container()))
@@ -158,13 +140,9 @@ final class PipelineTest extends TestCase
         unset($_SERVER['test.DiConstruct']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="管道工序无参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '管道工序无参数',
+    ])]
     public function testPipelineWithSendNoneParams(): void
     {
         $pipe = function (\Closure $next): void {
@@ -177,13 +155,9 @@ final class PipelineTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="send 管道工序通过 send 传递参数",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'send 管道工序通过 send 传递参数',
+    ])]
     public function testPipelineWithSendMoreParams(): void
     {
         $pipe = function (\Closure $next, $send1, $send2, $send3, $send4): void {
@@ -201,13 +175,9 @@ final class PipelineTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="through 设置管道中的执行工序支持多次添加",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'through 设置管道中的执行工序支持多次添加',
+    ])]
     public function testPipelineWithThroughMore(): void
     {
         $_SERVER['test.Through.count'] = 0;
@@ -230,21 +200,18 @@ final class PipelineTest extends TestCase
         unset($_SERVER['test.Through.count']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="管道工序支持参数传入",
-     *     zh-CN:description="
-     * fixture 定义
-     *
-     * **Tests\Pipeline\WithArgs**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithArgs::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '管道工序支持参数传入',
+        'zh-CN:description' => <<<'EOT'
+fixture 定义
+
+**Tests\Pipeline\WithArgs**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithArgs::class)]}
+```
+EOT,
+    ])]
     public function testPipelineWithPipeArgs(): void
     {
         $params = ['one', 'two'];
@@ -272,21 +239,18 @@ final class PipelineTest extends TestCase
         ;
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="管道工序支持自定义入口方法",
-     *     zh-CN:description="
-     * fixture 定义
-     *
-     * **Tests\Pipeline\WithAtMethod**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithAtMethod::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '管道工序支持自定义入口方法',
+        'zh-CN:description' => <<<'EOT'
+fixture 定义
+
+**Tests\Pipeline\WithAtMethod**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\WithAtMethod::class)]}
+```
+EOT,
+    ])]
     public function testStageWithAtMethod(): void
     {
         (new Pipeline(new Container()))

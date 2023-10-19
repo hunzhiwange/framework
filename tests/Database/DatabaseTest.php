@@ -16,9 +16,6 @@ use Tests\MysqlNeedReconnectMock;
     'zh-CN:title' => '数据库连接',
     'path' => 'database/database',
 ])]
-/**
- * @internal
- */
 final class DatabaseTest extends TestCase
 {
     protected function tearDown(): void

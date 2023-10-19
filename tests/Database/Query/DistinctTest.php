@@ -18,9 +18,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 ```
 EOT,
 ])]
-/**
- * @internal
- */
 final class DistinctTest extends TestCase
 {
     #[Api([

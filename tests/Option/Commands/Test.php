@@ -6,9 +6,6 @@ namespace Tests\Option\Commands;
 
 use Leevel\Console\Command;
 
-/**
- * @internal
- */
 final class Test extends Command
 {
     protected string $name = 'test';

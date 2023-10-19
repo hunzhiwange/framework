@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.limit',
     'path' => 'database/query/limit',
 ])]
-/**
- * @internal
- */
 final class LimitTest extends TestCase
 {
     #[Api([

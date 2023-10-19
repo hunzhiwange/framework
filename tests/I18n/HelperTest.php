@@ -10,9 +10,6 @@ use Leevel\I18n\II18n;
 use Tests\I18n\Fixtures\DemoI18n;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class HelperTest extends TestCase
 {
     protected function setUp(): void

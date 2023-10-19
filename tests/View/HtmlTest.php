@@ -10,9 +10,6 @@ use Leevel\View\Html;
 use Leevel\View\Parser;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class HtmlTest extends TestCase
 {
     protected function tearDown(): void

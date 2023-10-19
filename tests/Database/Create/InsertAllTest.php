@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '批量写入数据.insertAll',
     'path' => 'database/create/insertall',
 ])]
-/**
- * @internal
- */
 final class InsertAllTest extends TestCase
 {
     #[Api([

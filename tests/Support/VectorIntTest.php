@@ -7,24 +7,15 @@ namespace Tests\Support;
 use Leevel\Support\VectorInt;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="VectorInt 动态数组",
- *     path="component/collection/vectorint",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'VectorInt 动态数组',
+    'path' => 'component/collection/vectorint',
+])]
 final class VectorIntTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $data = [
@@ -42,13 +33,9 @@ final class VectorIntTest extends TestCase
         static::assertTrue(isset($collection[3]));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="从 HTTP 请求创建整数索引数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '从 HTTP 请求创建整数索引数组',
+    ])]
     public function testFromRequest(): void
     {
         $collection = VectorInt::fromRequest([

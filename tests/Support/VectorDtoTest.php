@@ -9,34 +9,26 @@ use Tests\Support\DemoProject\Template;
 use Tests\Support\DemoProject\TemplateData;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="VectorDto 动态数组",
- *     path="component/collection/vectordto",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'VectorDto 动态数组',
+    'path' => 'component/collection/vectordto',
+])]
 final class VectorDtoTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\TemplateData::class)]}
-     * ```
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\Template::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\TemplateData::class)]}
+```
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\DemoProject\Template::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $templateData = VectorDto::fromRequest($sourceTemplateData = [

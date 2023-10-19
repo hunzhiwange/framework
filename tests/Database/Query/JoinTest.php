@@ -22,9 +22,6 @@ join($table, $cols, ...$cond);
  - $cond 与《查询语言.where》中的用法一致。
 EOT,
 ])]
-/**
- * @internal
- */
 final class JoinTest extends TestCase
 {
     #[Api([

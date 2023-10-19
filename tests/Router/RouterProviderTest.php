@@ -15,21 +15,17 @@ use Tests\Router\Middlewares\Demo2;
 use Tests\Router\Middlewares\Demo3;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="路由服务提供者",
- *     path="router/provider",
- *     zh-CN:description="
- * 路由主要由路由服务来接入框架，可以做一些设置。
- *
- * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getClassBody(\App\Infra\Provider\Router::class)]}
- * ```
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '路由服务提供者',
+    'path' => 'router/provider',
+    'zh-CN:description' => <<<'EOT'
+路由主要由路由服务来接入框架，可以做一些设置。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\App\Infra\Provider\Router::class)]}
+```
+EOT,
+])]
 final class RouterProviderTest extends TestCase
 {
     protected function tearDown(): void
@@ -40,29 +36,26 @@ final class RouterProviderTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * QueryPHP 路由最终结果主要由 `base_paths`、`groups` 和 `routers` 构成。
-     *
-     * **fixture 定义**
-     *
-     * **路由服务提供者 Tests\Router\RouterProvider1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProvider1::class)]}
-     * ```
-     *
-     * **路由注解缓存结果 tests/Router/Apps/AppScanRouter/data.json**
-     *
-     * ``` json
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppScanRouter/data.json')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+QueryPHP 路由最终结果主要由 `base_paths`、`groups` 和 `routers` 构成。
+
+**fixture 定义**
+
+**路由服务提供者 Tests\Router\RouterProvider1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Router\RouterProvider1::class)]}
+```
+
+**路由注解缓存结果 tests/Router/Apps/AppScanRouter/data.json**
+
+``` json
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/Apps/AppScanRouter/data.json')]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $container = Container::singletons();

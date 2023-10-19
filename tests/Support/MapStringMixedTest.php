@@ -7,24 +7,15 @@ namespace Tests\Support;
 use Leevel\Support\MapStringMixed;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="MapStringMixed 映射",
- *     path="component/collection/map_string_mixed",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'MapStringMixed 映射',
+    'path' => 'component/collection/map_string_mixed',
+])]
 final class MapStringMixedTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $data = [

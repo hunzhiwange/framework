@@ -7,9 +7,6 @@ namespace Tests\I18n;
 use Leevel\I18n\GettextLoader;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class PoMoTest extends TestCase
 {
     public function testBaseUse(): void

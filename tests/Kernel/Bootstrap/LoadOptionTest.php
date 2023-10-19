@@ -13,20 +13,15 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\Option;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="初始化载入配置",
- *     path="architecture/kernel/bootstrap/loadoption",
- *     zh-CN:description="
- * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
- *
- * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
- * ",
- *     zh-CN:note="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '初始化载入配置',
+    'path' => 'architecture/kernel/bootstrap/loadoption',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
+
+内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+EOT,
+])]
 final class LoadOptionTest extends TestCase
 {
     protected function setUp(): void
@@ -50,33 +45,30 @@ final class LoadOptionTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **环境变量 tests/Kernel/Bootstrap/app/.env**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.env')]}
-     * ```
-     *
-     * **配置文件 tests/Kernel/Bootstrap/app/option/app.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/app.php')]}
-     * ```
-     *
-     * **配置文件 tests/Kernel/Bootstrap/app/option/demo.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/demo.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**环境变量 tests/Kernel/Bootstrap/app/.env**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.env')]}
+```
+
+**配置文件 tests/Kernel/Bootstrap/app/option/app.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/app.php')]}
+```
+
+**配置文件 tests/Kernel/Bootstrap/app/option/demo.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/demo.php')]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $bootstrap = new LoadOption1();
@@ -101,23 +93,20 @@ final class LoadOptionTest extends TestCase
         static::assertSame('bar', $option->get('demo\\foo'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="RUNTIME_ENVIRONMENT 载入自定义环境变量文件",
-     *     zh-CN:description="
-     * 设置 `RUNTIME_ENVIRONMENT` 环境变量可以载入自定义环境变量文件。
-     *
-     * **fixture 定义**
-     *
-     * **环境变量 tests/Kernel/Bootstrap/app/.fooenv**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.fooenv')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'RUNTIME_ENVIRONMENT 载入自定义环境变量文件',
+        'zh-CN:description' => <<<'EOT'
+设置 `RUNTIME_ENVIRONMENT` 环境变量可以载入自定义环境变量文件。
+
+**fixture 定义**
+
+**环境变量 tests/Kernel/Bootstrap/app/.fooenv**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.fooenv')]}
+```
+EOT,
+    ])]
     public function testWithRuntimeEnv(): void
     {
         putenv('RUNTIME_ENVIRONMENT=fooenv');
@@ -172,23 +161,20 @@ final class LoadOptionTest extends TestCase
         $bootstrap->handle($app);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="配置支持缓存",
-     *     zh-CN:description="
-     * 配置文件支持缓存，通过缓存可以降低开销提高性能，适合生产环境。
-     *
-     * **fixture 定义**
-     *
-     * **配置缓存文件 tests/Kernel/Bootstrap/app/assert/option.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/option.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '配置支持缓存',
+        'zh-CN:description' => <<<'EOT'
+配置文件支持缓存，通过缓存可以降低开销提高性能，适合生产环境。
+
+**fixture 定义**
+
+**配置缓存文件 tests/Kernel/Bootstrap/app/assert/option.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/option.php')]}
+```
+EOT,
+    ])]
     public function testLoadCached(): void
     {
         $bootstrap = new LoadOption1();

@@ -18,9 +18,6 @@ use Tests\TestCase;
 可以十分便捷地生成你需要的模板代码。
 EOT,
 ])]
-/**
- * @internal
- */
 final class MakeTest extends TestCase
 {
     use BaseMake;

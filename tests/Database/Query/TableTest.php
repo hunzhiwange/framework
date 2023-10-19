@@ -12,9 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.table',
     'path' => 'database/query/table',
 ])]
-/**
- * @internal
- */
 final class TableTest extends TestCase
 {
     #[Api([

@@ -12,9 +12,6 @@ use Leevel\View\Manager;
 use Leevel\View\Proxy\View as ProxyView;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class ViewTest extends TestCase
 {
     protected function setUp(): void

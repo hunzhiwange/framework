@@ -9,9 +9,6 @@ use Leevel\Option\Option;
 use Leevel\Option\Proxy\Option as ProxyOption;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class OptionTest extends TestCase
 {
     protected function setUp(): void

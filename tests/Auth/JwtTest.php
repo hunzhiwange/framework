@@ -8,9 +8,6 @@ use Leevel\Auth\Jwt;
 use Leevel\Support\Arr\Except;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class JwtTest extends TestCase
 {
     public function testBaseUse(): void

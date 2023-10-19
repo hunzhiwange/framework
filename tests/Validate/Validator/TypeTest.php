@@ -8,39 +8,32 @@ use Leevel\Validate\Helper\Type;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.type",
- *     zh-CN:title="验证器.数据类型验证",
- *     path="validate/validator/type",
- *     zh-CN:description="
- * 数据类型验证底层核心为函数 `Leevel\Support\Type\Type`，相对于 PHP 提供的 `gettype` 更加强大。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.数据类型验证',
+    'path' => 'validate/validator/type',
+    'zh-CN:description' => <<<'EOT'
+数据类型验证底层核心为函数 `Leevel\Support\Type\Type`，相对于 PHP 提供的 `gettype` 更加强大。
+EOT,
+])]
 final class TypeTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\TypeTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\TypeTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, string $type): void
     {
         $validate = new Validator(
@@ -86,21 +79,19 @@ final class TypeTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $type
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\TypeTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\TypeTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, $type): void
     {
         $validate = new Validator(
@@ -133,13 +124,9 @@ final class TypeTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="type 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'type 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

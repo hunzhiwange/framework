@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class RouterTest extends TestCase
 {
     protected function setUp(): void

@@ -8,9 +8,6 @@ use Leevel\Cache\Redis\PhpRedis;
 use RedisException;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class PhpRedisTest extends TestCase
 {
     protected function setUp(): void

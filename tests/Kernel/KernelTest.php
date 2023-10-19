@@ -21,59 +21,53 @@ use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="内核",
- *     path="architecture/kernel",
- *     zh-CN:description="
- * QueryPHP 流程为入口接受 HTTP 请求，经过内核 kernel 传入请求，经过路由解析调用控制器执行业务，最后返回响应结果。
- *
- * 入口文件 `www/index.php`
- *
- * ``` php
- * {[file_get_contents('www/index.php')]}
- * ```
- *
- * 内核通过 \Leevel\Kernel\Kernel 的 handle 方法来实现请求。
- *
- * **handle 原型**
- *
- * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Kernel::class, 'handle', 'define')]}
- * ```
- * ",
- *     zh-CN:note="
- * 内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '内核',
+    'path' => 'architecture/kernel',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 流程为入口接受 HTTP 请求，经过内核 kernel 传入请求，经过路由解析调用控制器执行业务，最后返回响应结果。
+
+入口文件 `www/index.php`
+
+``` php
+{[file_get_contents('www/index.php')]}
+```
+
+内核通过 \Leevel\Kernel\Kernel 的 handle 方法来实现请求。
+
+**handle 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Kernel::class, 'handle', 'define')]}
+```
+EOT,
+    'zh-CN:note' => <<<'EOT'
+内核设计为可替代，只需要实现 `\Leevel\Kernel\IKernel` 即可，然后在入口文件替换即可。
+EOT,
+])]
 final class KernelTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
-     *
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Kernel1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel1::class)]}
-     * ```
-     *
-     * **Tests\Kernel\DemoBootstrapForKernel**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernel::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Kernel1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel1::class)]}
+```
+
+**Tests\Kernel\DemoBootstrapForKernel**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\DemoBootstrapForKernel::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(bool $debug): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -104,13 +98,9 @@ final class KernelTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="JSON 响应例子",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'JSON 响应例子',
+    ])]
     public function testWithResponseIsJson(): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -132,19 +122,16 @@ final class KernelTest extends TestCase
         static::assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="异常处理",
-     *     zh-CN:description="
-     * 路由抛出异常，返回异常响应。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithException')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '异常处理',
+        'zh-CN:description' => <<<'EOT'
+路由抛出异常，返回异常响应。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithException')]}
+```
+EOT,
+    ])]
     public function testRouterWillThrowException(): void
     {
         $app = new AppKernel($container = new Container(), '');
@@ -167,19 +154,16 @@ final class KernelTest extends TestCase
         static::assertStringContainsString('Exception->()', $resultResponse->getContent());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="错误处理",
-     *     zh-CN:description="
-     * 路由出现错误，返回错误响应。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithError')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '错误处理',
+        'zh-CN:description' => <<<'EOT'
+路由出现错误，返回错误响应。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\KernelTest::class, 'createRouterWithError')]}
+```
+EOT,
+    ])]
     public function testRouterWillThrowError(): void
     {
         $app = new AppKernel($container = new Container(), '');

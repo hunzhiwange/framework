@@ -12,9 +12,6 @@ use Leevel\View\Manager;
 use Leevel\View\Provider\Register;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class RegisterTest extends TestCase
 {
     protected function tearDown(): void

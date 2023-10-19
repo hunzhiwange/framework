@@ -23,15 +23,13 @@ use Leevel\Session\ISession;
 use Tests\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Debug",
- *     path="component/debug",
- *     zh-CN:description="添加一个组件调试。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Debug',
+    'path' => 'component/debug',
+    'zh-CN:description' => <<<'EOT'
+添加一个组件调试。
+EOT,
+])]
 final class DebugTest extends TestCase
 {
     use Database;
@@ -71,23 +69,20 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="JSON 关联数组调试",
-     *     zh-CN:description="
-     * 关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
-     *
-     * **返回结构**
-     *
-     * ``` php
-     * $response = ["foo" => "bar", ":trace" => []];
-     * ```
-     *
-     * 关联数组在尾部追加一个选项作为调试信息，这与非关联数组有所不同。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'JSON 关联数组调试',
+        'zh-CN:description' => <<<'EOT'
+关联数组结构会在尾部追加一个选项 `:trace` 用于调试。
+
+**返回结构**
+
+``` php
+$response = ["foo" => "bar", ":trace" => []];
+```
+
+关联数组在尾部追加一个选项作为调试信息，这与非关联数组有所不同。
+EOT,
+    ])]
     public function testJson(): void
     {
         $debug = $this->createDebug();
@@ -112,23 +107,20 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="JSON 非关联数组调试",
-     *     zh-CN:description="
-     * 非关联数组结构会在尾部追加一个 `:trace` 用于调试。
-     *
-     * **返回结构**
-     *
-     * ``` php
-     * $response = ["foo", "bar", [":trace" => []]];
-     * ```
-     *
-     * 非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'JSON 非关联数组调试',
+        'zh-CN:description' => <<<'EOT'
+非关联数组结构会在尾部追加一个 `:trace` 用于调试。
+
+**返回结构**
+
+``` php
+$response = ["foo", "bar", [":trace" => []]];
+```
+
+非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
+EOT,
+    ])]
     public function testJsonForNotAssociativeArray(): void
     {
         $debug = $this->createDebug();
@@ -153,13 +145,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="关闭调试",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '关闭调试',
+    ])]
     public function testDisable(): void
     {
         $debug = $this->createDebug();
@@ -198,13 +186,9 @@ final class DebugTest extends TestCase
         static::assertStringNotContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="启用调试",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '启用调试',
+    ])]
     public function testEnable(): void
     {
         $debug = $this->createDebug();
@@ -249,13 +233,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="启用调试但是未初始化",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '启用调试但是未初始化',
+    ])]
     public function testEnableWithoutBootstrap(): void
     {
         $debug = $this->createDebug();
@@ -340,21 +320,19 @@ final class DebugTest extends TestCase
 
     /**
      * @dataProvider getMessageLevelsData
-     *
-     * @api(
-     *     zh-CN:title="调试消息等级",
-     *     zh-CN:description="
-     * **支持的消息类型**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')]}
-     * ```
-     *
-     * 系统支持多种消息类型，可以参考这个进行调试。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '调试消息等级',
+        'zh-CN:description' => <<<'EOT'
+**支持的消息类型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Debug\DebugTest::class, 'getMessageLevelsData')]}
+```
+
+系统支持多种消息类型，可以参考这个进行调试。
+EOT,
+    ])]
     public function testMessageLevelsData(string $level): void
     {
         $debug = $this->createDebug();
@@ -392,13 +370,9 @@ final class DebugTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="调试 Session",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '调试 Session',
+    ])]
     public function testWithSession(): void
     {
         $debug = $this->createDebug();
@@ -423,13 +397,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('"session":{"test_session":"test_value"},', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="调试 Log",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '调试 Log',
+    ])]
     public function testWithLog(): void
     {
         $debug = $this->createDebugWithLog();
@@ -458,13 +428,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('test_log_debug debug: []', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="调试数据库",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '调试数据库',
+    ])]
     public function testWithDatabase(): void
     {
         $debug = $this->createDebugWithDatabase();
@@ -489,13 +455,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('SQL: [39] SELECT `guest_book`.* FROM `guest_book` | Params:  0', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="调试时间",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '调试时间',
+    ])]
     public function testTime(): void
     {
         $debug = $this->createDebug();
@@ -522,13 +484,9 @@ final class DebugTest extends TestCase
         static::assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="调试带有标签的时间",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '调试带有标签的时间',
+    ])]
     public function testTimeWithLabel(): void
     {
         $debug = $this->createDebug();

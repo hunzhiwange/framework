@@ -13,9 +13,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 我们可以在 `option/database.php` 文件中定义数据库连接。
 EOT,
 ])]
-/**
- * @internal
- */
 final class ManagerTest extends TestCase
 {
     #[Api([

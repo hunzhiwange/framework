@@ -30,9 +30,6 @@ use Tests\TestCase;
 ```
 EOT,
 ])]
-/**
- * @internal
- */
 final class HashTest extends TestCase
 {
     protected function setUp(): void

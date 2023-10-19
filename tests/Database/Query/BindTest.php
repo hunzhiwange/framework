@@ -12,9 +12,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询语言.bind',
     'path' => 'database/query/bind',
 ])]
-/**
- * @internal
- */
 final class BindTest extends TestCase
 {
     #[Api([

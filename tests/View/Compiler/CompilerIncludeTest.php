@@ -6,34 +6,29 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Include 标签",
- *     path="template/include",
- *     zh-CN:description="可以使用 include 标签来包含外部的模板文件。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Include 标签',
+    'path' => 'template/include',
+    'zh-CN:description' => <<<'EOT'
+可以使用 include 标签来包含外部的模板文件。
+EOT,
+])]
 final class CompilerIncludeTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="使用完整文件名包含",
-     *     zh-CN:description="
-     * 使用方法如下：
-     *
-     * ``` html
-     * {% include file="完整模板文件名" %}
-     * ```
-     *
-     * 这种情况下，模板文件名必须包含后缀。
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '使用完整文件名包含',
+        'zh-CN:description' => <<<'EOT'
+使用方法如下：
+
+``` html
+{% include file="完整模板文件名" %}
+```
+
+这种情况下，模板文件名必须包含后缀。
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $parser = $this->createParser();
@@ -49,13 +44,9 @@ final class CompilerIncludeTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="使用 ext 定义模板文件后缀",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '使用 ext 定义模板文件后缀',
+    ])]
     public function testExt(): void
     {
         $parser = $this->createParser();
@@ -71,13 +62,9 @@ final class CompilerIncludeTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="使用变量定义完整的文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '使用变量定义完整的文件',
+    ])]
     public function testVar(): void
     {
         $parser = $this->createParser();
@@ -95,13 +82,9 @@ final class CompilerIncludeTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="包含当前视图目录下的模板文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '包含当前视图目录下的模板文件',
+    ])]
     public function testInViewDir(): void
     {
         $parser = $this->createParser();
@@ -117,13 +100,12 @@ final class CompilerIncludeTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="包含其他模块的操作模板",
-     *     zh-CN:description="其中模块以目录分隔",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '包含其他模块的操作模板',
+        'zh-CN:description' => <<<'EOT'
+其中模块以目录分隔
+EOT,
+    ])]
     public function testOtherModule(): void
     {
         $parser = $this->createParser();
@@ -139,13 +121,12 @@ final class CompilerIncludeTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="函数表达式支持",
-     *     zh-CN:description="表达式语法为 `()` 包裹起来并且括号周围不能有空格。",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '函数表达式支持',
+        'zh-CN:description' => <<<'EOT'
+表达式语法为 `()` 包裹起来并且括号周围不能有空格。
+EOT,
+    ])]
     public function testExpr(): void
     {
         $parser = $this->createParser();

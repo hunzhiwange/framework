@@ -7,24 +7,15 @@ namespace Tests\Support;
 use Leevel\Support\VectorString;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="VectorString 动态数组",
- *     path="component/collection/vectorstring",
- *     zh-CN:description="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'VectorString 动态数组',
+    'path' => 'component/collection/vectorstring',
+])]
 final class VectorStringTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $data = [

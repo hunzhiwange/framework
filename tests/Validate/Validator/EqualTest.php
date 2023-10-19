@@ -7,16 +7,13 @@ namespace Tests\Validate\Validator;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Validator.equal",
- *     zh-CN:title="验证器.两个值是否相同",
- *     path="validate/validator/equal",
- *     zh-CN:description="全等匹配，为了严禁。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '验证器.两个值是否相同',
+    'path' => 'validate/validator/equal',
+    'zh-CN:description' => <<<'EOT'
+全等匹配，为了严禁。
+EOT,
+])]
 final class EqualTest extends TestCase
 {
     /**
@@ -24,21 +21,19 @@ final class EqualTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="验证通过的数据",
-     *     zh-CN:description="
-     * 以下是通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualTest::class, 'baseUseProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualTest::class, 'baseUseProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBaseUse($value, $param): void
     {
         $validate = new Validator(
@@ -70,21 +65,19 @@ final class EqualTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $param
-     *
-     * @api(
-     *     zh-CN:title="未验证通过的数据",
-     *     zh-CN:description="
-     * 以下是未通过的校验数据示例。
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualTest::class, 'badProvider')]}
-     * ```
-     *
-     * 上面的数据是测试的数据提供者。
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => '未验证通过的数据',
+        'zh-CN:description' => <<<'EOT'
+以下是未通过的校验数据示例。
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Validate\Validator\EqualTest::class, 'badProvider')]}
+```
+
+上面的数据是测试的数据提供者。
+EOT,
+    ])]
     public function testBad($value, $param): void
     {
         $validate = new Validator(
@@ -116,13 +109,9 @@ final class EqualTest extends TestCase
         ];
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="equal 参数缺失",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'equal 参数缺失',
+    ])]
     public function testMissParam(): void
     {
         $this->expectException(\InvalidArgumentException::class);

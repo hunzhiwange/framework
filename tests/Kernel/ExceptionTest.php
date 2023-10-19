@@ -9,9 +9,6 @@ use Tests\Kernel\Exception\BusinessException;
 use Tests\Kernel\Exception\HttpException;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class ExceptionTest extends TestCase
 {
     public function testBaseUse(): void

@@ -15,9 +15,6 @@ use Tests\Database\Query\Database\ForceMaster;
     'zh-CN:title' => '查询语言.middleware',
     'path' => 'database/query/middleware',
 ])]
-/**
- * @internal
- */
 final class MiddlewareTest extends TestCase
 {
     #[Api([

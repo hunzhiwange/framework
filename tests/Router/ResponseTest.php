@@ -20,32 +20,24 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="路由响应",
- *     path="router/response",
- *     zh-CN:description="
- * QueryPHP 路由响应封装了常用的响应，比如模板、JSON、文件下载、URL 重定向等。
- *
- * 使用容器 response 服务
- *
- * ``` php
- * \App::make('response')->json($data = null, int $status = 200, array $headers = [], bool $json = false): \Leevel\Http\JsonResponse;
- * ```
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '路由响应',
+    'path' => 'router/response',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 路由响应封装了常用的响应，比如模板、JSON、文件下载、URL 重定向等。
+
+使用容器 response 服务
+
+``` php
+\App::make('response')->json($data = null, int $status = 200, array $headers = [], bool $json = false): \Leevel\Http\JsonResponse;
+```
+EOT,
+])]
 final class ResponseTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $view = $this->makeView();
@@ -65,13 +57,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['cache-control' => ['no-cache, private']], $headers);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="make 返回一个响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'make 返回一个响应',
+    ])]
     public function testMake(): void
     {
         $view = $this->makeView();
@@ -89,21 +77,18 @@ final class ResponseTest extends TestCase
         static::assertSame(['foo' => ['bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="view 返回视图响应",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/view1.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'view 返回视图响应',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**tests/Router/assert/view1.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.php')]}
+```
+EOT,
+    ])]
     public function testView(): void
     {
         $view = $this->makeView();
@@ -121,21 +106,18 @@ final class ResponseTest extends TestCase
         static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="view 返回视图响应支持自定义后缀",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/view1.foo**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.foo')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'view 返回视图响应支持自定义后缀',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**tests/Router/assert/view1.foo**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/view1.foo')]}
+```
+EOT,
+    ])]
     public function testViewWithCustomExt(): void
     {
         $view = $this->makeView();
@@ -171,23 +153,20 @@ final class ResponseTest extends TestCase
         static::assertSame(['hello' => ['world']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="view 返回视图成功消息",
-     *     zh-CN:description="
-     * 默认错误模板为 `success`。
-     *
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/success.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'view 返回视图成功消息',
+        'zh-CN:description' => <<<'EOT'
+默认错误模板为 `success`。
+
+**fixture 定义**
+
+**tests/Router/assert/success.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success.php')]}
+```
+EOT,
+    ])]
     public function testViewSuccess(): void
     {
         $view = $this->makeView();
@@ -222,21 +201,18 @@ final class ResponseTest extends TestCase
         static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setViewSuccessTemplate 返回视图成功消息支持设置视图正确模板",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/success_custom.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success_custom.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setViewSuccessTemplate 返回视图成功消息支持设置视图正确模板',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**tests/Router/assert/success_custom.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/success_custom.php')]}
+```
+EOT,
+    ])]
     public function testViewSuccess3(): void
     {
         $view = $this->makeView();
@@ -256,23 +232,20 @@ final class ResponseTest extends TestCase
         static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="view 返回视图失败消息",
-     *     zh-CN:description="
-     * 默认错误模板为 `fail`。
-     *
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/fail.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'view 返回视图失败消息',
+        'zh-CN:description' => <<<'EOT'
+默认错误模板为 `fail`。
+
+**fixture 定义**
+
+**tests/Router/assert/fail.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail.php')]}
+```
+EOT,
+    ])]
     public function testViewFail(): void
     {
         $view = $this->makeView();
@@ -307,21 +280,18 @@ final class ResponseTest extends TestCase
         static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setViewFailTemplate 返回视图失败消息支持设置视图错误模板",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **tests/Router/assert/fail_custom.php**
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail_custom.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setViewFailTemplate 返回视图失败消息支持设置视图错误模板',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**tests/Router/assert/fail_custom.php**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Router/assert/fail_custom.php')]}
+```
+EOT,
+    ])]
     public function testViewFail3(): void
     {
         $view = $this->makeView();
@@ -341,13 +311,9 @@ final class ResponseTest extends TestCase
         static::assertSame([], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="json 返回 JSON 响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'json 返回 JSON 响应',
+    ])]
     public function testJson(): void
     {
         $view = $this->makeView();
@@ -384,13 +350,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="json 返回 JSON 响应支持数组",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'json 返回 JSON 响应支持数组',
+    ])]
     public function testJson3(): void
     {
         $view = $this->makeView();
@@ -409,13 +371,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="json 返回 JSON 响应支持原生 JSON 字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'json 返回 JSON 响应支持原生 JSON 字符串',
+    ])]
     public function testJson4(): void
     {
         $view = $this->makeView();
@@ -434,13 +392,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['foo' => ['bar'], 'content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="jsonp 返回 JSONP 响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'jsonp 返回 JSONP 响应',
+    ])]
     public function testJsonp(): void
     {
         $view = $this->makeView();
@@ -495,13 +449,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['hello' => ['world'], 'content-type' => ['text/javascript']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="download 返回下载响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'download 返回下载响应',
+    ])]
     public function testDownload(): void
     {
         $view = $this->makeView();
@@ -519,13 +469,9 @@ final class ResponseTest extends TestCase
         static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="download 返回下载响应支持 \SplFileInfo",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'download 返回下载响应支持 \SplFileInfo',
+    ])]
     public function testDownload2(): void
     {
         $view = $this->makeView();
@@ -543,13 +489,9 @@ final class ResponseTest extends TestCase
         static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="download 返回下载响应支持 \SplFileObject",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'download 返回下载响应支持 \SplFileObject',
+    ])]
     public function testDownload3(): void
     {
         $view = $this->makeView();
@@ -567,13 +509,9 @@ final class ResponseTest extends TestCase
         static::assertSame('attachment; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="download 返回下载响应支持自定义文件名",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'download 返回下载响应支持自定义文件名',
+    ])]
     public function testDownload4(): void
     {
         $view = $this->makeView();
@@ -592,13 +530,9 @@ final class ResponseTest extends TestCase
         static::assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="file 返回文件响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'file 返回文件响应',
+    ])]
     public function testFile(): void
     {
         $view = $this->makeView();
@@ -616,13 +550,9 @@ final class ResponseTest extends TestCase
         static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="file 返回文件响应支持 \SplFileInfo",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'file 返回文件响应支持 \SplFileInfo',
+    ])]
     public function testFile2(): void
     {
         $view = $this->makeView();
@@ -640,13 +570,9 @@ final class ResponseTest extends TestCase
         static::assertSame('inline; filename=download.txt', $response->headers->all()['content-disposition'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="file 返回文件响应支持 \SplFileObject",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'file 返回文件响应支持 \SplFileObject',
+    ])]
     public function testFile3(): void
     {
         $view = $this->makeView();
@@ -682,13 +608,9 @@ final class ResponseTest extends TestCase
         static::assertSame('bar', $response->headers->all()['foo'][0]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="redirect 返回一个 URL 生成跳转响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'redirect 返回一个 URL 生成跳转响应',
+    ])]
     public function testRedirect(): void
     {
         $view = $this->makeView();
@@ -753,13 +675,9 @@ final class ResponseTest extends TestCase
         static::assertSame(['location' => ['http://www.queryphp.com/hello/world?foo=bar']], $this->getFilterHeaders($response->headers->all()));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="redirectRaw 返回一个跳转响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'redirectRaw 返回一个跳转响应',
+    ])]
     public function testRedirectRaw(): void
     {
         $view = $this->makeView();

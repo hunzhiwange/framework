@@ -14,18 +14,16 @@ use Leevel\Kernel\IApp;
 use Leevel\Option\IOption;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="应用",
- *     path="architecture/kernel/app",
- *     zh-CN:description="应用是整个系统非常核心的一部分，定义了应用的骨架。",
- *     zh-CN:note="
- * 应用设计为可替代，只需要实现 `\Leevel\Kernel\IApp` 即可，然后在入口文件替换即可。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '应用',
+    'path' => 'architecture/kernel/app',
+    'zh-CN:description' => <<<'EOT'
+应用是整个系统非常核心的一部分，定义了应用的骨架。
+EOT,
+    'zh-CN:note' => <<<'EOT'
+应用设计为可替代，只需要实现 `\Leevel\Kernel\IApp` 即可，然后在入口文件替换即可。
+EOT,
+])]
 final class AppTest extends TestCase
 {
     protected function setUp(): void
@@ -38,13 +36,9 @@ final class AppTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+    ])]
     public function testBaseUse(): void
     {
         $appPath = __DIR__.'/app';
@@ -60,13 +54,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="version 获取程序版本",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'version 获取程序版本',
+    ])]
     public function testVersion(): void
     {
         $app = $this->createApp();
@@ -74,13 +64,9 @@ final class AppTest extends TestCase
         static::assertSame(App::VERSION, $app->version());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isConsole 是否为 PHP 运行模式命令行",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isConsole 是否为 PHP 运行模式命令行',
+    ])]
     public function testIsConsole(): void
     {
         $app = $this->createApp();
@@ -119,13 +105,9 @@ final class AppTest extends TestCase
         static::assertFalse($app->isConsole());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setPath 设置基础路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setPath 设置基础路径',
+    ])]
     public function testSetPath(): void
     {
         $app = $this->createApp();
@@ -135,13 +117,9 @@ final class AppTest extends TestCase
         static::assertSame(__DIR__.'/foo', $app->path());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="appPath 获取应用路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'appPath 获取应用路径',
+    ])]
     public function testAppPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -175,13 +153,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath, $app->appPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setAppPath 设置应用路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setAppPath 设置应用路径',
+    ])]
     public function testSetAppPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -198,13 +172,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/foo', $app->appPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="storagePath 获取运行路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'storagePath 获取运行路径',
+    ])]
     public function testStoragePath(): void
     {
         $app = $this->createApp();
@@ -214,13 +184,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setStoragePath 设置运行时路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setStoragePath 设置运行时路径',
+    ])]
     public function testSetStoragePath(): void
     {
         $app = $this->createApp();
@@ -235,13 +201,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="optionPath 获取配置路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'optionPath 获取配置路径',
+    ])]
     public function testOptionPath(): void
     {
         $app = $this->createApp();
@@ -251,13 +213,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setOptionPath 设置配置路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setOptionPath 设置配置路径',
+    ])]
     public function testSetOptionPath(): void
     {
         $app = $this->createApp();
@@ -272,13 +230,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/optionFoo/foobar', $app->optionPath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="i18nPath 获取语言包路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'i18nPath 获取语言包路径',
+    ])]
     public function testI18nPath(): void
     {
         $app = $this->createApp();
@@ -288,13 +242,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setI18nPath 设置语言包路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setI18nPath 设置语言包路径',
+    ])]
     public function testSetI18nPath(): void
     {
         $app = $this->createApp();
@@ -309,13 +259,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/i18nFoo/foobar', $app->i18nPath('foobar'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="envPath 获取环境变量路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'envPath 获取环境变量路径',
+    ])]
     public function testEnvPath(): void
     {
         $app = $this->createApp();
@@ -324,13 +270,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath, $app->envPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setEnvPath 设置环境变量路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setEnvPath 设置环境变量路径',
+    ])]
     public function testSetEnvPath(): void
     {
         $app = $this->createApp();
@@ -343,13 +285,9 @@ final class AppTest extends TestCase
         static::assertSame(__DIR__.'/appFoo', $app->envPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="envFile 获取环境变量文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'envFile 获取环境变量文件',
+    ])]
     public function testEnvFile(): void
     {
         $app = $this->createApp();
@@ -357,13 +295,9 @@ final class AppTest extends TestCase
         static::assertSame('.env', $app->envFile());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setEnvFile 设置环境变量文件",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setEnvFile 设置环境变量文件',
+    ])]
     public function testSetEnvFile(): void
     {
         $app = $this->createApp();
@@ -375,13 +309,9 @@ final class AppTest extends TestCase
         static::assertSame('.envfoo', $app->envFile());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="fullEnvPath 获取环境变量完整路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'fullEnvPath 获取环境变量完整路径',
+    ])]
     public function testFullEnvPath(): void
     {
         $app = $this->createApp();
@@ -398,13 +328,9 @@ final class AppTest extends TestCase
         static::assertSame(__DIR__.'/appFoo/.envfoo', $app->fullEnvPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="i18nCachedPath 获取语言包缓存路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'i18nCachedPath 获取语言包缓存路径',
+    ])]
     public function testSetI18nCachePath(): void
     {
         $app = $this->createApp();
@@ -413,13 +339,9 @@ final class AppTest extends TestCase
         static::assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="i18nCachedPath 获取语言包缓存路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'i18nCachedPath 获取语言包缓存路径',
+    ])]
     public function testI18nCachedPath(): void
     {
         $app = $this->createApp();
@@ -430,13 +352,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isCachedI18n 是否存在语言包缓存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isCachedI18n 是否存在语言包缓存',
+    ])]
     public function testIsCachedI18n(): void
     {
         $app = $this->createApp();
@@ -451,13 +369,9 @@ final class AppTest extends TestCase
         Helper::deleteDirectory($appPath);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setOptionCachedPath 设置配置缓存路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setOptionCachedPath 设置配置缓存路径',
+    ])]
     public function testSetOptionCachePath(): void
     {
         $app = $this->createApp();
@@ -466,13 +380,9 @@ final class AppTest extends TestCase
         static::assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="optionCachedPath 获取配置缓存路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'optionCachedPath 获取配置缓存路径',
+    ])]
     public function testOptionCachedPath(): void
     {
         $app = $this->createApp();
@@ -480,13 +390,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isCachedOption 是否存在配置缓存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isCachedOption 是否存在配置缓存',
+    ])]
     public function testIsCachedOption(): void
     {
         $appPath = __DIR__.'/app';
@@ -500,13 +406,9 @@ final class AppTest extends TestCase
         Helper::deleteDirectory($appPath);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="routerCachedPath 获取路由缓存路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'routerCachedPath 获取路由缓存路径',
+    ])]
     public function testRouterCachedPath(): void
     {
         $appPath = __DIR__.'/app';
@@ -515,13 +417,9 @@ final class AppTest extends TestCase
         static::assertSame($appPath.'/storage/bootstrap/router.php', $app->routerCachedPath());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isCachedRouter 是否存在路由缓存",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isCachedRouter 是否存在路由缓存',
+    ])]
     public function testIsCachedRouter(): void
     {
         $appPath = __DIR__.'/app';
@@ -538,13 +436,9 @@ final class AppTest extends TestCase
         Helper::deleteDirectory($appPath);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="namespacePath 获取命名空间目录真实路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'namespacePath 获取命名空间目录真实路径',
+    ])]
     public function testNamespacePath(): void
     {
         $appPath = \dirname(__DIR__, 2);
@@ -580,13 +474,9 @@ final class AppTest extends TestCase
         $app->namespacePath('not_found_class');
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isDebug 是否开启调试",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isDebug 是否开启调试',
+    ])]
     public function testIsDebug(): void
     {
         $app = $this->createApp();
@@ -645,13 +535,9 @@ final class AppTest extends TestCase
         static::assertFalse($app->isDebug());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="isDevelopment 是否为开发环境",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'isDevelopment 是否为开发环境',
+    ])]
     public function testIsDevelopment(): void
     {
         $app = $this->createApp();
@@ -686,13 +572,9 @@ final class AppTest extends TestCase
         static::assertFalse($app->isDevelopment());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="environment 获取运行环境",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'environment 获取运行环境',
+    ])]
     public function testEnvironment(): void
     {
         $app = $this->createApp();
@@ -710,33 +592,30 @@ final class AppTest extends TestCase
         static::assertSame('foo', $app->environment());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="bootstrap 初始化应用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\BootstrapTest1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest1::class)]}
-     * ```
-     *
-     * **Tests\Kernel\BootstrapTest2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest2::class)]}
-     * ```
-     *
-     * **Tests\Console\Load1\Test1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Load1\Test1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'bootstrap 初始化应用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\BootstrapTest1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest1::class)]}
+```
+
+**Tests\Kernel\BootstrapTest2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\BootstrapTest2::class)]}
+```
+
+**Tests\Console\Load1\Test1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Console\Load1\Test1::class)]}
+```
+EOT,
+    ])]
     public function testBootstrap(): void
     {
         $app = $this->createApp();
@@ -773,33 +652,30 @@ final class AppTest extends TestCase
         static::assertArrayNotHasKey('bootstrapTest2', $_SERVER);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="registerAppProviders 注册应用服务提供者",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\OptionTest**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\OptionTest::class)]}
-     * ```
-     *
-     * **Tests\Kernel\ProviderTest3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderTest3::class)]}
-     * ```
-     *
-     * **Tests\Kernel\ProviderDeferTest1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderDeferTest1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'registerAppProviders 注册应用服务提供者',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\OptionTest**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\OptionTest::class)]}
+```
+
+**Tests\Kernel\ProviderTest3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderTest3::class)]}
+```
+
+**Tests\Kernel\ProviderDeferTest1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ProviderDeferTest1::class)]}
+```
+EOT,
+    ])]
     public function testRegisterProviders(): void
     {
         $app = $this->createApp();
@@ -839,13 +715,9 @@ final class AppTest extends TestCase
         static::assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="setThemesPath 设置主题路径",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'setThemesPath 设置主题路径',
+    ])]
     public function testSetThemesPath(): void
     {
         $app = $this->createApp();
@@ -859,19 +731,17 @@ final class AppTest extends TestCase
      *
      * @param mixed $value
      * @param mixed $envValue
-     *
-     * @api(
-     *     zh-CN:title="env 获取应用的环境变量",
-     *     zh-CN:description="
-     * 测试数据
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\AppTest::class, 'envProvider')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
      */
+    #[Api([
+        'zh-CN:title' => 'env 获取应用的环境变量',
+        'zh-CN:description' => <<<'EOT'
+测试数据
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Tests\Kernel\AppTest::class, 'envProvider')]}
+```
+EOT,
+    ])]
     public function testEnv(string $name, $value, $envValue): void
     {
         $app = $this->createApp();

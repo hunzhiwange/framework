@@ -20,75 +20,68 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="异常运行时",
- *     path="architecture/kernel/exceptionruntime",
- *     zh-CN:description="
- * QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
- *
- * **异常运行时接口**
- *
- * ``` php
- * {[file_get_contents('vendor/hunzhiwange/framework/src/Leevel/Kernel/Exceptions/IRuntime.php')]}
- * ```
- *
- * **默认异常运行时提供两个抽象方法**
- *
- * **getHttpExceptionView 原型**
- *
- * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getHttpExceptionView', 'define')]}
- * ```
- *
- * **getDefaultHttpExceptionView 原型**
- *
- * ``` php
- * {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getDefaultHttpExceptionView', 'define')]}
- * ```
- *
- * 只需要实现，即可轻松接入，例如应用中的 `\App\Exceptions\Runtime` 实现。
- *
- * ``` php
- * {[file_get_contents('app/Exceptions/Runtime.php')]}
- * ```
- * ",
- *     zh-CN:note="
- * 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
- * ",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '异常运行时',
+    'path' => 'architecture/kernel/exceptionruntime',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
+
+**异常运行时接口**
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/src/Leevel/Kernel/Exceptions/IRuntime.php')]}
+```
+
+**默认异常运行时提供两个抽象方法**
+
+**getHttpExceptionView 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getHttpExceptionView', 'define')]}
+```
+
+**getDefaultHttpExceptionView 原型**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Kernel\Exceptions\Runtime::class, 'getDefaultHttpExceptionView', 'define')]}
+```
+
+只需要实现，即可轻松接入，例如应用中的 `\App\Exceptions\Runtime` 实现。
+
+``` php
+{[file_get_contents('app/Exceptions/Runtime.php')]}
+```
+EOT,
+    'zh-CN:note' => <<<'EOT'
+异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
+EOT,
+])]
 final class ExceptionRuntimeTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="基本使用",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\AppRuntime**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppRuntime::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Runtime11**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime11::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Exception1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\AppRuntime**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\AppRuntime::class)]}
+```
+
+**Tests\Kernel\Runtime11**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime11::class)]}
+```
+
+**Tests\Kernel\Exception1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -128,23 +121,20 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertNull($runtime->report($e));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="report 自定义异常上报",
-     *     zh-CN:description="
-     * 异常提供 `report` 方法即实现自定义异常上报。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Exception2**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception2::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'report 自定义异常上报',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `report` 方法即实现自定义异常上报。
+
+**fixture 定义**
+
+**Tests\Kernel\Exception2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception2::class)]}
+```
+EOT,
+    ])]
     public function testExceptionItSelfWithReport(): void
     {
         $app = new AppRuntime(new Container(), __DIR__.'/app');
@@ -162,23 +152,20 @@ final class ExceptionRuntimeTest extends TestCase
         unset($_SERVER['testExceptionItSelfWithReport']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="reportable 异常是否需要上报",
-     *     zh-CN:description="
-     * 默认可上报，reportable 返回 true 可以会上报。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\ExceptionCanReportable**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCanReportable::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'reportable 异常是否需要上报',
+        'zh-CN:description' => <<<'EOT'
+默认可上报，reportable 返回 true 可以会上报。
+
+**fixture 定义**
+
+**Tests\Kernel\ExceptionCanReportable**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCanReportable::class)]}
+```
+EOT,
+    ])]
     public function testExceptionReportable(): void
     {
         $app = new AppRuntime(new Container(), __DIR__.'/app');
@@ -190,21 +177,18 @@ final class ExceptionRuntimeTest extends TestCase
         unset($_SERVER['testExceptionReportable']);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="reportable 异常是否需要上报不可上报例子",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\ExceptionCannotReportable**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCannotReportable::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'reportable 异常是否需要上报不可上报例子',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\ExceptionCannotReportable**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ExceptionCannotReportable::class)]}
+```
+EOT,
+    ])]
     public function testExceptionReportableIsFalse(): void
     {
         $app = new AppRuntime(new Container(), __DIR__.'/app');
@@ -215,13 +199,9 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 开启调试模式的异常渲染",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 开启调试模式的异常渲染',
+    ])]
     public function testRender(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -255,13 +235,9 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="renderForConsole 命令行渲染",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'renderForConsole 命令行渲染',
+    ])]
     public function testRenderForConsole(): void
     {
         $app = new AppRuntimeForConsole($container = new Container(), $appPath = __DIR__.'/app');
@@ -301,23 +277,20 @@ final class ExceptionRuntimeTest extends TestCase
         $runtime->renderForConsole(new ConsoleOutput(), $e);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 自定义异常渲染",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Exception3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception3::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 自定义异常渲染',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Exception3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception3::class)]}
+```
+EOT,
+    ])]
     public function testRenderWithCustomRenderMethod(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -352,23 +325,20 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 自定义异常渲染直接返回响应对象",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Exception4**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception4::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 自定义异常渲染直接返回响应对象',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Exception4**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception4::class)]}
+```
+EOT,
+    ])]
     public function testRenderWithCustomRenderMethod2(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -403,13 +373,9 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 异常渲染直接返回 JSON 数据",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 异常渲染直接返回 JSON 数据',
+    ])]
     public function testRenderToJson(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -447,23 +413,20 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 自定义异常渲染直接返回支持转 JSON 响应的数据",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Exception5**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception5::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 自定义异常渲染直接返回支持转 JSON 响应的数据',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Exception5**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception5::class)]}
+```
+EOT,
+    ])]
     public function testRenderWithCustomRenderMethodToJson(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -498,41 +461,38 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render HTTP 500 异常响应渲染",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Runtime22**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime22::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Exception6**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception6::class)]}
-     * ```
-     *
-     * **异常模板 tests/Kernel/assert/layout.php **
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/layout.php')]}
-     * ```
-     *
-     * **异常模板 tests/Kernel/assert/500.php **
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/500.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render HTTP 500 异常响应渲染',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Runtime22**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime22::class)]}
+```
+
+**Tests\Kernel\Exception6**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception6::class)]}
+```
+
+**异常模板 tests/Kernel/assert/layout.php **
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/layout.php')]}
+```
+
+**异常模板 tests/Kernel/assert/500.php **
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/500.php')]}
+```
+EOT,
+    ])]
     public function testRendorWithHttpExceptionView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -562,29 +522,26 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render HTTP 异常响应渲染使用默认异常模板的例子",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Exception7**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception7::class)]}
-     * ```
-     *
-     * **异常模板 tests/Kernel/assert/404.php **
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/404.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render HTTP 异常响应渲染使用默认异常模板的例子',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Exception7**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception7::class)]}
+```
+
+**异常模板 tests/Kernel/assert/404.php **
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/404.php')]}
+```
+EOT,
+    ])]
     public function testRendorWithHttpExceptionViewFor404(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -614,35 +571,32 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(404, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render HTTP 异常响应渲染",
-     *     zh-CN:description="
-     * 异常提供 `render` 方法即实现自定义异常渲染。
-     *
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Runtime3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime3::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Exception8**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception8::class)]}
-     * ```
-     *
-     * **异常模板 tests/Kernel/assert/default.php **
-     *
-     * ``` php
-     * {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/default.php')]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render HTTP 异常响应渲染',
+        'zh-CN:description' => <<<'EOT'
+异常提供 `render` 方法即实现自定义异常渲染。
+
+**fixture 定义**
+
+**Tests\Kernel\Runtime3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime3::class)]}
+```
+
+**Tests\Kernel\Exception8**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception8::class)]}
+```
+
+**异常模板 tests/Kernel/assert/default.php **
+
+``` php
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/assert/default.php')]}
+```
+EOT,
+    ])]
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -699,13 +653,9 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(405, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 调试关闭异常渲染",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 调试关闭异常渲染',
+    ])]
     public function testRenderWithDebugIsOff(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
@@ -744,13 +694,9 @@ final class ExceptionRuntimeTest extends TestCase
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="render 调试开启异常渲染",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'render 调试开启异常渲染',
+    ])]
     public function testRenderWithDebugIsOn(): void
     {
         $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');

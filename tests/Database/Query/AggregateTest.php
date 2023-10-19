@@ -15,9 +15,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
 数据库聚合查询功能。
 EOT,
 ])]
-/**
- * @internal
- */
 final class AggregateTest extends TestCase
 {
     #[Api([

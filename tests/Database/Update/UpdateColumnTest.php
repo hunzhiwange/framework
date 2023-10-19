@@ -11,9 +11,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '更新字段.updateColumn',
     'path' => 'database/update/updatecolumn',
 ])]
-/**
- * @internal
- */
 final class UpdateColumnTest extends TestCase
 {
     #[Api([

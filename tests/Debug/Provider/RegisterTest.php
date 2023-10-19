@@ -20,9 +20,6 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
-/**
- * @internal
- */
 final class RegisterTest extends TestCase
 {
     public function testBaseUse(): void

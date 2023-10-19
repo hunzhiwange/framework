@@ -10,9 +10,6 @@ use Tests\Database\DatabaseTestCase as TestCase;
     'zh-CN:title' => '查询数据.find',
     'path' => 'database/read/find',
 ])]
-/**
- * @internal
- */
 final class FindTest extends TestCase
 {
     #[Api([

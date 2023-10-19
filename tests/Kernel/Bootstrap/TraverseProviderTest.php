@@ -12,20 +12,15 @@ use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\IApp;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="初始化遍历服务提供者注册服务",
- *     path="architecture/kernel/bootstrap/traverseprovider",
- *     zh-CN:description="
- * QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
- *
- * 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
- * ",
- *     zh-CN:note="",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '初始化遍历服务提供者注册服务',
+    'path' => 'architecture/kernel/bootstrap/traverseprovider',
+    'zh-CN:description' => <<<'EOT'
+QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
+
+内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
+EOT,
+])]
 final class TraverseProviderTest extends TestCase
 {
     protected function setUp(): void
@@ -38,33 +33,30 @@ final class TraverseProviderTest extends TestCase
         Container::singletons()->clear();
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="基本使用方法",
-     *     zh-CN:description="
-     * **fixture 定义**
-     *
-     * **Tests\Kernel\Bootstrap\OptionTest**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\OptionTest::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Bootstrap\ProviderDeferTest1**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderDeferTest1::class)]}
-     * ```
-     *
-     * **Tests\Kernel\Bootstrap\ProviderTest3**
-     *
-     * ``` php
-     * {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderTest3::class)]}
-     * ```
-     * ",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '基本使用方法',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Bootstrap\OptionTest**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\OptionTest::class)]}
+```
+
+**Tests\Kernel\Bootstrap\ProviderDeferTest1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderDeferTest1::class)]}
+```
+
+**Tests\Kernel\Bootstrap\ProviderTest3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ProviderTest3::class)]}
+```
+EOT,
+    ])]
     public function testBaseUse(): void
     {
         $bootstrap = new TraverseProvider();

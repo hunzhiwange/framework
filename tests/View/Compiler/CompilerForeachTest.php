@@ -6,26 +6,20 @@ namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="Foreach 循环",
- *     path="template/foreach",
- *     zh-CN:description="foreach 标签也是用于循环输出，解析后的本质为 foreach。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => 'Foreach 循环',
+    'path' => 'template/foreach',
+    'zh-CN:description' => <<<'EOT'
+foreach 标签也是用于循环输出，解析后的本质为 foreach。
+EOT,
+])]
 final class CompilerForeachTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @api(
-     *     zh-CN:title="node",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'node',
+    ])]
     public function testNode(): void
     {
         $parser = $this->createParser();
@@ -46,13 +40,12 @@ final class CompilerForeachTest extends TestCase
         static::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="node 省略键值",
-     *     zh-CN:description="有时候我们不需要键值，这个时候我们在模板中写下如下的代码：",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'node 省略键值',
+        'zh-CN:description' => <<<'EOT'
+有时候我们不需要键值，这个时候我们在模板中写下如下的代码：
+EOT,
+    ])]
     public function testNodeSimple(): void
     {
         $parser = $this->createParser();

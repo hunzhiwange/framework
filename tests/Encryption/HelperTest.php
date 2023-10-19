@@ -7,24 +7,18 @@ namespace Tests\Encryption;
 use Leevel\Encryption\Helper;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="安全过滤",
- *     path="component/encryption/helper",
- *     zh-CN:description="可以对用户输入数据进行过滤。",
- * )
- *
- * @internal
- */
+#[Api([
+    'zh-CN:title' => '安全过滤',
+    'path' => 'component/encryption/helper',
+    'zh-CN:description' => <<<'EOT'
+可以对用户输入数据进行过滤。
+EOT,
+])]
 final class HelperTest extends TestCase
 {
-    /**
-     * @api(
-     *     zh-CN:title="custom_addslashes 添加模式转义和移除魔术方法转义",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'custom_addslashes 添加模式转义和移除魔术方法转义',
+    ])]
     public function testBaseUse(): void
     {
         $strings = "O'Reilly?";
@@ -42,13 +36,9 @@ final class HelperTest extends TestCase
         static::assertSame($arrays, Helper::customStripslashes($outs));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="deep_replace 深度过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'deep_replace 深度过滤',
+    ])]
     public function testDeepReplace(): void
     {
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
@@ -57,13 +47,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::deepReplace(['not found', 'day'], $strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="filter_script 过滤 script",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'filter_script 过滤 script',
+    ])]
     public function testFilterScript(): void
     {
         $strings = '<script>hello world.';
@@ -72,13 +58,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::filterScript($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clean_hex 过滤十六进制字符串",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clean_hex 过滤十六进制字符串',
+    ])]
     public function testCleanHex(): void
     {
         $strings = '0x63hello 0x6f world.';
@@ -87,13 +69,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::cleanHex($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="str_filter 字符过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'str_filter 字符过滤',
+    ])]
     public function testStrFilter(): void
     {
         $strings = 'This is some <b>bold</b> text.';
@@ -105,13 +83,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::strFilter($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="html_filter HTML 过滤",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'html_filter HTML 过滤',
+    ])]
     public function testHtmlFilter(): void
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
@@ -123,13 +97,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::htmlFilter($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="html_view 字符 HTML 安全显示",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'html_view 字符 HTML 安全显示',
+    ])]
     public function testHtmlView(): void
     {
         $strings = "i a \n here";
@@ -139,13 +109,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::htmlView($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="clean_js 过滤 JavaScript",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'clean_js 过滤 JavaScript',
+    ])]
     public function testCleanJs(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'></span>".
@@ -161,13 +127,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::cleanJs($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="text 字符串文本化",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'text 字符串文本化',
+    ])]
     public function testText(): void
     {
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
@@ -184,13 +146,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::text($strings, false));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="strip 字符过滤 JS 和 HTML 标签",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'strip 字符过滤 JS 和 HTML 标签',
+    ])]
     public function testStrip(): void
     {
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'> here";
@@ -199,13 +157,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::strip($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="custom_htmlspecialchars 字符 HTML 安全实体",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'custom_htmlspecialchars 字符 HTML 安全实体',
+    ])]
     public function testCustomHtmlspecialchars(): void
     {
         $strings = 'i a < here';
@@ -219,13 +173,9 @@ final class HelperTest extends TestCase
         static::assertSame($out, Helper::customHtmlspecialchars($strings));
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="un_htmlspecialchars 字符 HTML 实体还原",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => 'un_htmlspecialchars 字符 HTML 实体还原',
+    ])]
     public function testUnHtmlSpecialchars(): void
     {
         $strings = 'i a &lt; here';
