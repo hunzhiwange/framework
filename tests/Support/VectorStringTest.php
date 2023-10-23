@@ -34,6 +34,44 @@ final class VectorStringTest extends TestCase
         static::assertTrue(isset($collection[3]));
     }
 
+    #[Api([
+        'zh-CN:title' => 'VectorString 支持 fromRequest 数组',
+    ])]
+    public function test1(): void
+    {
+        $data = [
+            'h', 1, 'w', 'd',
+        ];
+
+        $collection = VectorString::fromRequest($data);
+        static::assertSame($collection[0], 'h');
+        static::assertSame($collection[1], '1');
+        static::assertSame($collection[2], 'w');
+        static::assertSame($collection[3], 'd');
+        static::assertTrue(isset($collection[0]));
+        static::assertTrue(isset($collection[1]));
+        static::assertTrue(isset($collection[2]));
+        static::assertTrue(isset($collection[3]));
+    }
+
+    #[Api([
+        'zh-CN:title' => 'VectorString 支持 fromRequest 字符串',
+    ])]
+    public function test2(): void
+    {
+        $data = 'h,1,w,d';
+
+        $collection = VectorString::fromRequest($data);
+        static::assertSame($collection[0], 'h');
+        static::assertSame($collection[1], '1');
+        static::assertSame($collection[2], 'w');
+        static::assertSame($collection[3], 'd');
+        static::assertTrue(isset($collection[0]));
+        static::assertTrue(isset($collection[1]));
+        static::assertTrue(isset($collection[2]));
+        static::assertTrue(isset($collection[3]));
+    }
+
     public function testError(): void
     {
         $this->expectException(\UnexpectedValueException::class);

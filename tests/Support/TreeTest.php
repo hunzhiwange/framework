@@ -653,7 +653,7 @@ EOT,
         static::assertSame(
             $nodes,
             $this->varJson(
-                $tree->normalize(function ($item) {
+                $tree->normalize(function (array $item): array {
                     $item['label'] = $item['data'];
 
                     return $item;
@@ -690,6 +690,44 @@ EOT,
             $this->varJson(
                 $tree->normalize(null, [], 3)
             )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'Tree.setCallback 设置回调',
+    ])]
+    public function test1(): void
+    {
+        $tree = new Tree([
+            [1, 0, 'hello'],
+            [2, 1, 'world'],
+        ]);
+        $tree->setCallback(function (array $item): array {
+            $item['label'] = $item['data'];
+
+            return $item;
+        });
+
+        $nodes = <<<'eot'
+            [
+                {
+                    "value": 1,
+                    "data": "hello",
+                    "label": "hello",
+                    "children": [
+                        {
+                            "value": 2,
+                            "data": "world",
+                            "label": "world"
+                        }
+                    ]
+                }
+            ]
+            eot;
+
+        static::assertSame(
+            $nodes,
+            $this->varJson($tree->toArray())
         );
     }
 

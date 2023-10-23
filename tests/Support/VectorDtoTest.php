@@ -69,4 +69,23 @@ EOT,
 
         new VectorDto($data);
     }
+
+    public function testError1(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Dto class not_found_class must be subclass of Leevel\\Support\\Dto');
+
+        VectorDto::fromRequest([
+            [
+                'title' => 'hello',
+                'tag' => 'world',
+                'description' => 'foo',
+            ],
+            [
+                'title' => 'hello1',
+                'tag' => 'world1',
+                'description' => 'foo1',
+            ],
+        ], 'not_found_class');
+    }
 }

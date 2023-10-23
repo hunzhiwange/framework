@@ -316,7 +316,12 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
             return;
         }
 
-        $e = sprintf('The value of a collection %s type requires the following types `%s`.', $isKey ? 'key' : 'value', implode(',', $types));
+        $e = sprintf(
+            'The value%s of a collection %s type requires the following types `%s`.',
+            null === $typeIndex ? '' : ' with index '.$typeIndex,
+            $isKey ? 'key' : 'value',
+            implode(',', $types)
+        );
 
         throw new \UnexpectedValueException($e);
     }

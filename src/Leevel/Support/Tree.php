@@ -217,6 +217,9 @@ class Tree implements IJson, IArray
         return $data;
     }
 
+    /**
+     * 设置回调.
+     */
     public function setCallback(?\Closure $callback = null, array $formatKey = [], int|string $topId = 0): self
     {
         $this->callback = $callback;

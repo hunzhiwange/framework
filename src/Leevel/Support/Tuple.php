@@ -16,13 +16,23 @@ final class Tuple extends Collection
      */
     protected array $keyTypes = ['int'];
 
+    protected bool $shouldValidateElement = false;
+
     /**
      * 构造函数.
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(array $elements = [], string ...$valueTypes)
+    public function __construct(array $elements, string ...$valueTypes)
     {
+        if (0 === \count($valueTypes)) {
+            throw new \InvalidArgumentException('The value type cannot be empty.');
+        }
+
         $this->valueTypes = $valueTypes;
         parent::__construct($elements);
+        $this->shouldValidateElement = true;
+        $this->checkMatch();
     }
 
     /**
@@ -33,5 +43,20 @@ final class Tuple extends Collection
         $this->checkType($index, true);
         $this->checkType($newval, typeIndex: $index);
         $this->elements[$index] = $newval;
+        $this->checkMatch();
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function checkMatch(): void
+    {
+        if (!$this->shouldValidateElement) {
+            return;
+        }
+
+        if (\count($this->valueTypes) !== \count($this->elements)) {
+            throw new \InvalidArgumentException('The number of elements does not match the number of types.');
+        }
     }
 }

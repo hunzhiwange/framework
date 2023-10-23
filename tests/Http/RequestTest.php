@@ -78,7 +78,7 @@ final class RequestTest extends TestCase
     #[Api([
         'zh-CN:title' => 'all 获取所有请求参数',
         'zh-CN:description' => <<<'EOT'
-* 包含 request、query 和 attributes
+ * 包含 request、query 和 attributes
  * 优先级从高到底依次为 attributes、query 和 request，优先级高的会覆盖优先级低的参数
 EOT,
     ])]
