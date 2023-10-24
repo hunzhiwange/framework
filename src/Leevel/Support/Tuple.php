@@ -29,33 +29,27 @@ final class Tuple extends Collection
             throw new \InvalidArgumentException('The value type cannot be empty.');
         }
 
+        if (\count($valueTypes) !== \count($elements)) {
+            throw new \InvalidArgumentException('The number of elements does not match the number of types.');
+        }
+
         $this->valueTypes = $valueTypes;
         parent::__construct($elements);
         $this->shouldValidateElement = true;
-        $this->checkMatch();
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->checkType($index, true);
         $this->checkType($newval, typeIndex: $index);
         $this->elements[$index] = $newval;
-        $this->checkMatch();
-    }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function checkMatch(): void
-    {
-        if (!$this->shouldValidateElement) {
-            return;
-        }
-
-        if (\count($this->valueTypes) !== \count($this->elements)) {
+        if ($this->shouldValidateElement && \count($this->valueTypes) !== \count($this->elements)) {
             throw new \InvalidArgumentException('The number of elements does not match the number of types.');
         }
     }

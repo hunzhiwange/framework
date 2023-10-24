@@ -17,6 +17,7 @@ class Msg
     public function __construct(string $message = '', ...$moreArgs) // @phpstan-ignore-line
     {
         if ($moreArgs) {
+            dump(1234);
             $message = __($message, ...$moreArgs);
         }
 
@@ -30,6 +31,9 @@ class Msg
 }
 
 if (!\function_exists(__NAMESPACE__.'\\__')) {
+    /**
+     * @codeCoverageIgnore
+     */
     function __(string $text, ...$data): string
     {
         if (!class_exists(Gettext::class)) {

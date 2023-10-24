@@ -166,7 +166,6 @@ trait Enum
             return $value;
         }
 
-        $result = [];
         foreach ($value as &$v) {
             $v = $v->value;
         }
