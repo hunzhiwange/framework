@@ -72,9 +72,7 @@ class CookieUtils
     {
         $option['expire'] = (int) $option['expire'];
         if ($option['expire'] < 0) {
-            $e = 'Cookie expire date must greater than or equal 0.';
-
-            throw new \Exception($e);
+            throw new \Exception('Cookie expire date must greater than or equal 0.');
         }
 
         if ($option['expire'] > 0) {

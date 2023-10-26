@@ -75,9 +75,7 @@ class Html extends View implements IView
     protected function getCachePath(): string
     {
         if (!$this->option['cache_path']) {
-            $e = 'Theme cache path must be set.';
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException('Theme cache path must be set.');
         }
 
         return $this->option['cache_path'];
@@ -104,9 +102,7 @@ class Html extends View implements IView
     protected function resolverParser(): Parser
     {
         if (!$this->parseResolver) {
-            $e = 'Html theme not set parse resolver.';
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException('Html theme not set parse resolver.');
         }
 
         $parseResolver = $this->parseResolver;

@@ -502,9 +502,7 @@ class UnitOfWork
     {
         $this->validateClosed();
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
-            $e = sprintf('Entity `%s` was not managed.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` was not managed.', $entity::class));
         }
         $this->repository($entity)->refreshEntity($entity);
 
@@ -701,9 +699,7 @@ class UnitOfWork
 
             case self::STATE_DETACHED:
             default:
-                $e = sprintf('Detached entity `%s` cannot be persist.', $entity::class);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Detached entity `%s` cannot be persist.', $entity::class));
         }
 
         return $this;
@@ -730,9 +726,7 @@ class UnitOfWork
 
             case self::STATE_DETACHED:
             default:
-                $e = sprintf('Detached entity `%s` cannot be remove.', $entity::class);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Detached entity `%s` cannot be remove.', $entity::class));
         }
 
         return $this;
@@ -752,9 +746,7 @@ class UnitOfWork
         $this->validateReplaceAlreadyExists($entity, 'create');
 
         if (isset($this->entityCreates[$id])) {
-            $e = sprintf('Entity `%s` cannot be added for twice.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` cannot be added for twice.', $entity::class));
         }
 
         $this->entityCreates[$id] = $entity;
@@ -780,9 +772,7 @@ class UnitOfWork
         $this->validateReplaceAlreadyExists($entity, 'update');
 
         if (isset($this->entityUpdates[$id])) {
-            $e = sprintf('Entity `%s` cannot be updated for twice.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` cannot be updated for twice.', $entity::class));
         }
 
         $this->entityUpdates[$id] = $entity;
@@ -805,9 +795,7 @@ class UnitOfWork
         $this->validateUpdateAlreadyExists($entity, 'replace');
 
         if (isset($this->entityReplaces[$id])) {
-            $e = sprintf('Entity `%s` cannot be replaced for twice.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` cannot be replaced for twice.', $entity::class));
         }
 
         $this->entityReplaces[$id] = $entity;
@@ -870,9 +858,7 @@ class UnitOfWork
         }
 
         if (isset($this->entityDeletes[$id])) {
-            $e = sprintf('Entity `%s` cannot be deleted for twice.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` cannot be deleted for twice.', $entity::class));
         }
 
         $this->{'deletesFlag'.$position}[spl_object_id($entity)] = $priority;
@@ -890,9 +876,7 @@ class UnitOfWork
     protected function validateCreateAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityCreates[spl_object_id($entity)])) {
-            $e = sprintf('Created entity `%s` cannot be added for %s.', $entity::class, $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Created entity `%s` cannot be added for %s.', $entity::class, $type));
         }
     }
 
@@ -904,9 +888,7 @@ class UnitOfWork
     protected function validateUpdateAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityUpdates[spl_object_id($entity)])) {
-            $e = sprintf('Updated entity `%s` cannot be added for %s.', $entity::class, $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Updated entity `%s` cannot be added for %s.', $entity::class, $type));
         }
     }
 
@@ -918,9 +900,7 @@ class UnitOfWork
     protected function validateReplaceAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityReplaces[spl_object_id($entity)])) {
-            $e = sprintf('Replaced entity `%s` cannot be added for %s.', $entity::class, $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Replaced entity `%s` cannot be added for %s.', $entity::class, $type));
         }
     }
 
@@ -932,9 +912,7 @@ class UnitOfWork
     protected function validateDeleteAlreadyExists(Entity|\Closure $entity, string $type): void
     {
         if (isset($this->entityDeletes[spl_object_id($entity)])) {
-            $e = sprintf('Deleted entity `%s` cannot be added for %s.', $entity::class, $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Deleted entity `%s` cannot be added for %s.', $entity::class, $type));
         }
     }
 
@@ -948,9 +926,7 @@ class UnitOfWork
     protected function validateUniqueKeyData(Entity $entity, string $type): void
     {
         if (false === $entity->id()) {
-            $e = sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type));
         }
     }
 
@@ -1067,9 +1043,7 @@ class UnitOfWork
     protected function validateClosed(): void
     {
         if ($this->closed) {
-            $e = 'Unit of work has closed.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Unit of work has closed.');
         }
     }
 }

@@ -873,9 +873,7 @@ class Validator implements IValidator
 
         // @phpstan-ignore-next-line
         if (!\is_object($extend = $this->container->make($className, throw: false))) {
-            $e = sprintf('Extend class %s is not valid.', $className);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Extend class %s is not valid.', $className));
         }
 
         // @phpstan-ignore-next-line

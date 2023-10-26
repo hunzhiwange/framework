@@ -592,27 +592,23 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         // relation tips
         try {
             if (static::isRelation($unCamelize = static::unCamelizeProp($method))) {
-                $e = sprintf(
+                throw new \BadMethodCallException(sprintf(
                     'Method `%s` is not exits,maybe you can try `%s::make()->relation(\'%s\')`.',
                     $method,
                     static::class,
                     $unCamelize
-                );
-
-                throw new \BadMethodCallException($e);
+                ));
             }
         } catch (EntityPropNotDefinedException) {
         }
 
         // other method tips
-        $e = sprintf(
+        throw new \BadMethodCallException(sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
             $method,
             static::class,
             $method
-        );
-
-        throw new \BadMethodCallException($e);
+        ));
     }
 
     /**
@@ -622,14 +618,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function __callStatic(string $method, array $args): void
     {
-        $e = sprintf(
+        throw new \BadMethodCallException(sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
             $method,
             static::class,
             $method
-        );
-
-        throw new \BadMethodCallException($e);
+        ));
     }
 
     /**
@@ -891,9 +885,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         if (static::isRelation($prop)) {
-            $e = sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class));
         }
 
         if ($fromStorage) {
@@ -907,9 +899,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 if (false === $ignoreReadonly
                     && isset($constantStruct[$prop][self::READONLY])
                     && true === $constantStruct[$prop][self::READONLY]) {
-                    $e = sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class);
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException(sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
                 }
                 $this->propSetter($prop, $value);
             }
@@ -1108,23 +1098,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public static function deleteAtColumn(): string
     {
         if (!static::definedEntityConstant('DELETE_AT')) {
-            $e = sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Entity `%s` soft delete field was not defined.',
                 static::class
-            );
-
-            throw new \InvalidArgumentException($e);
+            ));
         }
 
         $deleteAt = (string) static::entityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
-            $e = sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
                 static::class,
                 $deleteAt
-            );
-
-            throw new \InvalidArgumentException($e);
+            ));
         }
 
         return $deleteAt;
@@ -1280,13 +1266,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public function relation(string $prop, null|array|string|\Closure $relationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
-            $e = sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'Prop `%s` of entity `%s` is not a relation type.',
                 $prop,
                 static::class,
-            );
-
-            throw new \InvalidArgumentException($e);
+            ));
         }
 
         $prop = static::unCamelizeProp($prop);
@@ -1484,9 +1468,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         if (null === static::$dispatchFramework
             && static::lazyloadPlaceholder() && null === static::$dispatchFramework) {
-            $e = 'Event dispatch was not set.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Event dispatch was not set.');
         }
 
         static::validateSupportEvent($event);
@@ -1615,9 +1597,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 }
             }
             if (!$key) {
-                $e = sprintf('Entity %s has no primary key.', static::class);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Entity %s has no primary key.', static::class));
             }
         }
 
@@ -1747,9 +1727,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         $key = static::primaryKey();
         if (\count($key) > 1) {
-            $e = sprintf('Entity %s does not support composite primary keys.', static::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity %s does not support composite primary keys.', static::class));
         }
 
         return reset($key);
@@ -1874,10 +1852,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public function idCondition(bool $cached = true): array
     {
         if (false === $id = $this->id($cached)) {
-            /** @todo 唯一键重复，保存提示这个错误，需要优化 */
-            $e = sprintf('Entity %s has no identify condition data.', static::class);
-
-            throw new EntityIdentifyConditionException($e);
+            // @todo 唯一键重复，保存提示这个错误，需要优化
+            throw new EntityIdentifyConditionException(sprintf('Entity %s has no identify condition data.', static::class));
         }
 
         return $id;
@@ -2158,9 +2134,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         foreach (['TABLE', 'ID', 'AUTO'] as $item) {
             if (!static::definedEntityConstant($item)) {
-                $e = sprintf('The entity const %s was not defined.', $item);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('The entity const %s was not defined.', $item));
             }
         }
     }
@@ -2185,9 +2159,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected static function validateSupportEvent(string $event): void
     {
         if (!\in_array($event, static::supportEvent(), true)) {
-            $e = sprintf('Event `%s` do not support.', $event);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Event `%s` do not support.', $event));
         }
     }
 
@@ -2244,9 +2216,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 break;
 
             default:
-                $e = sprintf('Invalid soft deleted type %d.', $softDeletedType);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Invalid soft deleted type %d.', $softDeletedType));
         }
     }
 
@@ -2541,9 +2511,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $method = 'set'.ucfirst($prop);
         if (null !== $value && method_exists($this, $method)) {
             if (!$this->{$method}($value) instanceof static) {
-                $e = sprintf('Return type of entity setter must be instance of %s.', static::class);
-
-                throw new \RuntimeException($e);
+                throw new \RuntimeException(sprintf('Return type of entity setter must be instance of %s.', static::class));
             }
         } else {
             $this->setter($prop, $value);
@@ -2618,9 +2586,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         $prop = static::unCamelizeProp($prop);
         if (!static::hasPropDefined($prop)) {
-            $e = sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop);
-
-            throw new EntityPropNotDefinedException($e);
+            throw new EntityPropNotDefinedException(sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop));
         }
     }
 
@@ -2633,9 +2599,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         foreach ($field as $v) {
             if (!isset($defined[$v])) {
-                $e = sprintf('Relation `%s` field was not defined.', $v);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Relation `%s` field was not defined.', $v));
             }
         }
     }
@@ -2648,14 +2612,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected function validateRelationField(self $entity, string $field): void
     {
         if (!$entity->hasField($field)) {
-            $e = sprintf(
+            throw new \InvalidArgumentException(sprintf(
                 'The field `%s`.`%s` of entity `%s` was not defined.',
                 $entity->table(),
                 $field,
                 $entity::class
-            );
-
-            throw new \InvalidArgumentException($e);
+            ));
         }
     }
 
@@ -2789,13 +2751,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
         if (!method_exists($this, $call[1])) {
-            $e = sprintf(
+            throw new \BadMethodCallException(sprintf(
                 'Relation scope `%s` of entity `%s` is not exits.',
                 $call[1],
                 static::class,
-            );
-
-            throw new \BadMethodCallException($e);
+            ));
         }
 
         // @phpstan-ignore-next-line

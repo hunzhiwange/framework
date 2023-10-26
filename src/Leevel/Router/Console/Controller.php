@@ -125,9 +125,7 @@ class Controller extends Make
         }
 
         if (!is_file($stub)) {
-            $e = sprintf('Controller stub file `%s` was not found.', $stub);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Controller stub file `%s` was not found.', $stub));
         }
 
         return $stub;

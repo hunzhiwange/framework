@@ -61,9 +61,7 @@ class IdeHelper extends Command
         }
 
         if (!is_file($pathOrClassName)) {
-            $e = sprintf('File `%s` is not exits.', $pathOrClassName);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('File `%s` is not exits.', $pathOrClassName));
         }
 
         return (new ClassParser())->handle($pathOrClassName);

@@ -36,9 +36,7 @@ class Tree implements IJson, IArray
     {
         foreach ($nodes as $node) {
             if (!\is_array($node) || 3 !== \count($node)) {
-                $e = 'The node must be an array of three elements.';
-
-                throw new \RuntimeException($e);
+                throw new \RuntimeException('The node must be an array of three elements.');
             }
 
             $this->setNode($node[0], $node[1], $node[2]);

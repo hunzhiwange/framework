@@ -282,9 +282,7 @@ class Entity extends Make
         }
 
         if (!$endStructIndex || $startStructIndex > $endStructIndex) {
-            $e = 'Can not find start and end position of struct.';
-
-            throw new \Exception($e);
+            throw new \Exception('Can not find start and end position of struct.');
         }
 
         return [$startStructIndex, $endStructIndex];
@@ -637,9 +635,7 @@ class Entity extends Make
         }
 
         if (!is_file($stub)) {
-            $e = sprintf('Entity stub file `%s` was not found.', $stub);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Entity stub file `%s` was not found.', $stub));
         }
 
         return $stub;
@@ -658,9 +654,7 @@ class Entity extends Make
             ->getTableColumns($tableName = $this->getTableName(), true)
         ;
         if (empty($result['list'])) {
-            $e = sprintf('Table (%s) is not found or has no columns.', $tableName);
-
-            throw new \Exception($e);
+            throw new \Exception(sprintf('Table (%s) is not found or has no columns.', $tableName));
         }
 
         return $result;

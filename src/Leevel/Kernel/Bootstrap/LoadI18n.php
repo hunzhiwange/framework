@@ -69,9 +69,7 @@ class LoadI18n
             }
 
             if (!is_dir($item)) {
-                $e = sprintf('I18n dir %s is not exist.', $item);
-
-                throw new \Exception($e);
+                throw new \Exception(sprintf('I18n dir %s is not exist.', $item));
             }
 
             return $item;

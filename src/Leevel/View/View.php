@@ -102,9 +102,7 @@ abstract class View implements IView
             $file = $this->parseFile($file, $ext);
         }
         if (!is_file($file)) {
-            $e = sprintf('Template file `%s` does not exist.', $file);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException(sprintf('Template file `%s` does not exist.', $file));
         }
 
         // PHAR模式，文件路径像这样 phar:///User/dyhb/leevel.phar/vendor

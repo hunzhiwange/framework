@@ -18,9 +18,7 @@ class AllowedIp
         }
 
         if (!\array_key_exists(0, $param)) {
-            $e = 'Missing the first element of param.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Missing the first element of param.');
         }
 
         return \in_array($value, $param, true);

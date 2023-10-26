@@ -224,9 +224,7 @@ class Encryption implements IEncryption
     protected function validateCipher(string $cipher): void
     {
         if (!\in_array(strtolower($cipher), openssl_get_cipher_methods(), true)) {
-            $e = sprintf('Encrypt cipher `%s` was not found.', $cipher);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Encrypt cipher `%s` was not found.', $cipher));
         }
     }
 

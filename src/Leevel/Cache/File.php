@@ -240,9 +240,7 @@ class File extends Cache implements ICache
     protected function getCachePath(string $name): string
     {
         if (!$this->option['path']) {
-            $e = 'Cache path is not allowed empty.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Cache path is not allowed empty.');
         }
 
         return $this->option['path'].'/'.$this->getCacheName($name).'.php';

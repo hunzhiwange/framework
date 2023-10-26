@@ -210,9 +210,7 @@ class Select
 
                 $keys = explode('And', $method);
                 if (\count($keys) !== \count($args)) {
-                    $e = 'Params of findBy or findAllBy was not matched.';
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException('Params of findBy or findAllBy was not matched.');
                 }
 
                 if (!$isKeep) {
@@ -229,9 +227,7 @@ class Select
             }
 
             if (!ctype_digit($method)) {
-                $e = sprintf('Select do not implement magic method `%s`.', $sourceMethod);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $sourceMethod));
             }
 
             return $this
@@ -240,9 +236,7 @@ class Select
             ;
         }
 
-        $e = sprintf('Select do not implement magic method `%s`.', $method);
-
-        throw new \InvalidArgumentException($e);
+        throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
     }
 
     /**

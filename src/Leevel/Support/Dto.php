@@ -83,9 +83,7 @@ abstract class Dto implements IArray, \ArrayAccess
         }
 
         if (!$this->ignoreMissingValuesFramework && $data) {
-            $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className);
-
-            throw new \UnexpectedValueException($e);
+            throw new \UnexpectedValueException(sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className));
         }
 
         // 遍历校验所有公共属性值是否初始化
@@ -343,9 +341,7 @@ abstract class Dto implements IArray, \ArrayAccess
         $className = static::class;
         $camelizeProp = static::camelizePropertiesName($prop);
         if (!isset(static::$propertiesCachedFramework[$className]['name'][$camelizeProp])) {
-            $e = sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className);
-
-            throw new \UnexpectedValueException($e);
+            throw new \UnexpectedValueException(sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className));
         }
 
         return $camelizeProp;

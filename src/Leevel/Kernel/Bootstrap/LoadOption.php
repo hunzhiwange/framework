@@ -60,9 +60,7 @@ class LoadOption
 
         $file = '.'.getenv('RUNTIME_ENVIRONMENT');
         if (!is_file($fullFile = $app->envPath().'/'.$file)) {
-            $e = sprintf('Env file `%s` was not found.', $fullFile);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException(sprintf('Env file `%s` was not found.', $fullFile));
         }
 
         $app->setEnvFile($file);

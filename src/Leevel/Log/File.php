@@ -55,9 +55,7 @@ class File extends Log implements ILog
     protected function normalizePath(string $level, string $category): string
     {
         if (!$this->option['path']) {
-            $e = 'Path for log has not set.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Path for log has not set.');
         }
 
         return $this->option['path'].'/'.$this->option['channel'].'.'.

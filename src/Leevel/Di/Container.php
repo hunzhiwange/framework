@@ -80,9 +80,7 @@ class Container implements IContainer, \ArrayAccess
      */
     public function __clone()
     {
-        $e = 'IOC container disallowed clone.';
-
-        throw new \RuntimeException($e);
+        throw new \RuntimeException('IOC container disallowed clone.');
     }
 
     /**
@@ -110,9 +108,7 @@ class Container implements IContainer, \ArrayAccess
      */
     public function __call(string $method, array $args): mixed
     {
-        $e = sprintf('Method `%s` is not exits.', $method);
-
-        throw new \BadMethodCallException($e);
+        throw new \BadMethodCallException(sprintf('Method `%s` is not exits.', $method));
     }
 
     /**
@@ -267,9 +263,7 @@ class Container implements IContainer, \ArrayAccess
         if (false === $isStatic && \is_array($callback)) {
             if (!\is_object($callback[0])) {
                 if (!\is_string($callback[0])) {
-                    $e = 'The class name must be string.';
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException('The class name must be string.');
                 }
 
                 $callback[0] = $this->getInjectionObject($callback[0]);
@@ -512,9 +506,7 @@ class Container implements IContainer, \ArrayAccess
     protected function getInjectionObject(string $className, array $args = []): object|string|null
     {
         if (interface_exists($className)) {
-            $e = sprintf('Interface %s cannot be normalize because not binded.', $className);
-
-            throw new ContainerInvalidArgumentException($e);
+            throw new ContainerInvalidArgumentException(sprintf('Interface %s cannot be normalize because not binded.', $className));
         }
 
         if (!class_exists($className)) {
@@ -535,9 +527,7 @@ class Container implements IContainer, \ArrayAccess
     {
         [$args, $required, $validArgs] = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
-            $e = sprintf('There are %d required args,but %d given.', $required, $validArgs);
-
-            throw new ContainerInvalidArgumentException($e);
+            throw new ContainerInvalidArgumentException(sprintf('There are %d required args,but %d given.', $required, $validArgs));
         }
 
         return $args;
@@ -647,9 +637,7 @@ class Container implements IContainer, \ArrayAccess
             return $itemMake;
         }
 
-        $e = sprintf('Class or interface %s is register in container is not object.', $argsClass);
-
-        throw new \InvalidArgumentException($e);
+        throw new \InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsClass));
     }
 
     /**
@@ -670,9 +658,7 @@ class Container implements IContainer, \ArrayAccess
                 return $this->parseClassReflection($injection);
 
             default:
-                $e = 'Unsupported callback types.';
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException('Unsupported callback types.');
         }
     }
 
@@ -703,9 +689,7 @@ class Container implements IContainer, \ArrayAccess
         /** @phpstan-ignore-next-line */
         $reflection = new \ReflectionClass($injection);
         if (!$reflection->isInstantiable()) {
-            $e = sprintf('Class %s is not instantiable.', $injection);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
         }
 
         $param = [];

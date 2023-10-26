@@ -353,9 +353,7 @@ abstract class Runtime implements IRuntime
     protected function renderWithFile(string $filepath, array $vars = []): string
     {
         if (!is_file($filepath)) {
-            $e = sprintf('Exception file %s is not extis.', $filepath);
-
-            throw new \Exception($e);
+            throw new \Exception(sprintf('Exception file %s is not extis.', $filepath));
         }
 
         extract($vars);
@@ -377,9 +375,7 @@ abstract class Runtime implements IRuntime
     protected function renderJsonWithFile(string $filepath, array $vars = []): array
     {
         if (!is_file($filepath)) {
-            $e = sprintf('Exception file %s is not extis.', $filepath);
-
-            throw new \Exception($e);
+            throw new \Exception(sprintf('Exception file %s is not extis.', $filepath));
         }
 
         extract($vars);

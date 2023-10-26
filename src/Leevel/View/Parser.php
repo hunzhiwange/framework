@@ -140,9 +140,7 @@ class Parser
         // 源码
         if (false === $isContent) {
             if (!is_file($file)) {
-                $e = sprintf('File %s is not exits.', $file);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('File %s is not exits.', $file));
             }
 
             $cache = file_get_contents($file) ?: '';
@@ -434,11 +432,9 @@ class Parser
             $tailTag = $tailStack->pop();
             if (!$tailTag || !$this->findHeadTag($tag, $tailTag)) {
                 if (true !== $nodeTag[$tag['name']]['single']) {
-                    /** @phpstan-ignore-next-line */
-                    $e = sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
-                        PHP_EOL.$this->getLocation($tag['position']);
-
-                    throw new \InvalidArgumentException($e);
+                    // @phpstan-ignore-next-line
+                    throw new \InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
+                        PHP_EOL.$this->getLocation($tag['position']));
                 }
 
                 // 退回栈中
@@ -798,9 +794,7 @@ class Parser
         }
 
         // 交叉（两个时间段相互关系）
-        $e = 'Template engine tag library does not support cross.';
-
-        throw new \InvalidArgumentException($e);
+        throw new \InvalidArgumentException('Template engine tag library does not support cross.');
     }
 
     /**

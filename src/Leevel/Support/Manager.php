@@ -78,15 +78,11 @@ abstract class Manager
         }
 
         if (!\is_array($options = $this->getContainerOption('connect.'.$connect))) {
-            $e = sprintf('Connection %s option is not an array.', $connect);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Connection %s option is not an array.', $connect));
         }
 
         if (!isset($options['driver'])) {
-            $e = sprintf('Connection %s driver is not set.', $connect);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Connection %s driver is not set.', $connect));
         }
 
         $instance = $this->makeConnect($connect, $options['driver'], $options['driver_class'] ?? null);
@@ -212,9 +208,7 @@ abstract class Manager
             return $this->{$makeDriver}($connect, $driverClass);
         }
 
-        $e = sprintf('Connection %s driver `%s` is invalid.', $connect, $driver);
-
-        throw new \InvalidArgumentException($e);
+        throw new \InvalidArgumentException(sprintf('Connection %s driver `%s` is invalid.', $connect, $driver));
     }
 
     /**

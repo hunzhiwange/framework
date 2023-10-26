@@ -75,9 +75,7 @@ class Meta
             && static::lazyloadPlaceholder()
             // @phpstan-ignore-next-line
             && !static::$databaseResolver) {
-            $e = 'Database resolver was not set.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Database resolver was not set.');
         }
 
         $databaseResolver = static::$databaseResolver;

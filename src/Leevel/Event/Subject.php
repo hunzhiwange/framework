@@ -76,18 +76,14 @@ class Subject implements \SplSubject
             $observer = new Observer($observer);
         } else {
             if (\is_string($observerRaw = $observer) // @phpstan-ignore-line
-                && null === ($observer = $this->container->make($observer, throw: false))) { /** @phpstan-ignore-line */
-                $e = sprintf('Observer `%s` is invalid.', $observerRaw);
-
-                throw new \InvalidArgumentException($e);
+                && null === ($observer = $this->container->make($observer, throw: false))) { // @phpstan-ignore-line
+                throw new \InvalidArgumentException(sprintf('Observer `%s` is invalid.', $observerRaw));
             }
 
             if (!$observer instanceof \SplObserver) {
                 if (!\is_callable([$observer, 'handle'])) {
-                    /** @phpstan-ignore-next-line */
-                    $e = sprintf('Observer `%s` is invalid.', $observer::class);
-
-                    throw new \InvalidArgumentException($e);
+                    // @phpstan-ignore-next-line
+                    throw new \InvalidArgumentException(sprintf('Observer `%s` is invalid.', $observer::class));
                 }
 
                 /** @phpstan-ignore-next-line */

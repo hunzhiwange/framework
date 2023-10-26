@@ -340,9 +340,7 @@ class App implements IApp
         }
 
         if (false === $path = $this->findNamespacePathByComposer($composer, $namespace.'\\')) {
-            $e = sprintf('Namespaces `%s` for was not found.', $namespace);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException(sprintf('Namespaces `%s` for was not found.', $namespace));
         }
 
         return $this->realpath($path);

@@ -116,10 +116,7 @@ abstract class Make extends Command
     {
         $saveFilePath = $this->getSaveFilePath();
         if (is_file($saveFilePath)) {
-            $e = 'File is already exits.'.PHP_EOL.
-                $this->formatFile($saveFilePath);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException('File is already exits.'.PHP_EOL.$this->formatFile($saveFilePath));
         }
 
         CreateFile::handle($saveFilePath, $this->getTemplateResult());
@@ -142,9 +139,7 @@ abstract class Make extends Command
     {
         $templateSource = $this->getTemplatePath();
         if (!is_file($templateSource)) {
-            $e = 'Stub not found.'.PHP_EOL.$this->formatFile($templateSource);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException('Stub not found.'.PHP_EOL.$this->formatFile($templateSource));
         }
 
         $this->templateSource = file_get_contents($templateSource) ?: '';

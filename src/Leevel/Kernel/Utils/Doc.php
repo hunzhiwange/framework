@@ -519,14 +519,11 @@ class Doc
             } catch (\Throwable $exception) {
                 if ($this->logPath) {
                     $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
-                    $e = sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage());
 
-                    throw new \RuntimeException($e);
+                    throw new \RuntimeException(sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage()));
                 }
 
-                $e = 'Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code;
-
-                throw new \RuntimeException($e);
+                throw new \RuntimeException('Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code);
             }
         }
 

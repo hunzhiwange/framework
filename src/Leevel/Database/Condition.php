@@ -188,9 +188,7 @@ class Condition
      */
     public function __call(string $method, array $args): mixed
     {
-        $e = sprintf('Condition method %s not found.', $method);
-
-        throw new ConditionErrorException($e);
+        throw new ConditionErrorException(sprintf('Condition method %s not found.', $method));
     }
 
     /**
@@ -268,9 +266,7 @@ class Condition
         $dataRowIndex = 0;
         foreach ($data as $key => $item) {
             if (!\is_array($item) || \count($item) !== \count($item, 1)) {
-                $e = 'Data for insertAll is not invalid.';
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException('Data for insertAll is not invalid.');
             }
 
             // 二维数组数据顺序格式化为一致，否则插入数据将会混乱
@@ -330,9 +326,7 @@ class Condition
 
             // 构造 update 语句
             if (!$values) {
-                $e = 'Data for update can not be empty.';
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException('Data for update can not be empty.');
             }
 
             $sql = [];
@@ -412,9 +406,7 @@ class Condition
         }
 
         if (!\in_array($type, ['date', 'month', 'day', 'year'], true)) {
-            $e = sprintf('Time type `%s` is invalid.', $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Time type `%s` is invalid.', $type));
         }
 
         $this->setInTimeCondition($type);
@@ -872,9 +864,7 @@ class Condition
         }
 
         if (!isset(static::$indexTypes[$type])) {
-            $e = sprintf('Invalid Index type `%s`.', $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Invalid Index type `%s`.', $type));
         }
 
         $type = strtoupper($type);
@@ -993,9 +983,7 @@ class Condition
         }
 
         if (!isset(static::$unionTypes[$type])) {
-            $e = sprintf('Invalid UNION type `%s`.', $type);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Invalid UNION type `%s`.', $type));
         }
 
         if (!\is_array($selects)) {
@@ -2182,9 +2170,7 @@ class Condition
     protected function analyseConditionGenerateIn(array $cond, array $rawCondKey, array $condGenerateBindParams): string
     {
         if (!$rawCondKey && \is_array($cond[2]) && empty($cond[2])) {
-            $e = 'The [not] in param value must not be an empty array.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('The [not] in param value must not be an empty array.');
         }
 
         $bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]);
@@ -2209,9 +2195,7 @@ class Condition
     protected function analyseConditionGenerateBetween(array $cond, array $rawCondKey, array $condGenerateBindParams): string
     {
         if (!\is_array($cond[2]) || \count($cond[2]) < 2) {
-            $e = 'The [not] between param value must be an array which not less than two elements.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('The [not] between param value must be an array which not less than two elements.');
         }
 
         $betweenValue = $bindParams = [];
@@ -2393,9 +2377,7 @@ class Condition
     {
         // having 不支持 [not] exists
         if ('having' === $this->getTypeAndLogic()[0]) {
-            $e = 'Having do not support [not] exists.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Having do not support [not] exists.');
         }
 
         if ($cond instanceof self || $cond instanceof Select) {
@@ -2539,9 +2521,7 @@ class Condition
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (\count($this->options['union'])) {
-            $e = 'JOIN queries cannot be used while using UNION queries.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('JOIN queries cannot be used while using UNION queries.');
         }
 
         // 是否分析 schema，子表达式不支持
@@ -2552,9 +2532,7 @@ class Condition
             $tmp = $names;
             foreach ($tmp as $alias => $names) {
                 if (!\is_string($alias)) {
-                    $e = sprintf('Alias must be string,but %s given.', \gettype($alias));
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException(sprintf('Alias must be string,but %s given.', \gettype($alias)));
                 }
 
                 break;
@@ -2780,9 +2758,7 @@ class Condition
                         $this->deleteBindParams($pdoPositionalParameterIndex);
                         ++$pdoPositionalParameterIndex;
                     } else {
-                        $e = 'PDO positional parameters not match with bind data.';
-
-                        throw new \InvalidArgumentException($e);
+                        throw new \InvalidArgumentException('PDO positional parameters not match with bind data.');
                     }
                 } else {
                     $key = 'named_param_'.$key;
@@ -2913,9 +2889,7 @@ class Condition
             case 'day':
                 $value = (int) $value;
                 if ($value > 31) {
-                    $e = sprintf('Days can only be less than 31,but %s given.', $value);
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException(sprintf('Days can only be less than 31,but %s given.', $value));
                 }
 
                 $date = getdate();
@@ -2926,9 +2900,7 @@ class Condition
             case 'month':
                 $value = (int) $value;
                 if ($value > 12) {
-                    $e = sprintf('Months can only be less than 12,but %s given.', $value);
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException(sprintf('Months can only be less than 12,but %s given.', $value));
                 }
 
                 $date = getdate();
@@ -2945,9 +2917,7 @@ class Condition
             default:
                 $value = strtotime((string) $value);
                 if (false === $value) {
-                    $e = 'Please enter a right time of strtotime.';
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException('Please enter a right time of strtotime.');
                 }
 
                 break;

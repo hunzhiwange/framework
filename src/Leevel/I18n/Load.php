@@ -83,9 +83,7 @@ class Load
         $files = [];
         foreach ($dirs as $dir) {
             if (!is_dir($dir)) {
-                $e = sprintf('I18n load dir %s is not exits.', $dir);
-
-                throw new \RuntimeException($e);
+                throw new \RuntimeException(sprintf('I18n load dir %s is not exits.', $dir));
             }
             $files = array_merge($files, $this->getPoFiles($dir));
         }

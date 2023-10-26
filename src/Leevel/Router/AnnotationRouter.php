@@ -104,9 +104,7 @@ class AnnotationRouter
     public function addScandir(string $dir): void
     {
         if (!is_dir($dir)) {
-            $e = sprintf('Annotation routing scandir %s is not exits.', $dir);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Annotation routing scandir %s is not exits.', $dir));
         }
 
         $this->scanDirs[] = $dir;

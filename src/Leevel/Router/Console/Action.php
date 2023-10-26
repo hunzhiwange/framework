@@ -125,9 +125,7 @@ class Action extends Make
         }
 
         if (!is_file($stub)) {
-            $e = sprintf('Action stub file `%s` was not found.', $stub);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Action stub file `%s` was not found.', $stub));
         }
 
         return $stub;

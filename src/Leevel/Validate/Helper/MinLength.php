@@ -25,9 +25,7 @@ class MinLength
         $value = (string) $value;
 
         if (!\array_key_exists(0, $param)) {
-            $e = 'Missing the first element of param.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Missing the first element of param.');
         }
 
         return mb_strlen($value, 'utf-8') >= (int) $param[0];

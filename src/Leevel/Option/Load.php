@@ -37,9 +37,7 @@ class Load
     public function __construct(string $dir)
     {
         if (!is_dir($dir)) {
-            $e = sprintf('Option load dir %s is not exits.', $dir);
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException(sprintf('Option load dir %s is not exits.', $dir));
         }
 
         $this->dir = $dir;
@@ -158,9 +156,7 @@ class Load
         }
 
         if (false === $findApp) {
-            $e = 'Unable to load the app option file.';
-
-            throw new \RuntimeException($e);
+            throw new \RuntimeException('Unable to load the app option file.');
         }
 
         return $data;
@@ -186,9 +182,7 @@ class Load
                     $item = $path.'/'.$item;
                 }
                 if (!is_file($item)) {
-                    $e = sprintf('Option file %s is not exist.', $item);
-
-                    throw new \RuntimeException($e);
+                    throw new \RuntimeException(sprintf('Option file %s is not exist.', $item));
                 }
                 $optionData = array_merge($optionData, include $item);
             }

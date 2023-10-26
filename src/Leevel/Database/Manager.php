@@ -234,9 +234,7 @@ class Manager extends Managers
 
         foreach (['master', 'slave'] as $t) {
             if (!\is_array($option[$t])) {
-                $e = sprintf('Database option `%s` must be an array.', $t);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Database option `%s` must be an array.', $t));
             }
         }
 

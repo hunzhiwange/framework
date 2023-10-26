@@ -17,9 +17,7 @@ class NotBetweenEqual
             !\array_key_exists(0, $param)
             || !\array_key_exists(1, $param)
         ) {
-            $e = 'Missing the first or second element of param.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Missing the first or second element of param.');
         }
 
         return $value <= $param[0] || $value >= $param[1];

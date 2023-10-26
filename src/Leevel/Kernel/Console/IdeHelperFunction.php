@@ -57,9 +57,7 @@ class IdeHelperFunction extends Command
     protected function parseFunctionList(string $dir): array
     {
         if (!is_dir($dir)) {
-            $e = sprintf('Dir `%s` is not exits.', $dir);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Dir `%s` is not exits.', $dir));
         }
 
         $result = [];

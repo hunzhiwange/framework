@@ -34,9 +34,7 @@ abstract class Provider
             return;
         }
 
-        $e = sprintf('Method %s is not exits.', $method);
-
-        throw new \BadMethodCallException($e);
+        throw new \BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 
     /**

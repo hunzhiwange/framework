@@ -32,9 +32,7 @@ class UniqueRule
     public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!\array_key_exists(0, $param)) {
-            $e = 'Missing the first element of param.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Missing the first element of param.');
         }
 
         if (!\is_string($param[0]) && !\is_object($param[0])) {
@@ -56,9 +54,7 @@ class UniqueRule
     public static function rule(string $entity, ?string $field = null, mixed $exceptId = null, ?string $primaryKey = null, array $additional = []): string
     {
         if (!Arr::handle($additional, ['string:scalar'])) {
-            $e = 'Unique additional conditions must be `string:scalar` array.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Unique additional conditions must be `string:scalar` array.');
         }
 
         $tmp = [];
@@ -107,9 +103,7 @@ class UniqueRule
     {
         if (\is_string($param[0])) {
             if (!class_exists($param[0])) {
-                $e = sprintf('Validate entity `%s` was not found.', $param[0]);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Validate entity `%s` was not found.', $param[0]));
             }
 
             $entity = new $param[0]();
@@ -119,9 +113,7 @@ class UniqueRule
 
         /** @var \Leevel\Database\Ddd\Entity $entity */
         if (!$entity instanceof Entity) {
-            $e = sprintf('Validate entity `%s` must be an entity.', $entity::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Validate entity `%s` must be an entity.', $entity::class));
         }
 
         return $entity;
@@ -160,9 +152,7 @@ class UniqueRule
         if (($num = \count($param)) >= 4) {
             for ($i = 4; $i < $num; $i += 2) {
                 if (!isset($param[$i + 1])) {
-                    $e = 'Unique additional conditions must be paired.';
-
-                    throw new \InvalidArgumentException($e);
+                    throw new \InvalidArgumentException('Unique additional conditions must be paired.');
                 }
 
                 if (str_contains($param[$i], self::SEPARATE)) {

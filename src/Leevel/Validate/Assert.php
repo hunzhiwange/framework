@@ -386,9 +386,8 @@ class Assert
             if (!$format) {
                 $format = 'json_encode';
             }
-            $e = $format($this->error);
 
-            throw new AssertException($e);
+            throw new AssertException($format($this->error));
         }
 
         return true;
@@ -402,9 +401,7 @@ class Assert
     protected static function validateAssert(string $method, array $args, bool $multiForChain = true): bool
     {
         if (!\array_key_exists(0, $args)) {
-            $e = 'Missing the first argument.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Missing the first argument.');
         }
 
         // 匹配可选
@@ -476,9 +473,7 @@ class Assert
             $args[0] = [$args[0]];
         }
         if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
-            $e = 'Invalid first argument for multi assert.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Invalid first argument for multi assert.');
         }
 
         $multi = [];
@@ -510,9 +505,7 @@ class Assert
         $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
         foreach ($multi as $m) {
             if (!class_exists($helperClass)) {
-                $e = sprintf('Class `%s` is not exits.', $helperClass);
-
-                throw new \BadMethodCallException($e);
+                throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $helperClass));
             }
 
             if (false === $helperClass::handle(...$m)) {

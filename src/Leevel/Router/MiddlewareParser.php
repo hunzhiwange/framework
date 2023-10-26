@@ -30,9 +30,7 @@ class MiddlewareParser
         $result = [];
         foreach ($middlewares as $m) {
             if (!\is_string($m)) {
-                $e = 'Middleware only allowed string.';
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException('Middleware only allowed string.');
             }
 
             [$m, $params] = $this->parseMiddlewareParams($m);
@@ -74,9 +72,7 @@ class MiddlewareParser
 
             // ignore group like `web` or `api`
             if (str_contains($realClass, '\\') && !class_exists($realClass)) {
-                $e = sprintf('Middleware %s was not found.', $realClass);
-
-                throw new \InvalidArgumentException($e);
+                throw new \InvalidArgumentException(sprintf('Middleware %s was not found.', $realClass));
             }
 
             if (!method_exists($realClass, $method)) {

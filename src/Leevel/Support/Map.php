@@ -20,7 +20,7 @@ class Map extends Collection
     public function __construct(array $data, string $keyType, string $valueType)
     {
         if (!\in_array($keyType, ['int', 'string'], true)) {
-            throw new \InvalidArgumentException(sprintf('Key type must be int or string `%s` given.', $keyType));
+            throw new \InvalidArgumentException(sprintf('Key type must be int or string but `%s` given.', $keyType));
         }
 
         parent::__construct($data, $valueType ? [$valueType] : [], [$keyType]);

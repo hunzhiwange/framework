@@ -17,7 +17,6 @@ class Msg
     public function __construct(string $message = '', ...$moreArgs) // @phpstan-ignore-line
     {
         if ($moreArgs) {
-            dump(1234);
             $message = __($message, ...$moreArgs);
         }
 

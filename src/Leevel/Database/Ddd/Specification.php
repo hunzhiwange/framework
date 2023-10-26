@@ -148,9 +148,7 @@ class Specification implements ISpecification
     protected function validateIsStandard(): void
     {
         if (!isset($this->spec) || !isset($this->handle)) {
-            $e = sprintf('Non standard specification,please use \%s::from(\%s $specification) to convert it.', self::class, ISpecification::class);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Non standard specification,please use \%s::from(\%s $specification) to convert it.', self::class, ISpecification::class));
         }
     }
 }

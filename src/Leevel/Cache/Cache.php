@@ -73,9 +73,7 @@ abstract class Cache implements ICache
     protected function encodeData(mixed $data): mixed
     {
         if (false === $data) {
-            $e = 'Data `false` not allowed to avoid cache penetration.';
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException('Data `false` not allowed to avoid cache penetration.');
         }
 
         return json_encode($data, JSON_THROW_ON_ERROR);
@@ -99,9 +97,7 @@ abstract class Cache implements ICache
     protected function getCacheName(string $name): string
     {
         if (preg_match($this->keyRegex, $name) <= 0) {
-            $e = sprintf('Cache key must be `%s`.', $this->keyRegex);
-
-            throw new \InvalidArgumentException($e);
+            throw new \InvalidArgumentException(sprintf('Cache key must be `%s`.', $this->keyRegex));
         }
 
         return $name;
