@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Tests\Support\Fixtures\Enum1;
+use Tests\Support\Fixtures\Enum2;
 use Tests\Support\Fixtures\RealEnumInt;
 use Tests\Support\Fixtures\RealEnumNoValue;
 use Tests\Support\Fixtures\RealEnumString;
@@ -20,6 +22,21 @@ EOT,
 ])]
 final class EnumTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        $container->singleton('i18n', function (): \I18nMock {
+            return new \I18nMock();
+        });
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     #[Api([
         'zh-CN:title' => 'description 获取枚举值对应的描述',
     ])]
@@ -211,6 +228,28 @@ EOT,
                 $value
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'valueDescriptionMap 获取分组枚举值和描述映射',
+    ])]
+    public function test1(): void
+    {
+        $value = Enum2::valueDescription();
+        $json = <<<'eot'
+            {
+                "100010": "错误类型我是:谁"
+            }
+            eot;
+
+        static::assertSame(
+            $json,
+            $this->varJson(
+                $value
+            )
+        );
+
+        static::assertSame('错误类型我是:谁', Enum2::description(Enum2::ERROR_ONE));
     }
 
     public function testRealEnumValueIntDescriptionMap(): void

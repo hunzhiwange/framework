@@ -340,7 +340,7 @@ EOT,
     {
         $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Interface Tests\\Di\\Fixtures\\ITest2 cannot be normalize because not binded.'
+            'Interface Tests\\Di\\Fixtures\\ITest2 cannot be normalize because not bound.'
         );
 
         $container = new Container();
