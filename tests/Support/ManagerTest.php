@@ -17,7 +17,7 @@ use Tests\TestCase;
     'zh-CN:description' => <<<'EOT'
 QueryPHP 为驱动类组件统一抽象了一个基础管理类 `\Leevel\Manager\Manager`，驱动类组件可以轻松接入。
 
-系统一些关键服务，比如说日志、邮件、数据库等驱动类组件均接入了统一的抽象层。
+系统一些关键服务，比如说日志、数据库和缓存等驱动类组件均接入了统一的抽象层。
 EOT,
 ])]
 final class ManagerTest extends TestCase
@@ -80,6 +80,24 @@ EOT,
         static::assertSame('hello bar bar', $bar->bar('bar'));
         static::assertSame('hello bar 1', $bar->bar('1'));
         static::assertSame('hello bar 2', $bar->bar('2'));
+    }
+
+    #[Api([
+        'zh-CN:title' => 'connect 连接并返回连接对象支持每次都返回新的实例',
+    ])]
+    public function test1(): void
+    {
+        $manager = $this->createManager();
+
+        $foo = $manager->connect('foo');
+        $bar = $manager->connect('foo');
+
+        static::assertSame($foo, $bar);
+
+        $foo1 = $manager->connect('foo', true);
+        $bar1 = $manager->connect('foo', true);
+
+        static::assertFalse($foo1 === $bar1);
     }
 
     #[Api([

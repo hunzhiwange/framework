@@ -216,6 +216,33 @@ EOT,
         ]);
     }
 
+    public function test1(): void
+    {
+        $data = [
+            'hello' => 'world',
+        ];
+
+        $collection = new Collection($data);
+
+        static::assertSame($collection->toArray(), $data);
+
+        $collection->hello = 'world new';
+        $data['hello'] = 'world new';
+        static::assertSame($collection->toArray(), $data);
+
+        $collection->foo = 'foo';
+        $data['foo'] = 'foo';
+        static::assertSame($collection->toArray(), $data);
+
+        unset($collection->foo);
+
+        static::assertSame($collection->toArray(), [
+            'hello' => 'world new',
+        ]);
+
+        unset($collection->fooNotFound);
+    }
+
     public function testGetArrayElements(): void
     {
         $data = [
@@ -663,5 +690,27 @@ EOT,
         $data = [];
         $collection = new Collection($data);
         static::assertTrue($collection->isEmpty());
+    }
+
+    public function test2(): void
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+        $collection = new Collection($data, ['string'], ['int']);
+        $result = $this->invokeTestMethod($collection, 'checkType', ['hello', true, 'not_found']);
+        static::assertNull($result);
+    }
+
+    public function test3(): void
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+        $collection = new Collection($data, ['string'], ['int']);
+        $result = $this->invokeTestMethod($collection, 'checkType', ['hello', true, 1]);
+        static::assertNull($result);
     }
 }

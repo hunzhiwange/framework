@@ -7,6 +7,10 @@ namespace Tests\Support;
 use Leevel\Kernel\Utils\Api;
 use Tests\Support\Fixtures\Dto1;
 use Tests\Support\Fixtures\Dto2;
+use Tests\Support\Fixtures\Dto3;
+use Tests\Support\Fixtures\Dto4;
+use Tests\Support\Fixtures\Dto5;
+use Tests\Support\Fixtures\Dto6;
 use Tests\Support\Fixtures\DtoProp1;
 use Tests\Support\Fixtures\DtoProp2;
 use Tests\Support\Fixtures\DtoToArray;
@@ -112,6 +116,32 @@ final class DtoTest extends TestCase
             'demoObject2Prop' => new DtoProp2(),
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'fromArray 从数组创建数据传输对象',
+    ])]
+    public function testFromArray(): void
+    {
+        $dto1 = Dto1::fromArray([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        $data = $dto1
+            ->only(['demoIntProp', 'demoObject3Prop'])
+            ->toArray()
+        ;
+        static::assertSame([
+            'demo_int_prop' => 1,
+            'demo_object3_prop' => [
+                'demo_string_prop' => 'hello world',
+            ],
+        ], $data);
     }
 
     #[Api([
@@ -528,5 +558,89 @@ final class DtoTest extends TestCase
         ;
 
         static::assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
+    }
+
+    public function test1(): void
+    {
+        $dto1 = new Dto1([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+        static::assertSame(1, $dto1->demoIntProp);
+        unset($dto1->demo_float_prop);
+        static::assertSame(null, $dto1->demoFloatProp);
+    }
+
+    #[Api([
+        'zh-CN:title' => '初始化默认值填充方法',
+        'zh-CN:description' => <<<'EOT'
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Fixtures\Dto3::class)]}
+```
+EOT,
+    ])]
+    public function test2(): void
+    {
+        $dto = new Dto3();
+        static::assertSame('hello world', $dto->demoStringProp);
+    }
+
+    #[Api([
+        'zh-CN:title' => '初始化转换数据方法',
+        'zh-CN:description' => <<<'EOT'
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Fixtures\Dto4::class)]}
+```
+EOT,
+    ])]
+    public function test3(): void
+    {
+        $dto = new Dto4(['demoStringProp' => 123456]);
+        static::assertSame('123456', $dto->demoStringProp);
+    }
+
+    public function test4(): void
+    {
+        $dto = new Dto5(['demoStringProp' => null]);
+        static::assertSame('hello world', $dto->demoStringProp);
+    }
+
+    #[Api([
+        'zh-CN:title' => '初始化内置转换数据方法',
+        'zh-CN:description' => <<<'EOT'
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Support\Fixtures\Dto6::class)]}
+```
+EOT,
+    ])]
+    public function test5(): void
+    {
+        $dto = new Dto6([
+            'int1' => 'string',
+            'string2' => 123456,
+            'float3' => 'world',
+            'bool4' => 0,
+            'array5' => 'hello',
+        ]);
+        static::assertSame(0, $dto->int1);
+        static::assertSame('123456', $dto->string2);
+        static::assertSame(0.0, $dto->float3);
+        static::assertSame(false, $dto->bool4);
+        static::assertSame(['hello'], $dto->array5);
+    }
+
+    public function test6(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage(
+            'Public properties `notFound` of data transfer object `Tests\\Support\\Fixtures\\Dto5` was not defined.'
+        );
+
+        $dto = new Dto5(['demoStringProp' => null]);
+        $dto->notFound = 5;
     }
 }

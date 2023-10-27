@@ -14,7 +14,7 @@ class Dto1 extends Dto
 
     public int $demoIntProp;
 
-    public float $demoFloatProp;
+    public ?float $demoFloatProp = null;
 
     public bool $demoTrueProp = true;
 

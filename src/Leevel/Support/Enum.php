@@ -55,7 +55,7 @@ trait Enum
     {
         if (!enum_exists(static::class)) {
             return \defined(static::class.'::'.$key) ?
-                static::class.'::'.$key :
+                constant(static::class.'::'.$key) :
                 throw new \OutOfBoundsException(
                     sprintf('Key `%s` is not part of %s', $key, static::class)
                 );
@@ -65,7 +65,7 @@ trait Enum
             if ($v->name === $key) {
                 return $v->value ??
                     throw new \OutOfBoundsException(
-                        sprintf('Key `%s` of %s has no value.', $key, static::class)
+                        sprintf('Key `%s` of %s does not have a value.', $key, static::class)
                     );
             }
         }
