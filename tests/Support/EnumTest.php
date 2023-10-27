@@ -416,7 +416,7 @@ EOT,
     {
         static::assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
         static::assertFalse(Enum1::searchKey(88));
-        static::assertSame(false, RealEnumInt::searchKey('hello'));
+        static::assertFalse(RealEnumInt::searchKey('hello'));
         static::assertSame('FALSE', RealEnumInt::searchKey(1));
     }
 
@@ -455,7 +455,7 @@ EOT,
     ])]
     public function testNames(): void
     {
-        $value = <<<eot
+        $value = <<<'eot'
 [
     "ERROR_ONE",
     "CUSTOM_ERROR",
@@ -472,7 +472,7 @@ eot;
             )
         );
 
-        $value = <<<eot
+        $value = <<<'eot'
 [
     "FALSE",
     "TRUE"

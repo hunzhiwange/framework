@@ -571,8 +571,8 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         static::assertSame(1, $dto1->demoIntProp);
-        unset($dto1->demo_float_prop);
-        static::assertSame(null, $dto1->demoFloatProp);
+        $dto1->demo_float_prop = null;
+        static::assertNull($dto1->demoFloatProp);
     }
 
     #[Api([
@@ -629,7 +629,7 @@ EOT,
         static::assertSame(0, $dto->int1);
         static::assertSame('123456', $dto->string2);
         static::assertSame(0.0, $dto->float3);
-        static::assertSame(false, $dto->bool4);
+        static::assertFalse($dto->bool4);
         static::assertSame(['hello'], $dto->array5);
     }
 

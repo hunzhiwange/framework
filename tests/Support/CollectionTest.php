@@ -234,13 +234,13 @@ EOT,
         $data['foo'] = 'foo';
         static::assertSame($collection->toArray(), $data);
 
-        unset($collection->foo);
+        $collection->foo = null;
 
         static::assertSame($collection->toArray(), [
             'hello' => 'world new',
         ]);
 
-        unset($collection->fooNotFound);
+        $collection->fooNotFound = null;
     }
 
     public function testGetArrayElements(): void
