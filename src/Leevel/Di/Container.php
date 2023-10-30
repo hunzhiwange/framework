@@ -506,7 +506,7 @@ class Container implements IContainer, \ArrayAccess
     protected function getInjectionObject(string $className, array $args = []): object|string|null
     {
         if (interface_exists($className)) {
-            throw new ContainerInvalidArgumentException(sprintf('Interface %s cannot be normalize because not binded.', $className));
+            throw new ContainerInvalidArgumentException(sprintf('Interface %s cannot be normalize because not bound.', $className));
         }
 
         if (!class_exists($className)) {

@@ -238,6 +238,7 @@ EOT,
 
         static::assertSame($collection->toArray(), [
             'hello' => 'world new',
+            'foo' => null,
         ]);
 
         $collection->fooNotFound = null;

@@ -7,18 +7,23 @@
 demo doc
 just test
 
+**Uses**
+
+``` php
+<?php
+
+use Leevel\Kernel\Utils\Api;
+```
 
 ## title1
 
 hello
 world
 
-
 ## title2
 
 hello
 world
-
 
 ``` php
 <?php
