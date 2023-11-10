@@ -19,7 +19,7 @@ class Leevel extends ProxyApp
 {
 }
 
-if (!function_exists('__')) {
+if (!function_exists('__')) { /** @codeCoverageIgnore */
     /**
      * 获取语言.
      */
@@ -35,13 +35,11 @@ if (!function_exists('__')) {
     }
 }
 
-if (!function_exists('url')) {
+if (!function_exists('url')) { /** @codeCoverageIgnore */
     /**
      * 生成路由地址.
-     *
-     * @param null|mixed $suffix
      */
-    function url(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
+    function url(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
     {
         /** @var \Leevel\Router\IUrl $service */
         $service = Container::singletons()->make('url');

@@ -6,9 +6,12 @@ namespace Tests\Kernel;
 
 use App as Apps;
 use Leevel\Di\Container;
+use Leevel\Http\Request;
 use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
+use Leevel\Router\Url;
+use Tests\Kernel\Fixtures\DemoI18n;
 use Tests\TestCase;
 
 #[Api([
@@ -73,7 +76,7 @@ final class FunctionsTest extends TestCase
     ])]
     public function testFunctionLang(): void
     {
-        $container = $this->createContainer();
+        $this->createContainer();
         static::assertNull(Apps::make('foo', throw: false));
 
         $i18n = $this->createMock(II18n::class);
@@ -88,13 +91,42 @@ final class FunctionsTest extends TestCase
         static::assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $container = $this->createContainer();
-        $container->singleton('i18n', function () use ($i18n) {
+        $container->singleton('i18n', function () use ($i18n): II18n {
             return $i18n;
         });
 
         static::assertSame('hello', __('hello'));
         static::assertSame('hello foo', __('hello %s', 'foo'));
         static::assertSame('hello 5', __('hello %d', 5));
+    }
+
+    public function test1(): void
+    {
+        $i18n = new DemoI18n();
+
+        $container = $this->createContainer();
+        $container->singleton('i18n', function () use ($i18n): DemoI18n {
+            return $i18n;
+        });
+
+        static::assertSame('hello', __('hello'));
+        static::assertSame('hello foo', __('hello %s', 'foo'));
+        static::assertSame('hello 5', __('hello %d', 5));
+    }
+
+    public function test2(): void
+    {
+        $request = $this->makeRequest();
+        $url = new Url($request);
+        $this->assertInstanceof(Request::class, $url->getRequest());
+
+        $container = $this->createContainer();
+        $container->singleton('url', function () use ($url): Url {
+            return $url;
+        });
+
+        static::assertSame(url('test/hello'), '/test/hello');
+        static::assertSame(url('/hello-world'), '/hello-world');
     }
 
     protected function createContainer(): Container
@@ -104,5 +136,18 @@ final class FunctionsTest extends TestCase
         $container->instance('app', new App($container, ''));
 
         return $container;
+    }
+
+    protected function makeRequest(bool $isSecure = false): Request
+    {
+        $request = $this->createMock(Request::class);
+
+        $request->method('getEnter')->willReturn('');
+        static::assertSame('', $request->getEnter());
+
+        $request->method('isSecure')->willReturn($isSecure);
+        static::assertSame($isSecure, $request->isSecure());
+
+        return $request;
     }
 }

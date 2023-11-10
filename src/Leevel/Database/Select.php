@@ -719,18 +719,6 @@ class Select
     }
 
     /**
-     * 查询获得结果.
-     */
-    protected function query(): mixed
-    {
-        if (!$this->condition->options['limitQuery']) {
-            return $this->queryOne();
-        }
-
-        return $this->queryAll();
-    }
-
-    /**
      * 查询单条记录获得结果.
      */
     protected function queryOne(): mixed
@@ -776,6 +764,9 @@ class Select
                 \PDO::PARAM_BOOL => 'PDO::PARAM_BOOL',
                 \PDO::PARAM_NULL => 'PDO::PARAM_NULL',
                 \PDO::PARAM_STR => 'PDO::PARAM_STR',
+                \PDO::PARAM_LOB => 'PDO::PARAM_LOB',
+                \PDO::PARAM_STR | \PDO::PARAM_STR_NATL => 'PDO::PARAM_STR | PDO::PARAM_STR_NATL',
+                \PDO::PARAM_STR | \PDO::PARAM_STR_CHAR => 'PDO::PARAM_STR | PDO::PARAM_STR_CHAR',
                 default => 'PDO::PARAM_UNKNOWN',
             };
         }
@@ -836,7 +827,7 @@ class Select
 
         $result = $this
             ->asSome()
-            ->query()
+            ->queryOne()
         ;
 
         return \is_object($result) ? ($result->{$alias} ?? 0) : ($result[$alias] ?? 0);

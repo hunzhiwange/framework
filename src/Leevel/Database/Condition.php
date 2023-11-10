@@ -838,13 +838,17 @@ class Condition
         if (\is_array($names)) {
             foreach ($names as $key => $item) {
                 if (!\is_array($item)) {
-                    $item = $dataType ? [$item, $dataType] : [$item];
+                    // 参数绑定类型可能为0，所以需要用isset判断
+                    // https://www.php.net/manual/en/pdo.constants.php
+                    $item = isset($dataType) ? [$item, $dataType] : [$item];
                 }
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!\is_array($value)) {
-                $value = $dataType ? [$value, $dataType] : [$value];
+                // 参数绑定类型可能为0，所以需要用isset判断
+                // https://www.php.net/manual/en/pdo.constants.php
+                $value = isset($dataType) ? [$value, $dataType] : [$value];
             }
             $this->bindParams[$names] = $value;
         }

@@ -247,7 +247,7 @@ EOT,
 
     protected function createRouterWithException(): IRouter
     {
-        $request = $this->createMock(Request::class);
+        $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->will(static::throwException(new \Exception('hello foo bar.')));
 

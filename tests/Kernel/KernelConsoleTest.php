@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Kernel;
 
 use Leevel\Console\Application;
+use Leevel\Database\Console\SeedRun;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App as Apps;
@@ -13,6 +14,7 @@ use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\KernelConsole;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Option\IOption;
+use Leevel\Option\Option;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\TestCase;
@@ -118,25 +120,42 @@ EOT,
         static::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
     }
 
+    public function test3(): void
+    {
+        $app = new AppKernelConsole($container = new Container(), '');
+        $container->instance('app', $app);
+        $this->createOption($container);
+        $kernel = new KernelConsole3($app);
+        $this->assertInstanceof(IKernelConsole::class, $kernel);
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
+        static::assertSame(0, $kernel->handle());
+    }
+
     protected function createOption(IContainer $container): void
     {
-        $map = [
-            ['console\\template', null, []],
-            [':composer.commands', null, [
-                'Tests\\Kernel\\Commands\\Test',
-                'Tests\\Kernel\\Commands\\Console',
-            ]],
+        $optionData = [
+            'app' => [
+                ':composer' => [
+                    'commands' => [
+                        'Tests\\Kernel\\Commands\\Test',
+                        'Tests\\Kernel\\Commands\\Console',
+                        SeedRun::class,
+                    ],
+                ],
+            ],
+            'console' => [
+                'template' => [],
+            ],
         ];
-
-        $option = $this->createMock(IOption::class);
-        $option->method('get')->willReturnMap($map);
+        $option = new Option($optionData);
         static::assertSame([], $option->get('console\\template'));
         static::assertSame([
             'Tests\\Kernel\\Commands\\Test',
             'Tests\\Kernel\\Commands\\Console',
+            SeedRun::class,
         ], $option->get(':composer.commands'));
 
-        $container->singleton('option', function () use ($option) {
+        $container->singleton('option', function () use ($option): IOption {
             return $option;
         });
     }
@@ -163,9 +182,28 @@ class KernelConsole2 extends KernelConsole
     protected array $bootstraps = [];
 }
 
+class KernelConsole3 extends KernelConsole
+{
+    protected array $bootstraps = [];
+
+    protected function getConsoleApplication(): Application
+    {
+        if ($this->consoleApplication) {
+            return $this->consoleApplication;
+        }
+
+        return $this->consoleApplication = new Application1($this->app->container(), $this->app->version());
+    }
+
+    protected function includeInvalidCommands(): bool
+    {
+        return true;
+    }
+}
+
 class AppKernelConsole extends Apps
 {
-    public function namespacePath(string $specificClass, bool $throwException = true): string
+    public function namespacePath(string $namespace): string
     {
         return __DIR__.'/Commands/Console';
     }

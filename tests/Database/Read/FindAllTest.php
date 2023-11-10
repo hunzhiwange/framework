@@ -62,6 +62,30 @@ final class FindAllTest extends TestCase
     }
 
     #[Api([
+        'zh-CN:title' => 'findAsArray 以数组返回所有记录（每一项也为数组）',
+    ])]
+    public function testFindAsArray(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+        $sql = <<<'eot'
+            [
+                "SELECT `test`.* FROM `test`",
+                [],
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect->table('test')
+                    ->findAsArray(),
+                $connect
+            )
+        );
+    }
+
+    #[Api([
         'zh-CN:title' => 'findCollection 以集合返回所有记录',
     ])]
     public function testFindCollection(): void

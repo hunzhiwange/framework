@@ -137,14 +137,19 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function clearInvalidCommands(array $commands): array
     {
-        if (class_exists('Phinx\\Console\\Command\\Test')) {
+        if (!$this->includeInvalidCommands()) {
             return $commands;
         }
 
         $invalidCommands = [
-            Breakpoint::class, Create::class, Migrate::class,
-            Rollback::class, SeedCreate::class, SeedRun::class,
-            Status::class, Test::class,
+            Breakpoint::class,
+            Create::class,
+            Migrate::class,
+            Rollback::class,
+            SeedCreate::class,
+            SeedRun::class,
+            Status::class,
+            Test::class,
         ];
         foreach ($commands as $k => $v) {
             if (\in_array($v, $invalidCommands, true)) {
@@ -153,6 +158,11 @@ abstract class KernelConsole implements IKernelConsole
         }
 
         return array_values($commands);
+    }
+
+    protected function includeInvalidCommands(): bool
+    {
+        return !class_exists('Phinx\\Console\\Command\\Test');
     }
 
     /**

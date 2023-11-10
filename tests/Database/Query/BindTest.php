@@ -81,6 +81,223 @@ final class BindTest extends TestCase
         );
     }
 
+    public function testBindWithType2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        "PDO::PARAM_BOOL"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 1, \PDO::PARAM_BOOL)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType3(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        "PDO::PARAM_NULL"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 1, \PDO::PARAM_NULL)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType4(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        "PDO::PARAM_STR"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 1, \PDO::PARAM_STR)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType5(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        1,
+                        "PDO::PARAM_STR"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 1, \PDO::PARAM_STR)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType6(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        "über",
+                        "PDO::PARAM_STR | PDO::PARAM_STR_NATL"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 'über', \PDO::PARAM_STR | \PDO::PARAM_STR_NATL)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType7(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        "hello",
+                        "PDO::PARAM_STR | PDO::PARAM_STR_CHAR"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 'hello', \PDO::PARAM_STR | \PDO::PARAM_STR_CHAR)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    public function testBindWithType8(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        "hello",
+                        "PDO::PARAM_UNKNOWN"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 'hello', 99999999)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
     #[Api([
         'zh-CN:title' => '命名参数绑定，绑定值支持类型定义',
     ])]
