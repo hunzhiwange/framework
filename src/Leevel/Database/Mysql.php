@@ -161,6 +161,11 @@ GROUP BY
 
         if (null !== $column['Default']
             && 'null' !== strtolower($column['Default'])) {
+            // MySQL8和5.7中这里为CURRENT_TIMESTAMP,MariaDB10中这里为current_timestamp()
+            // 主测试用例覆盖率统计时,这里不会执行,MariaDB测试用例才会执行,这里标记为忽略
+            if ('current_timestamp()' === $column['Default']) {
+                $column['Default'] = 'CURRENT_TIMESTAMP'; // @codeCoverageIgnore
+            }
             $data['default'] = $column['Default'];
         } else {
             $data['default'] = null;

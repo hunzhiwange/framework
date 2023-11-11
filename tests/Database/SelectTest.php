@@ -2125,8 +2125,6 @@ EOT,
     ])]
     public function testCacheProcedure(): void
     {
-        static::markTestSkipped('Skip procedure.');
-
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -2144,6 +2142,7 @@ EOT,
         $result = $manager
             ->procedure('CALL test_procedure(0)')
         ;
+
         static::assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
@@ -2159,12 +2158,13 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ]
+                ],
+                []
             ]
             eot;
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $result
             )
         );
@@ -2180,13 +2180,13 @@ EOT,
         static::assertFileExists($cacheFile);
         static::assertSame(
             $data,
-            $this->varJsonSql(
+            $this->varJson(
                 $resultWithCache
             )
         );
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheButCacheWasNotSet(): void

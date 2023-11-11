@@ -623,8 +623,6 @@ EOT,
     ])]
     public function testCallProcedure(): void
     {
-        //static::markTestSkipped('Skip procedure.');
-
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -670,8 +668,6 @@ EOT,
     ])]
     public function testCallProcedure2(): void
     {
-        //static::markTestSkipped('Skip procedure.');
-
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -716,8 +712,6 @@ EOT,
     ])]
     public function testCallProcedure3(): void
     {
-        //static::markTestSkipped('Skip procedure.');
-
         $connect = $this->createDatabaseConnect();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
@@ -778,8 +772,6 @@ EOT,
     ])]
     public function testCacheProcedure(): void
     {
-        //static::markTestSkipped('Skip procedure.');
-
         $manager = $this->createDatabaseManager();
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
