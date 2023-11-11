@@ -521,6 +521,8 @@ abstract class Database implements IDatabase
      * {@inheritDoc}
      *
      * - GitHub Actions 无法通过测试忽略
+     *
+     * @codeCoverageIgnore
      */
     public function setSavepoints(bool $savepoints): void
     {
@@ -595,8 +597,10 @@ abstract class Database implements IDatabase
         // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
         try {
             $this->pdoStatement = null;
+            // @codeCoverageIgnoreStart
         } catch (Throwable) { // @phpstan-ignore-line
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -895,14 +899,9 @@ abstract class Database implements IDatabase
      */
     protected function fetchResult(): array
     {
+        // PHP8.0 开始 fetchAll 方法现在始终返回一个数组，而以前 false 可能在失败时返回。
         /** @phpstan-ignore-next-line */
-        $result = $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
-        // @phpstan-ignore-next-line
-        if (false === $result) {
-            throw new \Exception('Fetch all data failed.');
-        }
-
-        return $result;
+        return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
     }
 
     /**

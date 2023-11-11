@@ -1342,6 +1342,13 @@ EOT,
         ;
     }
 
+    public function test1(): void
+    {
+        $connect = $this->createDatabaseConnect();
+        $result = $this->invokeTestMethod($connect, 'parseDuplicateUniqueIndex', ['hello_world']);
+        $this->assertSame('', $result);
+    }
+
     public function testDatabaseSelect(): void
     {
         $connect = $this->createDatabaseConnect();
