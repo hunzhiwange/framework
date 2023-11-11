@@ -161,12 +161,6 @@ GROUP BY
 
         if (null !== $column['Default']
             && 'null' !== strtolower($column['Default'])) {
-            // MySQL8和5.7 CURRENT_TIMESTAMP
-            // MariaDB 10 current_timestamp()
-            // 这里处理为一致
-            if ('current_timestamp()' === $column['Default']) {
-                $column['Default'] = 'CURRENT_TIMESTAMP';
-            }
             $data['default'] = $column['Default'];
         } else {
             $data['default'] = null;
@@ -180,7 +174,7 @@ GROUP BY
 
         if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matches)) {
             $data['type'] = $matches[1];
-            // 从 MySQL8.0.17 版本开始，TINYINT, SMALLINT, MEDIUMINT, INT, and BIGINT 类型的显示宽度将失效
+            // 从 MySQL8.0.17 版本开始，TINYINT, SMALLINT, MEDIUMINT, INT和BIGINT 类型的显示宽度将失效
             if (\in_array($matches[1], ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'], true)) {
                 $matches[2] = null;
             } elseif (ctype_digit($matches[2])) {

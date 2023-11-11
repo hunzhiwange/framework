@@ -174,22 +174,22 @@ interface IDatabase
     /**
      * 查询数据记录.
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed;
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed; // @codeCoverageIgnore
 
     /**
      * 查询存储过程数据记录.
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array;
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array; // @codeCoverageIgnore
 
     /**
      * 执行 SQL 语句.
      */
-    public function execute(string $sql, array $bindParams = []): int|string;
+    public function execute(string $sql, array $bindParams = []): int|string; // @codeCoverageIgnore
 
     /**
      * 游标查询.
      */
-    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator;
+    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator; // @codeCoverageIgnore
 
     /**
      * SQL 预处理.
@@ -197,7 +197,7 @@ interface IDatabase
      * - 记录 SQL 日志
      * - 支持重连
      */
-    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement;
+    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement; // @codeCoverageIgnore
 
     /**
      * 执行数据库事务.

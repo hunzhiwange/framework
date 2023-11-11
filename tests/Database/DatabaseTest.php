@@ -623,7 +623,7 @@ EOT,
     ])]
     public function testCallProcedure(): void
     {
-        static::markTestSkipped('Skip procedure.');
+        //static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
@@ -652,7 +652,8 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ]
+                ],
+                []
             ]
             eot;
 
@@ -669,7 +670,7 @@ EOT,
     ])]
     public function testCallProcedure2(): void
     {
-        static::markTestSkipped('Skip procedure.');
+        //static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
@@ -697,7 +698,8 @@ EOT,
                     {
                         "_name": "tom"
                     }
-                ]
+                ],
+                []
             ]
             eot;
 
@@ -714,7 +716,7 @@ EOT,
     ])]
     public function testCallProcedure3(): void
     {
-        static::markTestSkipped('Skip procedure.');
+        //static::markTestSkipped('Skip procedure.');
 
         $connect = $this->createDatabaseConnect();
 
@@ -749,7 +751,8 @@ EOT,
                     {
                         "_name": "tom"
                     }
-                ]
+                ],
+                []
             ]
             eot;
 
@@ -775,7 +778,7 @@ EOT,
     ])]
     public function testCacheProcedure(): void
     {
-        static::markTestSkipped('Skip procedure.');
+        //static::markTestSkipped('Skip procedure.');
 
         $manager = $this->createDatabaseManager();
 
@@ -809,7 +812,8 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ]
+                ],
+                []
             ]
             eot;
         static::assertSame(
@@ -834,9 +838,9 @@ EOT,
                 $resultWithCache
             )
         );
-        static::assertSame($result, $resultWithCache);
+        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        static::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheProcedureButCacheWasNotSet(): void

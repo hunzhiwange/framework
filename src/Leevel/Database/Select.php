@@ -882,23 +882,23 @@ class Select
 
     /**
      * 查询对象转集合.
+     *
+     * @throws \InvalidArgumentException
      */
     protected function queryResultAsCollection(array $data): EntityCollection|Collection
     {
         // 处理一下特殊实体集合问题
         if (isset($this->queryParams['as_collection_value_types'][0])) {
             $collectionValueTypes = $this->queryParams['as_collection_value_types'][0];
-            if (!\is_string($collectionValueTypes) || !class_exists($collectionValueTypes)) {
-                $collectionValueTypes = null;
+            if (!$collectionValueTypes || !\is_string($collectionValueTypes) || !class_exists($collectionValueTypes)) {
+                throw new \InvalidArgumentException('Invalid collection value types.');
             }
 
-            if ($collectionValueTypes) {
-                if (is_subclass_of($collectionValueTypes, Entity::class)) {
-                    return new EntityCollection($data, $this->queryParams['as_collection_value_types']);
-                }
-
-                return new Collection($data, $this->queryParams['as_collection_value_types']);
+            if (is_subclass_of($collectionValueTypes, Entity::class)) {
+                return new EntityCollection($data, $this->queryParams['as_collection_value_types']);
             }
+
+            return new Collection($data, $this->queryParams['as_collection_value_types']);
         }
 
         // 根据值处理

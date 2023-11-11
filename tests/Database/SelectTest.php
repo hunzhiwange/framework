@@ -14,6 +14,7 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Page\Page as BasePage;
 use Leevel\Support\Collection;
 use Tests\Database\DatabaseTestCase as TestCase;
+use Tests\Database\Ddd\Entity\Guestbook;
 
 #[Api([
     'zh-CN:title' => '数据库查询',
@@ -352,6 +353,254 @@ EOT,
 
             ++$n;
         }
+    }
+
+    public function testAsCollectionAsSomeFindAll2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection()
+            ->asSome(fn (...$args): Guestbook => new Guestbook(...$args))
+            ->setColumns('name,content')
+            ->findAll()
+        ;
+
+        $json = <<<'eot'
+            [
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                }
+            ]
+            eot;
+
+        static::assertSame(
+            $json,
+            $this->varJson(
+                $result->toArray()
+            )
+        );
+
+        $this->assertInstanceof(Collection::class, $result);
+        static::assertCount(6, $result);
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            static::assertSame($key, $n);
+            $this->assertInstanceof(Guestbook::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
+
+            ++$n;
+        }
+    }
+
+    public function testAsCollectionAsSomeFindAll3(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $result = $connect
+            ->table('guest_book')
+            ->asCollection(true, [AsSomeDemo::class])
+            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->setColumns('name,content')
+            ->findAll()
+        ;
+
+        $json = <<<'eot'
+            [
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                },
+                {
+                    "name": "tom",
+                    "content": "I love movie."
+                }
+            ]
+            eot;
+
+        static::assertSame(
+            $json,
+            $this->varJson(
+                $result->toArray()
+            )
+        );
+
+        $this->assertInstanceof(Collection::class, $result);
+        static::assertCount(6, $result);
+
+        $n = 0;
+
+        foreach ($result as $key => $value) {
+            static::assertSame($key, $n);
+            $this->assertInstanceof(AsSomeDemo::class, $value);
+            static::assertSame('tom', $value->name);
+            static::assertSame('I love movie.', $value->content);
+
+            ++$n;
+        }
+    }
+
+    public function testAsCollectionAsSomeFindAll4(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid collection value types.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $connect
+            ->table('guest_book')
+            ->asCollection(true, [true])
+            ->setColumns('name,content')
+            ->findAll()
+        ;
+    }
+
+    public function testAsCollectionAsSomeFindAll5(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid collection value types.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $connect
+            ->table('guest_book')
+            ->asCollection(true, [''])
+            ->setColumns('name,content')
+            ->findAll()
+        ;
+    }
+
+    public function testAsCollectionAsSomeFindAll6(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid collection value types.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $connect
+            ->table('guest_book')
+            ->asCollection(true, [1])
+            ->setColumns('name,content')
+            ->findAll()
+        ;
+    }
+
+    public function testAsCollectionAsSomeFindAll7(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid collection value types.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        for ($n = 0; $n <= 5; ++$n) {
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+            ;
+        }
+
+        $connect
+            ->table('guest_book')
+            ->asCollection(true, ['NotFoundClass'])
+            ->setColumns('name,content')
+            ->findAll()
+        ;
     }
 
     #[Api([

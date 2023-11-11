@@ -298,6 +298,37 @@ final class BindTest extends TestCase
         );
     }
 
+    public function testBindWithType9(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :id",
+                {
+                    "id": [
+                        "hello",
+                        "PDO::PARAM_LOB"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->bind('id', 'hello', \PDO::PARAM_LOB)
+                    ->where('id', '=', Condition::raw(':id'))
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
     #[Api([
         'zh-CN:title' => '命名参数绑定，绑定值支持类型定义',
     ])]

@@ -53,6 +53,29 @@ EOT,
         static::assertSame('I love movie.', $result->content);
     }
 
+    public function test1(): void
+    {
+        $manager = $this->createDatabaseManager();
+        $connect = $manager->reconnect();
+
+        $data = ['name' => 'tom', 'content' => 'I love movie.'];
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('guest_book')
+                ->insert($data)
+        );
+
+        $result = $connect->table('guest_book', 'name,content')
+            ->where('id', 1)
+            ->findOne()
+        ;
+
+        static::assertSame('tom', $result->name);
+        static::assertSame('I love movie.', $result->content);
+    }
+
     #[Api([
         'zh-CN:title' => '数据库主从设置',
         'zh-CN:description' => <<<'EOT'

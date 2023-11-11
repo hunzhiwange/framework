@@ -867,6 +867,7 @@ abstract class Database implements IDatabase
     /**
      * 分析绑定参数类型数据.
      *
+     * @todo 是否需要处理 \PDO::PARAM_LOB
      * @see http://php.net/manual/en/pdo.constants.php
      */
     protected function normalizeBindParamType(mixed $value): ?int

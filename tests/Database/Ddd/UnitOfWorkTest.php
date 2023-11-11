@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\UnitOfWork;
+use Leevel\Database\DuplicateKeyException;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -1804,6 +1805,13 @@ EOT,
         $work->create($post2);
 
         $work->flush();
+    }
+
+    public function test2(): void
+    {
+        $e = new DuplicateKeyException();
+        $e->setUniqueIndex('hello');
+        $this->assertSame('hello', $e->getUniqueIndex());
     }
 
     #[Api([
