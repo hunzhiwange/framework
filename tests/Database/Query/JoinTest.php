@@ -285,6 +285,23 @@ EOT,
     }
 
     #[Api([
+        'zh-CN:title' => 'fullJoin 查询',
+    ])]
+    public function testFullJoin(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'MySQL does not support full joins.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+            ->findAll();
+    }
+
+    #[Api([
         'zh-CN:title' => 'crossJoin 查询',
         'zh-CN:description' => <<<'EOT'
 自然连接不用设置 on 条件。
@@ -540,6 +557,44 @@ EOT,
                 $connect
             )
         );
+    }
+
+    public function testFullJsonFlow(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'MySQL does not support full joins.'
+        );
+
+        $condition = false;
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->if($condition)
+            ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+            ->else()
+            ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+            ->fi()
+            ->findAll();
+    }
+
+    public function testFullJsonFlow2(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'MySQL does not support full joins.'
+        );
+
+        $condition = true;
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->if($condition)
+            ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
+            ->else()
+            ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
+            ->fi()
+            ->findAll();
     }
 
     public function testRightJsonFlow(): void

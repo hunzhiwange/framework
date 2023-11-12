@@ -588,30 +588,37 @@ class Condition
 
     /**
      * 注册查询中间件.
+     *
+     * @throws \InvalidArgumentException
      */
     public static function registerMiddlewares(array $middlewares, bool $force = false): array
     {
         $handleMiddlewares = $terminateMiddlewares = [];
         foreach ($middlewares as $v) {
-            $v = (string) $v;
+            if (!is_string($v)) {
+                throw new \InvalidArgumentException('Condition middleware must be string.');
+            }
 
             if (!$force && isset(static::$middlewares[$v])) {
-                if (isset(static::$middlewares[$v]['handle'])) {
-                    $handleMiddlewares[] = static::$middlewares[$v]['handle'];
+                $handleMiddleware = static::$middlewares[$v]['handle'] ?? null;
+                if ($handleMiddleware && !in_array($handleMiddleware, $handleMiddlewares, true)) {
+                    $handleMiddlewares[] = $handleMiddleware;
                 }
-                if (isset(static::$middlewares[$v]['terminate'])) {
-                    $terminateMiddlewares[] = static::$middlewares[$v]['terminate'];
+
+                $terminateMiddleware = static::$middlewares[$v]['terminate'] ?? null;
+                if ($terminateMiddleware && !in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                    $terminateMiddlewares[] = $terminateMiddleware;
                 }
 
                 continue;
             }
 
             if (isset(static::$middlewares[$v]['handle'])) {
-                unset(static::$middlewares[$v]['handle']);
+               unset(static::$middlewares[$v]['handle']);
             }
 
             if (isset(static::$middlewares[$v]['terminate'])) {
-                unset(static::$middlewares[$v]['terminate']);
+               unset(static::$middlewares[$v]['terminate']);
             }
 
             $validMiddleware = false;
@@ -619,7 +626,10 @@ class Condition
             try {
                 $_ = new \ReflectionMethod($v, 'handle');
                 if ($_->isPublic()) {
-                    static::$middlewares[$v]['handle'] = $handleMiddlewares[] = $v.'@handle';
+                    static::$middlewares[$v]['handle'] = $handleMiddleware = $v.'@handle';
+                    if (!in_array($handleMiddleware, $handleMiddlewares, true)) {
+                        $handleMiddlewares[] = $handleMiddleware;
+                    }
                     $validMiddleware = true;
                 }
             } catch (\ReflectionException) {
@@ -628,14 +638,17 @@ class Condition
             try {
                 $_ = new \ReflectionMethod($v, 'terminate');
                 if ($_->isPublic()) {
-                    static::$middlewares[$v]['terminate'] = $terminateMiddlewares[] = $v.'@terminate';
+                    static::$middlewares[$v]['terminate'] = $terminateMiddleware = $v.'@terminate';
+                    if (!in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                        $terminateMiddlewares[] = $terminateMiddleware;
+                    }
                     $validMiddleware = true;
                 }
             } catch (\ReflectionException) {
             }
 
             if (!$validMiddleware) {
-                throw new \Exception(sprintf('Condition middleware %s was invalid.', $v));
+                throw new \InvalidArgumentException(sprintf('Condition middleware %s was invalid.', $v));
             }
         }
 
@@ -941,11 +954,18 @@ class Condition
 
     /**
      * fullJoin 查询.
+     *
+     * @throws \RuntimeException
      */
     public function fullJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
+        }
+
+        // @todo 将类似的写法抽离出来,实现一个MySql的驱动来判断是否支持某种特性
+        if ($this->connect instanceof Mysql) {
+            throw new \RuntimeException('MySQL does not support full joins.');
         }
 
         return $this->addJoin('full join', $table, $cols, ...$cond);

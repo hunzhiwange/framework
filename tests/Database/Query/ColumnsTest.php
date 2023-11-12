@@ -79,6 +79,38 @@ EOT,
     }
 
     #[Api([
+        'zh-CN:title' => 'field 设置字段(SetColumns的别名)',
+        'zh-CN:description' => <<<'EOT'
+清空原有字段，然后添加新的字段。
+EOT,
+    ])]
+    public function testField(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.`remark` FROM `test_query`",
+                [],
+                false
+            ]
+            eot;
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->columns('id')
+                    ->columns('name,value')
+                    ->field('remark')
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
+    #[Api([
         'zh-CN:title' => 'Columns 字段支持表达式',
     ])]
     public function testColumnsExpressionForSelectString(): void
