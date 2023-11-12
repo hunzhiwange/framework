@@ -20,6 +20,13 @@ use Tests\Database\Query\Database\ForceMaster;
 ])]
 final class MiddlewareTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Condition::withContainer(null);
+    }
+
     #[Api([
         'zh-CN:title' => 'middleware 基础用法',
         'zh-CN:description' => <<<'EOT'
