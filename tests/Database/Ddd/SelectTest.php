@@ -151,6 +151,30 @@ final class SelectTest extends TestCase
         $post = $select->findOrFail(1);
     }
 
+    public function testFindOrFail1(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $select = new Select(new Post());
+        $post = $select->findOrFail(1, ['title']);
+
+        $this->assertInstanceof(Post::class, $post);
+        static::assertSame(1, $post->id);
+        static::assertSame('hello world', $post->title);
+    }
+
     #[Api([
         'zh-CN:title' => 'findMany 通过主键查找多个实体',
     ])]

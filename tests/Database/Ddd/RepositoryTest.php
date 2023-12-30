@@ -11,6 +11,8 @@ use Leevel\Database\Ddd\Repository;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Ddd\Specification;
 use Leevel\Database\Page;
+use Leevel\Di\Container;
+use Leevel\Event\Dispatch;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Page\Page as BasePage;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -85,6 +87,190 @@ final class RepositoryTest extends TestCase
         static::assertSame(1, $newPost->userId);
         static::assertSame('hello world', $newPost->title);
         static::assertSame('post summary', $newPost->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => '批量插入数据 insertAll',
+    ])]
+    public function testInsertAll(): void
+    {
+        $repository = new Repository(new Post());
+        $repository->insertAll([[
+            'title' => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+            'delete_at' => 0,
+        ]]);
+
+        $newPost = $repository->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('hello world', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => '批量插入回调 insertAllBoot',
+    ])]
+    public function testInsertAllBoot(): void
+    {
+        $repository = new Repository(new Post());
+        $repository->insertAllBoot(function(array &$data): void {
+            $data[0]['title'] = 'new';
+        });
+        $repository->insertAll([[
+            'title' => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+            'delete_at' => 0,
+        ]]);
+
+        $newPost = $repository->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('new', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'insertAll 支持事件',
+    ])]
+    public function testInsertAllEvent(): void
+    {
+        $dispatch = new Dispatch(new Container());
+        $repository = new Repository(new Post(), $dispatch);
+        $dispatch->register(Repository::INSERT_ALL_EVENT, function(string $event, Repository $repository) {
+            $repository->insertAllBoot(function(array &$data): void {
+                $data[0]['title'] = 'new';
+            });
+        });
+        $repository->insertAll([[
+            'title' => 'hello world',
+            'user_id' => 1,
+            'summary' => 'post summary',
+            'delete_at' => 0,
+        ]]);
+
+        $newPost = $repository->findEntity(1);
+
+        $this->assertInstanceof(Post::class, $newPost);
+        static::assertSame(1, $newPost->id);
+        static::assertSame(1, $newPost->userId);
+        static::assertSame('new', $newPost->title);
+        static::assertSame('post summary', $newPost->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'validateDataExists 判断指定数组数据值是否存在',
+    ])]
+    public function testValidateDataExists(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $repository = new Repository(new Post());
+        $repository->validateDataExists([1]);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'validateDataExists 判断指定数组数据值是否存在支持条件查询',
+    ])]
+    public function testValidateDataExists3(): void
+    {
+        $this->expectException(\Leevel\Database\Ddd\DataNotFoundException::class);
+        $this->expectExceptionMessage(
+            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $repository = new Repository(new Post());
+        $repository->validateDataExists([1], condition: function(Select $select):void {
+            $select->where('id', '>', 1);
+        });
+    }
+
+    #[Api([
+        'zh-CN:title' => 'validateDataExists 判断指定数组数据值是否存在支持字段查询',
+    ])]
+    public function testValidateDataExists4(): void
+    {
+        $this->expectException(\Leevel\Database\Ddd\DataNotFoundException::class);
+        $this->expectExceptionMessage(
+            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $repository = new Repository(new Post());
+        $repository->validateDataExists([1], 'title');
+    }
+
+    #[Api([
+        'zh-CN:title' => 'validateDataExists 判断指定数组数据值是否存在(不存在的情况)',
+    ])]
+    public function testValidateDataExists2(): void
+    {
+        $this->expectException(\Leevel\Database\Ddd\DataNotFoundException::class);
+        $this->expectExceptionMessage(
+            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $repository = new Repository(new Post());
+        $repository->validateDataExists([1, 2]);
     }
 
     #[Api([

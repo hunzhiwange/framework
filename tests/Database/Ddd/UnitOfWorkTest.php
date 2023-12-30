@@ -3616,6 +3616,55 @@ EOT,
         static::assertSame(1, $connect->table('composite_id')->findCount());
     }
 
+    #[Api([
+        'zh-CN:title' => '获取事务执行结果',
+    ])]
+    public function testGetFlushResult(): void
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createDatabaseConnect();
+
+        $compositeId = new CompositeId([
+            'id1' => 1,
+            'id2' => 2,
+            'name' => 'old',
+        ]);
+
+        $work->persist($compositeId);
+
+        $work->flush();
+
+        static::assertSame(1, $connect->table('composite_id')->findCount());
+        static::assertSame(1, $work->getFlushResult($compositeId));
+    }
+
+    #[Api([
+        'zh-CN:title' => '实体可以为虚拟闭包',
+    ])]
+    public function test1(): void
+    {
+        $work = UnitOfWork::make();
+
+        $connect = $this->createDatabaseConnect();
+
+        $compositeId = new CompositeId([
+            'id1' => 1,
+            'id2' => 2,
+            'name' => 'old',
+        ]);
+        $compositeCall = function() use($compositeId): mixed {
+            return $compositeId->save()->flush();
+        };
+
+        $work->persist($compositeCall);
+
+        $work->flush();
+
+        static::assertSame(1, $connect->table('composite_id')->findCount());
+        static::assertSame(1, $work->getFlushResult($compositeCall));
+    }
+
     protected function getDatabaseTable(): array
     {
         return ['post', 'guest_book', 'composite_id'];
