@@ -1861,7 +1861,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function collection(array $entity = []): EntityCollection
     {
-        return new EntityCollection($entity, [static::class]);
+        return new EntityCollection($entity, static::class);
     }
 
     /**

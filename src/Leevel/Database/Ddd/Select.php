@@ -278,7 +278,7 @@ class Select
             if ('entity' === $type) {
                 $result = reset($result);
             } elseif ('collection' === $type) {
-                $result = new EntityCollection($result, $collectionType);
+                $result = new EntityCollection($result, $collectionType[0] ?? null);
             }
         }
 

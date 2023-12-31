@@ -895,7 +895,7 @@ class Select
             }
 
             if (is_subclass_of($collectionValueTypes, Entity::class)) {
-                return new EntityCollection($data, $this->queryParams['as_collection_value_types']);
+                return new EntityCollection($data, $this->queryParams['as_collection_value_types'][0]);
             }
 
             return new Collection($data, $this->queryParams['as_collection_value_types']);
@@ -905,7 +905,7 @@ class Select
         $firstValue = $data[0] ?? false;
         if ($firstValue && \is_object($firstValue)) {
             if ($firstValue instanceof Entity) {
-                $data = new EntityCollection($data, [$firstValue::class]);
+                $data = new EntityCollection($data, $firstValue::class);
             } else {
                 $data = new Collection($data, [$firstValue::class]);
             }

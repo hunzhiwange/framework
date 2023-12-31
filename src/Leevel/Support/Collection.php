@@ -200,6 +200,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         $this->checkType($index, true);
         $this->checkType($newval);
         $this->elements[$index] = $newval;
+        $this->watchElements();
     }
 
     /**
@@ -210,6 +211,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         if (isset($this->elements[$offset])) {
             unset($this->elements[$offset]);
         }
+        $this->watchElements();
     }
 
     /**
@@ -354,5 +356,12 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         }
 
         return [$elements];
+    }
+
+    /**
+     * 监听集合元素发生变化.
+     */
+    protected function watchElements(): void
+    {
     }
 }

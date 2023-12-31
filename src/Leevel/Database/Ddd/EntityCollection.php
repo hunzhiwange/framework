@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
-use Leevel\Support\Collection;
+use Leevel\Support\Vector;
 
 /**
  * 实体集合.
  */
-class EntityCollection extends Collection
+class EntityCollection extends Vector
 {
-    /**
-     * 键类型.
-     */
-    protected array $keyTypes = ['int'];
-
     /**
      * 值类型.
      */
@@ -24,22 +19,21 @@ class EntityCollection extends Collection
     /**
      * 构造函数.
      */
-    public function __construct(array $data, array $valueTypes = [])
+    public function __construct(array $data, ?string $valueType = null)
     {
-        if ($valueTypes) {
-            if (1 === \count($valueTypes)
-                && isset($valueTypes[0])
-                && \is_string($valueTypes[0])
-                && is_subclass_of($valueTypes[0], Entity::class)) {
-                parent::__construct($data, $valueTypes);
+        if (!$valueType || Entity::class === $valueType) {
+            parent::__construct($data);
 
-                return;
-            }
-
-            throw new \InvalidArgumentException(sprintf('Value types must be a subclass of `%s`.', Entity::class));
+            return;
         }
 
-        parent::__construct($data);
+        if (is_subclass_of($valueType, Entity::class)) {
+            parent::__construct($data, $valueType);
+
+            return;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Value types `%s` must be a subclass of `%s`.', $valueType, Entity::class));
     }
 
     /**

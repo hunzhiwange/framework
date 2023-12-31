@@ -16,7 +16,7 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 1]),
             new DemoEntity(['id' => 2]),
         ];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
+        $collection = new EntityCollection($data, DemoEntity::class);
         static::assertCount(2, $collection);
     }
 
@@ -26,7 +26,7 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 1]),
             new DemoEntity(['id' => 2]),
         ];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
+        $collection = new EntityCollection($data, DemoEntity::class);
         $entity = $collection->get(0);
         static::assertSame(1, $entity->id);
     }
@@ -37,8 +37,8 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 1]),
             new DemoEntity(['id' => 2]),
         ];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
-        $collection->remove(0);
+        $collection = new EntityCollection($data, DemoEntity::class);
+        $collection->remove(1);
         static::assertCount(1, $collection);
     }
 
@@ -48,14 +48,14 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 1]),
             new DemoEntity(['id' => 2]),
         ];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
+        $collection = new EntityCollection($data, DemoEntity::class);
         static::assertTrue($collection->has(0));
     }
 
     public function test5(): void
     {
         $data = [];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
+        $collection = new EntityCollection($data, DemoEntity::class);
         $collection->set(0, new DemoEntity(['id' => 2]));
         static::assertCount(1, $collection);
     }
@@ -70,7 +70,7 @@ final class EntityCollectionTest extends TestCase
         $data = [
             new \stdClass(),
         ];
-        new EntityCollection($data, [DemoEntity::class]);
+        new EntityCollection($data, DemoEntity::class);
     }
 
     public function test7(): void
@@ -90,13 +90,13 @@ final class EntityCollectionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Value types must be a subclass of `Leevel\\Database\\Ddd\\Entity`.'
+            'Value types `stdClass` must be a subclass of `Leevel\\Database\\Ddd\\Entity`.'
         );
 
         $data = [
             new \stdClass(),
         ];
-        new EntityCollection($data, [\stdClass::class]);
+        new EntityCollection($data, \stdClass::class);
     }
 
     public function test9(): void
@@ -110,7 +110,7 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 1]),
             new DemoEntity(['id' => 2]),
         ];
-        $collection = new EntityCollection($data, [DemoEntity::class]);
+        $collection = new EntityCollection($data, DemoEntity::class);
         $collection->get(11);
     }
 }
