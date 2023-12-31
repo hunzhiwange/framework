@@ -513,7 +513,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             // 检查定义的枚举类
             if (isset($v[self::ENUM_CLASS])) {
                 if (!enum_exists($v[self::ENUM_CLASS])) {
-                    throw new \Exception(sprintf('Enum %s is not exists.', $v[self::ENUM_CLASS]));
+                    throw new \Exception(sprintf('Enum `%s` is not exists.', $v[self::ENUM_CLASS]));
                 }
 
                 static::$hasDefinedEnumFramework = true;
@@ -564,6 +564,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     /**
      * 实现魔术方法 __unset.
+     *
+     * - 代码格式化工具自动将 unset($entity->foo) 修改为 $entity->foo = null
+     *
+     * @codeCoverageIgnore
      */
     public function __unset(string $prop): void
     {
