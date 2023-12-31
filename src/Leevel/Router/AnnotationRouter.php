@@ -20,11 +20,6 @@ class AnnotationRouter
     protected MiddlewareParser $middlewareParser;
 
     /**
-     * 顶级域名.
-     */
-    protected ?string $domain = null;
-
-    /**
      * 扫描目录.
      */
     protected array $scanDirs = [];
@@ -47,9 +42,6 @@ class AnnotationRouter
      * 支持的路由字段.
      */
     protected static array $routerField = [
-        'scheme',
-        'domain',
-        'port',
         'attributes',
         'bind',
         'middlewares',
@@ -76,13 +68,9 @@ class AnnotationRouter
     /**
      * 构造函数.
      */
-    public function __construct(MiddlewareParser $middlewareParser, ?string $domain = null, array $basePaths = [], array $groups = [])
+    public function __construct(MiddlewareParser $middlewareParser, array $basePaths = [], array $groups = [])
     {
         $this->middlewareParser = $middlewareParser;
-
-        if ($domain) {
-            $this->domain = $domain;
-        }
 
         if ($groups) {
             $this->groups = $this->parseGroups(array_keys($groups));
@@ -266,12 +254,6 @@ class AnnotationRouter
             // 解析中间件
             $this->parseRouterMiddlewares($router);
 
-            // 解析域名
-            $this->parseRouterDomain($router);
-
-            // 解析端口
-            $this->parseRouterPort($router);
-
             // 解析基础路径
             [$prefix, $groupPrefix, $routerPath] = $this->parseRouterPath($sourceRouterPath, $this->groups);
 
@@ -342,32 +324,6 @@ class AnnotationRouter
             $router['middlewares'] = $this->middlewareParser->handle(
                 Normalize::handle($router['middlewares'])
             );
-        }
-    }
-
-    /**
-     * 解析域名.
-     */
-    protected function parseRouterDomain(array &$router): void
-    {
-        $router['domain'] = $this->normalizeDomain($router['domain'] ?? '', $this->domain ?: '');
-        if ($router['domain'] && str_contains($router['domain'], '{')) {
-            [$router['domain_regex'], $router['domain_var']] =
-                $this->ruleRegex($router['domain'], true);
-        }
-
-        if (!$router['domain']) {
-            unset($router['domain']);
-        }
-    }
-
-    /**
-     * 解析端口.
-     */
-    protected function parseRouterPort(array &$router): void
-    {
-        if (isset($router['port'])) {
-            $router['port'] = (int) $router['port'];
         }
     }
 
@@ -519,24 +475,6 @@ class AnnotationRouter
         }
 
         return [$rule, $routerVar];
-    }
-
-    /**
-     * 格式化域名.
-     *
-     * - 如果没有设置域名，则加上顶级域名.
-     */
-    protected function normalizeDomain(string $domain, string $topDomain): string
-    {
-        if (!$domain || !$this->domain) {
-            return $domain;
-        }
-
-        if ($topDomain !== substr($domain, -\strlen($topDomain))) {
-            $domain .= '.'.$topDomain;
-        }
-
-        return $domain;
     }
 
     /**

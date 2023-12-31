@@ -10,7 +10,6 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Router\Router;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\ScanRouter;
-use Leevel\Router\Url;
 use Tests\Router\Middlewares\Demo1;
 use Tests\Router\Middlewares\Demo2;
 use Tests\Router\Middlewares\Demo3;
@@ -139,7 +138,6 @@ EOT,
         $router = new Router($container);
 
         $container->singleton('app', $container);
-        $container->singleton('url', new Url2());
         $container->singleton('router', $router);
 
         return $router;
@@ -211,17 +209,5 @@ class RouterProvider1 extends RouterProvider
         $scanRouter->setControllerDir('');
 
         return $scanRouter;
-    }
-}
-
-class Url2 extends Url
-{
-    public function __construct()
-    {
-    }
-
-    public function getDomain(): string
-    {
-        return 'queryphp.com';
     }
 }

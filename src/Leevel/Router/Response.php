@@ -120,19 +120,11 @@ class Response
     }
 
     /**
-     * 返回一个 URL 生成跳转响应.
-     */
-    public function redirect(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null, int $status = 302, array $headers = []): RedirectResponse
-    {
-        return $this->redirect->url($url, $params, $subdomain, $suffix, $status, $headers);
-    }
-
-    /**
      * 返回一个跳转响应.
      */
-    public function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(string $url, int $status = 302, array $headers = []): RedirectResponse
     {
-        return $this->redirect->raw($url, $status, $headers);
+        return $this->redirect->url($url, $status, $headers);
     }
 
     /**

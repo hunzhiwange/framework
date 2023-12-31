@@ -20,14 +20,12 @@ class ScanRouter
     public function __construct(
         MiddlewareParser $middlewareParser,
         array $scandir,
-        string $domian = '',
         array $basePaths = [],
         array $groups = [],
         ?string $controllerDir = null,
     ) {
         $this->annotationRouter = new AnnotationRouter(
             $middlewareParser,
-            $domian,
             $basePaths,
             $groups
         );

@@ -8,12 +8,10 @@ use Leevel\Di\Container;
 use Leevel\Http\Request;
 use Leevel\Option\Option;
 use Leevel\Router\IRouter;
-use Leevel\Router\IUrl;
 use Leevel\Router\Provider\Register;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response;
 use Leevel\Router\Router;
-use Leevel\Router\Url;
 use Leevel\Session\ISession;
 use Leevel\View\IView;
 use Tests\TestCase;
@@ -26,18 +24,13 @@ final class RegisterTest extends TestCase
 
         $test->register();
         $test->bootstrap();
-        $url = $container->make('url');
 
         $this->assertInstanceof(IRouter::class, $container->make('router'));
         $this->assertInstanceof(Router::class, $container->make('router'));
-        $this->assertInstanceof(IUrl::class, $container->make('url'));
-        $this->assertInstanceof(Url::class, $container->make('url'));
         $this->assertInstanceof(Redirect::class, $container->make('redirect'));
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(Response::class, $container->make('response'));
         $this->assertInstanceof(IView::class, $container->make('view'));
-
-        static::assertSame('http://www.queryphp.cn/foo/bar?hello=world', $url->make('foo/bar', ['hello' => 'world']));
     }
 
     protected function createContainer(): Container
@@ -45,11 +38,6 @@ final class RegisterTest extends TestCase
         $container = new Container();
 
         $option = new Option([
-            'app' => [
-                'with_suffix' => false,
-                'suffix' => '.html',
-                'domain' => 'queryphp.cn',
-            ],
             'cookie' => [
                 'domain' => '',
                 'path' => '/',

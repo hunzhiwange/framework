@@ -19,7 +19,6 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [
                 '*' => [
                     'middlewares' => 'common',
@@ -71,7 +70,6 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
             [
                 'pet' => [],
@@ -100,7 +98,6 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
             [
                 'pet' => [],
@@ -129,7 +126,6 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
             [],
         );
@@ -154,7 +150,6 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
             [
                 'pet' => [],
@@ -197,7 +192,6 @@ final class AnnotationRouterTest extends TestCase
 
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             ['middlewares' => 5],
             [],
         );
@@ -215,7 +209,6 @@ final class AnnotationRouterTest extends TestCase
 
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
             ['middlewares' => 'hello world'],
         );
@@ -250,7 +243,6 @@ final class AnnotationRouterTest extends TestCase
 
         $annotationRouter = new AnnotationRouter(
             $this->createMiddlewareParser(),
-            'queryphp.cn',
             [],
         );
 

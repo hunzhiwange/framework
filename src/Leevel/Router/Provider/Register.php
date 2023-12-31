@@ -8,11 +8,9 @@ use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Http\CookieUtils;
 use Leevel\Router\IRouter;
-use Leevel\Router\IUrl;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response;
 use Leevel\Router\Router;
-use Leevel\Router\Url;
 
 /**
  * 路由服务提供者.
@@ -25,7 +23,6 @@ class Register extends Provider
     public function register(): void
     {
         $this->router();
-        $this->url();
         $this->redirect();
         $this->response();
     }
@@ -45,7 +42,6 @@ class Register extends Provider
     {
         return [
             'router' => [IRouter::class, Router::class],
-            'url' => [IUrl::class, Url::class],
             'redirect' => Redirect::class,
             'response' => Response::class,
         ];
@@ -65,27 +61,6 @@ class Register extends Provider
     }
 
     /**
-     * 注册 url 服务.
-     */
-    protected function url(): void
-    {
-        $this->container
-            ->singleton(
-                'url',
-                function (IContainer $container): Url {
-                    $option = $container['option'];
-                    $options = [];
-                    foreach (['with_suffix', 'suffix', 'domain'] as $item) {
-                        $options[$item] = $option->get($item);
-                    }
-
-                    return new Url($container['request'], $options);
-                },
-            )
-        ;
-    }
-
-    /**
      * 注册 redirect 服务.
      */
     protected function redirect(): void
@@ -94,7 +69,7 @@ class Register extends Provider
             ->singleton(
                 'redirect',
                 function (IContainer $container): Redirect {
-                    $redirect = new Redirect($container['url']);
+                    $redirect = new Redirect();
                     if (isset($container['session'])) {
                         $redirect->setSession($container['session']);
                     }

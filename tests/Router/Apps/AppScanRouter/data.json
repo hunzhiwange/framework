@@ -62,12 +62,6 @@
                         }
                     ]
                 }
-            },
-            "static": {
-                "\/web\/petLeevelWithPort\/": {
-                    "bind": "\\Tests\\Router\\Apps\\AppScanRouter\\Controllers\\Pet@petLeevelWithPort",
-                    "port": 9527
-                }
             }
         }
     }

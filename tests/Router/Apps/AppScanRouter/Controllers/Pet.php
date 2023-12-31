@@ -17,14 +17,6 @@ class Pet
     }
 
     #[Route(
-        path: '/web/petLeevelWithPort/',
-        port: '9527',
-    )]
-    public function petLeevelWithPort(): void
-    {
-    }
-
-    #[Route(
         path: '/web/petLeevelNotSupportedMethod/',
         method: Request::METHOD_CONNECT,
     )]

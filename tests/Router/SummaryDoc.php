@@ -216,10 +216,7 @@ Route::get('/', function () {
 ```
 attributes: ["args1" => "hello", "args2" => "world"],
 bind: "\\App\\App\\Controller\\Petstore\\Pet@withBind",
-domain: "{subdomain:[A-Za-z]+}-vip.{domain}",
 middlewares: "api",
-port: "9527",
-scheme: "https",
 ```
 
 ::: tip
@@ -227,11 +224,10 @@ scheme: "https",
  * 参数 bind 默认会绑定到类的 `handle` 方法，`@` 可以则可以自定义绑定方法
 :::
 
-路由地址 path 和域名支持正则参数
+路由地址 path 支持正则参数
 
 ```
 /api/v1/petLeevelForApi/{petId:[A-Za-z]+}/
-{subdomain:[A-Za-z]+}-vip.{domain}
 ```
 EOT,
     ])]

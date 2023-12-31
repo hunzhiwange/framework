@@ -104,7 +104,6 @@ abstract class RouterProvider extends Provider
         return new ScanRouter(
             $this->makeMiddlewareParser(),
             [$this->getAppPath()],
-            $this->getDomain(),
             $this->basePaths,
             $this->groups,
             $this->controllerDir,
@@ -187,17 +186,6 @@ abstract class RouterProvider extends Provider
         if ($this->middlewareAlias) {
             $this->router->setMiddlewareAlias($this->middlewareAlias);
         }
-    }
-
-    /**
-     * 获取顶级域名.
-     */
-    protected function getDomain(): string
-    {
-        /** @var IUrl $url */
-        $url = $this->container->make('url');
-
-        return $url->getDomain();
     }
 
     /**

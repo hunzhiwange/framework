@@ -63,7 +63,7 @@ class RedirectResponse extends SymfonyRedirectResponse
     /**
      * 设置 SESSION 仓储.
      */
-    public function setSession(ISession $session): void
+    public function setSession(?ISession $session = null): void
     {
         $this->session = $session;
     }

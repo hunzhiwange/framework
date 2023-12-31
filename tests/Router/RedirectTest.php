@@ -16,16 +16,8 @@ final class RedirectTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $request = $this->makeRequest();
-        $url = new Url($request, [
-            'domain' => 'queryphp.com',
-        ]);
-        $redirect = new Redirect($url);
-
-        $this->assertInstanceof(IUrl::class, $redirect->getUrl());
-        $this->assertInstanceof(Url::class, $redirect->getUrl());
-
-        $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('foo/bar'));
+        $redirect = new Redirect();
+        $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('http://www.queryphp.com/foo/bar'));
         static::assertSame('http://www.queryphp.com/foo/bar', $response->getTargetUrl());
         static::assertNull($response->getSession());
 
@@ -47,55 +39,12 @@ final class RedirectTest extends TestCase
         static::assertSame($content, $response->getContent());
     }
 
-    public function testRaw(): void
-    {
-        $request = $this->makeRequest();
-        $url = new Url($request, [
-            'domain' => 'queryphp.com',
-        ]);
-        $redirect = new Redirect($url);
-
-        $this->assertInstanceof(IUrl::class, $redirect->getUrl());
-        $this->assertInstanceof(Url::class, $redirect->getUrl());
-
-        $this->assertInstanceof(RedirectResponse::class, $response = $redirect->raw('/foo/bar'));
-        static::assertSame('/foo/bar', $response->getTargetUrl());
-        static::assertNull($response->getSession());
-
-        $content = <<<'eot'
-            <!DOCTYPE html>
-            <html>
-                <head>
-                    <meta charset="UTF-8" />
-                    <meta http-equiv="refresh" content="0;url='/foo/bar'" />
-
-                    <title>Redirecting to /foo/bar</title>
-                </head>
-                <body>
-                    Redirecting to <a href="/foo/bar">/foo/bar</a>.
-                </body>
-            </html>
-            eot;
-
-        static::assertSame($content, $response->getContent());
-    }
-
     public function testSetSession(): void
     {
-        $request = $this->makeRequest();
-        $url = new Url($request, [
-            'domain' => 'queryphp.com',
-        ]);
-        $redirect = new Redirect($url);
-
+        $redirect = new Redirect();
         $session = $this->createMock(ISession::class);
-
         $redirect->setSession($session);
-
-        $this->assertInstanceof(IUrl::class, $redirect->getUrl());
-        $this->assertInstanceof(Url::class, $redirect->getUrl());
-
-        $this->assertInstanceof(RedirectResponse::class, $response = $redirect->raw('/foo/bar'));
+        $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('/foo/bar'));
         static::assertSame('/foo/bar', $response->getTargetUrl());
         static::assertSame($session, $response->getSession());
     }

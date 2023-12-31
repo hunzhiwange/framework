@@ -619,7 +619,7 @@ EOT,
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->redirect('hello/world');
+        $response = $factory->redirect('http://www.queryphp.com/hello/world');
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -651,7 +651,7 @@ EOT,
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->redirect('hello/world', ['foo' => 'bar']);
+        $response = $factory->redirect('http://www.queryphp.com/hello/world?foo=bar');
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -686,7 +686,7 @@ EOT,
 
         $factory = new RouterResponse($view, $redirect);
 
-        $response = $factory->redirectRaw('http://queryphp.com/raw');
+        $response = $factory->redirect('http://queryphp.com/raw');
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -717,8 +717,7 @@ EOT,
         $redirect = $this->makeRedirect();
 
         $factory = new RouterResponse($view, $redirect);
-
-        $response = $factory->redirectRaw('http://queryphp.com/raw?foo=bar');
+        $response = $factory->redirect('http://queryphp.com/raw?foo=bar');
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -763,13 +762,7 @@ EOT,
 
     protected function makeRedirect(bool $isSecure = false): Redirect
     {
-        $request = $this->makeRequest($isSecure);
-
-        $url = new Url($request, [
-            'domain' => 'queryphp.com',
-        ]);
-
-        return new Redirect($url);
+        return new Redirect();
     }
 
     protected function makeRequest(bool $isSecure = false): Request

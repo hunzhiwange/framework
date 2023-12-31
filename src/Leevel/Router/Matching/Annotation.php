@@ -143,23 +143,6 @@ class Annotation extends BaseMatching implements IMatching
      */
     protected function matchSucceed(array $router, array $matchedVar = []): array
     {
-        // 协议匹配
-        if (!empty($router['scheme'])
-            && false === $this->matchScheme($router['scheme'])) {
-            return [];
-        }
-
-        // 端口匹配
-        if (!empty($router['port'])
-            && false === $this->matchPort($router['port'])) {
-            return [];
-        }
-
-        // 域名匹配
-        if (false === ($domainVars = $this->matchDomain($router))) {
-            return [];
-        }
-
         // 未绑定
         if (empty($router['bind'])) {
             return [];
@@ -169,11 +152,6 @@ class Annotation extends BaseMatching implements IMatching
         $result[IRouter::BIND] = $router['bind'];
         $result[IRouter::APP] = $this->findApp($router['bind']);
         $result[$attributesKey = IRouter::ATTRIBUTES] = [];
-
-        // 域名匹配参数 {subdomain}.{domain}
-        if ($domainVars) {
-            $result[$attributesKey] = (array) $domainVars;
-        }
 
         // 路由匹配参数 /v1/pet/{id}
         if ($matchedVar) {
@@ -194,50 +172,6 @@ class Annotation extends BaseMatching implements IMatching
         $result[IRouter::VARS] = $this->matchedVars;
 
         return $result;
-    }
-
-    /**
-     * 协议匹配.
-     */
-    protected function matchScheme(string $scheme): bool
-    {
-        return $scheme === $this->request->getScheme();
-    }
-
-    /**
-     * 端口匹配.
-     */
-    protected function matchPort(int $port): bool
-    {
-        return $port === (int) $this->request->getPort();
-    }
-
-    /**
-     * 域名匹配.
-     */
-    protected function matchDomain(array $router): array|bool
-    {
-        if (empty($router['domain'])) {
-            return [];
-        }
-
-        if (!empty($router['domain_regex'])) {
-            if (!preg_match($router['domain_regex'], $this->request->getHost(), $matches)) {
-                return false;
-            }
-
-            $domainVars = [];
-            array_shift($matches);
-            foreach ($router['domain_var'] as $var) {
-                $value = array_shift($matches);
-                $domainVars[$var] = $value;
-                $this->addVariable($var, $value);
-            }
-
-            return $domainVars;
-        }
-
-        return $this->request->getHost() !== $router['domain'] ? false : [];
     }
 
     /**

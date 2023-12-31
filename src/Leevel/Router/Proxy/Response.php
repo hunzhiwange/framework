@@ -18,8 +18,7 @@ use Leevel\Router\Response as RouterResponse;
  * @method static \Leevel\Http\JsonResponse                            jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)                                                         返回 JSONP 响应.
  * @method static \Symfony\Component\HttpFoundation\BinaryFileResponse download($file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true) 返回下载响应.
  * @method static \Symfony\Component\HttpFoundation\BinaryFileResponse file($file, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true)                           返回文件响应.
- * @method static \Leevel\Http\RedirectResponse                        redirect(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null, int $status = 302, array $headers = [])             返回一个 URL 生成跳转响应.
- * @method static \Leevel\Http\RedirectResponse                        redirectRaw(string $url, int $status = 302, array $headers = [])                                                                                          返回一个跳转响应.
+ * @method static \Leevel\Http\RedirectResponse                        redirect(string $url, int $status = 302, array $headers = [])                                                                                          返回一个跳转响应.
  * @method static \Leevel\Router\Response                              setViewSuccessTemplate(string $template)                                                                                                                  设置视图正确模板.
  * @method static \Leevel\Router\Response                              setViewFailTemplate(string $template)                                                                                                                     设置视图错误模板.
  */

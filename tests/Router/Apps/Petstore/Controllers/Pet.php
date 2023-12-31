@@ -12,8 +12,6 @@ class Pet
 {
     #[Route(
         path: '/api/v2/petLeevel/{petId:[A-Za-z]+}/',
-        scheme: 'https',
-        domain: '{subdomain:[A-Za-z]+}-vip.{domain}',
         attributes: ['args1' => 'hello', 'args2' => 'world'],
         bind: '\\PetLeevel\\Show',
         middlewares: 'api',

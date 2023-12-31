@@ -20,7 +20,6 @@ final class ScanRouterTest extends TestCase
         $scanRouter = new ScanRouter(
             $middlewareParser,
             [__DIR__.'/Apps/AppScanRouter'],
-            'queryphp.com',
             [],
             [
                 'pet' => [],
