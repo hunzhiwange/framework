@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Condition;
+use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Select;
 use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
@@ -76,6 +77,17 @@ final class EntityTest extends TestCase
 
         $entity = new Post(['title' => 'foo']);
         $entity->create()->flush();
+    }
+
+    public function testMetaSelect(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Database connect was not set.'
+        );
+
+        $instance = Meta::instance('post');
+        $instance->select();
     }
 
     #[Api([
