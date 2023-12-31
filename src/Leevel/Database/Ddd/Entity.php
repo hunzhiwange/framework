@@ -688,11 +688,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 是否存在全局作用域.
+     */
+    public static function hasGlobalScope(string $scopeName): bool
+    {
+        return isset(static::$globalScopeFramework[static::class][$scopeName]);
+    }
+
+    /**
      * 删除全局作用域.
      */
     public static function removeGlobalScope(string $scopeName): void
     {
-        if (isset(static::$globalScopeFramework[static::class][$scopeName])) {
+        if (static::hasGlobalScope($scopeName)) {
             unset(static::$globalScopeFramework[static::class][$scopeName]);
         }
     }
