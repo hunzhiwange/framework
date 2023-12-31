@@ -27,10 +27,19 @@ class EntityCollection extends Collection
     public function __construct(array $data, array $valueTypes = [])
     {
         if ($valueTypes) {
-            parent::__construct($data, $valueTypes);
-        } else {
-            parent::__construct($data);
+            if (1 === \count($valueTypes)
+                && isset($valueTypes[0])
+                && \is_string($valueTypes[0])
+                && is_subclass_of($valueTypes[0], Entity::class)) {
+                parent::__construct($data, $valueTypes);
+
+                return;
+            }
+
+            throw new \InvalidArgumentException(sprintf('Value types must be a subclass of `%s`.', Entity::class));
         }
+
+        parent::__construct($data);
     }
 
     /**
