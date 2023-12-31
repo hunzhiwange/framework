@@ -688,6 +688,16 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 删除全局作用域.
+     */
+    public static function removeGlobalScope(string $scopeName): void
+    {
+        if (isset(static::$globalScopeFramework[static::class][$scopeName])) {
+            unset(static::$globalScopeFramework[static::class][$scopeName]);
+        }
+    }
+
+    /**
      * 不带指定全局作用域查询.
      */
     public static function withoutGlobalScope(array $scopeNames, int $softDeletedType = self::WITHOUT_SOFT_DELETED): Select

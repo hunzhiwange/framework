@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Condition;
+use Leevel\Database\Ddd\Select;
 use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\DemoVersion;
+use Tests\Database\Ddd\Entity\DemoVirtualEntity;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
+use Tests\Database\Ddd\Entity\EntityWithEnumButClassNotFound;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
@@ -34,6 +37,7 @@ final class EntityTest extends TestCase
     {
         parent::tearDown();
         Container::singletons()->clear();
+        Post::removeGlobalScope('hello');
     }
 
     public function testSetPropManyTimesDoNothing(): void
@@ -1397,6 +1401,182 @@ EOT,
         static::assertSame('hello world', $post->title);
         static::assertSame(1, $post->userId);
         static::assertSame('post summary', $post->summary);
+    }
+
+    public function testEntityWithEnumButClassNotFound(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Enum `NotFound` is not exists.'
+        );
+
+        new EntityWithEnumButClassNotFound();
+    }
+
+    #[Api([
+        'zh-CN:title' => 'addGlobalScope 添加全局作用域',
+    ])]
+    public function testAddGlobalScope(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        Post::addGlobalScope('hello', function (Select $select): void {
+            $select->where('id', 5);
+        });
+        Post::select()->findAll();
+        $sql = Post::select()->getLastSql();
+        static::assertSame($sql, 'SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` = :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 5)');
+    }
+
+    #[Api([
+        'zh-CN:title' => 'withoutGlobalScope 不带指定全局作用域查询',
+    ])]
+    public function testWithoutGlobalScope(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        Post::addGlobalScope('hello', function (Select $select): void {
+            $select->where('id', 5);
+        });
+        Post::withoutGlobalScope(['hello'])->findAll();
+        $sql = Post::select()->getLastSql();
+        static::assertSame($sql, 'SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)');
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findEntity 通过主键或条件查找实体',
+    ])]
+    public function testFindEntity(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $post = Post::findEntity(1);
+        static::assertSame(1, $post->id);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findMany 通过主键或条件查找多个实体',
+    ])]
+    public function testFindMany(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $collection = Post::findMany([1]);
+        static::assertInstanceOf(\Leevel\Database\Ddd\EntityCollection::class, $collection);
+        $post = $collection[0];
+        static::assertSame(1, $post->id);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findOrFail 通过主键或条件查找实体，未找到则抛出异常',
+    ])]
+    public function testFindOrFail(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        $post = Post::findOrFail(1);
+        static::assertSame(1, $post->id);
+        static::assertSame('hello world', $post->title);
+        static::assertSame('post summary', $post->summary);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'meta 返回实体类的元对象(虚拟实体)',
+    ])]
+    public function testMeta1(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The virtual entity does not support select');
+
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+        );
+
+        DemoVirtualEntity::meta();
+    }
+
+    #[Api([
+        'zh-CN:title' => 'delete 删除实体(虚拟实体)',
+    ])]
+    public function testVirtualDelete(): void
+    {
+        $demo = new DemoVirtualEntity(['id' => 1]);
+        $demo->delete();
+        static::assertSame(0, $demo->flush());
     }
 
     protected function initI18n(): void
