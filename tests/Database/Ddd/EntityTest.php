@@ -87,6 +87,7 @@ final class EntityTest extends TestCase
         );
 
         $instance = Meta::instance('post');
+        $instance->setDatabaseConnect();
         $instance->select();
     }
 
