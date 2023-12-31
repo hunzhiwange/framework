@@ -87,7 +87,8 @@ final class EntityTest extends TestCase
         );
 
         $instance = Meta::instance('post');
-        $instance->setDatabaseConnect();
+        // 修复单元测试受到全局变量的影响
+        $this->setTestProperty($instance, 'databaseConnect', null);
         $instance->select();
     }
 

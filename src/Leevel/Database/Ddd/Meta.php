@@ -36,7 +36,7 @@ class Meta
     /**
      * 数据库连接.
      */
-    protected IDatabase $databaseConnect; /** @phpstan-ignore-line */
+    protected ?IDatabase $databaseConnect = null; /** @phpstan-ignore-line */
 
     /**
      * 构造函数.
