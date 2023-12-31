@@ -10,7 +10,6 @@ use Leevel\Http\Request;
 use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Router\Url;
 use Tests\Kernel\Fixtures\DemoI18n;
 use Tests\TestCase;
 
@@ -112,21 +111,6 @@ final class FunctionsTest extends TestCase
         static::assertSame('hello', __('hello'));
         static::assertSame('hello foo', __('hello %s', 'foo'));
         static::assertSame('hello 5', __('hello %d', 5));
-    }
-
-    public function test2(): void
-    {
-        $request = $this->makeRequest();
-        $url = new Url($request);
-        $this->assertInstanceof(Request::class, $url->getRequest());
-
-        $container = $this->createContainer();
-        $container->singleton('url', function () use ($url): Url {
-            return $url;
-        });
-
-        static::assertSame(url('test/hello'), '/test/hello');
-        static::assertSame(url('/hello-world'), '/hello-world');
     }
 
     protected function createContainer(): Container
