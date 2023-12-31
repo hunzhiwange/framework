@@ -116,6 +116,10 @@ abstract class Dto implements IArray, \ArrayAccess
 
     /**
      * 实现魔术方法 __unset.
+     *
+     * - 代码格式化工具自动将 unset($obj->foo) 修改为 $obj->foo = null
+     *
+     * @codeCoverageIgnore
      */
     public function __unset(string $prop): void
     {

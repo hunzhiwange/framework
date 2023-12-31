@@ -84,4 +84,17 @@ final class TupleTest extends TestCase
         $tuple = new Tuple($data, 'string', 'string', 'string');
         $tuple[2] = 1;
     }
+
+    public function testError4(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The number of elements does not match the number of types.');
+
+        $data = [
+            'hello', 'hello', 'world',
+        ];
+
+        $tuple = new Tuple($data, 'string', 'string', 'string');
+        $tuple[5] = 'hello';
+    }
 }

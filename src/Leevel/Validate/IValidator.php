@@ -40,8 +40,10 @@ interface IValidator
 
     /**
      * 初始化验证器.
+     *
+     * @codeCoverageIgnore
      */
-    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): static; /** @codeCoverageIgnore */
+    public static function make(array $data = [], array $rules = [], array $names = [], array $message = []): static;
 
     /**
      * 验证是否成功.

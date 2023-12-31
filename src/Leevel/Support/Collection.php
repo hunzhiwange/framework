@@ -85,6 +85,10 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
 
     /**
      * 实现魔术方法 __unset.
+     *
+     * - 代码格式化工具自动将 unset($obj->foo) 修改为 $obj->foo = null
+     *
+     * @codeCoverageIgnore
      */
     public function __unset(mixed $key): void
     {

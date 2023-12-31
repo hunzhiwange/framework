@@ -84,4 +84,17 @@ final class StructTest extends TestCase
         $tuple = new Struct($data, 'string', 'string', 'string');
         $tuple[2] = 1;
     }
+
+    public function testError4(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The number of elements does not match the number of types.');
+
+        $data = [
+            'a' => 'hello', 'b' => 'hello', 'c' => 'world',
+        ];
+
+        $tuple = new Struct($data, 'string', 'string', 'string');
+        $tuple['d'] = 'hello';
+    }
 }

@@ -714,6 +714,7 @@ class Validator implements IValidator
             } else {
                 $validateRule = new $className();
             }
+
             if (!\is_callable([$validateRule, 'handle'])) {
                 // @phpstan-ignore-next-line
                 throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
@@ -806,7 +807,7 @@ class Validator implements IValidator
             }
         }
 
-        $message = preg_replace_callback('/{(.+?)}/', function ($matches) use ($replace) {
+        $message = preg_replace_callback('/{(.+?)}/', function ($matches) use ($replace): string {
             return $replace[$matches[1]] ?? $matches[0];
         }, $message);
 
@@ -896,11 +897,7 @@ class Validator implements IValidator
             return $extends(...$param);
         }
 
-        if (\is_string($extends)) {
-            return $this->callClassExtend($extends, $param);
-        }
-
-        throw new \InvalidArgumentException(sprintf('Extend in rule %s is not valid.', $rule));
+        return $this->callClassExtend($extends, $param);
     }
 
     /**

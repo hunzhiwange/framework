@@ -1508,6 +1508,30 @@ EOT,
         static::assertFalse($validate->success());
     }
 
+    public function test13(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Validate rule Leevel\\Validate\\DemoOneRule is invalid.'
+        );
+
+        $validate = new Validator(
+            [
+                'name' => 3,
+            ],
+            [
+                'name' => 'demo_one',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+
+        $container = new Container();
+        $validate->setContainer($container);
+        $validate->success();
+    }
+
     public function testCallExtendClassWithClassNotValidException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2435,6 +2459,73 @@ EOT,
 {
     "name": [
         "不满足【地名 值不能小于 5】"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    public function test14(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => '!custom_foobar',
+            ],
+            [
+                'name' => '地名',
+            ]
+        );
+        $container = new Container();
+        $validate->setContainer($container);
+        $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
+        static::assertTrue($validate->success());
+        static::assertFalse($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
+    public function test12(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => 8,
+            ],
+            [
+                'name' => '!min:5',
+            ],
+            [
+                'name' => '地名',
+            ],
+            [
+                'name.!min' => '地名值必须小于 5',
+            ]
+        );
+
+        static::assertFalse($validate->success());
+        static::assertTrue($validate->fail());
+        static::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "地名值必须小于 5"
     ]
 }
 eot;
