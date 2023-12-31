@@ -34,16 +34,3 @@ if (!function_exists('__')) { /** @codeCoverageIgnore */
         return $service->gettext($text, ...$data);
     }
 }
-
-if (!function_exists('url')) { /** @codeCoverageIgnore */
-    /**
-     * 生成路由地址.
-     */
-    function url(string $url, array $params = [], string $subdomain = 'www', null|bool|string $suffix = null): string
-    {
-        /** @var \Leevel\Router\IUrl $service */
-        $service = Container::singletons()->make('url');
-
-        return $service->make($url, $params, $subdomain, $suffix);
-    }
-}
