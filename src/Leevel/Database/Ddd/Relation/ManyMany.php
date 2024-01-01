@@ -135,8 +135,6 @@ class ManyMany extends Relation
 
     /**
      * {@inheritDoc}
-     *
-     * @throws \Throwable
      */
     public function sourceQuery(): mixed
     {

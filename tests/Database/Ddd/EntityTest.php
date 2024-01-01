@@ -1825,6 +1825,26 @@ EOT,
         static::assertSame(0, $demo->flush());
     }
 
+    #[Api([
+        'zh-CN:title' => 'create 新增实体(虚拟实体)',
+    ])]
+    public function testVirtualCreate(): void
+    {
+        $demo = new DemoVirtualEntity(['id' => 1]);
+        $demo->create();
+        static::assertSame(1, $demo->flush());
+    }
+
+    #[Api([
+        'zh-CN:title' => 'update 更新实体(虚拟实体)',
+    ])]
+    public function testVirtualUpdate(): void
+    {
+        $demo = new DemoVirtualEntity(['id' => 1, 'name' => 'new']);
+        $demo->update();
+        static::assertSame(0, $demo->flush());
+    }
+
     public function test1(): void
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
