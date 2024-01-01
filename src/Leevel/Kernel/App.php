@@ -356,7 +356,7 @@ class App implements IApp
         }
 
         // @phpstan-ignore-next-line
-        return 'production' !== $this->environment() && $option->get('debug');
+        return AppEnvEnum::PRODUCTION->value !== $this->environment() && $option->get('debug');
     }
 
     /**
@@ -364,7 +364,7 @@ class App implements IApp
      */
     public function isDevelopment(): bool
     {
-        return 'development' === $this->environment();
+        return AppEnvEnum::DEVELOPMENT->value === $this->environment();
     }
 
     /**
@@ -373,7 +373,7 @@ class App implements IApp
     public function environment(): string
     {
         if (null === ($option = $this->container->make('option', throw: false))) {
-            return 'development';
+            return AppEnvEnum::DEVELOPMENT->value;
         }
 
         // @phpstan-ignore-next-line
@@ -484,6 +484,9 @@ class App implements IApp
                 return $file;
             }
         }
+
+        // 移除掉尾巴的反斜杠
+        $namespace = rtrim($namespace, '\\');
 
         // PSR-0 lookup
         if (false !== $pos = strrpos($namespace, '\\')) {

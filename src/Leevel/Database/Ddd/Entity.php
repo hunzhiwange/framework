@@ -2822,7 +2822,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 }
 
-if (!\function_exists(__NAMESPACE__.'\\__')) { /** @codeCoverageIgnore */
+// @codeCoverageIgnoreStart
+if (!\function_exists(__NAMESPACE__.'\\__')) {
+    /** @codeCoverageIgnoreEnd */
     function __(string $text, ...$data): string
     {
         if (!class_exists(Gettext::class)) {

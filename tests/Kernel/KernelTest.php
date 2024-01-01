@@ -20,6 +20,9 @@ use Leevel\Log\ILog;
 use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\Kernel\Middlewares\Demo1;
+use Tests\Kernel\Middlewares\Demo2;
+use Tests\Kernel\Middlewares\Demo3;
 use Tests\TestCase;
 
 #[Api([
@@ -187,6 +190,126 @@ EOT,
         static::assertStringContainsString('ErrorException->()', $resultResponse->getContent());
     }
 
+    #[Api([
+        'zh-CN:title' => '系统中间件',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Kernel2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel2::class)]}
+```
+
+**Tests\Kernel\Middlewares\Demo1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Middlewares\Demo1::class)]}
+```
+EOT,
+    ])]
+    public function test2(): void
+    {
+        $app = new AppKernel($container = new Container(), '');
+        $container->instance('app', $app);
+
+        $request = $this->createMock(Request::class);
+        $response = $this->createMock(Response::class);
+
+        $router = $this->createRouter($response);
+        $this->createOption($container, true);
+        $this->createLog($container);
+        $this->createRuntime($container);
+
+        $kernel = new Kernel2($app, $router);
+        $this->assertInstanceof(IKernel::class, $kernel);
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
+        $kernel->terminate($request, $resultResponse);
+        static::assertSame(['Demo1::terminate'], $GLOBALS['demo_middlewares']);
+        unset($GLOBALS['demo_middlewares']);
+    }
+
+    #[Api([
+        'zh-CN:title' => '系统中间件支持 handle 和 terminate',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Kernel3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel3::class)]}
+```
+
+**Tests\Kernel\Middlewares\Demo2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Middlewares\Demo2::class)]}
+```
+EOT,
+    ])]
+    public function test3(): void
+    {
+        $app = new AppKernel($container = new Container(), '');
+        $container->instance('app', $app);
+
+        $request = $this->createMock(Request::class);
+        $response = $this->createMock(Response::class);
+
+        $router = $this->createRouter($response);
+        $this->createOption($container, true);
+        $this->createLog($container);
+        $this->createRuntime($container);
+
+        $kernel = new Kernel3($app, $router);
+        $this->assertInstanceof(IKernel::class, $kernel);
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
+        $kernel->terminate($request, $resultResponse);
+        static::assertSame(['Demo2::handle', 'Demo2::terminate'], $GLOBALS['demo_middlewares']);
+        unset($GLOBALS['demo_middlewares']);
+    }
+
+    #[Api([
+        'zh-CN:title' => '系统中间件支持参数',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Kernel4**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Kernel4::class)]}
+```
+
+**Tests\Kernel\Middlewares\Demo3**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Middlewares\Demo3::class)]}
+```
+EOT,
+    ])]
+    public function test4(): void
+    {
+        $app = new AppKernel($container = new Container(), '');
+        $container->instance('app', $app);
+
+        $request = $this->createMock(Request::class);
+        $response = $this->createMock(Response::class);
+
+        $router = $this->createRouter($response);
+        $this->createOption($container, true);
+        $this->createLog($container);
+        $this->createRuntime($container);
+
+        $kernel = new Kernel4($app, $router);
+        $this->assertInstanceof(IKernel::class, $kernel);
+        $this->assertInstanceof(IApp::class, $kernel->getApp());
+        $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
+        $kernel->terminate($request, $resultResponse);
+        static::assertSame(['Demo3::handle(arg1:5,arg2:foo)'], $GLOBALS['demo_middlewares']);
+        unset($GLOBALS['demo_middlewares']);
+    }
+
     protected function createLog(IContainer $container): void
     {
         $log = $this->createMock(ILog::class);
@@ -268,6 +391,27 @@ class Kernel1 extends Kernel
 {
     protected array $bootstraps = [
         DemoBootstrapForKernel::class,
+    ];
+}
+
+class Kernel2 extends Kernel
+{
+    protected array $middlewares = [
+        Demo1::class,
+    ];
+}
+
+class Kernel3 extends Kernel
+{
+    protected array $middlewares = [
+        Demo2::class,
+    ];
+}
+
+class Kernel4 extends Kernel
+{
+    protected array $middlewares = [
+        Demo3::class.':5,foo',
     ];
 }
 

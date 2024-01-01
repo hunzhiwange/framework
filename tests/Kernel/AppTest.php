@@ -475,6 +475,77 @@ final class AppTest extends TestCase
         $app->namespacePath('not_found_class');
     }
 
+    public function testNamespacePath1(): void
+    {
+        $appPath = \dirname(__DIR__, 2);
+        $composer = require $appPath.'/vendor/autoload.php';
+        $composer->addPsr4('', [
+            'Foo\\Bar' => $appPath.'/tests/Kernel/assert',
+        ]);
+        $app = $this->createApp($appPath);
+        static::assertSame(
+            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
+            realpath($app->namespacePath('Foo\\Bar\\Hello'))
+        );
+    }
+
+    public function testNamespacePath2(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Namespaces `Foo_Bar_Hello` for was not found.'
+        );
+
+        $appPath = \dirname(__DIR__, 2);
+        $app = $this->createApp($appPath);
+        static::assertSame(
+            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
+            realpath($app->namespacePath('Foo_Bar_Hello'))
+        );
+    }
+
+    public function testNamespacePath3(): void
+    {
+        $appPath = \dirname(__DIR__, 2);
+        $composer = require $appPath.'/vendor/autoload.php';
+        $composer->add('F', [
+            'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
+        ]);
+        $app = $this->createApp($appPath);
+        static::assertSame(
+            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
+            realpath($app->namespacePath('Foo_Bar_Hello'))
+        );
+    }
+
+    public function testNamespacePath4(): void
+    {
+        $appPath = \dirname(__DIR__, 2);
+        $composer = require $appPath.'/vendor/autoload.php';
+        $composer->add('F', [
+            'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
+        ]);
+        $app = $this->createApp($appPath);
+        static::assertSame(
+            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
+            realpath($app->namespacePath('Foo\\Bar_Hello'))
+        );
+    }
+
+    public function testNamespacePath5(): void
+    {
+        $appPath = \dirname(__DIR__, 2);
+        $composer = require $appPath.'/vendor/autoload.php';
+        $composer->add('', [
+            'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
+        ]);
+        $app = $this->createApp($appPath);
+        static::assertSame(
+            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
+            realpath($app->namespacePath('Foo\\Bar_Hello'))
+        );
+    }
+
     #[Api([
         'zh-CN:title' => 'isDebug 是否开启调试',
     ])]
@@ -536,6 +607,12 @@ final class AppTest extends TestCase
         static::assertFalse($app->isDebug());
     }
 
+    public function testIsDebug3(): void
+    {
+        $app = $this->createApp();
+        static::assertTrue($app->isDebug());
+    }
+
     #[Api([
         'zh-CN:title' => 'isDevelopment 是否为开发环境',
     ])]
@@ -591,6 +668,12 @@ final class AppTest extends TestCase
         });
 
         static::assertSame('foo', $app->environment());
+    }
+
+    public function testEnvironment2(): void
+    {
+        $app = $this->createApp();
+        static::assertSame('development', $app->environment());
     }
 
     #[Api([

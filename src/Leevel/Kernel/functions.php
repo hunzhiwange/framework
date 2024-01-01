@@ -19,7 +19,9 @@ class Leevel extends ProxyApp
 {
 }
 
-if (!function_exists('__')) { /** @codeCoverageIgnore */
+// @codeCoverageIgnoreStart
+if (!function_exists('__')) {
+    /** @codeCoverageIgnoreEnd */
     /**
      * 获取语言.
      */
