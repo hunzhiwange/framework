@@ -55,7 +55,7 @@ trait Enum
     {
         if (!enum_exists(static::class)) {
             return \defined(static::class.'::'.$key) ?
-                constant(static::class.'::'.$key) :
+                \constant(static::class.'::'.$key) :
                 throw new \OutOfBoundsException(
                     sprintf('Key `%s` is not part of %s', $key, static::class)
                 );
@@ -78,7 +78,7 @@ trait Enum
     /**
      * 获取给定值的键.
      */
-    public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): string|false
+    public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): false|int|string
     {
         try {
             static::convertEnumValue($value);
@@ -101,10 +101,10 @@ trait Enum
     public static function description(null|bool|float|int|string|self $value, string $group = Msg::class): string
     {
         static::convertEnumValue($value);
-        $value = static::normalizeEnumValue($value, $group);
+        $normalizeValue = static::normalizeEnumValue($value, $group);
         $data = static::descriptions($group);
 
-        return false !== ($key = array_search($value, $data['value'], true)) ?
+        return false !== ($key = array_search($normalizeValue, $data['value'], true)) ?
                 $data['description'][$key] :
                 throw new \OutOfBoundsException(
                     sprintf('Value `%s` is not part of %s:%s', $value, static::class, $group)
@@ -215,12 +215,15 @@ trait Enum
 
         try {
             try {
+                /** @phpstan-ignore-next-line */
                 $value = static::from($value);
             } catch (\TypeError $e) {
                 // 枚举值只能是整型或者字符串，这里兼容一下
                 if (\is_string($value) && !ctype_digit($value)) {
                     throw new \OutOfBoundsException('Invalid enum value.');
                 }
+
+                /** @phpstan-ignore-next-line */
                 $value = static::from(\is_string($value) ? (int) $value : $value);
             }
         } catch (\ValueError $e) {
@@ -240,11 +243,13 @@ trait Enum
         }
 
         $descriptionsCached[$className] = [];
+        // @phpstan-ignore-next-line
         foreach ((new \ReflectionClass($className))->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
             foreach ((new \ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
                 $group = $attribute->getName();
                 if (class_exists($group)) {
-                    $description = ($attribute->newInstance()() ?? '');
+                    /** @phpstan-ignore-next-line */
+                    $description = $attribute->newInstance()() ?? '';
                 } else {
                     $group = false === str_contains($group, '\\') ? $group :
                         substr($group, strripos($group, '\\') + 1);

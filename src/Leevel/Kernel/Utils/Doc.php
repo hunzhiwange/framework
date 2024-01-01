@@ -168,7 +168,7 @@ class Doc
     /**
      * 是否一个文件一个类.
      *
-     * - 多个文件在同一个类，因为 Psr4 查找规则，只可能在当前文件，则可以共享 use 文件导入
+     * - 一个文件多个类，因为 Psr4 查找规则，只可能在当前文件，则可以共享 use 文件导入
      */
     protected static function isOneFileOneClass(array $contentLines): bool
     {

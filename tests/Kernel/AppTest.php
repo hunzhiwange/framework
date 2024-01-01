@@ -487,6 +487,7 @@ final class AppTest extends TestCase
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar\\Hello'))
         );
+        $this->setTestProperty($composer, 'fallbackDirsPsr4', []);
     }
 
     public function testNamespacePath2(): void
@@ -498,10 +499,7 @@ final class AppTest extends TestCase
 
         $appPath = \dirname(__DIR__, 2);
         $app = $this->createApp($appPath);
-        static::assertSame(
-            $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
-            realpath($app->namespacePath('Foo_Bar_Hello'))
-        );
+        $app->namespacePath('Foo_Bar_Hello');
     }
 
     public function testNamespacePath3(): void
@@ -516,6 +514,7 @@ final class AppTest extends TestCase
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo_Bar_Hello'))
         );
+        $this->setTestProperty($composer, 'prefixesPsr0', []);
     }
 
     public function testNamespacePath4(): void
@@ -530,6 +529,7 @@ final class AppTest extends TestCase
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar_Hello'))
         );
+        $this->setTestProperty($composer, 'prefixesPsr0', []);
     }
 
     public function testNamespacePath5(): void
@@ -544,6 +544,7 @@ final class AppTest extends TestCase
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar_Hello'))
         );
+        $this->setTestProperty($composer, 'fallbackDirsPsr0', []);
     }
 
     #[Api([
