@@ -434,7 +434,7 @@ class AnnotationRouter
     /**
      * 格式化正则.
      */
-    protected function ruleRegex(string $rule, bool $forSingleRegex = false): array
+    protected function ruleRegex(string $rule): array
     {
         $routerVar = [];
         $mapRegex = [
@@ -460,18 +460,10 @@ class AnnotationRouter
             return $regexEncode;
         }, $rule);
 
-        if (false === $forSingleRegex) {
-            $rule = preg_quote($rule);
-        } else {
-            $rule = preg_quote($rule, '/');
-        }
+        $rule = preg_quote($rule);
 
         if ($mapRegex['find']) {
             $rule = str_replace($mapRegex['find'], $mapRegex['replace'], $rule);
-        }
-
-        if (true === $forSingleRegex) {
-            $rule = '/^'.$rule.'$/';
         }
 
         return [$rule, $routerVar];
