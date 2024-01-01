@@ -1845,6 +1845,26 @@ EOT,
         static::assertSame(0, $demo->flush());
     }
 
+    public function testVirtualUpdate2(): void
+    {
+        $demo = new DemoVirtualEntity(['id' => 1]);
+        $demo->update();
+        static::assertNull($demo->flush());
+    }
+
+    #[Api([
+        'zh-CN:title' => 'select 查询实体(虚拟实体)',
+    ])]
+    public function testVirtualSelect(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'The virtual entity does not support select.'
+        );
+
+        DemoVirtualEntity::select();
+    }
+
     public function test1(): void
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
