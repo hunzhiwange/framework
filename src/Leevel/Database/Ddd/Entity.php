@@ -2322,9 +2322,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     protected function removeVirtualColumnData(array &$data): void
     {
-        $fields = static::fields();
         foreach ($data as $field => $v) {
-            if (!empty($fields[$field][static::VIRTUAL_COLUMN])) {
+            if (static::isVirtualProp($field)) {
                 unset($data[$field]);
             }
         }

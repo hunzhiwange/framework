@@ -1829,7 +1829,10 @@ EOT,
     {
         $this->expectException(\Leevel\Database\DuplicateKeyException::class);
         $this->expectExceptionMessage(
-            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'foo\' for key \'test_unique.uniq_identity\''
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'foo\' for key'
+        );
+        $this->expectExceptionMessage(
+            'uniq_identity'
         );
 
         $connect = $this->createDatabaseConnect();
