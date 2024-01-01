@@ -12,10 +12,13 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
+use Tests\Database\Ddd\Entity\DemoUnique;
+use Tests\Database\Ddd\Entity\DemoUniqueNew;
 use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\DemoVirtualEntity;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnumButClassNotFound;
+use Tests\Database\Ddd\Entity\EntityWithEnumValidator;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
@@ -254,6 +257,249 @@ eot;
             $data,
             $this->varJson(
                 $validator->error()
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(默认场景)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator::class)]}
+```
+EOT,
+    ])]
+    public function testColumnValidators(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators(EntityWithEnumValidator::VALIDATOR_SCENES);
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:30"
+    ],
+    "status": [
+        [
+            "in",
+            [
+                0,
+                1
+            ]
+        ],
+        "optional"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(继承场景)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator::class)]}
+```
+
+继承场景用法:
+
+``` php
+ 'store' => null
+```
+EOT,
+    ])]
+    public function testColumnValidators2(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('store');
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:30"
+    ],
+    "status": [
+        [
+            "in",
+            [
+                0,
+                1
+            ]
+        ],
+        "optional"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(合并场景)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator::class)]}
+```
+
+继承场景用法:
+
+``` php
+':update' => [
+    \Leevel\Validate\IValidator::OPTIONAL,
+],
+```
+EOT,
+    ])]
+    public function testColumnValidators3(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update');
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:30",
+        "optional"
+    ],
+    "status": [
+        [
+            "in",
+            [
+                0,
+                1
+            ]
+        ],
+        "optional"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(替换场景)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator::class)]}
+```
+
+继承场景用法:
+
+``` php
+'update_new' => [
+    'required',
+    'max_length:10',
+],
+```
+EOT,
+    ])]
+    public function testColumnValidators4(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update_new');
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:10"
+    ],
+    "status": [
+        [
+            "in",
+            [
+                0,
+                1
+            ]
+        ],
+        "optional"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
             )
         );
     }
@@ -1566,20 +1812,6 @@ EOT,
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The virtual entity does not support select');
 
-        $connect = $this->createDatabaseConnect();
-
-        static::assertSame(
-            1,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title' => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                    'delete_at' => 0,
-                ])
-        );
-
         DemoVirtualEntity::meta();
     }
 
@@ -1591,6 +1823,97 @@ EOT,
         $demo = new DemoVirtualEntity(['id' => 1]);
         $demo->delete();
         static::assertSame(0, $demo->flush());
+    }
+
+    public function test1(): void
+    {
+        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectExceptionMessage(
+            'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'foo\' for key \'test_unique.uniq_identity\''
+        );
+
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('test_unique')
+                ->insert([
+                    'name' => 'hello world',
+                    'identity' => 'foo',
+                ])
+        );
+
+        $post = new DemoUnique([
+            'name' => 'hello world2',
+            'identity' => 'foo',
+        ]);
+        $post->save()->flush();
+    }
+
+    public function test2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('test_unique')
+                ->insert([
+                    'name' => 'hello world',
+                    'identity' => 'foo',
+                ])
+        );
+
+        $post = new DemoUniqueNew([
+            'name' => 'hello world23',
+            'identity' => 'foo',
+        ]);
+        $affectedRow = $post->update()->flush();
+        static::assertSame(1, $affectedRow);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnNames 回所有字段名字',
+    ])]
+    public function testColumnNames(): void
+    {
+        $this->initI18n();
+
+        $data = <<<'eot'
+{
+    "id": "ID",
+    "title": "标题",
+    "user_id": "用户ID",
+    "summary": "文章摘要",
+    "create_at": "创建时间",
+    "delete_at": "删除时间"
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                Post::columnNames(),
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnName 返回字段名字',
+    ])]
+    public function testColumnName(): void
+    {
+        $this->initI18n();
+
+        static::assertSame('用户ID', Post::columnName('user_id'));
+    }
+
+    public function testColumnName2(): void
+    {
+        $this->initI18n();
+
+        static::assertSame('', Post::columnName('user_id_not_found'));
     }
 
     protected function initI18n(): void
@@ -1605,6 +1928,6 @@ EOT,
 
     protected function getDatabaseTable(): array
     {
-        return ['post', 'composite_id', 'test_version', 'without_primarykey'];
+        return ['post', 'test_unique', 'composite_id', 'test_version', 'without_primarykey'];
     }
 }

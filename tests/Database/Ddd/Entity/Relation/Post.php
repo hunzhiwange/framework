@@ -21,27 +21,33 @@ class Post extends Entity
 
     #[Struct([
         self::READONLY => true,
+        self::COLUMN_NAME => 'ID',
     ])]
     protected ?int $id = null;
 
     #[Struct([
+        self::COLUMN_NAME => '标题',
     ])]
     protected ?string $title = null;
 
     #[Struct([
+        self::COLUMN_NAME => '用户ID',
     ])]
     protected ?int $userId = null;
 
     #[Struct([
+        self::COLUMN_NAME => '文章摘要',
     ])]
     protected ?string $summary = null;
 
     #[Struct([
+        self::COLUMN_NAME => '创建时间',
     ])]
     protected ?string $createAt = null;
 
     #[Struct([
         self::CREATE_FILL => 0,
+        self::COLUMN_NAME => '删除时间',
     ])]
     protected ?int $deleteAt = null;
 

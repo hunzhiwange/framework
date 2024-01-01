@@ -487,8 +487,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      * @see https://github.com/laravel/framework
      * @see https://github.com/doctrine/doctrine2
      * @see http://hibernate.org/
-     *
-     * @throws \InvalidArgumentException
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
@@ -1264,20 +1262,28 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 是否为虚拟属性.
+     */
+    public static function isVirtualProp(string $prop): bool
+    {
+        static::validate($prop = static::unCamelizeProp($prop));
+        $struct = static::fields()[$prop];
+
+        return !empty($struct[self::VIRTUAL_COLUMN]);
+    }
+
+    /**
      * 是否为关联属性.
      */
     public static function isRelation(string $prop): bool
     {
         static::validate($prop = static::unCamelizeProp($prop));
         $struct = static::fields()[$prop];
-        if (isset($struct[self::BELONGS_TO])
-            || isset($struct[self::HAS_MANY])
-            || isset($struct[self::HAS_ONE])
-            || isset($struct[self::MANY_MANY])) {
-            return true;
-        }
 
-        return false;
+        return isset($struct[self::BELONGS_TO])
+             || isset($struct[self::HAS_MANY])
+             || isset($struct[self::HAS_ONE])
+             || isset($struct[self::MANY_MANY]);
     }
 
     /**
@@ -1612,9 +1618,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         if (!$key) {
             // 如果没有设置主键，那么所有字段将会变成虚拟主键
             // 如果没有设置主键，但是设置了唯一键，这个时候你可以手动将唯一键设置为虚拟主键，系统不会自动帮你处理
+            // 这里需要排除掉虚拟字段
             $key = [];
             foreach (static::fields() as $k => $_) {
-                if (!static::isRelation($k)) {
+                if (!static::isRelation($k) && !static::isVirtualProp($k)) {
                     $key[] = $k;
                 }
             }
@@ -2081,11 +2088,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         if (!isset($defaultType)) {
             return $value;
         }
+
         $defaultType = $this->parseDatabaseColumnType($defaultType);
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             return $this->{$transformValueMethod}($value);
         }
+
         if (method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             return $this->{$builtinTransformValueMethod}($value);
         }
@@ -2814,11 +2823,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 }
 
-if (!\function_exists(__NAMESPACE__.'\\__')) {
+if (!\function_exists(__NAMESPACE__.'\\__')) { /** @codeCoverageIgnore */
     function __(string $text, ...$data): string
     {
         if (!class_exists(Gettext::class)) {
-            return sprintf($text, ...$data);
+            return sprintf($text, ...$data); // @codeCoverageIgnore
         }
 
         return Gettext::handle($text, ...$data);
