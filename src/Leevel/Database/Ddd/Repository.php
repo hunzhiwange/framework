@@ -219,7 +219,7 @@ class Repository
     /**
      * 取得所有记录.
      */
-    public function findAll(null|\Closure|ISpecification $condition = null): EntityCollection|Collection|array
+    public function findAll(null|\Closure $condition = null): EntityCollection|Collection|array
     {
         $select = $this
             ->select()
@@ -237,7 +237,7 @@ class Repository
     /**
      * 返回一列数据.
      */
-    public function findList(null|\Closure|ISpecification $condition, mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(?\Closure $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
         $select = $this
             ->select()
@@ -254,7 +254,7 @@ class Repository
     /**
      * 取得记录数量.
      */
-    public function findCount(null|\Closure|ISpecification $condition = null, string $field = '*'): int
+    public function findCount(?\Closure $condition = null, string $field = '*'): int
     {
         $select = $this
             ->select()
@@ -273,7 +273,7 @@ class Repository
      *
      * - 可以渲染 HTML.
      */
-    public function findPage(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, string $column = '*', array $option = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $option = []): Page
     {
         $select = $this
             ->select()
@@ -290,7 +290,7 @@ class Repository
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, array $option = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $option = []): Page
     {
         $select = $this
             ->select()
@@ -307,7 +307,7 @@ class Repository
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, null|\Closure|ISpecification $condition = null, array $option = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $option = []): Page
     {
         $select = $this
             ->select()
@@ -326,7 +326,7 @@ class Repository
      *
      * @throws \Leevel\Database\Ddd\DataNotFoundException
      */
-    public function validateDataExists(array $data, ?string $field = null, null|\Closure|ISpecification $condition = null, string $countField = '*'): void
+    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*'): void
     {
         if (!$field) {
             $field = $this->entity->singlePrimaryKey();
@@ -353,7 +353,7 @@ class Repository
     /**
      * 条件查询器.
      */
-    public function condition(\Closure|ISpecification $condition): Select
+    public function condition(\Closure $condition): Select
     {
         $select = $this
             ->select()
@@ -431,24 +431,8 @@ class Repository
     /**
      * 处理查询条件.
      */
-    protected function normalizeCondition(\Closure|ISpecification $condition, Select $select): void
+    protected function normalizeCondition(\Closure $condition, Select $select): void
     {
-        if ($condition instanceof ISpecification) {
-            $this->normalizeSpec($select, $condition);
-
-            return;
-        }
-
         $condition($select, $this->entity);
-    }
-
-    /**
-     * 处理规约查询.
-     */
-    protected function normalizeSpec(Select $select, ISpecification $spec): void
-    {
-        if ($spec instanceof ISpecification && $spec->isSatisfiedBy($this->entity)) {
-            $spec->handle($select, $this->entity);
-        }
     }
 }
