@@ -27,12 +27,12 @@ final class RegisterTest extends TestCase
 
         $dispatch = $container->make('event');
 
-        $dispatch->register('test', Listener1::class);
+        $dispatch->register('test_event', Listener1::class);
 
-        $dispatch->handle('test');
+        $dispatch->handle('test_event');
 
         static::assertSame($_SERVER['test'], 'hello');
-        static::assertSame($_SERVER['event_name'], 'test');
+        static::assertSame($_SERVER['event_name'], 'test_event');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
