@@ -68,7 +68,7 @@ class Doc
     public function handle(string $className): string
     {
         // @phpstan-ignore-next-line
-        if (false === ($lines = $this->parseFileContnet($reflection = new \ReflectionClass($className)))) {
+        if (false === ($lines = $this->parseFileContent($reflection = new \ReflectionClass($className)))) {
             return '';
         }
 
@@ -115,7 +115,7 @@ class Doc
     {
         $doc = new static('', '', '', '');
         // @phpstan-ignore-next-line
-        if (false === ($lines = $doc->parseFileContnet(new \ReflectionClass($className)))) {
+        if (false === ($lines = $doc->parseFileContent(new \ReflectionClass($className)))) {
             return '';
         }
 
@@ -134,7 +134,7 @@ class Doc
     public static function getClassBody(string $className): string
     {
         /** @phpstan-ignore-next-line */
-        $lines = (new static('', '', '', ''))->parseFileContnet($reflectionClass = new \ReflectionClass($className));
+        $lines = (new static('', '', '', ''))->parseFileContent($reflectionClass = new \ReflectionClass($className));
         if (false === $lines) {
             return '';
         }
@@ -203,7 +203,7 @@ class Doc
     /**
      * 解析文档内容.
      */
-    protected function parseFileContnet(\ReflectionClass $reflection): array|false
+    protected function parseFileContent(\ReflectionClass $reflection): array|false
     {
         if (!$fileName = $reflection->getFileName()) {
             return false;
