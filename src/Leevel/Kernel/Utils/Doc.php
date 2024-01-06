@@ -156,9 +156,11 @@ class Doc
 
                 continue;
             }
-            if ($k === $startLine && true === $hasUse) {
+
+            if ($k === $startLine && $hasUse) {
                 $result[] = '';
             }
+
             $result[] = $v;
         }
 
@@ -221,9 +223,7 @@ class Doc
             return '';
         }
 
-        if (!($info = $this->parseComment($info, $reflection->getName()))) {
-            return '';
-        }
+        $info = $this->parseComment($info, $reflection->getName());
 
         $data = [];
         $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), '#');
@@ -250,6 +250,7 @@ class Doc
             if (!$this->isMethodNeedParsed($method)) {
                 continue;
             }
+
             $markdown .= $this->parseMethodContent($method, $reflection);
         }
 
@@ -265,9 +266,7 @@ class Doc
             return '';
         }
 
-        if (!($info = $this->parseComment($info, $reflectionClass->getName().'/'.$method->getName()))) {
-            return '';
-        }
+        $info = $this->parseComment($info, $reflectionClass->getName().'/'.$method->getName());
 
         $data = [];
         $data[] = $this->formatTitle($this->parseDocItem($info, 'title'), $this->parseDocItem($info, 'level', '##'));
@@ -288,14 +287,10 @@ class Doc
         $info = [];
         foreach ($methodAttributes as $attribute) {
             if (Api::class === $attribute->getName()) {
-                $info = $attribute->getArguments()[0] ?? [];
+                $info = (array) ($attribute->getArguments()[0] ?? []);
 
                 break;
             }
-        }
-
-        if (!$info) {
-            return [];
         }
 
         return $info;

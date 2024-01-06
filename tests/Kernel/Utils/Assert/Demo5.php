@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Kernel\Utils\Assert\Doc;
+namespace Tests\Kernel\Utils\Assert;
 
 class Demo5
 {
