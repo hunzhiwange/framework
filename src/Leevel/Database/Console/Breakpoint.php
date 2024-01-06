@@ -18,8 +18,6 @@ class Breakpoint extends PhinxBreakpoint
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {

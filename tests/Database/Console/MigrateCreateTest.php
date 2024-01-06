@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\SeedRun;
+use Leevel\Database\Console\Create;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-final class MigrateSeedRun extends TestCase
+final class MigrateCreateTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new SeedRun(),
+            new Create(),
             [
-                'command' => 'migrate:seedrun',
+                'command' => 'migrate:create',
+                'name' => 'hello world',
             ],
             function ($container): void {
                 $this->initContainerService($container);
@@ -44,12 +45,12 @@ final class MigrateSeedRun extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('using adapter mysql'),
+            $this->normalizeContent('The migration class name "hello world" is invalid. Please use CamelCase format.'),
             $result
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('All Done. Took'),
+            $this->normalizeContent('migrate:create'),
             $result
         );
     }

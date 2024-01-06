@@ -4,23 +4,36 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\Migrate;
-use Leevel\Database\Console\Rollback;
+use Leevel\Database\Console\SeedCreate;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-final class MigrateRollback extends TestCase
+final class MigrateSeedCreateTest extends TestCase
 {
     use BaseCommand;
+
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        $seedsFile = \dirname(__DIR__, 2).'/assets/database/seeds/HelloWorld.php';
+        if (is_file($seedsFile)) {
+            unlink($seedsFile);
+        }
+    }
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Rollback(),
+            new SeedCreate(),
             [
-                'command' => 'migrate:rollback',
+                'command' => 'migrate:seedcreate',
+                'name' => 'HelloWorld',
             ],
             function ($container): void {
                 $this->initContainerService($container);
@@ -28,17 +41,6 @@ final class MigrateRollback extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-
-        // 恢复回滚
-        $resultMigrate = $this->runCommand(
-            new Migrate(),
-            [
-                'command' => 'migrate:migrate',
-            ],
-            function ($container): void {
-                $this->initContainerService($container);
-            }
-        );
 
         static::assertStringContainsString(
             $this->normalizeContent('using config file'),
@@ -56,30 +58,13 @@ final class MigrateRollback extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('ordering by creation time'),
+            $this->normalizeContent('using seed base class Phinx\\Seed\\AbstractSeed'),
             $result
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: reverting'),
+            $this->normalizeContent('created tests/assets/database/seeds/HelloWorld.php'),
             $result
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('All Done. Took'),
-            $result
-        );
-
-        $resultMigrate = $this->normalizeContent($resultMigrate);
-
-        static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrating'),
-            $resultMigrate
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
-            $resultMigrate
         );
     }
 

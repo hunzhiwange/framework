@@ -18,8 +18,6 @@ class Migrate extends PhinxMigrate
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {

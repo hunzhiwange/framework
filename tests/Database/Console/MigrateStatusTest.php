@@ -4,36 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\SeedCreate;
+use Leevel\Database\Console\Status;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-final class MigrateSeedCreate extends TestCase
+final class MigrateStatusTest extends TestCase
 {
     use BaseCommand;
-
-    protected function setUp(): void
-    {
-        $this->tearDown();
-    }
-
-    protected function tearDown(): void
-    {
-        $seedsFile = \dirname(__DIR__, 2).'/assets/database/seeds/HelloWorld.php';
-        if (is_file($seedsFile)) {
-            unlink($seedsFile);
-        }
-    }
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new SeedCreate(),
+            new Status(),
             [
-                'command' => 'migrate:seedcreate',
-                'name' => 'HelloWorld',
+                'command' => 'migrate:status',
             ],
             function ($container): void {
                 $this->initContainerService($container);
@@ -58,12 +44,12 @@ final class MigrateSeedCreate extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('using seed base class Phinx\\Seed\\AbstractSeed'),
+            $this->normalizeContent('[Migration ID]'),
             $result
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('created tests/assets/database/seeds/HelloWorld.php'),
+            $this->normalizeContent('Status'),
             $result
         );
     }

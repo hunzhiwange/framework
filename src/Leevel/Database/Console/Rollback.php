@@ -18,8 +18,6 @@ class Rollback extends PhinxRollback
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {

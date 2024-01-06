@@ -4,35 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\Breakpoint;
+use Leevel\Database\Console\Migrate;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-final class MigrateBreakpoint extends TestCase
+final class MigrateMigrateTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Breakpoint(),
+            new Migrate(),
             [
-                'command' => 'migrate:breakpoint',
-                '--target' => '20191005015700',
-            ],
-            function ($container): void {
-                $this->initContainerService($container);
-            }
-        );
-
-        $resultRemove = $this->runCommand(
-            new Breakpoint(),
-            [
-                'command' => 'migrate:breakpoint',
-                '--target' => '20191005015700',
-                '--unset' => true,
+                'command' => 'migrate:migrate',
             ],
             function ($container): void {
                 $this->initContainerService($container);
@@ -40,7 +27,6 @@ final class MigrateBreakpoint extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-        $resultRemove = $this->normalizeContent($resultRemove);
 
         static::assertStringContainsString(
             $this->normalizeContent('using config file'),
@@ -58,18 +44,8 @@ final class MigrateBreakpoint extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('Breakpoint set for 20191005015700 RoleSoftDeleted'),
+            $this->normalizeContent('ordering by creation time'),
             $result
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('warning no environment specified, defaulting to: development'),
-            $resultRemove
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('Breakpoint cleared for 20191005015700 RoleSoftDeleted'),
-            $resultRemove
         );
     }
 

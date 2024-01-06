@@ -18,8 +18,6 @@ class Status extends PhinxStatus
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {

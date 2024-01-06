@@ -18,8 +18,6 @@ class Create extends PhinxCreate
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {

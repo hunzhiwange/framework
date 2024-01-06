@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\Migrate;
+use Leevel\Database\Console\SeedRun;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
-final class MigrateMigrate extends TestCase
+final class MigrateSeedRunTest extends TestCase
 {
     use BaseCommand;
 
     public function testBaseUse(): void
     {
         $result = $this->runCommand(
-            new Migrate(),
+            new SeedRun(),
             [
-                'command' => 'migrate:migrate',
+                'command' => 'migrate:seedrun',
             ],
             function ($container): void {
                 $this->initContainerService($container);
@@ -44,7 +44,12 @@ final class MigrateMigrate extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('ordering by creation time'),
+            $this->normalizeContent('using adapter mysql'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('All Done. Took'),
             $result
         );
     }

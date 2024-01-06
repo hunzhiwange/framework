@@ -18,8 +18,6 @@ class SeedCreate extends PhinxSeedCreate
 
     /**
      * {@inheritDoc}
-     *
-     * @codeCoverageIgnore
      */
     protected function configure(): void
     {
