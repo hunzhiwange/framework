@@ -2036,7 +2036,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             return;
         }
 
-        foreach (static::fields() as $field => $v) {
+        foreach ($fields as $field => $v) {
             $camelizeProp = static::camelizeProp($field);
             if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
                 $this->withProp($field, $this->{$defaultValueMethod}(), $fromStorage, true, $ignoreUndefinedProp);

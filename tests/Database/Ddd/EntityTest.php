@@ -22,6 +22,7 @@ use Tests\Database\Ddd\Entity\EntityWithEnumValidator;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
+use Tests\Database\Ddd\Entity\PostNew;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\StatusEnum;
@@ -1957,6 +1958,25 @@ eot;
         $this->initI18n();
 
         static::assertSame('', Post::columnName('user_id_not_found'));
+    }
+
+    #[Api([
+        'zh-CN:title' => '构造器初始化数据自动转换',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew::class)]}
+```
+EOT,
+    ])]
+    public function test3(): void
+    {
+        $container = new Container();
+        $container->instance('app', $container);
+
+        $entity = new PostNew(['title' => 'foo']);
+        $entity->create()->flush();
     }
 
     protected function initI18n(): void
