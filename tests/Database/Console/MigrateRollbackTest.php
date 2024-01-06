@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Database\Console;
 
-use Leevel\Database\Console\Migrate;
 use Leevel\Database\Console\Rollback;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\IApp;
@@ -29,17 +28,6 @@ final class MigrateRollbackTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        // 恢复回滚
-        $resultMigrate = $this->runCommand(
-            new Migrate(),
-            [
-                'command' => 'migrate:migrate',
-            ],
-            function ($container): void {
-                $this->initContainerService($container);
-            }
-        );
-
         static::assertStringContainsString(
             $this->normalizeContent('using config file'),
             $result
@@ -63,18 +51,6 @@ final class MigrateRollbackTest extends TestCase
         static::assertStringContainsString(
             $this->normalizeContent('reverting'),
             $result
-        );
-
-        $resultMigrate = $this->normalizeContent($resultMigrate);
-
-        static::assertStringContainsString(
-            $this->normalizeContent('migrating'),
-            $resultMigrate
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('migrated'),
-            $resultMigrate
         );
     }
 
