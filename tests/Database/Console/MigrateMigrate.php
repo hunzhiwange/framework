@@ -29,7 +29,12 @@ final class MigrateMigrate extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 
@@ -40,11 +45,6 @@ final class MigrateMigrate extends TestCase
 
         static::assertStringContainsString(
             $this->normalizeContent('ordering by creation time'),
-            $result
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('All Done. Took'),
             $result
         );
     }

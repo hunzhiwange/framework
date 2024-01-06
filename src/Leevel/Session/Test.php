@@ -7,8 +7,6 @@ namespace Leevel\Session;
 /**
  * session.test.
  *
- * @internal
- *
  * @coversNothing
  */
 final class Test extends Session implements ISession

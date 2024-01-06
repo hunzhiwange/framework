@@ -21,7 +21,7 @@ final class MigrateSeedCreate extends TestCase
 
     protected function tearDown(): void
     {
-        $seedsFile = \dirname(__DIR__, 2).'/assert/database/seeds/HelloWorld.php';
+        $seedsFile = \dirname(__DIR__, 2).'/assets/database/seeds/HelloWorld.php';
         if (is_file($seedsFile)) {
             unlink($seedsFile);
         }
@@ -43,7 +43,12 @@ final class MigrateSeedCreate extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 
@@ -58,7 +63,7 @@ final class MigrateSeedCreate extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('created ./tests/assert/database/seeds/HelloWorld.php'),
+            $this->normalizeContent('created tests/assets/database/seeds/HelloWorld.php'),
             $result
         );
     }

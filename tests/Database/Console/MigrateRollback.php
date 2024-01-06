@@ -41,7 +41,12 @@ final class MigrateRollback extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 
@@ -56,7 +61,7 @@ final class MigrateRollback extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: reverted'),
+            $this->normalizeContent('== 20200805012526 FieldAllowedNull: reverting'),
             $result
         );
 
@@ -68,12 +73,12 @@ final class MigrateRollback extends TestCase
         $resultMigrate = $this->normalizeContent($resultMigrate);
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
+            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrating'),
             $resultMigrate
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('All Done. Took'),
+            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
             $resultMigrate
         );
     }

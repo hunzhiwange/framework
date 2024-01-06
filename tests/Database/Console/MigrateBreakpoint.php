@@ -43,7 +43,12 @@ final class MigrateBreakpoint extends TestCase
         $resultRemove = $this->normalizeContent($resultRemove);
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 

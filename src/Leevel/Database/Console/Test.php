@@ -10,8 +10,6 @@ use Phinx\Console\Command\Test as PhinxTest;
 
 /**
  * 数据库测试环境是否正常.
- *
- * @internal
  */
 final class Test extends PhinxTest
 {

@@ -29,7 +29,12 @@ final class MigrateStatus extends TestCase
         $result = $this->normalizeContent($result);
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config file ./phinx.php'),
+            $this->normalizeContent('using config file'),
+            $result
+        );
+
+        static::assertStringContainsString(
+            $this->normalizeContent('phinx.php'),
             $result
         );
 
