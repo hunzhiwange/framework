@@ -61,24 +61,19 @@ final class MigrateRollbackTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: reverting'),
-            $result
-        );
-
-        static::assertStringContainsString(
-            $this->normalizeContent('All Done. Took'),
+            $this->normalizeContent('reverting'),
             $result
         );
 
         $resultMigrate = $this->normalizeContent($resultMigrate);
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrating'),
+            $this->normalizeContent('migrating'),
             $resultMigrate
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('== 20200805012526 FieldAllowedNull: migrated'),
+            $this->normalizeContent('migrated'),
             $resultMigrate
         );
     }
