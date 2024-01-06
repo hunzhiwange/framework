@@ -6,7 +6,6 @@ namespace Leevel\Kernel\Bootstrap;
 
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
-use Leevel\Log\Manager;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -145,18 +144,6 @@ class RegisterExceptionRuntime
         return $this->app
             ->container()
             ->make(IRuntime::class)
-        ;
-    }
-
-    /**
-     * 返回日志管理器.
-     */
-    protected function getLogManager(): Manager
-    {
-        // @phpstan-ignore-next-line
-        return $this->app
-            ->container()
-            ->make(Manager::class)
         ;
     }
 }

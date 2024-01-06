@@ -203,7 +203,7 @@ abstract class Runtime implements IRuntime
         }
 
         return JsonResponse::fromJsonString(
-            json_encode($data) ?: '',
+            json_encode($data, JSON_UNESCAPED_UNICODE) ?: '',
             $this->normalizeStatusCode($e),
             $this->normalizeHeaders($e)
         );
@@ -353,7 +353,7 @@ abstract class Runtime implements IRuntime
     protected function renderWithFile(string $filepath, array $vars = []): string
     {
         if (!is_file($filepath)) {
-            throw new \Exception(sprintf('Exception file %s is not extis.', $filepath));
+            throw new \Exception(sprintf('Exception file %s is not exist.', $filepath));
         }
 
         extract($vars);
@@ -375,7 +375,7 @@ abstract class Runtime implements IRuntime
     protected function renderJsonWithFile(string $filepath, array $vars = []): array
     {
         if (!is_file($filepath)) {
-            throw new \Exception(sprintf('Exception file %s is not extis.', $filepath));
+            throw new \Exception(sprintf('Exception file %s is not exist.', $filepath));
         }
 
         extract($vars);

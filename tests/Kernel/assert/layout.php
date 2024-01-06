@@ -5,11 +5,9 @@ declare(strict_types=1);
 if (!(isset($errorBlocking) && false === $errorBlocking)) {
     $message = $messageDefault ?? '';
 }
-?>
 
-<div id="status-code"><?php echo $statusCode ?? 500; ?></div>
+if (isset($shouldJson) && true === $shouldJson) {
+    return require __DIR__.'/layout_json.php';
+}
 
-<div id="content">
-    <p id="title"><?php echo $title ?? ''; ?></p>
-    <p id="sub-title"><?php echo $code ?? 0; ?> <?php echo $message ?? ''; ?></p>
-</div>
+return require __DIR__.'/layout_http.php';

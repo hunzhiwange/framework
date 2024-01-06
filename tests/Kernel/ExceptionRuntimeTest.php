@@ -59,6 +59,16 @@ EOT,
 ])]
 final class ExceptionRuntimeTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $this->tearDown();
+    }
+
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     #[Api([
         'zh-CN:title' => '基本使用',
         'zh-CN:description' => <<<'EOT'
@@ -85,7 +95,7 @@ EOT,
     ])]
     public function testBaseUse(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
@@ -205,7 +215,7 @@ EOT,
     ])]
     public function testRender(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -241,7 +251,7 @@ EOT,
     ])]
     public function testRenderForConsole(): void
     {
-        $app = new AppRuntimeForConsole($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntimeForConsole($container = new Container(), __DIR__.'/app');
 
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
@@ -294,7 +304,7 @@ EOT,
     ])]
     public function testRenderWithCustomRenderMethod(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -342,7 +352,7 @@ EOT,
     ])]
     public function testRenderWithCustomRenderMethod2(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -379,7 +389,7 @@ EOT,
     ])]
     public function testRenderToJson(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -430,7 +440,7 @@ EOT,
     ])]
     public function testRenderWithCustomRenderMethodToJson(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -496,7 +506,7 @@ EOT,
     ])]
     public function testRendorWithHttpExceptionView(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -545,7 +555,7 @@ EOT,
     ])]
     public function testRendorWithHttpExceptionViewFor404(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -600,7 +610,7 @@ EOT,
     ])]
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultView(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -629,7 +639,7 @@ EOT,
 
     public function testRendorWithHttpExceptionViewButNotFoundView(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -649,8 +659,14 @@ EOT,
         $this->assertInstanceof(Response::class, $resultResponse = $this->invokeTestMethod($runtime, 'rendorWithHttpExceptionView', [$e]));
 
         $content = $resultResponse->getContent();
+        $contentNew = '<div id="status-code">405</div>
 
-        static::assertStringContainsString('Tests\\Kernel\\Exception8: hello world', $content);
+<div id="content">
+    <p id="title">方法禁用</p>
+    <p id="sub-title">0 hello world</p>
+</div>';
+
+        static::assertSame($contentNew, $content);
         static::assertSame(405, $resultResponse->getStatusCode());
     }
 
@@ -659,7 +675,7 @@ EOT,
     ])]
     public function testRenderWithDebugIsOff(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -700,7 +716,7 @@ EOT,
     ])]
     public function testRenderWithDebugIsOn(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -734,14 +750,176 @@ EOT,
         static::assertSame(500, $resultResponse->getStatusCode());
     }
 
+    #[Api([
+        'zh-CN:title' => 'render JSON 异常响应渲染',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Runtime22**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime22::class)]}
+```
+
+**Tests\Kernel\Exception1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
+```
+EOT,
+    ])]
+    public function test1(): void
+    {
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
+
+        $request = $this->createMock(Request::class);
+
+        $request->method('isAcceptJson')->willReturn(true);
+        static::assertTrue($request->isAcceptJson());
+
+        $container->singleton('request', function () use ($request) {
+            return $request;
+        });
+
+        $option = new Option([
+            'app' => [
+                'debug' => false,
+                'environment' => 'development',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime22($app);
+
+        $e = new Exception1('hello world');
+
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
+
+        $content = $resultResponse->getContent();
+
+        static::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
+        static::assertSame(500, $resultResponse->getStatusCode());
+    }
+
+    #[Api([
+        'zh-CN:title' => 'render JSON 异常响应渲染',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Runtime22**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime22::class)]}
+```
+
+**Tests\Kernel\Exception1**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception1::class)]}
+```
+EOT,
+    ])]
+    public function test2(): void
+    {
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
+
+        $request = $this->createMock(Request::class);
+
+        $request->method('isAcceptJson')->willReturn(true);
+        static::assertTrue($request->isAcceptJson());
+
+        $container->singleton('request', function () use ($request) {
+            return $request;
+        });
+
+        $option = new Option([
+            'app' => [
+                'debug' => false,
+                'environment' => 'development',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime22($app);
+
+        $e = new Exception1('hello world');
+
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
+
+        $content = $resultResponse->getContent();
+
+        static::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
+        static::assertSame(500, $resultResponse->getStatusCode());
+    }
+
+    #[Api([
+        'zh-CN:title' => 'render JSON 异常响应渲染',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Kernel\Runtime33**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Runtime33::class)]}
+```
+
+**Tests\Kernel\Exception8**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Exception8::class)]}
+```
+EOT,
+    ])]
+    public function test3(): void
+    {
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
+
+        $request = $this->createMock(Request::class);
+
+        $request->method('isAcceptJson')->willReturn(true);
+        static::assertTrue($request->isAcceptJson());
+
+        $container->singleton('request', function () use ($request) {
+            return $request;
+        });
+
+        $option = new Option([
+            'app' => [
+                'debug' => false,
+                'environment' => 'development',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime33($app);
+
+        $e = new Exception8('hello world');
+
+        $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
+
+        $content = $resultResponse->getContent();
+
+        static::assertStringContainsString('{"error":{"title":"方法禁用","code":0,"message":"hello world","duration":5}}', $content);
+        static::assertSame(405, $resultResponse->getStatusCode());
+    }
+
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            sprintf('Exception file %s is not extis.', __DIR__.'/assert/notFoundDefault.php')
+            sprintf('Exception file %s is not exist.', __DIR__.'/assert/notFoundDefault.php')
         );
 
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $option = new Option([
             'app' => [
@@ -762,7 +940,7 @@ EOT,
 
     public function testRenderForEntityNotFoundException(): void
     {
-        $app = new AppRuntime($container = new Container(), $appPath = __DIR__.'/app');
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
         $request = $this->createMock(Request::class);
 
@@ -797,10 +975,65 @@ EOT,
         static::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
         static::assertSame(404, $resultResponse->getStatusCode());
     }
+
+    public function testReportToLogError(): void
+    {
+        $app = new AppRuntime($container = new Container(), __DIR__.'/app');
+
+        $this->assertInstanceof(IContainer::class, $container);
+        $this->assertInstanceof(Container::class, $container);
+
+        $option = new Option([
+            'app' => [
+                ':composer' => [
+                    'i18ns' => [
+                        'extend',
+                    ],
+                ],
+            ],
+            'i18n' => [
+                'default' => 'en-US',
+            ],
+        ]);
+
+        $container->singleton('option', function () use ($option) {
+            return $option;
+        });
+
+        $runtime = new Runtime11($app);
+
+        $e = new Exception1('hello world');
+
+        static::assertNull($runtime->report($e));
+    }
+
+    public function test4(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Exception file not_found.php is not exist.'
+        );
+
+        $app = new AppRuntime(new Container(), __DIR__.'/app');
+        $runtime = new Runtime11($app);
+        $this->invokeTestMethod($runtime, 'renderJsonWithFile', ['not_found.php', []]);
+    }
 }
 
 class AppRuntime extends Apps
 {
+    protected function registerBaseProvider(): void
+    {
+    }
+}
+
+class AppRuntimeForNotDebug extends Apps
+{
+    public function isDebug(): bool
+    {
+        return false;
+    }
+
     protected function registerBaseProvider(): void
     {
     }
@@ -861,6 +1094,34 @@ class Runtime22 extends Runtime
     public function getJsonExceptionView(HttpException $e): string
     {
         return '';
+    }
+
+    public function getDefaultJsonExceptionData(\Throwable $e): array
+    {
+        return [
+            'error' => [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ],
+        ];
+    }
+}
+
+class Runtime33 extends Runtime
+{
+    public function getHttpExceptionView(HttpException $e): string
+    {
+        return __DIR__.'/assert/'.$e->getStatusCode().'.php';
+    }
+
+    public function getDefaultHttpExceptionView(): string
+    {
+        return '';
+    }
+
+    public function getJsonExceptionView(HttpException $e): string
+    {
+        return __DIR__.'/assert/'.$e->getStatusCode().'.php';
     }
 
     public function getDefaultJsonExceptionData(\Throwable $e): array
