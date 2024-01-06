@@ -10,7 +10,7 @@ namespace Leevel\Kernel\Utils;
 class IdeHelper
 {
     /**
-     * 解析类 @method 方法签名.
+     * 解析类方法签名.
      */
     public function handle(string $className): string
     {
@@ -178,17 +178,13 @@ class IdeHelper
             $result = '\\'.$result;
         }
 
-        if (str_contains($result, 'or NULL')) {
-            $result = '?'.str_replace(' or NULL', '', $result);
-        }
-
         return $result;
     }
 
     /**
      * 组装一个方法签名.
      *
-     * - 用于 @method 标准签名
+     * - 用于方法标准签名
      */
     protected function packageMethod(array $method): string
     {

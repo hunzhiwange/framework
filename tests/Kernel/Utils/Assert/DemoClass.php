@@ -6,23 +6,23 @@ namespace Tests\Kernel\Utils\Assert;
 
 class DemoClass
 {
-    public function Demo1(): void
+    public function demo1(): void
     {
     }
 
-    public function Demo2(string $hello, int $world): void
+    public function demo2(string $hello, int $world): void
     {
     }
 
     /**
      * demo3.
      */
-    public function Demo3(string $hello, ?int $world = null): string
+    public function demo3(string $hello, ?int $world = null): string
     {
         return 'hello';
     }
 
-    public function Demo4(...$hello): void
+    public function demo4(...$hello): void
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Tests\Kernel\Utils\Assert\Doc;
 use Leevel\Kernel\Utils\Api;
 
 #[Api([
-    'zh-CN:title' => 'demo2',
+    'zh-CN:title' => 'demo3',
     'path' => 'demo3',
     'zh-CN:description' => <<<'EOT'
 {['hello world' . ' php' . ' expression']}
