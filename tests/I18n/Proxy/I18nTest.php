@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Ii8n\Proxy;
+namespace Tests\I18n\Proxy;
 
 use Leevel\Di\Container;
 use Leevel\I18n\I18n;

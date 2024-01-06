@@ -53,20 +53,21 @@ final class IdeHelperTest extends TestCase
             $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
             $result,
         );
+
         static::assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo1()'),
+            $this->normalizeContent('* @method static void demo1()'),
             $outResult,
         );
         static::assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo2(string $hello, int $world)'),
+            $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $outResult,
         );
         static::assertStringContainsString(
-            $this->normalizeContent('* @method static string Demo3(string $hello, ?int $world = null) demo3'),
+            $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $outResult,
         );
         static::assertStringContainsString(
-            $this->normalizeContent('* @method static void Demo4(...$hello)'),
+            $this->normalizeContent('* @method static void demo4(...$hello)'),
             $outResult,
         );
     }

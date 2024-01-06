@@ -71,7 +71,7 @@ final class DocTest extends TestCase
             $result,
         );
         static::assertStringContainsString(
-            $this->normalizeContent('A total of 3 files generate succeed.'),
+            $this->normalizeContent('A total of 4 files generate succeed.'),
             $result,
         );
 
