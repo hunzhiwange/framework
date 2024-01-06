@@ -477,16 +477,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     /**
      * 构造函数.
-     *
-     * - 为最大化避免 getter setter 属性与系统冲突，设置方法以 with 开头，获取方法不带 get.
-     * - ORM 主要基于早年的 QeePHP V2，查询器基于这个版本构建.
-     * - 关联模型实现设计参照了 Laravel 的设计.
-     * - 也借鉴了 Doctrine 和 Java Hibernate 中关于 getter setter 的设计
-     *
-     * @see https://github.com/dualface/qeephp2_x
-     * @see https://github.com/laravel/framework
-     * @see https://github.com/doctrine/doctrine2
-     * @see http://hibernate.org/
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
     {
