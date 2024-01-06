@@ -44,7 +44,7 @@ abstract class Listener extends Observer
 
 class Listener1 extends Listener
 {
-    public function handle($event): void
+    public function handle(string $event): void
     {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';
