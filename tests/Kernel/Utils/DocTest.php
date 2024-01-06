@@ -172,11 +172,11 @@ namespace Tests\Kernel\Utils\Assert\Doc;
 
 class Demo5
 {
-    public function doc1(): void
+    public function __doc2(): void
     {
     }
 
-    public function __doc2(): void
+    public function doc1(): void
     {
     }
 
