@@ -7,7 +7,6 @@ namespace Leevel\Database\Ddd\Relation;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
-use Leevel\Database\Ddd\UnitOfWork;
 
 /**
  * 关联实体基类.
@@ -335,11 +334,6 @@ abstract class Relation
      * 查询关联对象.
      */
     abstract public function sourceQuery(): mixed;
-
-    /**
-     * 存储新的关联对象.
-     */
-    abstract public function storeNewRelation(UnitOfWork $unitOfWork, array $relationData = []): void;
 
     /**
      * 准备关联查询条件.
