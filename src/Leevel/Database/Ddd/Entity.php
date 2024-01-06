@@ -2074,18 +2074,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         $defaultType = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['type'] ?? null;
-        if (!isset($defaultType)) {
-            return $value;
+        if (isset($defaultType)
+            && method_exists($this, $builtinTransformValueMethod = $this->parseDatabaseColumnType($defaultType).'BuiltinTransformValue')) {
+            return $this->{$builtinTransformValueMethod}($value);
         }
-
-        $defaultType = $this->parseDatabaseColumnType($defaultType);
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             return $this->{$transformValueMethod}($value);
-        }
-
-        if (method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
-            return $this->{$builtinTransformValueMethod}($value);
         }
 
         return $value;

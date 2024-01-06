@@ -18,6 +18,7 @@ use Tests\Database\Ddd\Entity\DemoUniqueNew;
 use Tests\Database\Ddd\Entity\DemoVersion;
 use Tests\Database\Ddd\Entity\DemoVirtualEntity;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
+use Tests\Database\Ddd\Entity\EntityWithEnum2;
 use Tests\Database\Ddd\Entity\EntityWithEnumButClassNotFound;
 use Tests\Database\Ddd\Entity\EntityWithEnumValidator;
 use Tests\Database\Ddd\Entity\EntityWithEnumValidator2;
@@ -31,6 +32,7 @@ use Tests\Database\Ddd\Entity\PostNew3;
 use Tests\Database\Ddd\Entity\PostNew4;
 use Tests\Database\Ddd\Entity\PostNew5;
 use Tests\Database\Ddd\Entity\PostNew6;
+use Tests\Database\Ddd\Entity\PostNew7;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\StatusEnum;
@@ -198,6 +200,66 @@ EOT,
                 3
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => '多枚举值',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\EntityWithEnum2**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnum2::class)]}
+```
+EOT,
+    ])]
+    public function testEntityWithEnumDescription2(): void
+    {
+        $this->initI18n();
+
+        $entity = new EntityWithEnum2([
+            'title' => 'foo',
+            'status' => '0,1',
+        ]);
+
+        $data = <<<'eot'
+            {
+                "title": "foo",
+                "status": "0,1",
+                "status_enum": "禁用,启用"
+            }
+            eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $entity->toArray(),
+                2
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => '虚拟属性保存丢弃',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+**Tests\Database\Ddd\Entity\PostNew7**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew7::class)]}
+```
+EOT,
+    ])]
+    public function testVirtualColumnData(): void
+    {
+        $entity = new PostNew7([
+            'title' => 'foo',
+            'content' => 'content',
+        ]);
+        $result = $entity->save()->flush();
+        static::assertSame(1, $result);
     }
 
     public function testEntityWithEnumItemNotFound2(): void
