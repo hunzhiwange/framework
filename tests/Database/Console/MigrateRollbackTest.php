@@ -14,7 +14,7 @@ final class MigrateRollbackTest extends TestCase
 {
     use BaseCommand;
 
-    public function t2estBaseUse(): void
+    public function testBaseUse(): void
     {
         $result = $this->runCommand(
             new Rollback(),

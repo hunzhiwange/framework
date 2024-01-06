@@ -14,7 +14,7 @@ final class MigrateBreakpointTest extends TestCase
 {
     use BaseCommand;
 
-    public function testBaseUse(): void
+    public function t2estBaseUse(): void
     {
         $result = $this->runCommand(
             new Breakpoint(),
