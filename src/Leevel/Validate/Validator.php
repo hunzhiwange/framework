@@ -802,8 +802,8 @@ class Validator implements IValidator
         } elseif ('equal_to' === $rule) {
             $replace['rule'] = $this->parseFieldName($param[0] ?? '');
         } else {
-            foreach ($param as $key => $param) {
-                $replace['rule'.($key ?: '')] = $param;
+            foreach ($param as $key => $value) {
+                $replace['rule'.($key ?: '')] = $value;
             }
         }
 

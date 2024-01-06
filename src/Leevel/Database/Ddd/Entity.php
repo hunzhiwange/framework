@@ -1715,7 +1715,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
             $enumClass = $v[self::ENUM_CLASS];
             if (!enum_exists($enumClass)) {
-                throw new \Exception(sprintf('Enum %s is not exists.', $enumClass));
+                throw new \Exception(sprintf('Enum `%s` is not exists.', $enumClass));
             }
 
             $validatorRules[$field] ??= [];
@@ -1819,6 +1819,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                     $value = $showPropEachCallback($value, $k);
                 }
                 $value = $value->toArray();
+            } elseif ($this->showPropEachCallbackFramework) {
+                $showPropEachCallback = $this->showPropEachCallbackFramework;
+                $value = $showPropEachCallback($value, $k);
             }
 
             // 格式化后保留源数据
@@ -2050,10 +2053,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         $defaultFormat = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['format'] ?? null;
-        if (!isset($defaultFormat)) {
-            return $value;
-        }
-
         if (\is_callable($defaultFormat)) {
             return $defaultFormat($value);
         }

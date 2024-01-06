@@ -12,6 +12,7 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
+use Tests\Database\Ddd\Entity\DemoToArrayShowPropNullRelationEntity;
 use Tests\Database\Ddd\Entity\DemoUnique;
 use Tests\Database\Ddd\Entity\DemoUniqueNew;
 use Tests\Database\Ddd\Entity\DemoVersion;
@@ -19,10 +20,17 @@ use Tests\Database\Ddd\Entity\DemoVirtualEntity;
 use Tests\Database\Ddd\Entity\EntityWithEnum;
 use Tests\Database\Ddd\Entity\EntityWithEnumButClassNotFound;
 use Tests\Database\Ddd\Entity\EntityWithEnumValidator;
+use Tests\Database\Ddd\Entity\EntityWithEnumValidator2;
+use Tests\Database\Ddd\Entity\EntityWithEnumValidator3;
 use Tests\Database\Ddd\Entity\EntityWithoutAnyField;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey;
 use Tests\Database\Ddd\Entity\EntityWithoutPrimaryKeyNullInArray;
 use Tests\Database\Ddd\Entity\PostNew;
+use Tests\Database\Ddd\Entity\PostNew2;
+use Tests\Database\Ddd\Entity\PostNew3;
+use Tests\Database\Ddd\Entity\PostNew4;
+use Tests\Database\Ddd\Entity\PostNew5;
+use Tests\Database\Ddd\Entity\PostNew6;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\StatusEnum;
@@ -503,6 +511,103 @@ eot;
                 $validatorMessages
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(指定字段)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator::class)]}
+```
+EOT,
+    ])]
+    public function testColumnValidators5(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update_new', ['title']);
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:10"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+[]
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'columnValidators 返回字段验证规则(支持自定义消息)',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\EntityWithEnumValidator2::class)]}
+```
+EOT,
+    ])]
+    public function testColumnValidators6(): void
+    {
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator2::columnValidators('update_new', ['title']);
+
+        $data = <<<'eot'
+{
+    "title": [
+        "required",
+        "max_length:10"
+    ]
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorRules
+            )
+        );
+
+        $data = <<<'eot'
+{
+    "title": {
+        "required": "{field} 不能为空 new",
+        "max_length": "{field} 不满足最大长度 {rule} new"
+    }
+}
+eot;
+
+        static::assertSame(
+            $data,
+            $this->varJson(
+                $validatorMessages
+            )
+        );
+    }
+
+    public function testColumnValidators7(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Enum `EnumClassNotFound` is not exists.');
+
+        EntityWithEnumValidator3::columnValidators('update_new', ['title']);
     }
 
     #[Api([
@@ -1220,6 +1325,137 @@ EOT,
     {
         $entity = new Post(['undefined_prop' => 5], true, true);
         static::assertSame([], $entity->toArray());
+    }
+
+    public function test4(): void
+    {
+        $entity = new Post(['title' => 'foo']);
+        $newEntity = $entity->each(function (mixed $value, string $field): mixed {
+            if ('title' === $field) {
+                return 'bar';
+            }
+
+            return $value;
+        });
+        static::assertSame(['title' => 'bar'], $newEntity->toArray());
+    }
+
+    public function test5(): void
+    {
+        $entity = new DemoToArrayShowPropNullRelationEntity(['address' => 'foo', 'hello' => 'new']);
+        $newEntity = $entity->each(function (mixed $value, string $field): mixed {
+            if ('address' === $field) {
+                return 'bar';
+            }
+
+            return $value;
+        });
+        static::assertSame([
+            'address' => 'bar',
+            'foo_bar' => null,
+            'hello' => 'new',
+        ], $newEntity->toArray());
+    }
+
+    #[Api([
+        'zh-CN:title' => '字段支持格式化',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew2::class)]}
+```
+EOT,
+    ])]
+    public function test6(): void
+    {
+        $entity = new PostNew2(['title' => 'foo']);
+        static::assertSame([
+            'title_format_raw' => 'foo',
+            'title' => 'foo_new',
+        ], $entity->toArray());
+    }
+
+    public function test7(): void
+    {
+        $entity = new PostNew2(['user_id' => 1]);
+        static::assertSame([
+            'user_id_format_raw' => 1,
+            'user_id' => 1,
+        ], $entity->toArray());
+    }
+
+    public function test8(): void
+    {
+        $entity = new PostNew2(['summary' => 'title']);
+        static::assertSame([
+            'summary_format_raw' => 'title',
+            'summary' => 'title',
+        ], $entity->toArray());
+    }
+
+    #[Api([
+        'zh-CN:title' => '字符串支持默认值函数',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew3::class)]}
+```
+EOT,
+    ])]
+    public function test9(): void
+    {
+        $entity = new PostNew3();
+        static::assertSame([
+            'title' => 'hello world',
+        ], $entity->toArray());
+    }
+
+    #[Api([
+        'zh-CN:title' => '浮点数填充数据',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew4::class)]}
+```
+EOT,
+    ])]
+    public function test10(): void
+    {
+        $entity = new PostNew4([
+            'user_id' => '1.3',
+        ]);
+        static::assertSame([
+            'user_id' => 1.3,
+        ], $entity->toArray());
+    }
+
+    public function test11(): void
+    {
+        $entity = new PostNew5();
+        static::assertSame([], $entity->toArray());
+    }
+
+    #[Api([
+        'zh-CN:title' => '默认格式化',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew6::class)]}
+```
+EOT,
+    ])]
+    public function test12(): void
+    {
+        $entity = new PostNew6([
+            'title' => 'hello',
+        ]);
+        static::assertSame([
+            'title' => 'hello_new',
+        ], $entity->toArray());
     }
 
     #[Api([
