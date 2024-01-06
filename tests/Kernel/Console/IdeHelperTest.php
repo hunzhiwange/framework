@@ -127,6 +127,31 @@ final class IdeHelperTest extends TestCase
         );
     }
 
+    public function test3(): void
+    {
+        $result = '';
+        $classPath = \dirname(__DIR__).'/Utils/Assert/DemoClassNotFound.php';
+        $this->obGetContents(function () use (&$result, $classPath): void {
+            $result = $this->runCommand(
+                new IdeHelper(),
+                [
+                    'command' => 'make:idehelper',
+                    'path' => $classPath,
+                ],
+                function ($container): void {
+                    $this->initContainerService($container);
+                }
+            );
+        });
+
+        $result = $this->normalizeContent($result);
+
+        static::assertStringContainsString(
+            $this->normalizeContent(sprintf('File `%s` is not exits.', $classPath)),
+            $result,
+        );
+    }
+
     protected function initContainerService(IContainer $container): void
     {
         $app = new AppForIdeHelper($container, '');

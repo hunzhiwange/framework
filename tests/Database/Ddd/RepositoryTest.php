@@ -135,6 +135,148 @@ final class RepositoryTest extends TestCase
     }
 
     #[Api([
+        'zh-CN:title' => 'findAll 取得所有记录',
+    ])]
+    public function testFindAll(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+            ;
+        }
+
+        $repository = new Repository(new Post());
+        $select = $repository->condition();
+        $result = $repository->findAll();
+
+        $sql = <<<'eot'
+            SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
+            eot;
+        static::assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
+
+        $this->assertInstanceof(Select::class, $select);
+        $this->assertInstanceof(Collection::class, $result);
+        static::assertCount(10, $result);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findAll 取得所有记录支持查询条件',
+    ])]
+    public function testFindAll2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+            ;
+        }
+
+        $repository = new Repository(new Post());
+        $result = $repository->findAll(function (Select $select): void {
+            $select->where('id', '<', 8);
+        });
+
+        $sql = <<<'eot'
+            SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` < :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8)
+            eot;
+        static::assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
+        $this->assertInstanceof(Collection::class, $result);
+        static::assertCount(7, $result);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findCount 取得记录数量',
+    ])]
+    public function testFindCount(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+            ;
+        }
+
+        $repository = new Repository(new Post());
+        $select = $repository->condition();
+        $result = $repository->findCount();
+
+        $sql = <<<'eot'
+            SQL: [91] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at LIMIT 1 | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 LIMIT 1)
+            eot;
+        static::assertSame(
+            $sql,
+            $select->getLastSql(),
+        );
+
+        $this->assertInstanceof(Select::class, $select);
+        static::assertSame(10, $result);
+    }
+
+    #[Api([
+        'zh-CN:title' => 'findCount 取得记录数量支持查询条件',
+    ])]
+    public function testFindCount2(): void
+    {
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i < 10; ++$i) {
+            $connect
+                ->table('post')
+                ->insert([
+                    'title' => 'hello world',
+                    'user_id' => 1,
+                    'summary' => 'post summary',
+                    'delete_at' => 0,
+                ])
+            ;
+        }
+
+        $repository = new Repository(new Post());
+        $result = $repository->findCount(function (Select $select): void {
+            $select->where('id', '<', 8);
+        });
+
+        $sql = <<<'eot'
+            SQL: [118] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` < :post_id LIMIT 1 | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` < 8 LIMIT 1)
+            eot;
+        static::assertSame(
+            $sql,
+            $repository->getLastSql(),
+        );
+
+        static::assertSame(7, $result);
+    }
+
+    #[Api([
         'zh-CN:title' => 'insertAll 支持事件',
     ])]
     public function testInsertAllEvent(): void

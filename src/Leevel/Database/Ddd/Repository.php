@@ -221,14 +221,7 @@ class Repository
      */
     public function findAll(?\Closure $condition = null): EntityCollection|Collection|array
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         // @phpstan-ignore-next-line
         return $select->findAll();
@@ -239,14 +232,7 @@ class Repository
      */
     public function findList(?\Closure $condition, mixed $fieldValue, ?string $fieldKey = null): array
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         return $select->list($fieldValue, $fieldKey);
     }
@@ -256,14 +242,7 @@ class Repository
      */
     public function findCount(?\Closure $condition = null, string $field = '*'): int
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         return $select->findCount($field);
     }
@@ -275,14 +254,7 @@ class Repository
      */
     public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $option = []): Page
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         return $select->page($currentPage, $perPage, $column, $option);
     }
@@ -292,14 +264,7 @@ class Repository
      */
     public function findPageMacro(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $option = []): Page
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         return $select->pageMacro($currentPage, $perPage, $option);
     }
@@ -309,14 +274,7 @@ class Repository
      */
     public function findPagePrevNext(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $option = []): Page
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
+        $select = $this->condition($condition);
 
         return $select->pagePrevNext($currentPage, $perPage, $option);
     }
@@ -332,10 +290,7 @@ class Repository
             $field = $this->entity->singlePrimaryKey();
         }
         $data = array_values(array_unique($data));
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
+        $select = $this->condition();
         $select->whereIn($field, $data);
 
         if ($condition) {
@@ -353,13 +308,16 @@ class Repository
     /**
      * 条件查询器.
      */
-    public function condition(\Closure $condition): Select
+    public function condition(?\Closure $condition = null): Select
     {
         $select = $this
             ->select()
             ->databaseSelect()
         ;
-        $this->normalizeCondition($condition, $select);
+
+        if ($condition) {
+            $this->normalizeCondition($condition, $select);
+        }
 
         return $select;
     }

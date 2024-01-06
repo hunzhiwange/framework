@@ -55,8 +55,8 @@ class Doc extends Command
             'zh-CN',
             (string) $this->getOption('git')
         );
-        if ($this->getOption('logdir')) {
-            $this->utilsDoc->setLogPath($this->getOption('logdir'));
+        if ($logDir = $this->getOption('logdir')) {
+            $this->utilsDoc->setLogPath($logDir);
         }
         $this->classParser = new ClassParser();
 
