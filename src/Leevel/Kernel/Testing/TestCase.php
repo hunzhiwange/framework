@@ -6,7 +6,9 @@ namespace PHPUnit\Framework;
 
 // 兼容执行 `php leevel make:doc` 命令时
 // 无法找到 PHPUnit\Framework\TestCase 的情况
+// @codeCoverageIgnoreStart
 if (!class_exists('PHPUnit\\Framework\\TestCase')) {
+    /** @codeCoverageIgnoreEnd */
     class TestCase
     {
     }

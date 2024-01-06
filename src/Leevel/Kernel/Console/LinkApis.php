@@ -32,7 +32,7 @@ class LinkApis extends Command
         $this->createLink($source, $app->path('www/apis'));
         $this->createLink($source, $app->path('apis'));
 
-        return self::SUCCESS;
+        return self::SUCCESS; // @codeCoverageIgnore
     }
 
     /**
