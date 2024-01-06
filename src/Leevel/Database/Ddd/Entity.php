@@ -2122,10 +2122,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     protected static function propertiesCache(string $className): void
     {
-        if (isset(static::$propertiesCachedFramework[$className])) {
-            return;
-        }
-
         static::$propertiesCachedFramework[$className] = [];
         if (str_contains($className, '@anonymous')) {
             return;

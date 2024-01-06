@@ -72,7 +72,9 @@ abstract class Dto implements IArray, \ArrayAccess
     public function __construct(array $data = [], bool $ignoreMissingValues = true)
     {
         $this->ignoreMissingValuesFramework = $ignoreMissingValues;
-        static::propertiesCache($className = static::class);
+        if (!isset(static::$propertiesCachedFramework[$className = static::class])) {
+            static::propertiesCache($className);
+        }
         $this->fillDefaultValueWhenConstruct();
         foreach ($data as $prop => $value) {
             $camelizeProp = static::camelizePropertiesName($prop);
@@ -356,10 +358,6 @@ abstract class Dto implements IArray, \ArrayAccess
      */
     protected static function propertiesCache(string $className): void
     {
-        if (isset(static::$propertiesCachedFramework[$className])) {
-            return;
-        }
-
         static::$propertiesCachedFramework[$className] = [
             'type' => [],
             'name' => [],
