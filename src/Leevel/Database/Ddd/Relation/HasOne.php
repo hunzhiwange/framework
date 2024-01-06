@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd\Relation;
 
-use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Database\Ddd\Select;
 
@@ -33,12 +32,5 @@ class HasOne extends HasMany
     public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany($entities, $result, $relation, 'one');
-    }
-
-    protected function createNewRelationEntity(array $relationData): Entity
-    {
-        $relationData[$this->targetKey] = $this->sourceEntity->prop($this->sourceKey);
-
-        return $this->targetEntity->make($relationData);
     }
 }
