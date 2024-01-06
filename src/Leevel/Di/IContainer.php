@@ -43,8 +43,6 @@ interface IContainer extends ContainerInterface
 
     /**
      * 回调自动依赖注入.
-     *
-     * @throws \InvalidArgumentException
      */
     public function call(array|callable|string $callback, array $args = []): mixed;
 
