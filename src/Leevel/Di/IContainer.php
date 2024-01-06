@@ -7,7 +7,7 @@ namespace Leevel\Di;
 use Psr\Container\ContainerInterface;
 
 /**
- * IContainer 接口.
+ * IOC 容器接口.
  */
 interface IContainer extends ContainerInterface
 {
