@@ -219,7 +219,7 @@ class Repository
     /**
      * 取得所有记录.
      */
-    public function findAll(null|\Closure $condition = null): EntityCollection|Collection|array
+    public function findAll(?\Closure $condition = null): EntityCollection|Collection|array
     {
         $select = $this
             ->select()
