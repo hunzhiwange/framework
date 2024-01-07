@@ -151,6 +151,19 @@ EOT,
         );
     }
 
+    public function testBaseUse5(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Condition operator must be string.');
+
+        $connect = $this->createDatabaseConnectMock();
+        $connect
+            ->table('test_query')
+            ->where(['id', 1, 2])
+            ->findAll()
+        ;
+    }
+
     #[Api([
         'zh-CN:title' => 'where 查询条件支持数组方式',
     ])]
@@ -781,7 +794,7 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'whereExists 查询条件',
+        'zh-CN:title' => 'whereExists 查询条件(闭包)',
     ])]
     public function testWhereExists(): void
     {
@@ -813,6 +826,14 @@ EOT,
                 $connect
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'whereExists 查询条件(\Leevel\Database\Select 实例)',
+    ])]
+    public function testWhereExists2(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -835,6 +856,44 @@ EOT,
                 1
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'whereExists 查询条件(\Leevel\Database\Condition 实例)',
+    ])]
+    public function testWhereExists3(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE EXISTS (SELECT `test_query_subsql`.* FROM `test_query_subsql`)",
+                [],
+                false
+            ]
+            eot;
+
+        $subCondition = $connect->table('test_query_subsql')->databaseCondition();
+
+        static::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where([':exists' => $subCondition])
+                    ->findAll(),
+                $connect,
+                1
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'whereExists 查询条件(字符串)',
+    ])]
+    public function testWhereExists4(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [
@@ -855,6 +914,14 @@ EOT,
                 2
             )
         );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'whereExists 查询条件(数组)',
+    ])]
+    public function testWhereExists5(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
 
         $sql = <<<'eot'
             [

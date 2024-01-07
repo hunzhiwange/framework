@@ -2420,7 +2420,7 @@ class Condition
         $this->setConditionItem($cond, ':string');
     }
 
-    protected function addConditionsNormal(array|string|int $cond, ?string $key = null): void
+    protected function addConditionsNormal(array|string|int|float $cond, ?string $key = null): void
     {
         // 处理字符串 "null"
         if (\is_scalar($cond)) {
