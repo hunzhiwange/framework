@@ -33,6 +33,7 @@ use Tests\Database\Ddd\Entity\PostNew4;
 use Tests\Database\Ddd\Entity\PostNew5;
 use Tests\Database\Ddd\Entity\PostNew6;
 use Tests\Database\Ddd\Entity\PostNew7;
+use Tests\Database\Ddd\Entity\PostNew8;
 use Tests\Database\Ddd\Entity\Relation\Post;
 use Tests\Database\Ddd\Entity\Relation\PostForReplace;
 use Tests\Database\Ddd\Entity\StatusEnum;
@@ -1494,6 +1495,26 @@ EOT,
         ], $entity->toArray());
     }
 
+    #[Api([
+        'zh-CN:title' => '自定义转换优先',
+        'zh-CN:description' => <<<'EOT'
+**fixture 定义**
+
+``` php
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Database\Ddd\Entity\PostNew8::class)]}
+```
+EOT,
+    ])]
+    public function test15(): void
+    {
+        $entity = new PostNew8([
+            'user_id' => '1.3',
+        ]);
+        static::assertSame([
+            'user_id' => 6.3,
+        ], $entity->toArray());
+    }
+
     public function test11(): void
     {
         $entity = new PostNew5();
@@ -2253,8 +2274,6 @@ eot;
 
     public function testColumnName2(): void
     {
-        $this->initI18n();
-
         static::assertSame('', Post::columnName('user_id_not_found'));
     }
 
@@ -2270,11 +2289,20 @@ EOT,
     ])]
     public function test3(): void
     {
-        $container = new Container();
-        $container->instance('app', $container);
-
         $entity = new PostNew(['title' => 'foo']);
         $entity->create()->flush();
+    }
+
+    public function test13(): void
+    {
+        $entity = new PostNew5();
+        $this->invokeTestMethod($entity, 'formatPropValue', ['foo', 'bar']);
+    }
+
+    public function test14(): void
+    {
+        $entity = new PostNew5();
+        $this->invokeTestMethod($entity, 'transformPropValue', ['foo', 'bar']);
     }
 
     protected function initI18n(): void

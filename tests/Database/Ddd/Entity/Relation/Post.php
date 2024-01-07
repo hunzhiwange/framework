@@ -115,4 +115,9 @@ class Post extends Entity
     {
         $relation->where('id', '>', 4);
     }
+
+    protected function relationScopeStringUserRelationScope(Relation $relation): void
+    {
+        $relation->where('id', '>', 4);
+    }
 }

@@ -2052,13 +2052,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             return $value;
         }
 
+        // 自定义格式化优先
+        if (method_exists($this, $transformValueMethod = $camelizeProp.'FormatValue')) {
+            return $this->{$transformValueMethod}($value);
+        }
+
         $defaultFormat = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['format'] ?? null;
         if (\is_callable($defaultFormat)) {
             return $defaultFormat($value);
-        }
-
-        if (method_exists($this, $transformValueMethod = $camelizeProp.'FormatValue')) {
-            return $this->{$transformValueMethod}($value);
         }
 
         return $value;
@@ -2073,14 +2074,15 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             return $value;
         }
 
+        // 自定义转换值优先
+        if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
+            return $this->{$transformValueMethod}($value);
+        }
+
         $defaultType = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['type'] ?? null;
         if (isset($defaultType)
             && method_exists($this, $builtinTransformValueMethod = $this->parseDatabaseColumnType($defaultType).'BuiltinTransformValue')) {
             return $this->{$builtinTransformValueMethod}($value);
-        }
-
-        if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
-            return $this->{$transformValueMethod}($value);
         }
 
         return $value;
@@ -2339,6 +2341,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             $condition = array_merge($this->conditionFramework, $condition);
         }
 
+        /** @todo 删除 version 设计,这个不太科学 */
         $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flushFramework = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(self::BEFORE_UPDATING_EVENT, $saveData, $condition);
@@ -2793,6 +2796,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 $this->parseRelationScopeByName($relationScope)($relation);
             } elseif (\is_array($relationScope)) {
                 foreach ($relationScope as $queryMethod => $args) {
+                    if (\is_int($queryMethod)) {
+                        $queryMethod = array_shift($args);
+                    }
+
+                    if (!\is_string($queryMethod)) {
+                        throw new \RuntimeException('Query method must be string.');
+                    }
+
                     $relation->{$queryMethod}(...(array) $args);
                 }
             } elseif ($relationScope instanceof \Closure) {

@@ -159,7 +159,7 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤',
+        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤(闭包)',
     ])]
     public function testEagerWithCondition(): void
     {
@@ -203,6 +203,12 @@ EOT,
         $this->assertInstanceof(Collection::class, $posts);
         static::assertCount(5, $posts);
 
+        $sql = Post::select()->getLastSql();
+        $resultSql = <<<'eot'
+SQL: [92] SELECT `user`.* FROM `user` WHERE `user`.`id` > :user_id AND `user`.`id` IN (:user_id_1_in0) | Params:  2 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [14] :user_id_1_in0 | paramno=1 | name=[14] ":user_id_1_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` > 99999 AND `user`.`id` IN (1))
+eot;
+        static::assertSame($resultSql, $sql);
+
         foreach ($posts as $value) {
             $user = $value->user;
             $this->assertInstanceof(User::class, $user);
@@ -211,6 +217,288 @@ EOT,
             static::assertNull($user->id);
             static::assertNull($user->name);
         }
+    }
+
+    #[Api([
+        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤(字符串)',
+    ])]
+    public function testEagerWithCondition2(): void
+    {
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        $posts = Post::eager([
+            'user' => 'stringUserRelationScope',
+        ])
+            ->limit(5)
+            ->findAll()
+        ;
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(5, $posts);
+
+        $sql = Post::select()->getLastSql();
+        $resultSql = <<<'eot'
+SQL: [92] SELECT `user`.* FROM `user` WHERE `user`.`id` > :user_id AND `user`.`id` IN (:user_id_1_in0) | Params:  2 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [14] :user_id_1_in0 | paramno=1 | name=[14] ":user_id_1_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` > 4 AND `user`.`id` IN (1))
+eot;
+        static::assertSame($resultSql, $sql);
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+            $this->assertInstanceof(User::class, $user);
+            static::assertNotSame(1, $user->id);
+            static::assertNotSame('niu', $user->name);
+            static::assertNull($user->id);
+            static::assertNull($user->name);
+        }
+    }
+
+    #[Api([
+        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤(关联数组)',
+    ])]
+    public function testEagerWithCondition3(): void
+    {
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        $posts = Post::eager([
+            'user' => [
+                'where' => ['id', '>', 4],
+                'orderBy' => ['id DESC'],
+            ],
+        ])
+            ->limit(5)
+            ->findAll()
+        ;
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(5, $posts);
+
+        $sql = Post::select()->getLastSql();
+        $resultSql = <<<'eot'
+SQL: [118] SELECT `user`.* FROM `user` WHERE `user`.`id` > :user_id AND `user`.`id` IN (:user_id_1_in0) ORDER BY `user`.`id` DESC | Params:  2 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [14] :user_id_1_in0 | paramno=1 | name=[14] ":user_id_1_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` > 4 AND `user`.`id` IN (1) ORDER BY `user`.`id` DESC)
+eot;
+        static::assertSame($resultSql, $sql);
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+
+            $this->assertInstanceof(User::class, $user);
+            static::assertNotSame(1, $user->id);
+            static::assertNotSame('niu', $user->name);
+            static::assertNull($user->id);
+            static::assertNull($user->name);
+        }
+    }
+
+    #[Api([
+        'zh-CN:title' => 'eager 预加载关联支持查询条件过滤(索引数组)',
+    ])]
+    public function testEagerWithCondition4(): void
+    {
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        $posts = Post::eager([
+            'user' => [
+                ['where', 'id', '>', 4],
+                'where' => ['id', '>', 5],
+                ['orderBy', 'id DESC'],
+            ],
+        ])
+            ->limit(5)
+            ->findAll()
+        ;
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(5, $posts);
+
+        $sql = Post::select()->getLastSql();
+        $resultSql = <<<'eot'
+SQL: [147] SELECT `user`.* FROM `user` WHERE `user`.`id` > :user_id AND `user`.`id` > :user_id_1 AND `user`.`id` IN (:user_id_2_in0) ORDER BY `user`.`id` DESC | Params:  3 | Key: Name: [8] :user_id | paramno=0 | name=[8] ":user_id" | is_param=1 | param_type=1 | Key: Name: [10] :user_id_1 | paramno=1 | name=[10] ":user_id_1" | is_param=1 | param_type=1 | Key: Name: [14] :user_id_2_in0 | paramno=2 | name=[14] ":user_id_2_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` > 4 AND `user`.`id` > 5 AND `user`.`id` IN (1) ORDER BY `user`.`id` DESC)
+eot;
+        static::assertSame($resultSql, $sql);
+
+        foreach ($posts as $value) {
+            $user = $value->user;
+
+            $this->assertInstanceof(User::class, $user);
+            static::assertNotSame(1, $user->id);
+            static::assertNotSame('niu', $user->name);
+            static::assertNull($user->id);
+            static::assertNull($user->name);
+        }
+    }
+
+    public function testEagerWithCondition5(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Query method must be string.');
+
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        Post::eager([
+            'user' => [
+                [1],
+            ],
+        ])
+            ->limit(5)
+            ->findAll()
+        ;
+    }
+
+    public function testEagerWithCondition6(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Query method must be string.');
+
+        $posts = Post::select()->limit(5)->findAll();
+
+        $this->assertInstanceof(Collection::class, $posts);
+        static::assertCount(0, $posts);
+
+        $connect = $this->createDatabaseConnect();
+
+        for ($i = 0; $i <= 5; ++$i) {
+            static::assertSame(
+                $i + 1,
+                $connect
+                    ->table('post')
+                    ->insert([
+                        'title' => 'hello world',
+                        'user_id' => 1,
+                        'summary' => 'Say hello to the world.',
+                        'delete_at' => 0,
+                    ]),
+            );
+        }
+
+        static::assertSame(
+            1,
+            $connect
+                ->table('user')
+                ->insert([
+                    'name' => 'niu',
+                ]),
+        );
+
+        Post::eager([
+            'user' => [
+                [],
+            ],
+        ])
+            ->limit(5)
+            ->findAll()
+        ;
     }
 
     #[Api([
