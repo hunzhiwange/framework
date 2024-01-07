@@ -331,7 +331,8 @@ EOT,
             ->table('test_query')
             ->middlewares(ForceMaster::class)
             ->where('id', '=', 5)
-            ->findAll();
+            ->findAll()
+        ;
     }
 
     public function test8(): void
@@ -343,7 +344,21 @@ EOT,
 
         $connect = $this->createDatabaseConnectMock();
         $condition = new Condition($connect);
-        $this->invokeTestMethod($condition, 'throughMiddlewareTerminate', [[], [], function():void {
+        $this->invokeTestMethod($condition, 'throughMiddlewareTerminate', [[], [], function (): void {
+        }]);
+    }
+
+    public function test9(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Container was not set.'
+        );
+
+        $connect = $this->createDatabaseConnectMock();
+        Condition::withContainer(null);
+        $condition = new Condition($connect);
+        $this->invokeTestMethod($condition, 'throughMiddleware', [[], [], function (): void {
         }]);
     }
 }

@@ -208,7 +208,7 @@ class Condition
 
         // ON DUPLICATE KEY UPDATE 实现
         $duplicateKeyUpdateSql = null;
-        if (\is_array($replace)) {
+        if (\is_array($replace) && $replace) {
             $duplicateKeyUpdateSql = $this->parseDuplicateKeyUpdate($tableName, $replace);
         }
 
@@ -595,18 +595,18 @@ class Condition
     {
         $handleMiddlewares = $terminateMiddlewares = [];
         foreach ($middlewares as $v) {
-            if (!is_string($v)) {
+            if (!\is_string($v)) {
                 throw new \InvalidArgumentException('Condition middleware must be string.');
             }
 
             if (!$force && isset(static::$middlewares[$v])) {
                 $handleMiddleware = static::$middlewares[$v]['handle'] ?? null;
-                if ($handleMiddleware && !in_array($handleMiddleware, $handleMiddlewares, true)) {
+                if ($handleMiddleware && !\in_array($handleMiddleware, $handleMiddlewares, true)) {
                     $handleMiddlewares[] = $handleMiddleware;
                 }
 
                 $terminateMiddleware = static::$middlewares[$v]['terminate'] ?? null;
-                if ($terminateMiddleware && !in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                if ($terminateMiddleware && !\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
                     $terminateMiddlewares[] = $terminateMiddleware;
                 }
 
@@ -614,11 +614,11 @@ class Condition
             }
 
             if (isset(static::$middlewares[$v]['handle'])) {
-               unset(static::$middlewares[$v]['handle']);
+                unset(static::$middlewares[$v]['handle']);
             }
 
             if (isset(static::$middlewares[$v]['terminate'])) {
-               unset(static::$middlewares[$v]['terminate']);
+                unset(static::$middlewares[$v]['terminate']);
             }
 
             $validMiddleware = false;
@@ -627,7 +627,7 @@ class Condition
                 $_ = new \ReflectionMethod($v, 'handle');
                 if ($_->isPublic()) {
                     static::$middlewares[$v]['handle'] = $handleMiddleware = $v.'@handle';
-                    if (!in_array($handleMiddleware, $handleMiddlewares, true)) {
+                    if (!\in_array($handleMiddleware, $handleMiddlewares, true)) {
                         $handleMiddlewares[] = $handleMiddleware;
                     }
                     $validMiddleware = true;
@@ -639,7 +639,7 @@ class Condition
                 $_ = new \ReflectionMethod($v, 'terminate');
                 if ($_->isPublic()) {
                     static::$middlewares[$v]['terminate'] = $terminateMiddleware = $v.'@terminate';
-                    if (!in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                    if (!\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
                         $terminateMiddlewares[] = $terminateMiddleware;
                     }
                     $validMiddleware = true;
@@ -968,7 +968,7 @@ class Condition
             throw new \RuntimeException('MySQL does not support full joins.');
         }
 
-        return $this->addJoin('full join', $table, $cols, ...$cond);
+        return $this->addJoin('full join', $table, $cols, ...$cond); // @codeCoverageIgnore
     }
 
     /**
@@ -1964,7 +1964,7 @@ class Condition
     {
         // MySQL 独有语法
         if (!$this->connect instanceof Mysql) {
-            return '';
+            return ''; // @codeCoverageIgnore
         }
 
         $data = [];
@@ -1981,10 +1981,6 @@ class Condition
                     $this->bind($bindKey, $val);
                 }
             }
-        }
-
-        if (empty($data)) {
-            return '';
         }
 
         return 'ON DUPLICATE KEY UPDATE '.implode(',', $data);
