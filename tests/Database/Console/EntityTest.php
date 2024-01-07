@@ -348,10 +348,59 @@ final class EntityTest extends TestCase
         static::assertStringContainsString('protected ?string $description = null;', $content);
     }
 
+    public function testWithTableFieldFloat(): void
+    {
+        $file = __DIR__.'/../../Console/Base/Entity/FieldFloat.php';
+        static::assertFalse(is_file($file));
+
+        $result = $this->runCommand(new Entity(), [
+            'command' => 'make:entity',
+            'name' => 'FieldFloat',
+            '--table' => 'field_float',
+        ], function ($container): void {
+            $this->initContainerService($container);
+        });
+
+        static::assertTrue(is_file($file));
+
+        $result = $this->normalizeContent($result);
+        static::assertStringContainsString($this->normalizeContent('entity <FieldFloat> created successfully.'), $result);
+        static::assertStringContainsString('class FieldFloat extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('self::COLUMN_NAME => \'价格\',', $content);
+        static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
+        static::assertStringContainsString("'type' => 'float'", $content);
+        static::assertStringContainsString('protected ?float $price = null;', $content);
+    }
+
+    public function testWithTableFieldFloat2(): void
+    {
+        $file = __DIR__.'/../../Console/Foo/Entity/FieldFloat.php';
+        static::assertFalse(is_file($file));
+
+        $result = $this->runCommand(new Entity(), [
+            'command' => 'make:entity',
+            'name' => 'Foo:FieldFloat',
+            '--table' => 'field_float',
+        ], function ($container): void {
+            $this->initContainerService($container);
+        });
+
+        static::assertTrue(is_file($file));
+
+        $result = $this->normalizeContent($result);
+        static::assertStringContainsString($this->normalizeContent('entity <Foo:FieldFloat> created successfully.'), $result);
+        static::assertStringContainsString('class FieldFloat extends Entity', $content = file_get_contents($file));
+        static::assertStringContainsString('self::COLUMN_NAME => \'价格\',', $content);
+        static::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
+        static::assertStringContainsString("'type' => 'float'", $content);
+        static::assertStringContainsString('protected ?float $price = null;', $content);
+    }
+
     protected function clearConsoleFiles(): void
     {
         $dirs = [
             __DIR__.'/../../Console/Base',
+            __DIR__.'/../../Console/Foo',
             __DIR__.'/Base',
         ];
         foreach ($dirs as $dir) {

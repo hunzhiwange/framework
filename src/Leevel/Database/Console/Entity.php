@@ -242,7 +242,7 @@ class Entity extends Make
 
         $tempTemplatePath = tempnam(sys_get_temp_dir(), 'leevel_entity');
         if (false === $tempTemplatePath) {
-            throw new \Exception('Create unique file name failed.');
+            throw new \Exception('Create unique file name failed.'); // @codeCoverageIgnore
         }
         $this->tempTemplatePath = $tempTemplatePath;
         file_put_contents($tempTemplatePath, implode(PHP_EOL, $contentLines));
@@ -505,21 +505,6 @@ class Entity extends Make
     }
 
     /**
-     * 计算字段名最大长度.
-     */
-    protected function computeMaxColumnLength(array $columns): int
-    {
-        $maxColumnLength = 0;
-        foreach ($columns as $v) {
-            if (($fieldLength = \strlen($v['field'])) > $maxColumnLength) {
-                $maxColumnLength = $fieldLength;
-            }
-        }
-
-        return $maxColumnLength;
-    }
-
-    /**
      * 分析字段附加信息数据.
      */
     protected function parseColumnExtendData(array $columns): string
@@ -527,26 +512,10 @@ class Entity extends Make
         $result = [];
         $i = 0;
         foreach ($this->normalizeColumnItem($columns) as $k => $v) {
-            switch (true) {
-                case true === $v:
-                    $v = 'true';
-
-                    break;
-
-                case false === $v:
-                    $v = 'false';
-
-                    break;
-
-                case null === $v:
-                    $v = 'null';
-
-                    break;
-
-                case \is_string($v):
-                    $v = "'".trim($v)."'";
-
-                    break;
+            if (null === $v) {
+                $v = 'null';
+            } elseif (\is_string($v)) {
+                $v = "'".trim($v)."'";
             }
 
             $item = "            '{$k}' => {$v},";
@@ -568,8 +537,7 @@ class Entity extends Make
             $column['default'] = match ($this->parseColumnType($column['type'])) {
                 'int' => (int) $column['default'],
                 'float' => (float) $column['default'],
-                'string' => (string) $column['default'],
-                default => $column['default'],
+                default => (string) $column['default'],
             };
         }
 
@@ -583,18 +551,6 @@ class Entity extends Make
         }
 
         return $data;
-    }
-
-    /**
-     * 整理字段注释.
-     */
-    protected function normalizeColumnComment(string $comment): string
-    {
-        if (!$comment) {
-            return '';
-        }
-
-        return str_replace(PHP_EOL, ' '.PHP_EOL.' ', $comment);
     }
 
     /**
