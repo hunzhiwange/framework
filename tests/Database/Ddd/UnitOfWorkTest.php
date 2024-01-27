@@ -1923,7 +1923,7 @@ EOT,
         );
 
         $post = Post::select()->findEntity(1);
-        $work->setEntity($post, 'password_right');
+        $work->setEntity($post);
 
         $work->update($post);
 
@@ -1939,7 +1939,7 @@ EOT,
         static::assertSame(1, $newPost->getId());
         static::assertSame('new title', $newPost->getTitle());
 
-        $work->setEntity($post, null);
+        $work->setEntity($post);
     }
 
     public function testFlushButNotFoundAny(): void
