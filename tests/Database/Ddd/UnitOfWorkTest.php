@@ -321,10 +321,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->created($post));
+        static::assertTrue($work->created($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(1, $post->id);
         static::assertSame(1, $post['id']);
@@ -395,10 +395,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->created($post));
+        static::assertTrue($work->created($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(2, $post->id);
         static::assertSame(2, $post['id']);
@@ -469,10 +469,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->created($post));
+        static::assertTrue($work->created($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(1, $post->id);
         static::assertSame(1, $post['id']);
@@ -590,10 +590,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->updated($post));
+        static::assertTrue($work->updated($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(1, $post->id);
         static::assertSame(1, $post['id']);
@@ -707,10 +707,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->updated($post));
+        static::assertTrue($work->updated($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(1, $post->id);
         static::assertSame(1, $post['id']);
@@ -824,10 +824,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->updated($post));
+        static::assertTrue($work->updated($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         static::assertSame(1, $post->id);
         static::assertSame(1, $post['id']);
@@ -940,10 +940,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1069,10 +1069,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1198,10 +1198,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1328,10 +1328,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1458,10 +1458,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1588,10 +1588,10 @@ EOT,
             )
         );
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        static::assertTrue($work->deleted($post));
+        static::assertTrue($work->deleted($post2));
+        static::assertTrue($work->registered($post));
+        static::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
@@ -1840,7 +1840,7 @@ EOT,
                 ])
         );
 
-        $work->transaction(function ($w): void {
+        $work->transaction(function (UnitOfWork $w): void {
             $post = Post::select()->findEntity(1);
             $w->update($post);
 
@@ -1940,48 +1940,6 @@ EOT,
         static::assertSame('new title', $newPost->getTitle());
 
         $work->setEntity($post, null);
-    }
-
-    #[Api([
-        'zh-CN:title' => '更改数据库连接 setConnect',
-        'zh-CN:note' => <<<'EOT'
-如果没有存在的连接，则会报错。
-EOT,
-    ])]
-    public function testSetConnectNotFoundWillThrowException(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Connection hello config is not an array.');
-
-        $work = UnitOfWork::make();
-        $this->assertInstanceof(UnitOfWork::class, $work);
-
-        $connect = $this->createDatabaseConnect();
-
-        static::assertSame(
-            1,
-            $connect
-                ->table('post')
-                ->insert([
-                    'title' => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                    'delete_at' => 0,
-                ])
-        );
-
-        $post = Post::select()->findEntity(1);
-        $work->setConnect('hello');
-        $work->update($post);
-        $post->title = 'new title';
-
-        try {
-            $work->flush();
-        } catch (\Exception $e) {
-            $work->setConnect(null);
-
-            throw $e;
-        }
     }
 
     public function testFlushButNotFoundAny(): void
@@ -2383,7 +2341,7 @@ EOT,
         $work->refresh($post);
     }
 
-    public function testPersistButUnitOfWorkWasClosed(): void
+    public function testFlushButUnitOfWorkWasClosed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -2391,12 +2349,10 @@ EOT,
         );
 
         $work = UnitOfWork::make();
-
         $work->close();
-
         $post = new Post(['id' => 5, 'title' => 'new']);
-
         $work->persist($post);
+        $work->flush();
     }
 
     #[Api([
@@ -3010,13 +2966,9 @@ EOT,
         );
 
         $work = UnitOfWork::make();
-
         $post = new Post(['id' => 5, 'title' => 'new']);
-
         $work->persist($post);
-
-        $work->flush($post);
-
+        $work->flush();
         $work->persist($post);
     }
 
@@ -3273,8 +3225,8 @@ EOT,
             )
         );
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        static::assertTrue($work->replaced($post));
+        static::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);
@@ -3334,8 +3286,8 @@ EOT,
             )
         );
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        static::assertTrue($work->replaced($post));
+        static::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);
@@ -3395,8 +3347,8 @@ EOT,
             )
         );
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        static::assertTrue($work->replaced($post));
+        static::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);

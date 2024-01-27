@@ -53,7 +53,7 @@ final class MigrateSeedCreateTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('using option parser php'),
+            $this->normalizeContent('using config parser php'),
             $result
         );
 

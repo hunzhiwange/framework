@@ -515,7 +515,8 @@ class Select
      */
     public function list(mixed $fieldValue, ?string $fieldKey = null): array
     {
-        // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
+        // 纵然有弱水三千，我也只取一瓢
+        // 第一个字段为值，第二个字段为键值，多余的字段丢弃
         $fields = [];
         if (\is_array($fieldValue)) {
             $fields = $fieldValue;

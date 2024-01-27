@@ -502,7 +502,6 @@ class UnitOfWork
      */
     public function refresh(Entity $entity): self
     {
-        $this->validateClosed();
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
             throw new \InvalidArgumentException(sprintf('Entity `%s` was not managed.', $entity::class));
         }
@@ -535,6 +534,7 @@ class UnitOfWork
             return $this->connection;
         }
 
+        // @phpstan-ignore-next-line
         return $this->connection = $this->entity->select()->databaseConnect();
     }
 
@@ -569,18 +569,13 @@ class UnitOfWork
      */
     public function transaction(\Closure $action): mixed
     {
-        $this->beginTransaction();
+        $this->create($closure = function () use ($action): void {
+            $action($this);
+        });
 
-        try {
-            $result = $action($this);
-            $this->commit();
+        $this->flush();
 
-            return $result;
-        } catch (\Throwable $e) {
-            $this->rollBack();
-
-            throw $e;
-        }
+        return $this->getFlushResult($closure);
     }
 
     /**
@@ -614,7 +609,6 @@ class UnitOfWork
      */
     public function close(): void
     {
-        $this->clear();
         $this->closed = true;
         $this->entity = null;
         $this->connection = null;
@@ -686,7 +680,6 @@ class UnitOfWork
      */
     protected function persistEntity(string $position, Entity|\Closure $entity, string $method = 'save'): self
     {
-        $this->validateClosed();
         $id = spl_object_id($entity);
         $entityState = $this->getEntityState($entity, self::STATE_NEW);
 
@@ -757,7 +750,6 @@ class UnitOfWork
      */
     protected function createEntity(Entity|\Closure $entity): self
     {
-        $this->validateClosed();
         $id = spl_object_id($entity);
         $this->validateUpdateAlreadyExists($entity, 'create');
         $this->validateDeleteAlreadyExists($entity, 'create');
@@ -781,7 +773,6 @@ class UnitOfWork
      */
     protected function updateEntity(Entity|\Closure $entity): self
     {
-        $this->validateClosed();
         $id = spl_object_id($entity);
         if ($entity instanceof Entity) {
             $this->validateUniqueKeyData($entity, 'update');
@@ -808,7 +799,6 @@ class UnitOfWork
      */
     protected function replaceEntity(Entity|\Closure $entity): self
     {
-        $this->validateClosed();
         $id = spl_object_id($entity);
         $this->validateDeleteAlreadyExists($entity, 'replace');
         $this->validateCreateAlreadyExists($entity, 'replace');
@@ -832,7 +822,6 @@ class UnitOfWork
      */
     protected function deleteEntity(Entity|\Closure $entity, string $position, int $priority = 500, bool $remove = false): self
     {
-        $this->validateClosed();
         $id = spl_object_id($entity);
 
         if (isset($this->entityCreates[$id])) {
@@ -973,10 +962,6 @@ class UnitOfWork
         while ($remainingUnprocessedEntities) {
             $remainingUnprocessedEntities = $this->persistEntitiesThroughRepository();
         }
-
-        $oldStates = $this->entityStates;
-        $this->clear();
-        $this->entityStates = $oldStates;
     }
 
     /**
