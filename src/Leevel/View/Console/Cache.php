@@ -123,8 +123,8 @@ class Cache extends Command
             return [];
         }
 
-        $option = $this->getFileContent($path);
-        $paths = $option['extra']['leevel-console']['view-cache']['paths'] ?? [];
+        $config = $this->getFileContent($path);
+        $paths = $config['extra']['leevel-console']['view-cache']['paths'] ?? [];
         $path = $this->app->path();
 
         return array_map(function (string $value) use ($path): string {

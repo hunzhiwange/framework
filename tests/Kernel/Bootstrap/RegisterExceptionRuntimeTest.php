@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Bootstrap;
 
+use Leevel\Config\IConfig;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
@@ -13,7 +14,6 @@ use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\IOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\TestCase;
 
@@ -102,10 +102,10 @@ final class RegisterExceptionRuntimeTest extends TestCase
             return $runtime;
         });
 
-        $option = $this->createMock(IOption::class);
-        $option->method('get')->willReturn('production');
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $config = $this->createMock(IConfig::class);
+        $config->method('get')->willReturn('production');
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $bootstrap->handle($app);
@@ -174,10 +174,10 @@ final class RegisterExceptionRuntimeTest extends TestCase
             return $runtime;
         });
 
-        $option = $this->createMock(IOption::class);
-        $option->method('get')->willReturn('production');
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $config = $this->createMock(IConfig::class);
+        $config->method('get')->willReturn('production');
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
         $bootstrap->handle($app);
 

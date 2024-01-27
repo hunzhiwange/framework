@@ -6,7 +6,7 @@ namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
 use Leevel\Event\IDispatch;
-use PDO;
+use Leevel\Server\Pool\Connection;
 use Throwable;
 
 /**
@@ -42,16 +42,16 @@ use Throwable;
  * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                        最大值.
  * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                        最小值.
  * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                        合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $option = [])                                        分页查询.
- * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $option = [])                                                         创建一个无限数据的分页查询.
- * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $option = [])                                                      创建一个只有上下页的分页查询.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $config = [])                                        分页查询.
+ * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                         创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                      创建一个只有上下页的分页查询.
  * @method static int                                                                    pageCount(string $cols = '*')                                                                                              取得分页查询记录数量.
  * @method static string                                                                 makeSql(bool $withLogicGroup = false)                                                                                      获得查询字符串.
  * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                              设置查询缓存.
  * @method static \Leevel\Database\Select                                                forPage(int $page, int $perPage = 10)                                                                                      根据分页设置条件.
  * @method static \Leevel\Database\Select                                                time(string $type = 'date')                                                                                                时间控制语句开始.
  * @method static \Leevel\Database\Select                                                endTime()                                                                                                                  时间控制语句结束.
- * @method static \Leevel\Database\Select                                                reset(?string $option = null)                                                                                              重置查询条件.
+ * @method static \Leevel\Database\Select                                                reset(?string $config = null)                                                                                              重置查询条件.
  * @method static \Leevel\Database\Select                                                comment(string $comment)                                                                                                   查询注释.
  * @method static \Leevel\Database\Select                                                prefix(string $prefix)                                                                                                     prefix 查询.
  * @method static \Leevel\Database\Select                                                table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')           添加一个要查询的表及其要查询的字段.
@@ -136,6 +136,8 @@ use Throwable;
  */
 abstract class Database implements IDatabase
 {
+    use Connection;
+
     /**
      * 所有数据库连接.
      */
@@ -168,12 +170,13 @@ abstract class Database implements IDatabase
      * - master.user:数据库用户名
      * - master.password:数据库密码
      * - master.charset:数据库编码
-     * - master.options:连接参数
+     * - master.configs:连接参数
      * - slave:分布式服务部署模式中，附属服务器列表
      */
-    protected array $option = [
+    protected array $config = [
         'separate' => false,
         'distributed' => false,
+        'sticky' => true,
         'master' => [
             'host' => '127.0.0.1',
             'port' => 3306,
@@ -181,7 +184,7 @@ abstract class Database implements IDatabase
             'user' => '',
             'password' => '',
             'charset' => 'utf8',
-            'options' => [
+            'configs' => [
                 \PDO::ATTR_PERSISTENT => false,
                 \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                 \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -197,6 +200,11 @@ abstract class Database implements IDatabase
      * SQL 最后查询语句.
      */
     protected string $sql = '';
+
+    /**
+     * 最近一次真实查询的 SQL 语句.
+     */
+    protected array $realLastSql = [];
 
     /**
      * SQL 影响记录数量.
@@ -239,17 +247,18 @@ abstract class Database implements IDatabase
     protected ?ICache $cache = null;
 
     /**
-     * 最近一次真实查询的 SQL 语句.
+     * 数据库连接池事务管理器.
      */
-    protected array $realLastSql = [];
+    protected ?PoolTransaction $poolTransaction = null;
 
     /**
      * 构造函数.
      */
-    public function __construct(array $option, ?IDispatch $dispatch = null)
+    public function __construct(array $config, ?IDispatch $dispatch = null, ?PoolTransaction $poolTransaction = null)
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
         $this->dispatch = $dispatch;
+        $this->poolTransaction = $poolTransaction;
     }
 
     /**
@@ -374,6 +383,7 @@ abstract class Database implements IDatabase
     {
         $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
+
         // @phpstan-ignore-next-line
         while ($value = $this->pdoStatement->fetch(\PDO::FETCH_OBJ)) {
             yield $value;
@@ -385,10 +395,10 @@ abstract class Database implements IDatabase
      */
     public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement
     {
+        $bindParamsResult = $this->normalizeBindParams($bindParams);
+        $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
+
         try {
-            $bindParamsResult = $this->normalizeBindParams($bindParams);
-            $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
-            // @phpstan-ignore-next-line
             $this->pdoStatement = $this->pdo($master)->prepare($sql);
             $this->bindParams($bindParamsResult);
             // @phpstan-ignore-next-line
@@ -448,6 +458,11 @@ abstract class Database implements IDatabase
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
                 $this->pdo(true)->beginTransaction(); // @phpstan-ignore-line
+
+                if ($this->poolTransaction) {
+                    $this->poolTransaction->set($this);
+                }
+
                 // @codeCoverageIgnoreStart
             } catch (\Throwable $e) {
                 --$this->transactionLevel;
@@ -485,6 +500,10 @@ abstract class Database implements IDatabase
         if (1 === $this->transactionLevel) {
             // @phpstan-ignore-next-line
             $this->pdo(true)->commit();
+
+            if ($this->poolTransaction) {
+                $this->poolTransaction->remove();
+            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->releaseSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
@@ -503,9 +522,12 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             $this->transactionLevel = 0;
-            // @phpstan-ignore-next-line
             $this->pdo(true)->rollBack();
             $this->isRollbackOnly = false;
+
+            if ($this->poolTransaction) {
+                $this->poolTransaction->remove();
+            }
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             // @codeCoverageIgnoreStart
             $this->rollbackSavepoint($this->getSavepointName());
@@ -689,6 +711,20 @@ abstract class Database implements IDatabase
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function releaseConnect(): void
+    {
+        if (!$this->poolTransaction || $this->poolTransaction->in()) {
+            return;
+        }
+
+        // 数据库驱动 \Leevel\Database\IDatabase 需要实现 \Leevel\Server\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Server\Pool\IConnection::release
+        $this->release();
+    }
+
+    /**
      * 从缓存中获取查询数据.
      */
     protected function getDataFromCache(string $cacheName, ?ICache $cache = null): mixed
@@ -731,10 +767,10 @@ abstract class Database implements IDatabase
     /**
      * 整理当前执行 SQL.
      */
-    protected function normalizeLastSql(\PDOStatement $pdoStatement): string
+    protected function normalizeLastSql(?\PDOStatement $pdoStatement = null): string
     {
         ob_start();
-        $pdoStatement->debugDumpParams();
+        $pdoStatement?->debugDumpParams();
         $sql = trim(ob_get_contents() ?: '', PHP_EOL.' ');
         $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
@@ -755,7 +791,7 @@ abstract class Database implements IDatabase
      */
     protected function normalizeSqlLogCategory(string $sql, bool $failed = false): string
     {
-        return '[SQL'.(true === $failed ? ':FAILED' : '').'] '.$sql;
+        return '[SQL'.($failed ? ':FAILED' : '').'] '.$sql;
     }
 
     /**
@@ -764,7 +800,7 @@ abstract class Database implements IDatabase
     protected function writeConnect(): \PDO
     {
         // @phpstan-ignore-next-line
-        return $this->connect = $this->commonConnect($this->option['master'], IDatabase::MASTER, true);
+        return $this->connect = $this->commonConnect($this->config['master'], IDatabase::MASTER, true);
     }
 
     /**
@@ -772,13 +808,17 @@ abstract class Database implements IDatabase
      */
     protected function readConnect(): \PDO
     {
-        if (false === $this->option['distributed'] || empty($this->option['slave'])) {
+        if (false === $this->config['distributed'] || empty($this->config['slave'])) {
+            return $this->writeConnect();
+        }
+
+        if (!empty($this->config['sticky']) && $this->inTransaction()) {
             return $this->writeConnect();
         }
 
         if (\count($this->connects) <= 1) {
-            foreach ($this->option['slave'] as $read) {
-                $this->commonConnect($read, null);
+            foreach ($this->config['slave'] as $index => $read) {
+                $this->commonConnect($read, (int) $index + 1);
             }
 
             if (0 === \count($this->connects)) {
@@ -787,7 +827,7 @@ abstract class Database implements IDatabase
         }
 
         $connects = $this->connects;
-        if (true === $this->option['separate'] && isset($connects[IDatabase::MASTER])) {
+        if (true === $this->config['separate'] && isset($connects[IDatabase::MASTER])) {
             unset($connects[IDatabase::MASTER]);
         }
 
@@ -806,30 +846,26 @@ abstract class Database implements IDatabase
     /**
      * 连接数据库.
      */
-    protected function commonConnect(array $option = [], ?int $linkId = null, bool $throwException = false): mixed
+    protected function commonConnect(array $config, int $linkId, bool $throwException = false): \PDO|bool
     {
-        if (null === $linkId) {
-            $linkId = \count($this->connects);
-        }
-
         if (!empty($this->connects[$linkId])) {
             return $this->connects[$linkId];
         }
 
-        if (\is_array($option['options']) && isset($option['options'][\PDO::ATTR_ERRMODE])) {
+        if (\is_array($config['configs']) && isset($config['configs'][\PDO::ATTR_ERRMODE])) {
             ConnectionException::errModeExceptionOnly();
         }
 
         try {
-            $connect = new \PDO(
-                $this->parseDsn($option),
-                $option['user'],
-                $option['password'],
-                $option['options'] ?? null,
+            $connection = new \PDO(
+                $this->parseDsn($config),
+                $config['user'],
+                $config['password'],
+                $config['configs'] ?? null,
             );
-            $connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-            return $this->connects[$linkId] = $connect;
+            return $this->connects[$linkId] = $connection;
         } catch (\PDOException $e) {
             if (false === $throwException) {
                 return false;
@@ -872,6 +908,7 @@ abstract class Database implements IDatabase
      * 分析绑定参数类型数据.
      *
      * @todo 是否需要处理 \PDO::PARAM_LOB
+     *
      * @see http://php.net/manual/en/pdo.constants.php
      */
     protected function normalizeBindParamType(mixed $value): ?int
@@ -900,7 +937,7 @@ abstract class Database implements IDatabase
     protected function fetchResult(): array
     {
         // PHP8.0 开始 fetchAll 方法现在始终返回一个数组，而以前 false 可能在失败时返回。
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
     }
 
@@ -926,12 +963,10 @@ abstract class Database implements IDatabase
     protected function setLastSql(string $sql, bool $failed = false): void
     {
         $this->sql = ($failed ? '[FAILED] ' : '').$sql;
-        if ($this->dispatch) {
-            $this->dispatch->handle(
-                IDatabase::SQL_EVENT,
-                $this->normalizeSqlLogCategory($this->sql, $failed),
-            );
-        }
+        $this->dispatch?->handle(
+            IDatabase::SQL_EVENT,
+            $this->normalizeSqlLogCategory($this->sql, $failed),
+        );
     }
 
     /**

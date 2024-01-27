@@ -19,7 +19,7 @@ class Render implements IRender
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'small' => false,
         'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
         'small_template' => false,
@@ -28,12 +28,12 @@ class Render implements IRender
     /**
      * 构造函数.
      */
-    public function __construct(Page $page, array $option = [])
+    public function __construct(Page $page, array $config = [])
     {
         $this->page = $page;
-        if ($option) {
-            $this->option = array_merge($this->option, $option);
-            $this->intOption();
+        if ($config) {
+            $this->config = array_merge($this->config, $config);
+            $this->intConfig();
         }
     }
 
@@ -42,7 +42,7 @@ class Render implements IRender
      */
     public function setSimpleTemplate(): IRender
     {
-        $this->option['template'] = '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}';
+        $this->config['template'] = '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}';
 
         return $this;
     }
@@ -50,11 +50,11 @@ class Render implements IRender
     /**
      * {@inheritDoc}
      */
-    public function render(array $option = []): string
+    public function render(array $config = []): string
     {
-        if ($option) {
-            $this->option = array_merge($this->option, $option);
-            $this->intOption();
+        if ($config) {
+            $this->config = array_merge($this->config, $config);
+            $this->intConfig();
         }
 
         return preg_replace_callback(
@@ -62,7 +62,7 @@ class Render implements IRender
             function ($matches) {
                 return $this->{'get'.ucwords($matches[1]).'Render'}();
             },
-            $this->option['template']
+            $this->config['template']
         );
     }
 
@@ -77,9 +77,9 @@ class Render implements IRender
     /**
      * 初始化配置.
      */
-    protected function intOption(): void
+    protected function intConfig(): void
     {
-        if ($this->option['small_template']) {
+        if ($this->config['small_template']) {
             $this->setSimpleTemplate();
         }
     }
@@ -91,7 +91,7 @@ class Render implements IRender
     {
         return sprintf(
             '<div class="pagination%s">',
-            $this->option['small'] ? ' pagination-small' : ''
+            $this->config['small'] ? ' pagination-small' : ''
         );
     }
 

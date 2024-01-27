@@ -33,11 +33,11 @@ class Action extends Make
 
           <info>php %command.full_name% controller name</info>
 
-        You can also by using the <comment>--stub</comment> option:
+        You can also by using the <comment>--stub</comment> config:
 
           <info>php %command.full_name% name --stub=/stub/action</info>
 
-        You can also by using the <comment>--subdir</comment> option:
+        You can also by using the <comment>--subdir</comment> config:
 
           <info>php %command.full_name% name --subdir=foo/bar</info>
         EOF;

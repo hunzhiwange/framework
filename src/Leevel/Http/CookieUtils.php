@@ -14,7 +14,7 @@ class CookieUtils
     /**
      * 配置.
      */
-    protected static array $option = [
+    protected static array $config = [
         'expire' => 86400,
         'domain' => '',
         'path' => '/',
@@ -27,9 +27,9 @@ class CookieUtils
     /**
      * 初始化配置.
      */
-    public static function initOption(array $option = []): void
+    public static function initConfig(array $config = []): void
     {
-        self::$option = array_merge(self::$option, $option);
+        self::$config = array_merge(self::$config, $config);
     }
 
     /**
@@ -37,30 +37,30 @@ class CookieUtils
      *
      * @throws \Exception
      */
-    public static function makeCookie(string $name, ?string $value = null, array $option = []): Cookie
+    public static function makeCookie(string $name, ?string $value = null, array $config = []): Cookie
     {
-        $option = self::normalizeOptions($option);
-        self::normalizeExpire($option);
+        $config = self::normalizeConfigs($config);
+        self::normalizeExpire($config);
 
         return new Cookie(
             $name,
             $value,
-            $option['expire'],
-            $option['path'],
-            $option['domain'],
-            $option['secure'],
-            $option['httponly'],
-            $option['raw'],
-            $option['samesite'],
+            $config['expire'],
+            $config['path'],
+            $config['domain'],
+            $config['secure'],
+            $config['httponly'],
+            $config['raw'],
+            $config['samesite'],
         );
     }
 
     /**
      * 整理配置.
      */
-    protected static function normalizeOptions(array $option = []): array
+    protected static function normalizeConfigs(array $config = []): array
     {
-        return $option ? array_merge(self::$option, $option) : self::$option;
+        return $config ? array_merge(self::$config, $config) : self::$config;
     }
 
     /**
@@ -68,15 +68,15 @@ class CookieUtils
      *
      * @throws \Exception
      */
-    protected static function normalizeExpire(array &$option): void
+    protected static function normalizeExpire(array &$config): void
     {
-        $option['expire'] = (int) $option['expire'];
-        if ($option['expire'] < 0) {
+        $config['expire'] = (int) $config['expire'];
+        if ($config['expire'] < 0) {
             throw new \Exception('Cookie expire date must greater than or equal 0.');
         }
 
-        if ($option['expire'] > 0) {
-            $option['expire'] = time() + $option['expire'];
+        if ($config['expire'] > 0) {
+            $config['expire'] = time() + $config['expire'];
         }
     }
 }

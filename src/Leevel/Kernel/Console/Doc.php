@@ -62,7 +62,7 @@ class Doc extends Command
 
         $succeedCount = 0;
         foreach ($files as $file) {
-            if (true === $this->convertMarkdown($file)) {
+            if ($this->convertMarkdown($file)) {
                 ++$succeedCount;
             }
         }

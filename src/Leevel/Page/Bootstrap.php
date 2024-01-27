@@ -17,7 +17,7 @@ class Bootstrap implements IRender
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         // lg sm
         'size' => '',
         'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
@@ -28,12 +28,12 @@ class Bootstrap implements IRender
     /**
      * 构造函数.
      */
-    public function __construct(Page $page, array $option = [])
+    public function __construct(Page $page, array $config = [])
     {
         $this->page = $page;
-        if ($option) {
-            $this->option = array_merge($this->option, $option);
-            $this->intOption();
+        if ($config) {
+            $this->config = array_merge($this->config, $config);
+            $this->intConfig();
         }
     }
 
@@ -42,7 +42,7 @@ class Bootstrap implements IRender
      */
     public function setLargeSize(): IRender
     {
-        $this->option['size'] = 'lg';
+        $this->config['size'] = 'lg';
 
         return $this;
     }
@@ -52,7 +52,7 @@ class Bootstrap implements IRender
      */
     public function setSmallSize(): IRender
     {
-        $this->option['size'] = 'sm';
+        $this->config['size'] = 'sm';
 
         return $this;
     }
@@ -60,11 +60,11 @@ class Bootstrap implements IRender
     /**
      * {@inheritDoc}
      */
-    public function render(array $option = []): string
+    public function render(array $config = []): string
     {
-        if ($option) {
-            $this->option = array_merge($this->option, $option);
-            $this->intOption();
+        if ($config) {
+            $this->config = array_merge($this->config, $config);
+            $this->intConfig();
         }
 
         return preg_replace_callback(
@@ -72,7 +72,7 @@ class Bootstrap implements IRender
             function ($matches) {
                 return $this->{'get'.ucwords($matches[1]).'Render'}();
             },
-            $this->option['template']
+            $this->config['template']
         );
     }
 
@@ -87,11 +87,11 @@ class Bootstrap implements IRender
     /**
      * 初始化配置.
      */
-    protected function intOption(): void
+    protected function intConfig(): void
     {
-        if ($this->option['large_size']) {
+        if ($this->config['large_size']) {
             $this->setLargeSize();
-        } elseif ($this->option['small_size']) {
+        } elseif ($this->config['small_size']) {
             $this->setSmallSize();
         }
     }
@@ -111,8 +111,8 @@ class Bootstrap implements IRender
     {
         return sprintf(
             '<ul class="pagination%s">',
-            $this->option['size'] ?
-                ' pagination-'.$this->option['size'] :
+            $this->config['size'] ?
+                ' pagination-'.$this->config['size'] :
                 ''
         );
     }

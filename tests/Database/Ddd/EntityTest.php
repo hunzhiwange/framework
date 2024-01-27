@@ -361,7 +361,7 @@ EOT,
                 1
             ]
         ],
-        "optional"
+        "configal"
     ]
 }
 eot;
@@ -430,7 +430,7 @@ EOT,
                 1
             ]
         ],
-        "optional"
+        "configal"
     ]
 }
 eot;
@@ -481,7 +481,7 @@ EOT,
     "title": [
         "required",
         "max_length:30",
-        "optional"
+        "configal"
     ],
     "status": [
         [
@@ -491,7 +491,7 @@ EOT,
                 1
             ]
         ],
-        "optional"
+        "configal"
     ]
 }
 eot;
@@ -552,7 +552,7 @@ EOT,
                 1
             ]
         ],
-        "optional"
+        "configal"
     ]
 }
 eot;

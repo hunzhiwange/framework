@@ -7,9 +7,9 @@ namespace Tests\Cache\Provider;
 use Leevel\Cache\File;
 use Leevel\Cache\Provider\Register;
 use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 final class RegisterTest extends TestCase
@@ -76,7 +76,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'cache' => [
                 'default' => 'file',
                 'expire' => 86400,
@@ -100,7 +100,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $container;
     }

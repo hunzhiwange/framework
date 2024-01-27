@@ -40,7 +40,7 @@ final class TestQuery extends AbstractMigration
                 `child_one` varchar(255) NOT NULL DEFAULT '',
                 `child_two` varchar(255) NOT NULL DEFAULT '',
                 `goods_id` int(10) NOT NULL DEFAULT '0',
-                `options_id` int(10) NOT NULL DEFAULT '0',
+                `configs_id` int(10) NOT NULL DEFAULT '0',
                 `first_name` varchar(255) NOT NULL DEFAULT '',
                 `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `create_year` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

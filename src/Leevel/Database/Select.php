@@ -16,7 +16,7 @@ use Leevel\Support\Str\UnCamelize;
  * @method static \Leevel\Database\Select forPage(int $page, int $perPage = 10)                                                                                      根据分页设置条件.
  * @method static \Leevel\Database\Select time(string $type = 'date')                                                                                                时间控制语句开始.
  * @method static \Leevel\Database\Select endTime()                                                                                                                  时间控制语句结束.
- * @method static \Leevel\Database\Select reset(?string $option = null)                                                                                              重置查询条件.
+ * @method static \Leevel\Database\Select reset(?string $config = null)                                                                                              重置查询条件.
  * @method static \Leevel\Database\Select comment(string $comment)                                                                                                   查询注释.
  * @method static \Leevel\Database\Select prefix(string $prefix)                                                                                                     prefix 查询.
  * @method static \Leevel\Database\Select table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')           添加一个要查询的表及其要查询的字段.
@@ -162,7 +162,7 @@ class Select
     {
         $this->connect = $connect;
         $this->condition = new Condition($connect);
-        $this->initOption();
+        $this->initConfig();
     }
 
     /**
@@ -635,9 +635,9 @@ class Select
      *
      * - 可以渲染 HTML.
      */
-    public function page(int $currentPage, int $perPage = 10, string $column = '*', array $option = []): Page
+    public function page(int $currentPage, int $perPage = 10, string $column = '*', array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, $this->pageCount($column), $option);
+        $page = new Page($currentPage, $perPage, $this->pageCount($column), $config);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
             ->findAll()
@@ -650,9 +650,9 @@ class Select
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function pageMacro(int $currentPage, int $perPage = 10, array $option = []): Page
+    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, Page::MACRO, $option);
+        $page = new Page($currentPage, $perPage, Page::MACRO, $config);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
             ->findAll()
@@ -665,9 +665,9 @@ class Select
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, array $option = []): Page
+    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, null, $option);
+        $page = new Page($currentPage, $perPage, null, $config);
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
             ->findAll()
@@ -713,7 +713,7 @@ class Select
     /**
      * 初始化查询条件.
      */
-    protected function initOption(): void
+    protected function initConfig(): void
     {
         $this->queryParams = static::$queryParamsDefault;
     }
@@ -854,8 +854,8 @@ class Select
     {
         $this->backupPage = [];
         $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['aggregate'] = $this->condition->options['aggregate'];
-        $this->backupPage['columns'] = $this->condition->options['columns'];
+        $this->backupPage['aggregate'] = $this->condition->configs['aggregate'];
+        $this->backupPage['columns'] = $this->condition->configs['columns'];
         $this->backupPage['bind_params'] = $this->condition->getBindParams();
     }
 
@@ -865,8 +865,8 @@ class Select
     protected function restorePageArgs(): void
     {
         $this->queryParams = $this->backupPage['query_params'];
-        $this->condition->options['aggregate'] = $this->backupPage['aggregate'];
-        $this->condition->options['columns'] = $this->backupPage['columns'];
+        $this->condition->configs['aggregate'] = $this->backupPage['aggregate'];
+        $this->condition->configs['columns'] = $this->backupPage['columns'];
         $this->condition->resetBindParams($this->backupPage['bind_params']);
     }
 

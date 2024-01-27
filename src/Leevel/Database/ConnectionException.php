@@ -23,8 +23,6 @@ class ConnectionException extends \RuntimeException
 
     public static function errModeExceptionOnly(): static
     {
-        $message = 'PDO query property \PDO::ATTR_ERRMODE cannot be set,it is always \PDO::ERRMODE_EXCEPTION.';
-
-        throw new static($message);
+        throw new static('PDO query property \PDO::ATTR_ERRMODE cannot be set,it is always \PDO::ERRMODE_EXCEPTION.');
     }
 }

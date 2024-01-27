@@ -14,7 +14,7 @@ class File extends Session implements ISession
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'id' => null,
         'name' => null,
     ];
@@ -22,9 +22,9 @@ class File extends Session implements ISession
     /**
      * 构造函数.
      */
-    public function __construct(CacheFile $cache, array $option = [])
+    public function __construct(CacheFile $cache, array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
         parent::__construct($cache);
     }
 }

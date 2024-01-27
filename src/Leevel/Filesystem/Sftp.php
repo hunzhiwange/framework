@@ -18,7 +18,7 @@ class Sftp extends Filesystem implements IFilesystem
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         // 主机
         'host' => 'sftp.example.com',
 
@@ -49,8 +49,8 @@ class Sftp extends Filesystem implements IFilesystem
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
         return new SftpAdapter(
-            SftpConnectionProvider::fromArray($this->option),
-            $this->option['root'],
+            SftpConnectionProvider::fromArray($this->config),
+            $this->config['root'],
         );
     }
 }

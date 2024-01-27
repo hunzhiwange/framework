@@ -33,7 +33,7 @@ class DirectoryDoc
 │   │── Infra 基础设施层（Infrastructure）
 │   │   └── Provider 服务提供者 (Provider)
 │   │   └── Repository 仓储 (Repository)
-│-- option 配置目录
+│-- config 配置目录
 │-- storage 缓存目录
 │-- tests 单元测试目录
 │-- vendor Composer 第三方库目录

@@ -14,23 +14,23 @@ class ConvertJson
      *
      * @throws \InvalidArgumentException
      */
-    public static function handle(mixed $data = [], ?int $encodingOptions = null): string
+    public static function handle(mixed $data = [], ?int $encodingConfigs = null): string
     {
-        if (null === $encodingOptions) {
-            $encodingOptions = JSON_UNESCAPED_UNICODE;
+        if (null === $encodingConfigs) {
+            $encodingConfigs = JSON_UNESCAPED_UNICODE;
         }
 
         if ($data instanceof IArray) {
-            $data = json_encode($data->toArray(), $encodingOptions);
+            $data = json_encode($data->toArray(), $encodingConfigs);
         } elseif ($data instanceof IJson) {
-            $data = $data->toJson($encodingOptions);
+            $data = $data->toJson($encodingConfigs);
         } elseif ($data instanceof \JsonSerializable) {
-            $data = json_encode($data->jsonSerialize(), $encodingOptions);
+            $data = json_encode($data->jsonSerialize(), $encodingConfigs);
         } else {
-            $data = json_encode($data, $encodingOptions);
+            $data = json_encode($data, $encodingConfigs);
         }
 
-        if (JSON_THROW_ON_ERROR & $encodingOptions) {
+        if (JSON_THROW_ON_ERROR & $encodingConfigs) {
             return (string) $data;
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\JsonResponse;
@@ -11,10 +12,8 @@ use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
 use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
-use Leevel\Router\Url;
 use Leevel\View\IView;
 use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -791,7 +790,7 @@ EOT,
         static::assertSame(__DIR__.'/assert', $app->themesPath());
         static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
-        $option = new Option([
+        $config = new Config([
             'view' => [
                 'default' => $connect,
                 'action_fail' => 'public/fail',
@@ -808,7 +807,7 @@ EOT,
                 ],
             ],
         ]);
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $request = new ExtendRequestForResponse();
         $container->singleton('request', $request);

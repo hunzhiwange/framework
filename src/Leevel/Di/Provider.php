@@ -21,6 +21,10 @@ abstract class Provider
     {
         $this->container = $container;
         $this->registerAlias();
+
+        if ($this->container->enabledCoroutine()) {
+            $this->registerContextKeys();
+        }
     }
 
     /**
@@ -74,5 +78,23 @@ abstract class Provider
     public function container(): IContainer
     {
         return $this->container;
+    }
+
+    /**
+     * 协程上下文键值.
+     */
+    public static function contextKeys(): array
+    {
+        return [];
+    }
+
+    /**
+     * 注册服务别名.
+     */
+    protected function registerContextKeys(): void
+    {
+        if ($contextKeys = static::contextKeys()) {
+            $this->container->addContextKeys(...$contextKeys);
+        }
     }
 }

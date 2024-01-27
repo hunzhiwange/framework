@@ -39,14 +39,14 @@ abstract class Filesystem implements IFilesystem
     /**
      * 配置.
      */
-    protected array $option = [];
+    protected array $config = [];
 
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
         $this->filesystem();
     }
 
@@ -78,15 +78,15 @@ abstract class Filesystem implements IFilesystem
     {
         return $this->filesystem = new LeagueFilesystem(
             $this->makeFilesystemAdapter(),
-            $this->normalizeOptions()
+            $this->normalizeConfigs()
         );
     }
 
     /**
      * 整理配置.
      */
-    protected function normalizeOptions(array $option = []): array
+    protected function normalizeConfigs(array $config = []): array
     {
-        return $option ? array_merge($this->option, $option) : $this->option;
+        return $config ? array_merge($this->config, $config) : $this->config;
     }
 }

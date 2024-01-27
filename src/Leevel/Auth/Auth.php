@@ -12,7 +12,7 @@ abstract class Auth implements IAuth
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'token' => null,
         'expire' => null,
     ];
@@ -20,9 +20,9 @@ abstract class Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
     }
 
     /**
@@ -30,7 +30,7 @@ abstract class Auth implements IAuth
      */
     public function isLogin(): bool
     {
-        return $this->getLogin() ? true : false;
+        return (bool) $this->getLogin();
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class Auth implements IAuth
     {
         return $this->tokenPersistence(
             $data,
-            null !== $loginTime ? $loginTime : $this->option['expire'],
+            null !== $loginTime ? $loginTime : $this->config['expire'],
         );
     }
 
@@ -65,7 +65,7 @@ abstract class Auth implements IAuth
      */
     public function setTokenName(string $tokenName): void
     {
-        $this->option['token'] = $tokenName;
+        $this->config['token'] = $tokenName;
     }
 
     /**
@@ -75,11 +75,11 @@ abstract class Auth implements IAuth
      */
     public function getTokenName(): string
     {
-        if (!$this->option['token']) {
+        if (!$this->config['token']) {
             throw new \RuntimeException('Token name was not set.');
         }
 
-        return $this->option['token'];
+        return $this->config['token'];
     }
 
     /**

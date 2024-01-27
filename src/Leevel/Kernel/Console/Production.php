@@ -31,7 +31,7 @@ class Production extends Command
     {
         $this->line('Start to optimize you app.');
         $this->callRouter();
-        $this->callOption();
+        $this->callConfig();
         $this->callI18n();
         $this->callView();
         $this->callAutoload();
@@ -57,10 +57,10 @@ class Production extends Command
      *
      * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
-    protected function callOption(): void
+    protected function callConfig(): void
     {
         $this->line('');
-        $this->call('option:cache');
+        $this->call('config:cache');
     }
 
     /**

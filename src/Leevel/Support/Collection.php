@@ -281,9 +281,9 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
     /**
      * {@inheritDoc}
      */
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        return ConvertJson::handle($this->jsonSerialize(), $option);
+        return ConvertJson::handle($this->jsonSerialize(), $config);
     }
 
     /**

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Composer\Autoload\ClassLoader;
+use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
 use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Log\Provider\Register as LogProvider;
-use Leevel\Option\IOption;
 use Leevel\Router\Provider\Register as RouterProvider;
 
 /**
@@ -44,7 +44,7 @@ class App implements IApp
     /**
      * 配置路径.
      */
-    protected ?string $optionPath = null;
+    protected ?string $configPath = null;
 
     /**
      * 语言包路径.
@@ -69,7 +69,7 @@ class App implements IApp
     /**
      * 配置缓存路径.
      */
-    protected ?string $optionCachedPath = null;
+    protected ?string $configCachedPath = null;
 
     /**
      * 路由缓存路径.
@@ -179,17 +179,17 @@ class App implements IApp
     /**
      * {@inheritDoc}
      */
-    public function setOptionPath(string $path): void
+    public function setConfigPath(string $path): void
     {
-        $this->optionPath = $this->realpath($path);
+        $this->configPath = $this->realpath($path);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function optionPath(string $path = ''): string
+    public function configPath(string $path = ''): string
     {
-        return ($this->optionPath ?? $this->path.\DIRECTORY_SEPARATOR.'option').
+        return ($this->configPath ?? $this->path.\DIRECTORY_SEPARATOR.'config').
             $this->normalizePath($path);
     }
 
@@ -279,18 +279,18 @@ class App implements IApp
     /**
      * {@inheritDoc}
      */
-    public function setOptionCachedPath(string $optionCachedPath): void
+    public function setConfigCachedPath(string $configCachedPath): void
     {
-        $this->optionCachedPath = $this->realpath($optionCachedPath);
+        $this->configCachedPath = $this->realpath($configCachedPath);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function optionCachedPath(): string
+    public function configCachedPath(): string
     {
-        $basePath = $this->optionCachedPath ?: $this->storagePath().'/bootstrap';
-        $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'option';
+        $basePath = $this->configCachedPath ?: $this->storagePath().'/bootstrap';
+        $cache = getenv('RUNTIME_ENVIRONMENT') ?: 'config';
 
         return $basePath.'/'.$cache.'.php';
     }
@@ -298,9 +298,9 @@ class App implements IApp
     /**
      * {@inheritDoc}
      */
-    public function isCachedOption(): bool
+    public function isCachedConfig(): bool
     {
-        return is_file($this->optionCachedPath());
+        return is_file($this->configCachedPath());
     }
 
     /**
@@ -351,12 +351,12 @@ class App implements IApp
      */
     public function isDebug(): bool
     {
-        if (null === ($option = $this->container->make('option', throw: false))) {
+        if (null === ($config = $this->container->make('config', throw: false))) {
             return true;
         }
 
         // @phpstan-ignore-next-line
-        return AppEnvEnum::PRODUCTION->value !== $this->environment() && $option->get('debug');
+        return AppEnvEnum::PRODUCTION->value !== $this->environment() && $config->get('debug');
     }
 
     /**
@@ -372,12 +372,12 @@ class App implements IApp
      */
     public function environment(): string
     {
-        if (null === ($option = $this->container->make('option', throw: false))) {
+        if (null === ($config = $this->container->make('config', throw: false))) {
             return AppEnvEnum::DEVELOPMENT->value;
         }
 
         // @phpstan-ignore-next-line
-        return $option->get('environment');
+        return $config->get('environment');
     }
 
     /**
@@ -435,14 +435,14 @@ class App implements IApp
      */
     public function registerAppProviders(): void
     {
-        /** @var IOption $option */
-        $option = $this->container->make('option');
+        /** @var IConfig $config */
+        $config = $this->container->make('config');
 
         // @phpstan-ignore-next-line
-        [$deferredProviders, $deferredAlias] = $option->get(':deferred_providers', [[], []]);
+        [$deferredProviders, $deferredAlias] = $config->get(':deferred_providers', [[], []]);
 
         $this->container->registerProviders(
-            $option->get(':composer.providers', []),
+            $config->get(':composer.providers', []),
             $deferredProviders,
             $deferredAlias
         );

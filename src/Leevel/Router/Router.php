@@ -266,7 +266,7 @@ class Router implements IRouter
 
         // CORS 跨域支持
         // 请求头携带 token 等数据会进行 OPTIONS 请求
-        if ($this->isOptionsRequest()) {
+        if ($this->isConfigsRequest()) {
             $this->resolveMatchedData($basePathsMatchedData, []);
 
             return fn (): Response => new Response('CORS');
@@ -423,10 +423,10 @@ class Router implements IRouter
     {
         $middlewaresKey = static::MIDDLEWARES;
         $result = [$middlewaresKey => []];
-        foreach ($this->getBasePaths() as $path => $option) {
+        foreach ($this->getBasePaths() as $path => $config) {
             if ('*' === $path || preg_match($path, $pathInfo, $matches)) {
-                if (isset($option['middlewares'])) {
-                    $result[$middlewaresKey] = $this->mergeMiddlewares($result[$middlewaresKey], $option['middlewares']);
+                if (isset($config['middlewares'])) {
+                    $result[$middlewaresKey] = $this->mergeMiddlewares($result[$middlewaresKey], $config['middlewares']);
                 }
             }
         }
@@ -699,7 +699,7 @@ class Router implements IRouter
     /**
      * 是否为 OPTIONS 请求.
      */
-    protected function isOptionsRequest(): bool
+    protected function isConfigsRequest(): bool
     {
         return 'OPTIONS' === $this->request->getMethod();
     }

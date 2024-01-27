@@ -72,11 +72,11 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'page' => 'page',
         'range' => 2,
         'render' => 'render',
-        'render_option' => [],
+        'render_config' => [],
         'url' => null,
         'param' => [],
         'fragment' => null,
@@ -87,7 +87,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $option = [])
+    public function __construct(int $currentPage, ?int $perPage = null, ?int $totalRecord = null, array $config = [])
     {
         if ($currentPage < 1) {
             throw new \InvalidArgumentException('Current page must great than 0.');
@@ -96,7 +96,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
         $this->currentPage = $currentPage;
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
     }
 
     /**
@@ -140,7 +140,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function param(array $param): self
     {
-        $this->option['param'] = $param;
+        $this->config['param'] = $param;
 
         return $this;
     }
@@ -150,9 +150,9 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function addParam(string $key, mixed $value): self
     {
-        $tmp = $this->option['param'];
+        $tmp = $this->config['param'];
         $tmp[$key] = $value;
-        $this->option['param'] = $tmp;
+        $this->config['param'] = $tmp;
 
         return $this;
     }
@@ -160,11 +160,11 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * 设置渲染参数.
      */
-    public function renderOption(string $key, mixed $value): self
+    public function renderConfig(string $key, mixed $value): self
     {
-        $tmp = $this->option['render_option'];
+        $tmp = $this->config['render_config'];
         $tmp[$key] = $value;
-        $this->option['render_option'] = $tmp;
+        $this->config['render_config'] = $tmp;
 
         return $this;
     }
@@ -172,10 +172,10 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * 批量设置渲染参数.
      */
-    public function renderOptions(array $option): self
+    public function renderConfigs(array $config): self
     {
-        foreach ($option as $key => $value) {
-            $this->renderOption($key, $value);
+        foreach ($config as $key => $value) {
+            $this->renderConfig($key, $value);
         }
 
         return $this;
@@ -186,7 +186,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function url(?string $url = null): self
     {
-        $this->option['url'] = $url;
+        $this->config['url'] = $url;
 
         return $this;
     }
@@ -196,7 +196,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function setRender(?string $render = null): self
     {
-        $this->option['render'] = $render;
+        $this->config['render'] = $render;
 
         return $this;
     }
@@ -206,7 +206,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function getRender(): string
     {
-        return $this->option['render'] ?: static::RENDER;
+        return $this->config['render'] ?: static::RENDER;
     }
 
     /**
@@ -214,7 +214,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function range(?int $range = null): self
     {
-        $this->option['range'] = $range;
+        $this->config['range'] = $range;
 
         return $this;
     }
@@ -224,8 +224,8 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function getRange(): int
     {
-        return $this->option['range'] ?
-            (int) $this->option['range'] :
+        return $this->config['range'] ?
+            (int) $this->config['range'] :
             static::RANGE;
     }
 
@@ -234,7 +234,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function fragment(?string $fragment = null): self
     {
-        $this->option['fragment'] = $fragment;
+        $this->config['fragment'] = $fragment;
 
         return $this;
     }
@@ -244,7 +244,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function getFragment(): ?string
     {
-        return $this->option['fragment'];
+        return $this->config['fragment'];
     }
 
     /**
@@ -274,7 +274,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function pageName(string $pageName): self
     {
-        $this->option['page'] = $pageName;
+        $this->config['page'] = $pageName;
 
         return $this;
     }
@@ -284,7 +284,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function getPageName(): string
     {
-        return $this->option['page'];
+        return $this->config['page'];
     }
 
     /**
@@ -501,9 +501,9 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * 渲染分页.
      */
-    public function render(null|IRender|string $render = null, array $option = []): string
+    public function render(null|IRender|string $render = null, array $config = []): string
     {
-        $option = array_merge($this->option['render_option'], $option);
+        $config = array_merge($this->config['render_config'], $config);
 
         if (null === $render || \is_string($render)) {
             $render = $render ?: $this->getRender();
@@ -513,7 +513,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
             $render = new $render($this);
         }
 
-        $result = $render->render($option);
+        $result = $render->render($config);
         $this->cachedUrl = null;
 
         return $result;
@@ -546,9 +546,9 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * {@inheritDoc}
      */
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        return ConvertJson::handle($this->jsonSerialize(), $option);
+        return ConvertJson::handle($this->jsonSerialize(), $config);
     }
 
     /**
@@ -562,13 +562,13 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
             return $this->cachedUrl;
         }
 
-        $url = (string) $this->option['url'];
-        $param = $this->option['param'];
-        if (isset($param[$this->option['page']])) {
-            unset($param[$this->option['page']]);
+        $url = (string) $this->config['url'];
+        $param = $this->config['param'];
+        if (isset($param[$this->config['page']])) {
+            unset($param[$this->config['page']]);
         }
         if (!str_contains($url, '{page}')) {
-            $param[$this->option['page']] = '{page}';
+            $param[$this->config['page']] = '{page}';
         }
 
         $this->cachedUrl = $url.

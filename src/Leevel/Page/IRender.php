@@ -12,5 +12,5 @@ interface IRender
     /**
      * 渲染.
      */
-    public function render(array $option = []): string;
+    public function render(array $config = []): string;
 }

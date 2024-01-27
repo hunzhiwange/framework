@@ -288,7 +288,7 @@ final class PageTest extends TestCase
     public function testSetSmallTemplate(): void
     {
         $page = new Page(1, 10, 52, [
-            'render_option' => ['small_template' => true],
+            'render_config' => ['small_template' => true],
         ]);
 
         $data = <<<'eot'
@@ -369,9 +369,9 @@ final class PageTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'renderOption 设置渲染参数',
+        'zh-CN:title' => 'renderConfig 设置渲染参数',
     ])]
-    public function testRenderOption(): void
+    public function testRenderConfig(): void
     {
         $page = new Page(1, 5, 3);
 
@@ -384,7 +384,7 @@ final class PageTest extends TestCase
             $page->render()
         );
 
-        $page->renderOption('small', true);
+        $page->renderConfig('small', true);
 
         $data = <<<'eot'
             <div class="pagination pagination-small"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
@@ -395,7 +395,7 @@ final class PageTest extends TestCase
             $page->render()
         );
 
-        $page->renderOptions(
+        $page->renderConfigs(
             ['small' => true, 'template' => '{prev} {ul} {first} {main} {last} {endul} {next}']
         );
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
+use Leevel\Config\IConfig;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
@@ -16,11 +17,10 @@ use Leevel\Database\Console\SeedRun;
 use Leevel\Database\Console\Status;
 use Leevel\Database\Console\Test;
 use Leevel\Http\Request;
+use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
-use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
-use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,7 +38,7 @@ abstract class KernelConsole implements IKernelConsole
      * 应用初始化执行.
      */
     protected array $bootstraps = [
-        LoadOption::class,
+        LoadConfig::class,
         LoadI18n::class,
         RegisterExceptionRuntime::class,
         TraverseProvider::class,
@@ -170,12 +170,12 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function setGlobalReplace(): void
     {
-        /** @var IOption $option */
-        $option = $this->app
+        /** @var IConfig $config */
+        $config = $this->app
             ->container()
-            ->make('option')
+            ->make('config')
         ;
-        $replace = (array) $option->get('console\\template', []) ?: [];
+        $replace = (array) $config->get('console\\template', []) ?: [];
         Make::setGlobalReplace($replace);
     }
 
@@ -222,12 +222,12 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getCommandNamespaces(): array
     {
-        /** @var IOption $option */
-        $option = $this->app
+        /** @var IConfig $config */
+        $config = $this->app
             ->container()
-            ->make('option')
+            ->make('config')
         ;
 
-        return (array) $option->get(':composer.commands', []) ?: [];
+        return (array) $config->get(':composer.commands', []) ?: [];
     }
 }

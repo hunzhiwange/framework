@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Kernel;
 
 use Leevel\Http\Request;
+use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
-use Leevel\Kernel\Bootstrap\LoadOption;
 use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\Exceptions\IRuntime;
@@ -23,7 +23,7 @@ abstract class Kernel implements IKernel
      * 应用初始化执行.
      */
     protected array $bootstraps = [
-        LoadOption::class,
+        LoadConfig::class,
         LoadI18n::class,
         RegisterExceptionRuntime::class,
         TraverseProvider::class,

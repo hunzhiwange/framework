@@ -12,6 +12,32 @@ use Psr\Container\ContainerInterface;
 interface IContainer extends ContainerInterface
 {
     /**
+     * 是否起用协程.
+     */
+    public const ENABLED_COROUTINE = 'enabledCoroutine';
+
+    /**
+     * 注册的服务.
+     *
+     * - Registered services.
+     */
+    public const SERVICES = 'services';
+
+    /**
+     * 注册的实例.
+     *
+     * - Registered instances.
+     */
+    public const INSTANCES = 'instances';
+
+    /**
+     * 注册的单一实例.
+     *
+     * - Registered singletons.
+     */
+    public const SINGLETONS = 'singletons';
+
+    /**
      * 生成 IOC 容器.
      */
     public static function singletons(): self;
@@ -60,6 +86,31 @@ interface IContainer extends ContainerInterface
      * 清理容器.
      */
     public function clear(): void;
+
+    /**
+     * 添加上下文键值.
+     */
+    public function addContextKeys(string ...$contextKeys): void;
+
+    /**
+     * 清理上下文键值.
+     */
+    public function removeContextKeys(string ...$contextKeys): void;
+
+    /**
+     * 设置上下文解析回调.
+     */
+    public function setContextResolver(?\Closure $contextResolver = null): void;
+
+    /**
+     * 是否处于上下文中.
+     */
+    public function inContext(?string $name = null): bool;
+
+    /**
+     * 是否起用协程.
+     */
+    public function enabledCoroutine(): bool;
 
     /**
      * 执行服务提供者 bootstrap.

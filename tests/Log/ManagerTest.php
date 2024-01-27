@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
 use Leevel\Log\ILog;
 use Leevel\Log\Manager;
-use Leevel\Option\Option;
 use Monolog\Logger;
 use Tests\TestCase;
 
@@ -57,7 +57,7 @@ final class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'log' => [
                 'default' => 'file',
                 'level' => [
@@ -86,7 +86,7 @@ final class ManagerTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $eventDispatch = $this->createMock(IDispatch::class);
         static::assertNull($eventDispatch->handle('event'));
         $container->singleton('event', $eventDispatch);

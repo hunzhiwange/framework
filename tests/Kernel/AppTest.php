@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Leevel\Config\IConfig;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
@@ -12,7 +13,6 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\IOption;
 use Tests\TestCase;
 
 #[Api([
@@ -203,32 +203,32 @@ final class AppTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'optionPath 获取配置路径',
+        'zh-CN:title' => 'configPath 获取配置路径',
     ])]
-    public function testOptionPath(): void
+    public function testConfigPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/option', $app->optionPath());
-        static::assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
+        static::assertSame($appPath.'/config', $app->configPath());
+        static::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
     }
 
     #[Api([
-        'zh-CN:title' => 'setOptionPath 设置配置路径',
+        'zh-CN:title' => 'setConfigPath 设置配置路径',
     ])]
-    public function testSetOptionPath(): void
+    public function testSetConfigPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/option', $app->optionPath());
-        static::assertSame($appPath.'/option/foobar', $app->optionPath('foobar'));
+        static::assertSame($appPath.'/config', $app->configPath());
+        static::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
 
-        $app->setOptionPath(__DIR__.'/app/optionFoo');
+        $app->setConfigPath(__DIR__.'/app/configFoo');
 
-        static::assertSame($appPath.'/optionFoo', $app->optionPath());
-        static::assertSame($appPath.'/optionFoo/foobar', $app->optionPath('foobar'));
+        static::assertSame($appPath.'/configFoo', $app->configPath());
+        static::assertSame($appPath.'/configFoo/foobar', $app->configPath('foobar'));
     }
 
     #[Api([
@@ -371,38 +371,38 @@ final class AppTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'setOptionCachedPath 设置配置缓存路径',
+        'zh-CN:title' => 'setConfigCachedPath 设置配置缓存路径',
     ])]
-    public function testSetOptionCachePath(): void
+    public function testSetConfigCachePath(): void
     {
         $app = $this->createApp();
-        static::assertSame(__DIR__.'/app/storage/bootstrap/option.php', $app->optionCachedPath());
-        $app->setOptionCachedPath(__DIR__.'/hello');
-        static::assertSame(__DIR__.'/hello/option.php', $app->optionCachedPath());
+        static::assertSame(__DIR__.'/app/storage/bootstrap/config.php', $app->configCachedPath());
+        $app->setConfigCachedPath(__DIR__.'/hello');
+        static::assertSame(__DIR__.'/hello/config.php', $app->configCachedPath());
     }
 
     #[Api([
-        'zh-CN:title' => 'optionCachedPath 获取配置缓存路径',
+        'zh-CN:title' => 'configCachedPath 获取配置缓存路径',
     ])]
-    public function testOptionCachedPath(): void
+    public function testConfigCachedPath(): void
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
-        static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
+        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
     }
 
     #[Api([
-        'zh-CN:title' => 'isCachedOption 是否存在配置缓存',
+        'zh-CN:title' => 'isCachedConfig 是否存在配置缓存',
     ])]
-    public function testIsCachedOption(): void
+    public function testIsCachedConfig(): void
     {
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
 
-        static::assertFalse($app->isCachedOption());
+        static::assertFalse($app->isCachedConfig());
         mkdir($appPath.'/storage/bootstrap', 0o777, true);
-        file_put_contents($appPath.'/storage/bootstrap/option.php', 'foo');
-        static::assertTrue($app->isCachedOption());
+        file_put_contents($appPath.'/storage/bootstrap/config.php', 'foo');
+        static::assertTrue($app->isCachedConfig());
 
         Helper::deleteDirectory($appPath);
     }
@@ -555,9 +555,9 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(IOption::class);
+        $config = $this->createMock(IConfig::class);
 
-        $option
+        $config
             ->method('get')
             ->willReturnCallback(function (string $k) {
                 $map = [
@@ -569,11 +569,11 @@ final class AppTest extends TestCase
             })
         ;
 
-        static::assertSame('development', $option->get('environment'));
-        static::assertTrue($option->get('debug'));
+        static::assertSame('development', $config->get('environment'));
+        static::assertTrue($config->get('debug'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertTrue($app->isDebug());
@@ -584,9 +584,9 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(IOption::class);
+        $config = $this->createMock(IConfig::class);
 
-        $option
+        $config
             ->method('get')
             ->willReturnCallback(function (string $k) {
                 $map = [
@@ -598,11 +598,11 @@ final class AppTest extends TestCase
             })
         ;
 
-        static::assertSame('development', $option->get('environment'));
-        static::assertFalse($option->get('debug'));
+        static::assertSame('development', $config->get('environment'));
+        static::assertFalse($config->get('debug'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertFalse($app->isDebug());
@@ -622,13 +622,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(Request::class);
+        $config = $this->createMock(Request::class);
 
-        $option->method('get')->willReturn('development');
-        static::assertSame('development', $option->get('development'));
+        $config->method('get')->willReturn('development');
+        static::assertSame('development', $config->get('development'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertTrue($app->isDevelopment());
@@ -639,13 +639,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(Request::class);
+        $config = $this->createMock(Request::class);
 
-        $option->method('get')->willReturn('foo');
-        static::assertSame('foo', $option->get('development'));
+        $config->method('get')->willReturn('foo');
+        static::assertSame('foo', $config->get('development'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertFalse($app->isDevelopment());
@@ -659,13 +659,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = $this->createMock(Request::class);
+        $config = $this->createMock(Request::class);
 
-        $option->method('get')->willReturn('foo');
-        static::assertSame('foo', $option->get('development'));
+        $config->method('get')->willReturn('foo');
+        static::assertSame('foo', $config->get('development'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertSame('foo', $app->environment());
@@ -742,10 +742,10 @@ EOT,
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
-**Tests\Kernel\OptionTest**
+**Tests\Kernel\ConfigTest**
 
 ``` php
-{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\OptionTest::class)]}
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\ConfigTest::class)]}
 ```
 
 **Tests\Kernel\ProviderTest3**
@@ -766,9 +766,9 @@ EOT,
         $app = $this->createApp();
         $container = $app->container();
 
-        $option = new OptionTest();
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $config = new ConfigTest();
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $app->registerAppProviders();
@@ -945,7 +945,7 @@ class BootstrapTest2
     }
 }
 
-class OptionTest
+class ConfigTest
 {
     public function get(string $name)
     {

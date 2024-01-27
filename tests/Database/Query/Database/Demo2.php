@@ -8,11 +8,11 @@ use Leevel\Database\Condition;
 
 class Demo2
 {
-    public function handle(\Closure $next, Condition $condition, array $middlewaresOptions): array
+    public function handle(\Closure $next, Condition $condition, array $middlewaresConfigs): array
     {
         $condition->where('id', '>', 5);
         $condition->where('id', '<=', 90);
 
-        return $next($condition, $middlewaresOptions);
+        return $next($condition, $middlewaresConfigs);
     }
 }

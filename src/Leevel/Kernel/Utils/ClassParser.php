@@ -40,7 +40,7 @@ class ClassParser
             }
 
             // While we're grabbing the namespace name...
-            if (true === $gettingNamespace) {
+            if ($gettingNamespace) {
                 // If the token is a string or the namespace separator...
                 if (\is_array($token) && \in_array($token[0], [T_NAME_QUALIFIED], true)) {
                     // Append the token's value to the name of the namespace
@@ -52,7 +52,7 @@ class ClassParser
             }
 
             // While we're grabbing the class name...
-            if (true === $gettingClass) {
+            if ($gettingClass) {
                 // If the token is a string, it's the name of the class
                 if (\is_array($token) && T_STRING === $token[0]) {
                     // Store the token's value as the class name

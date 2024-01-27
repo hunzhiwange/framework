@@ -29,7 +29,7 @@ final class LocalTest extends TestCase
     public function testPathNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The local driver requires path option.');
+        $this->expectExceptionMessage('The local driver requires path config.');
 
         $local = new Local([
             'path' => '',

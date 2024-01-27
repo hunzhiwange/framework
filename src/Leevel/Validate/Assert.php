@@ -405,7 +405,7 @@ class Assert
         }
 
         // 匹配可选
-        if (true === $result = self::matchOptional($method, $args)) {
+        if (true === ($result = self::matchOptional($method, $args))) {
             return true;
         }
 
@@ -413,7 +413,7 @@ class Assert
         [$method, $optional] = $result;
 
         // 匹配多个值，可支持 optionalMulti
-        if (true === $result = self::matchMulti($method, $args, $optional, $multiForChain)) {
+        if (true === ($result = self::matchMulti($method, $args, $optional, $multiForChain))) {
             return true;
         }
 
@@ -469,7 +469,7 @@ class Assert
             return [$method, [$args]];
         }
 
-        if (true === $multiForChain) {
+        if ($multiForChain) {
             $args[0] = [$args[0]];
         }
         if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
@@ -479,7 +479,7 @@ class Assert
         $multi = [];
         $argsSource = $args;
         foreach ($args[0] as $v) {
-            if (null === $v && true === $optional) {
+            if (null === $v && $optional) {
                 continue;
             }
             $argsSource[0] = $v;

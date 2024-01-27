@@ -25,7 +25,7 @@ return [
             ],
             'commands' => [
             ],
-            'options' => [
+            'configs' => [
             ],
             'i18ns' => [
             ],

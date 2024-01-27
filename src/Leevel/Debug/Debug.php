@@ -12,7 +12,7 @@ use DebugBar\DataCollector\PhpInfoCollector;
 use DebugBar\DataCollector\RequestDataCollector;
 use DebugBar\DataCollector\TimeDataCollector;
 use DebugBar\DebugBar;
-use DebugBar\JavascriptRenderer as BaseJavascriptRenderer;
+use Leevel\Config\IConfig;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\DataCollector\FilesCollector;
 use Leevel\Debug\DataCollector\LeevelCollector;
@@ -23,7 +23,6 @@ use Leevel\Event\IDispatch;
 use Leevel\Http\Request;
 use Leevel\Kernel\IApp;
 use Leevel\Log\ILog;
-use Leevel\Option\IOption;
 use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -82,10 +81,9 @@ class Debug
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'json' => true,
         'console' => true,
-        'javascript' => true,
     ];
 
     /**
@@ -93,10 +91,10 @@ class Debug
      *
      * - I actually copied a lot of ideas from laravel-debugbar app.
      */
-    public function __construct(IContainer $container, array $option = [])
+    public function __construct(IContainer $container, array $config = [])
     {
         $this->container = $container;
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
         $this->debugBar = new DebugBar();
     }
 
@@ -126,7 +124,7 @@ class Debug
         }
 
         if ($response instanceof JsonResponse) {
-            if ($this->option['json']
+            if ($this->config['json']
                 && \is_array($data = $this->jsonStringToArray($response->getContent()))) {
                 $jsonRenderer = $this->getJsonRenderer();
                 // 空数组或者非索引数组直接附加到数组 `:trace` 键上
@@ -138,16 +136,7 @@ class Debug
                 $response->setData($data);
             }
         } elseif (!$response instanceof RedirectResponse) {
-            if ($this->option['javascript']) {
-                $javascriptRenderer = $this->getJavascriptRenderer('/debugbar');
-                $response->setContent(
-                    $response->getContent().
-                    $javascriptRenderer->renderHead().
-                    $javascriptRenderer->render()
-                );
-            }
-
-            if ($this->option['console']) {
+            if ($this->config['console']) {
                 $consoleRenderer = $this->getConsoleRenderer();
                 $response->setContent($response->getContent().$consoleRenderer->render());
             }
@@ -313,14 +302,6 @@ class Debug
     }
 
     /**
-     * 返回此实例的 \DebugBar\JavascriptRenderer.
-     */
-    public function getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null): BaseJavascriptRenderer
-    {
-        return new JavascriptRenderer($this->debugBar, $baseUrl, $basePath);
-    }
-
-    /**
      * 初始化.
      */
     public function bootstrap(): void
@@ -383,9 +364,9 @@ class Debug
     {
         $this->message('Starts from this moment with QueryPHP.', '');
 
-        /** @var IOption $option */
-        $option = $this->container->make('option');
-        $this->getConfigCollector()->setData($option->all());
+        /** @var IConfig $config */
+        $config = $this->container->make('config');
+        $this->getConfigCollector()->setData($config->all());
     }
 
     /**

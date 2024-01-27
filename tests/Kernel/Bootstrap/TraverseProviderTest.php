@@ -39,10 +39,10 @@ final class TraverseProviderTest extends TestCase
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
-**Tests\Kernel\Bootstrap\OptionTest**
+**Tests\Kernel\Bootstrap\ConfigTest**
 
 ``` php
-{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\OptionTest::class)]}
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Bootstrap\ConfigTest::class)]}
 ```
 
 **Tests\Kernel\Bootstrap\ProviderDeferTest1**
@@ -70,10 +70,10 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $option = new OptionTest();
+        $config = new ConfigTest();
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         static::assertNull($bootstrap->handle($app));
@@ -105,7 +105,7 @@ class App2 extends Apps
     }
 }
 
-class OptionTest
+class ConfigTest
 {
     public function get(string $name)
     {

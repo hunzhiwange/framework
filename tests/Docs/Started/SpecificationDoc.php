@@ -46,8 +46,8 @@ PSR-4 基础目录使用小写，其它依次使用大驼峰法命名，例如�
 不存在类文件，请使用小写目录，其文件也一样:
 
 ```
-/data/codes/queryphp/option/
-/data/codes/queryphp/option/app.php
+/data/codes/queryphp/config/
+/data/codes/queryphp/config/app.php
 ```
 EOT,
     ])]

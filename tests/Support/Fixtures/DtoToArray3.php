@@ -12,5 +12,5 @@ class DtoToArray3 extends Dto
 
     public int $demoIntProp;
 
-    public ?int $demoOptionalIntProp = null;
+    public ?int $demoConfigalIntProp = null;
 }

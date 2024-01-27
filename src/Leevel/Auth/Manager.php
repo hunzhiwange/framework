@@ -18,27 +18,27 @@ use Leevel\Support\Manager as Managers;
  * @method static \Leevel\Di\IContainer container()                                    返回 IOC 容器.
  * @method static void                  disconnect(?string $connect = null)            删除连接.
  * @method static array                 getConnects()                                  取回所有连接.
- * @method static mixed                 getContainerOption(?string $name = null)       获取容器配置值.
- * @method static void                  setContainerOption(string $name, mixed $value) 设置容器配置值.
+ * @method static mixed                 getContainerConfig(?string $name = null)       获取容器配置值.
+ * @method static void                  setContainerConfig(string $name, mixed $value) 设置容器配置值.
  * @method static void                  extend(string $connect, \Closure $callback)    扩展自定义连接.
- * @method static array                 normalizeConnectOption(string $connect)        整理连接配置.
+ * @method static array                 normalizeConnectConfig(string $connect)        整理连接配置.
  */
 class Manager extends Managers
 {
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $newConnect = false): IAuth
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IAuth
     {
-        return parent::connect($connect, $newConnect);
+        return parent::connect($connect, $newConnect, ...$arguments);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function reconnect(?string $connect = null): IAuth
+    public function reconnect(?string $connect = null, ...$arguments): IAuth
     {
-        return parent::reconnect($connect);
+        return parent::reconnect($connect, ...$arguments);
     }
 
     /**
@@ -46,9 +46,9 @@ class Manager extends Managers
      */
     public function getDefaultConnect(): string
     {
-        $option = $this->getContainerOption('default');
+        $config = $this->getContainerConfig('default');
 
-        return (string) $this->getContainerOption($option.'_default');
+        return (string) $this->getContainerConfig($config.'_default');
     }
 
     /**
@@ -56,14 +56,14 @@ class Manager extends Managers
      */
     public function setDefaultConnect(string $name): void
     {
-        $option = $this->getContainerOption('default');
-        $this->setContainerOption($option.'_default', $name);
+        $config = $this->getContainerConfig('default');
+        $this->setContainerConfig($config.'_default', $name);
     }
 
     /**
      * 取得配置命名空间.
      */
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'auth';
     }
@@ -74,9 +74,9 @@ class Manager extends Managers
     protected function makeConnectSession(string $connect, ?string $driverClass = null): Session
     {
         $driverClass = $this->getDriverClass(Session::class, $driverClass);
-        $options = $this->normalizeConnectOption($connect);
+        $configs = $this->normalizeConnectConfig($connect);
 
-        return new $driverClass($this->container['session'], $options);
+        return new $driverClass($this->container['session'], $configs);
     }
 
     /**
@@ -85,9 +85,9 @@ class Manager extends Managers
     protected function makeConnectToken(string $connect, ?string $driverClass = null): Token
     {
         $driverClass = $this->getDriverClass(Token::class, $driverClass);
-        $options = $this->normalizeConnectOption($connect);
+        $configs = $this->normalizeConnectConfig($connect);
 
-        return new $driverClass($this->container['cache'], $options);
+        return new $driverClass($this->container['cache'], $configs);
     }
 
     /**
@@ -96,8 +96,8 @@ class Manager extends Managers
     protected function makeConnectJwt(string $connect, ?string $driverClass = null): Jwt
     {
         $driverClass = $this->getDriverClass(Jwt::class, $driverClass);
-        $options = $this->normalizeConnectOption($connect);
+        $configs = $this->normalizeConnectConfig($connect);
 
-        return new $driverClass($options);
+        return new $driverClass($configs);
     }
 }

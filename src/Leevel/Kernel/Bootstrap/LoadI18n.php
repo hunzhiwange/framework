@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Bootstrap;
 
+use Leevel\Config\IConfig;
 use Leevel\I18n\I18n;
 use Leevel\I18n\II18n;
 use Leevel\I18n\Load;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 
 /**
  * 载入语言包.
@@ -20,13 +20,13 @@ class LoadI18n
      */
     public function handle(IApp $app): void
     {
-        /** @var IOption $option */
-        $option = $app
+        /** @var IConfig $config */
+        $config = $app
             ->container()
-            ->make('option')
+            ->make('config')
         ;
 
-        $i18nDefault = (string) $option->get('i18n\\default');
+        $i18nDefault = (string) $config->get('i18n\\default');
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
@@ -53,13 +53,13 @@ class LoadI18n
      */
     public function getExtend(IApp $app): array
     {
-        /** @var IOption $option */
-        $option = $app
+        /** @var IConfig $config */
+        $config = $app
             ->container()
-            ->make('option')
+            ->make('config')
         ;
 
-        $extend = (array) $option->get(':composer.i18ns', []);
+        $extend = (array) $config->get(':composer.i18ns', []);
         $path = $app->path();
 
         // @phpstan-ignore-next-line

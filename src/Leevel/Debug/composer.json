@@ -42,9 +42,6 @@
         "leevel": {
             "providers": [
                 "Leevel\\Debug\\Provider\\Register"
-            ],
-            "commands": [
-                "Leevel\\Debug\\Console"
             ]
         }
     },

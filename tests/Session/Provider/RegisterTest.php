@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Session\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
-use Leevel\Option\Option;
 use Leevel\Session\Provider\Register;
 use Tests\TestCase;
 
@@ -62,7 +62,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'session' => [
                 'default' => 'test',
                 'id' => null,
@@ -76,7 +76,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $container;
     }

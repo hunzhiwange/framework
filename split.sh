@@ -4,7 +4,7 @@ set -e
 
 CURRENT_BRANCH="master"
 
-for REMOTE in auth cache console database debug di encryption event filesystem http i18n kernel log page router session support validate view
+for REMOTE in auth cache config console database debug di encryption event filesystem http i18n kernel log page router session support validate view
 do
     echo ""
     echo ""

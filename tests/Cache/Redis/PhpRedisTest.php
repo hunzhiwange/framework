@@ -207,7 +207,7 @@ final class PhpRedisTest extends TestCase
         ]);
     }
 
-    protected function makePhpRedis(array $option = []): PhpRedis
+    protected function makePhpRedis(array $config = []): PhpRedis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -218,8 +218,8 @@ final class PhpRedisTest extends TestCase
             'persistent' => false,
         ];
 
-        $option = array_merge($default, $option);
+        $config = array_merge($default, $config);
 
-        return new PhpRedis($option);
+        return new PhpRedis($config);
     }
 }

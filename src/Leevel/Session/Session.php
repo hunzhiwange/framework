@@ -46,7 +46,7 @@ abstract class Session implements ISession
     /**
      * 配置.
      */
-    protected array $option = [];
+    protected array $config = [];
 
     /**
      * 过期时间.
@@ -59,7 +59,7 @@ abstract class Session implements ISession
     public function __construct(ICache $cache)
     {
         $this->cache = $cache;
-        $this->setName($this->option['name']);
+        $this->setName($this->config['name']);
     }
 
     /**
@@ -71,7 +71,7 @@ abstract class Session implements ISession
             return;
         }
 
-        $this->setId($sessionId ?: $this->option['id']);
+        $this->setId($sessionId ?: $this->config['id']);
         $this->loadData();
         $this->started = true;
     }

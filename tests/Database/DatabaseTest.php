@@ -1043,7 +1043,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1060,7 +1060,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1076,7 +1076,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1106,7 +1106,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1123,7 +1123,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1139,7 +1139,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1176,7 +1176,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1193,7 +1193,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1209,7 +1209,7 @@ EOT,
                     'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                     'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                     'charset' => 'utf8',
-                    'options' => [
+                    'configs' => [
                         \PDO::ATTR_PERSISTENT => false,
                         \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                         \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1242,7 +1242,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1275,7 +1275,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1310,7 +1310,7 @@ EOT,
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -1346,7 +1346,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
         $result = $this->invokeTestMethod($connect, 'parseDuplicateUniqueIndex', ['hello_world']);
-        $this->assertSame('', $result);
+        static::assertSame('', $result);
     }
 
     public function testDatabaseSelect(): void

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Debug\Proxy;
 
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
+use Leevel\Config\IConfig;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Proxy\Debug as ProxyDebug;
 use Leevel\Di\Container;
@@ -14,8 +16,6 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Option\IOption;
-use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\TestCase;
@@ -87,7 +87,7 @@ final class DebugTest extends TestCase
 
         $container->instance('log', $this->createLog());
 
-        $container->instance('option', $this->createOption());
+        $container->instance('config', $this->createConfig());
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
@@ -120,7 +120,7 @@ final class DebugTest extends TestCase
         return $log;
     }
 
-    protected function createOption(): IOption
+    protected function createConfig(): IConfig
     {
         $data = [
             'app' => [
@@ -133,11 +133,11 @@ final class DebugTest extends TestCase
             ],
         ];
 
-        $option = new Option($data);
+        $config = new Config($data);
 
-        $this->assertInstanceof(IOption::class, $option);
+        $this->assertInstanceof(IConfig::class, $config);
 
-        return $option;
+        return $config;
     }
 
     protected function createContainer(): Container

@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Leevel\Server\Pool\Connection;
+
 /**
  * 缓存抽象类.
  */
 abstract class Cache implements ICache
 {
+    use Connection;
+
     /**
      * 配置.
      */
-    protected array $option = [];
+    protected array $config = [];
 
     /**
      * 缓存键值正则.
@@ -22,9 +26,9 @@ abstract class Cache implements ICache
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
     }
 
     /**
@@ -62,6 +66,16 @@ abstract class Cache implements ICache
     public function setKeyRegex(string $keyRegex): void
     {
         $this->keyRegex = $keyRegex;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function releaseConnect(): void
+    {
+        // 缓存驱动 \Leevel\Cache\ICache 需要实现 \Leevel\Server\Pool\IConnection
+        // 归还连接池方法为 \Leevel\Server\Pool\IConnection::release
+        $this->release();
     }
 
     /**
@@ -108,6 +122,6 @@ abstract class Cache implements ICache
      */
     protected function normalizeExpire(?int $expire = null): int
     {
-        return null !== $expire ? $expire : (int) $this->option['expire'];
+        return null !== $expire ? $expire : (int) $this->config['expire'];
     }
 }

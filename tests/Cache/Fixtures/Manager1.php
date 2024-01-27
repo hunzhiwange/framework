@@ -11,7 +11,7 @@ class Manager1 extends Managers
 {
     private static ICache $connect;
 
-    public function connect($options = null, bool $newConnect = false): ICache
+    public function connect($configs = null, bool $newConnect = false): ICache
     {
         return static::$connect;
     }

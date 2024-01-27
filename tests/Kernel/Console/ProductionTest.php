@@ -29,7 +29,7 @@ final class ProductionTest extends TestCase
             },
             [
                 new DemoRouterCache(),
-                new DemoOptionCache(),
+                new DemoConfigCache(),
                 new DemoI18nCache(),
                 new DemoViewCache(),
                 new DemoAutoload(),
@@ -75,9 +75,9 @@ class DemoRouterCache extends Command
     }
 }
 
-class DemoOptionCache extends Command
+class DemoConfigCache extends Command
 {
-    protected string $name = 'option:cache';
+    protected string $name = 'config:cache';
 
     protected string $description = 'This is a demo command';
 
@@ -122,7 +122,7 @@ class DemoAutoload extends Command
         return 0;
     }
 
-    protected function getOptions(): array
+    protected function getConfigs(): array
     {
         return [
             [
@@ -136,7 +136,7 @@ class DemoAutoload extends Command
                 'dev',
                 '-d',
                 InputOption::VALUE_NONE,
-                'Without `--no-dev` option for `composer dump-autoload --optimize`.',
+                'Without `--no-dev` config for `composer dump-autoload --optimize`.',
             ],
         ];
     }

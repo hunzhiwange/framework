@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Leevel\Config\Config;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -16,7 +17,6 @@ use Leevel\Kernel\Exceptions\NotFoundHttpException;
 use Leevel\Kernel\Exceptions\Runtime;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Log\ILog;
-use Leevel\Option\Option;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -100,7 +100,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -113,8 +113,8 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $log = $this->createMock(ILog::class);
@@ -226,15 +226,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);
@@ -256,7 +256,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -269,8 +269,8 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $log = $this->createMock(ILog::class);
@@ -315,15 +315,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);
@@ -363,15 +363,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);
@@ -400,15 +400,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);
@@ -451,15 +451,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);
@@ -508,15 +508,15 @@ EOT,
     {
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -557,15 +557,15 @@ EOT,
     {
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -612,15 +612,15 @@ EOT,
     {
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime3($app);
@@ -641,15 +641,15 @@ EOT,
     {
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -686,15 +686,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -727,15 +727,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => true,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -781,15 +781,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -835,15 +835,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -889,15 +889,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime33($app);
@@ -921,15 +921,15 @@ EOT,
 
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime4($app);
@@ -951,15 +951,15 @@ EOT,
             return $request;
         });
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'debug' => false,
                 'environment' => 'development',
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime22($app);
@@ -983,7 +983,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $container);
         $this->assertInstanceof(Container::class, $container);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -996,8 +996,8 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $runtime = new Runtime11($app);

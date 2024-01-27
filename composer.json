@@ -38,6 +38,7 @@
     "replace": {
         "leevel/auth": "self.version",
         "leevel/cache": "self.version",
+        "leevel/config": "self.version",
         "leevel/console": "self.version",
         "leevel/database": "self.version",
         "leevel/debug": "self.version",
@@ -50,10 +51,9 @@
         "leevel/kernel": "self.version",
         "leevel/log": "self.version",
         "leevel/manager": "self.version",
-        "leevel/option": "self.version",
         "leevel/page": "self.version",
-        "leevel/level": "self.version",
         "leevel/router": "self.version",
+        "leevel/server": "self.version",
         "leevel/session": "self.version",
         "leevel/support": "self.version",
         "leevel/validate": "self.version",
@@ -62,7 +62,8 @@
     "require-dev": {
         "robmorgan/phinx": "^0.13.4",
         "league/flysystem-sftp": "^3.10.3",
-        "league/flysystem-ziparchive": "^3.12.0"
+        "league/flysystem-ziparchive": "^3.12.0",
+        "swoole/ide-helper": "^5.1.1"
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",
@@ -96,19 +97,20 @@
                 "Leevel\\Debug\\Provider\\Register",
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",
+                "Leevel\\Server\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",
                 "Leevel\\Validate\\Provider\\Register",
                 "Leevel\\View\\Provider\\Register"
             ],
             "commands": [
+                "Leevel\\Config\\Console",
                 "Leevel\\Database\\Console",
-                "Leevel\\Debug\\Console",
                 "Leevel\\I18n\\Console",
                 "Leevel\\Kernel\\Console",
                 "Leevel\\Log\\Console",
-                "Leevel\\Option\\Console",
                 "Leevel\\Router\\Console",
                 "Leevel\\Session\\Console",
+                "Leevel\\Server\\Console",
                 "Leevel\\View\\Console"
             ],
             "i18n-paths": {

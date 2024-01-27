@@ -14,7 +14,7 @@ final class Test extends Session implements ISession
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'id' => null,
         'name' => null,
     ];
@@ -22,10 +22,10 @@ final class Test extends Session implements ISession
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
-        $this->setName($this->option['name']);
+        $this->config = array_merge($this->config, $config);
+        $this->setName($this->config['name']);
     }
 
     /**

@@ -21,7 +21,7 @@ class Normalize
         }
         $inputs = array_filter($inputs);
 
-        if (true === $allowedEmpty) {
+        if ($allowedEmpty) {
             return $inputs;
         }
 

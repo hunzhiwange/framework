@@ -32,7 +32,6 @@ class Links extends Command
         $this->callApis();
         $this->callStatic();
         $this->callAttachments();
-        $this->callDebugBar();
         $this->line('');
         $this->info('Links created succeed.');
 
@@ -64,14 +63,5 @@ class Links extends Command
     {
         $this->line('');
         $this->call('link:attachments');
-    }
-
-    /**
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
-     */
-    protected function callDebugBar(): void
-    {
-        $this->line('');
-        $this->call('link:debugbar');
     }
 }

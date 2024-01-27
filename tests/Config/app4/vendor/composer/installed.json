@@ -1,0 +1,30 @@
+[
+    {
+        "name": "hunzhiwange/framework",
+        "extra": {
+            "leevel": {
+                "providers": [
+                    "Tests\\Config\\Providers\\Foo",
+                    "Tests\\Config\\Providers\\Bar"
+                ],
+                "commands": [
+                    "Tests\\Config\\Commands\\Test",
+                    "Tests\\Config\\Commands\\Console"
+                ]
+            }
+        }
+    },
+    {
+        "name": "demo/demo",
+        "extra": {
+            "leevel": {
+                "providers": [
+                    "Demo\\Provider\\Register"
+                ],
+                "commands": [
+                    "Demo\\Demo\\Console"
+                ]
+            }
+        }
+    }
+]

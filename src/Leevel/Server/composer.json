@@ -1,0 +1,52 @@
+{
+  "name": "leevel/go",
+  "description": "The Leevel Go Package.",
+  "license": "MIT",
+  "homepage": "http://queryphp.com",
+  "support": {
+    "issues": "https://github.com/hunzhiwange/framework/issues",
+    "source": "https://github.com/hunzhiwange/framework"
+  },
+  "authors": [{
+    "name": "Xiangmin Liu",
+    "email": "635750556@qq.com"
+  }],
+  "require": {
+    "php": ">=8.1",
+    "leevel/http": "^1.1",
+    "leevel/kernel": "^1.1",
+    "leevel/di": "^1.1",
+    "leevel/log": "^1.1",
+    "leevel/router": "^1.1",
+    "leevel/support": "^1.1",
+    "leevel/filesystem": "^1.1"
+  },
+  "require-dev": {
+    "swoole/ide-helper": "dev-master"
+  },
+  "suggest": {
+    "leevel/console": "Required to use the make commands (^1.1).",
+    "ext-swoole": "Required to use swoole (^4.5.9).",
+    "symfony/psr-http-message-bridge": "Go RoadRunner Support and required to use PSR-7 bridging features (^2.0).",
+    "spiral/dumper": "Go RoadRunner Support (^2.14.1)",
+    "spiral/roadrunner": "Go RoadRunner Support (^2.12.1)",
+    "nyholm/psr7": "Go RoadRunner Support (^1.5)"
+  },
+  "autoload": {
+    "psr-4": {
+      "Leevel\\Level\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.1-dev"
+    },
+    "leevel": {
+      "providers": [
+        "Leevel\\Server\\Provider\\Register"
+      ],
+      "commands": "Leevel\\Server\\Console"
+    }
+  },
+  "minimum-stability": "dev"
+}

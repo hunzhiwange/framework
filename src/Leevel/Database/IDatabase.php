@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
+use Leevel\Server\Pool\IConnection;
 
 /**
  * 数据库接口.
@@ -39,16 +40,16 @@ use Leevel\Cache\ICache;
  * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                        最大值.
  * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                        最小值.
  * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                        合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $option = [])                                        分页查询.
- * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $option = [])                                                         创建一个无限数据的分页查询.
- * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $option = [])                                                      创建一个只有上下页的分页查询.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $config = [])                                        分页查询.
+ * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                         创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                      创建一个只有上下页的分页查询.
  * @method static int                                                                    pageCount(string $cols = '*')                                                                                              取得分页查询记录数量.
  * @method static string                                                                 makeSql(bool $withLogicGroup = false)                                                                                      获得查询字符串.
  * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                              设置查询缓存.
  * @method static \Leevel\Database\Select                                                forPage(int $page, int $perPage = 10)                                                                                      根据分页设置条件.
  * @method static \Leevel\Database\Select                                                time(string $type = 'date')                                                                                                时间控制语句开始.
  * @method static \Leevel\Database\Select                                                endTime()                                                                                                                  时间控制语句结束.
- * @method static \Leevel\Database\Select                                                reset(?string $option = null)                                                                                              重置查询条件.
+ * @method static \Leevel\Database\Select                                                reset(?string $config = null)                                                                                              重置查询条件.
  * @method static \Leevel\Database\Select                                                comment(string $comment)                                                                                                   查询注释.
  * @method static \Leevel\Database\Select                                                prefix(string $prefix)                                                                                                     prefix 查询.
  * @method static \Leevel\Database\Select                                                table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')           添加一个要查询的表及其要查询的字段.
@@ -131,7 +132,7 @@ use Leevel\Cache\ICache;
  * @method static \Leevel\Database\Select                                                setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                               设置当前条件表达式状态.
  * @method static bool                                                                   checkFlowControl()                                                                                                         验证一下条件表达式是否通过.
  */
-interface IDatabase
+interface IDatabase extends IConnection
 {
     /**
      * 断线重连尝试次数.
@@ -141,7 +142,7 @@ interface IDatabase
     /**
      * 主服务 PDO 标识.
      */
-    public const MASTER = 999999999;
+    public const MASTER = 0;
 
     /**
      * SQL 日志事件.
@@ -169,27 +170,27 @@ interface IDatabase
      * - $master: bool,false (读服务器),true (写服务器)
      * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
      */
-    public function pdo(bool|int $master = false): mixed;
+    public function pdo(bool|int $master = false): ?\PDO;
 
     /**
      * 查询数据记录.
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed; // @codeCoverageIgnore
+    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed; /** @codeCoverageIgnore */
 
     /**
      * 查询存储过程数据记录.
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array; // @codeCoverageIgnore
+    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array; /** @codeCoverageIgnore */
 
     /**
      * 执行 SQL 语句.
      */
-    public function execute(string $sql, array $bindParams = []): int|string; // @codeCoverageIgnore
+    public function execute(string $sql, array $bindParams = []): int|string; /** @codeCoverageIgnore */
 
     /**
      * 游标查询.
      */
-    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator; // @codeCoverageIgnore
+    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator; /** @codeCoverageIgnore */
 
     /**
      * SQL 预处理.
@@ -197,7 +198,7 @@ interface IDatabase
      * - 记录 SQL 日志
      * - 支持重连
      */
-    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement; // @codeCoverageIgnore
+    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement; /** @codeCoverageIgnore */
 
     /**
      * 执行数据库事务.
@@ -286,9 +287,18 @@ interface IDatabase
     public static function getRawSql(string $sql, array $bindParams): string;
 
     /**
+     * 释放当前连接.
+     *
+     * - 用于归还当前的数据库连接到连接池
+     *
+     * @todo 加入到各种ide-helper中
+     */
+    public function releaseConnect(): void;
+
+    /**
      * DSN 解析.
      */
-    public function parseDsn(array $option): string;
+    public function parseDsn(array $config): string;
 
     /**
      * 取得数据库表名列表.

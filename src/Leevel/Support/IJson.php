@@ -12,5 +12,5 @@ interface IJson
     /**
      * 对象转 JSON.
      */
-    public function toJson(?int $option = null): string;
+    public function toJson(?int $config = null): string;
 }

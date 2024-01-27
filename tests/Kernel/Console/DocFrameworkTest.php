@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Console;
 
+use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Doc;
 use Leevel\Kernel\Console\DocFramework;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
@@ -103,21 +103,21 @@ final class DocFrameworkTest extends TestCase
         $app = new AppForDocFramework($container, '');
         $this->assertInstanceof(IApp::class, $app);
         $container->singleton(IApp::class, $app);
-        $this->createOption($container);
+        $this->createConfig($container);
     }
 
-    protected function createOption(IContainer $container): void
+    protected function createConfig(IContainer $container): void
     {
-        $option = $this->createMock(IOption::class);
+        $config = $this->createMock(IConfig::class);
         $map = [
             ['console\\framework_doc_outputdir', null, \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}'],
             ['console\\framework_doc_git', null, 'https://github.com/hunzhiwange/framework/blob/master'],
             ['console\\framework_doc_logdir', null, ''],
             ['console\\framework_doc_i18n', null, ',zh-CN,en-US'],
         ];
-        $option->method('get')->willReturnMap($map);
-        $container->singleton(IOption::class, function () use ($option) {
-            return $option;
+        $config->method('get')->willReturnMap($map);
+        $container->singleton(IConfig::class, function () use ($config) {
+            return $config;
         });
     }
 }

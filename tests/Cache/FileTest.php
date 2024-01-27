@@ -260,17 +260,17 @@ final class FileTest extends TestCase
 
     public function testSetExpire(): void
     {
-        $filePath = __DIR__.'/cacheFile/withOption.php';
+        $filePath = __DIR__.'/cacheFile/withConfig.php';
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        $file->set('withOption', 'world', 111);
+        $file->set('withConfig', 'world', 111);
 
         static::assertTrue(is_file($filePath));
         static::assertStringContainsString('[111,', file_get_contents($filePath));
 
-        $file->set('withOption', 'world', 222);
+        $file->set('withConfig', 'world', 222);
 
         static::assertTrue(is_file($filePath));
         static::assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));

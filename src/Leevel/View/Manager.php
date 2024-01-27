@@ -22,8 +22,8 @@ use Leevel\Support\Manager as Managers;
  * @method static array                 getConnects()                                                取回所有连接.
  * @method static string                getDefaultConnect()                                          返回默认连接.
  * @method static void                  setDefaultConnect(string $name)                              设置默认连接.
- * @method static mixed                 getContainerOption(?string $name = null)                     获取容器配置值.
- * @method static void                  setContainerOption(string $name, mixed $value)               设置容器配置值.
+ * @method static mixed                 getContainerConfig(?string $name = null)                     获取容器配置值.
+ * @method static void                  setContainerConfig(string $name, mixed $value)               设置容器配置值.
  * @method static void                  extend(string $connect, \Closure $callback)                  扩展自定义连接.
  */
 class Manager extends Managers
@@ -31,15 +31,15 @@ class Manager extends Managers
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $newConnect = false): IView
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IView
     {
-        return parent::connect($connect, $newConnect);
+        return parent::connect($connect, $newConnect, ...$arguments);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function reconnect(?string $connect = null): IView
+    public function reconnect(?string $connect = null, ...$arguments): IView
     {
         return parent::reconnect($connect);
     }
@@ -47,18 +47,18 @@ class Manager extends Managers
     /**
      * {@inheritDoc}
      */
-    public function normalizeConnectOption(string $connect): array
+    public function normalizeConnectConfig(string $connect): array
     {
         return array_merge(
-            $this->getViewOptionCommon(),
-            parent::normalizeConnectOption($connect),
+            $this->getViewConfigCommon(),
+            parent::normalizeConnectConfig($connect),
         );
     }
 
     /**
      * 取得配置命名空间.
      */
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'view';
     }
@@ -71,7 +71,7 @@ class Manager extends Managers
         $driverClass = $this->getDriverClass(Html::class, $driverClass);
 
         /** @var Html $html */
-        $html = new $driverClass($this->normalizeConnectOption($connect));
+        $html = new $driverClass($this->normalizeConnectConfig($connect));
         $html->setParseResolver(function (): Parser {
             return (new Parser(new Compiler()))
                 ->registerCompilers()
@@ -89,13 +89,13 @@ class Manager extends Managers
     {
         $driverClass = $this->getDriverClass(Phpui::class, $driverClass);
 
-        return new $driverClass($this->normalizeConnectOption($connect));
+        return new $driverClass($this->normalizeConnectConfig($connect));
     }
 
     /**
      * 视图公共配置.
      */
-    protected function getViewOptionCommon(): array
+    protected function getViewConfigCommon(): array
     {
         $app = $this->getApp();
 

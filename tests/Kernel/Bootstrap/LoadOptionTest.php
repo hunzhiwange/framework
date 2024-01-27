@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Bootstrap;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Bootstrap\LoadOption;
+use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '初始化载入配置',
-    'path' => 'architecture/kernel/bootstrap/loadoption',
+    'path' => 'architecture/kernel/bootstrap/loadconfig',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
 
 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
 EOT,
 ])]
-final class LoadOptionTest extends TestCase
+final class LoadConfigTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -57,22 +57,22 @@ final class LoadOptionTest extends TestCase
 {[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/.env')]}
 ```
 
-**配置文件 tests/Kernel/Bootstrap/app/option/app.php**
+**配置文件 tests/Kernel/Bootstrap/app/config/app.php**
 
 ``` php
-{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/app.php')]}
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/config/app.php')]}
 ```
 
-**配置文件 tests/Kernel/Bootstrap/app/option/demo.php**
+**配置文件 tests/Kernel/Bootstrap/app/config/demo.php**
 
 ``` php
-{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/option/demo.php')]}
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/config/demo.php')]}
 ```
 EOT,
     ])]
     public function testBaseUse(): void
     {
-        $bootstrap = new LoadOption1();
+        $bootstrap = new LoadConfig1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -82,16 +82,16 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
-        static::assertFalse($app->isCachedOption());
-        static::assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
+        static::assertFalse($app->isCachedConfig());
+        static::assertSame($appPath.'/config', $app->configPath());
 
         static::assertNull($bootstrap->handle($app));
 
-        $option = $container->make('option');
+        $config = $container->make('config');
 
-        static::assertSame('development', $option->get('environment'));
-        static::assertSame('bar', $option->get('demo\\foo'));
+        static::assertSame('development', $config->get('environment'));
+        static::assertSame('bar', $config->get('demo\\foo'));
     }
 
     #[Api([
@@ -112,7 +112,7 @@ EOT,
     {
         putenv('RUNTIME_ENVIRONMENT=fooenv');
 
-        $bootstrap = new LoadOption1();
+        $bootstrap = new LoadConfig1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -122,16 +122,16 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->optionCachedPath());
-        static::assertFalse($app->isCachedOption());
-        static::assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->configCachedPath());
+        static::assertFalse($app->isCachedConfig());
+        static::assertSame($appPath.'/config', $app->configPath());
 
         static::assertNull($bootstrap->handle($app));
 
-        $option = $container->make('option');
+        $config = $container->make('config');
 
-        static::assertSame('testing', $option->get('environment'));
-        static::assertSame('bar', $option->get('demo\\foo'));
+        static::assertSame('testing', $config->get('environment'));
+        static::assertSame('bar', $config->get('demo\\foo'));
     }
 
     public function testWithRuntimeEnvNotFound(): void
@@ -145,7 +145,7 @@ EOT,
 
         putenv('RUNTIME_ENVIRONMENT=notfoundenv');
 
-        $bootstrap = new LoadOption1();
+        $bootstrap = new LoadConfig1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath);
@@ -155,9 +155,9 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->optionCachedPath());
-        static::assertFalse($app->isCachedOption());
-        static::assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->configCachedPath());
+        static::assertFalse($app->isCachedConfig());
+        static::assertSame($appPath.'/config', $app->configPath());
 
         $bootstrap->handle($app);
     }
@@ -169,16 +169,16 @@ EOT,
 
 **fixture 定义**
 
-**配置缓存文件 tests/Kernel/Bootstrap/app/assert/option.php**
+**配置缓存文件 tests/Kernel/Bootstrap/app/assert/config.php**
 
 ``` php
-{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/option.php')]}
+{[file_get_contents('vendor/hunzhiwange/framework/tests/Kernel/Bootstrap/app/assert/config.php')]}
 ```
 EOT,
     ])]
     public function testLoadCached(): void
     {
-        $bootstrap = new LoadOption1();
+        $bootstrap = new LoadConfig1();
 
         $container = Container::singletons();
         $app = new App3($container, $appPath = __DIR__.'/app');
@@ -188,23 +188,23 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/option.php', $app->optionCachedPath());
-        static::assertFalse($app->isCachedOption());
-        static::assertSame($appPath.'/option', $app->optionPath());
+        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
+        static::assertFalse($app->isCachedConfig());
+        static::assertSame($appPath.'/config', $app->configPath());
 
         mkdir($appPath.'/storage/bootstrap', 0o777, true);
-        file_put_contents($appPath.'/storage/bootstrap/option.php', file_get_contents($appPath.'/assert/option.php'));
+        file_put_contents($appPath.'/storage/bootstrap/config.php', file_get_contents($appPath.'/assert/config.php'));
 
-        static::assertTrue($app->isCachedOption());
+        static::assertTrue($app->isCachedConfig());
 
         static::assertNull($bootstrap->handle($app));
 
-        $option = $container->make('option');
+        $config = $container->make('config');
 
-        static::assertSame('development', $option->get('environment'));
-        static::assertSame('bar', $option->get('demo\\foo'));
-        static::assertNull($option->get(':env.foo'));
-        static::assertTrue($option->get(':env.debug'));
+        static::assertSame('development', $config->get('environment'));
+        static::assertSame('bar', $config->get('demo\\foo'));
+        static::assertNull($config->get(':env.foo'));
+        static::assertTrue($config->get(':env.debug'));
     }
 }
 
@@ -215,9 +215,9 @@ class App3 extends Apps
     }
 }
 
-class LoadOption1 extends LoadOption
+class LoadConfig1 extends LoadConfig
 {
-    protected function initialization(Option $option): void
+    protected function initialization(Config $config): void
     {
     }
 }

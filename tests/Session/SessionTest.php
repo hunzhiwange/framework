@@ -51,12 +51,12 @@ class Demo
 
 ## session 配置
 
-系统的 session 配置位于应用下面的 `option/session.php` 文件。
+系统的 session 配置位于应用下面的 `config/session.php` 文件。
 
 可以定义多个缓存连接，并且支持切换，每一个连接支持驱动设置。
 
 ``` php
-{[file_get_contents('option/session.php')]}
+{[file_get_contents('config/session.php')]}
 ```
 
 session 参数根据不同的连接会有所区别，通用的 sesion 参数如下：

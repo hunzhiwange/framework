@@ -15,7 +15,7 @@ class Jwt extends Auth implements IAuth
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'token' => null,
         'expire' => null,
         'iss' => null, // 签发人
@@ -27,9 +27,9 @@ class Jwt extends Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        parent::__construct($option);
+        parent::__construct($config);
     }
 
     /**
@@ -38,8 +38,8 @@ class Jwt extends Auth implements IAuth
     protected function setPersistence(string $key, string $value, ?int $expire = null): string
     {
         $payload = array_filter([
-            'iss' => $this->option['iss'],
-            'aud' => $this->option['aud'],
+            'iss' => $this->config['iss'],
+            'aud' => $this->config['aud'],
             'iat' => time(),
             'nbf' => time(),
             'init_key' => $key,
@@ -50,7 +50,7 @@ class Jwt extends Auth implements IAuth
             $payload['exp'] = time() + $expire;
         }
 
-        return BaseJwt::encode($payload, $this->option['auth_key'], $this->option['alg']);
+        return BaseJwt::encode($payload, $this->config['auth_key'], $this->config['alg']);
     }
 
     /**
@@ -67,7 +67,7 @@ class Jwt extends Auth implements IAuth
     protected function getPersistence(string $key): mixed
     {
         try {
-            $decodedData = (array) BaseJwt::decode($key, new Key($this->option['auth_key'], $this->option['alg']));
+            $decodedData = (array) BaseJwt::decode($key, new Key($this->config['auth_key'], $this->config['alg']));
             $result = json_decode($decodedData['data'], true, 512, JSON_THROW_ON_ERROR);
             unset($decodedData['data']);
 

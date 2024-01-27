@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Filesystem\Proxy;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Manager;
 use Leevel\Filesystem\Proxy\Filesystem;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 final class FilesystemTest extends TestCase
@@ -71,7 +71,7 @@ final class FilesystemTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'filesystem' => [
                 'default' => 'local',
                 'connect' => [
@@ -83,7 +83,7 @@ final class FilesystemTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }

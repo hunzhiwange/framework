@@ -6,11 +6,11 @@ namespace Tests\Auth;
 
 use Leevel\Auth\Manager;
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
@@ -53,12 +53,12 @@ class Demo
 
 ## auth 配置
 
-系统的 auth 配置位于应用下面的 `option/auth.php` 文件。
+系统的 auth 配置位于应用下面的 `config/auth.php` 文件。
 
 可以定义多个认证连接，并且支持切换，每一个连接支持驱动设置。
 
 ``` php
-{[file_get_contents('option/auth.php')]}
+{[file_get_contents('config/auth.php')]}
 ```
 
 auth 参数根据不同的连接会有所区别，通用的 auth 参数如下：
@@ -232,7 +232,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'web',
                 'web_default' => 'session',
@@ -251,7 +251,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('session', $this->createSession());
 
         return $manager;
@@ -265,7 +265,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'api',
                 'web_default' => 'session',
@@ -284,7 +284,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('cache', $this->createCache());
         $container->singleton('request', $this->createRequest());
 
@@ -299,7 +299,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'api',
                 'web_default' => 'session',
@@ -327,7 +327,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('request', $this->createRequest());
 
         return $manager;
@@ -341,7 +341,7 @@ EOT,
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'web',
                 'web_default' => 'session',
@@ -360,7 +360,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('session', $this->createSession());
         $container->singleton('cache', $this->createCache());
         $container->singleton('request', $this->createRequest());

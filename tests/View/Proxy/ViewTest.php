@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\View\Proxy;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
-use Leevel\Option\Option;
 use Leevel\View\Manager;
 use Leevel\View\Proxy\View as ProxyView;
 use Tests\TestCase;
@@ -74,7 +74,7 @@ final class ViewTest extends TestCase
         static::assertSame(__DIR__.'/assert', $app->themesPath());
         static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
-        $option = new Option([
+        $config = new Config([
             'view' => [
                 'default' => $connect,
                 'action_fail' => 'public/fail',
@@ -91,7 +91,7 @@ final class ViewTest extends TestCase
                 ],
             ],
         ]);
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $request = new ExtendRequest();
         $container->singleton('request', $request);

@@ -48,41 +48,41 @@ use Leevel\Support\Manager as Managers;
  * @method static array                 getConnects()                                  取回所有连接.
  * @method static string                getDefaultConnect()                            返回默认连接.
  * @method static void                  setDefaultConnect(string $name)                设置默认连接.
- * @method static mixed                 getContainerOption(?string $name = null)       获取容器配置值.
- * @method static void                  setContainerOption(string $name, mixed $value) 设置容器配置值.
+ * @method static mixed                 getContainerConfig(?string $name = null)       获取容器配置值.
+ * @method static void                  setContainerConfig(string $name, mixed $value) 设置容器配置值.
  * @method static void                  extend(string $connect, \Closure $callback)    扩展自定义连接.
- * @method static array                 normalizeConnectOption(string $connect)        整理连接配置.
+ * @method static array                 normalizeConnectConfig(string $connect)        整理连接配置.
  */
 class Manager extends Managers
 {
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $newConnect = false): ISession
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ISession
     {
-        return parent::connect($connect, $newConnect);
+        return parent::connect($connect, $newConnect, ...$arguments);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function reconnect(?string $connect = null): ISession
+    public function reconnect(?string $connect = null, ...$arguments): ISession
     {
-        return parent::reconnect($connect);
+        return parent::reconnect($connect, ...$arguments);
     }
 
     /**
      * 返回 session 配置.
      */
-    public function getSessionOption(): array
+    public function getSessionConfig(): array
     {
-        return $this->normalizeConnectOption($this->getDefaultConnect());
+        return $this->normalizeConnectConfig($this->getDefaultConnect());
     }
 
     /**
      * 取得配置命名空间.
      */
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'session';
     }
@@ -95,7 +95,7 @@ class Manager extends Managers
         $driverClass = $this->getDriverClass(Test::class, $driverClass);
 
         return new $driverClass(
-            $this->normalizeConnectOption($connect)
+            $this->normalizeConnectConfig($connect)
         );
     }
 
@@ -105,12 +105,12 @@ class Manager extends Managers
     protected function makeConnectFile(string $connect, ?string $driverClass = null): File
     {
         $driverClass = $this->getDriverClass(File::class, $driverClass);
-        $options = $this->normalizeConnectOption($connect);
+        $configs = $this->normalizeConnectConfig($connect);
 
         /** @var \Leevel\Cache\File $file */
-        $file = $this->container['caches']->connect($options['file_driver']);
+        $file = $this->container['caches']->connect($configs['file_driver']);
 
-        return new $driverClass($file, $options);
+        return new $driverClass($file, $configs);
     }
 
     /**
@@ -119,19 +119,19 @@ class Manager extends Managers
     protected function makeConnectRedis(string $connect, ?string $driverClass = null): Redis
     {
         $driverClass = $this->getDriverClass(Redis::class, $driverClass);
-        $options = $this->normalizeConnectOption($connect);
+        $configs = $this->normalizeConnectConfig($connect);
 
         /** @var \Leevel\Cache\Redis $redis */
-        $redis = $this->container['caches']->connect($options['redis_driver']);
+        $redis = $this->container['caches']->connect($configs['redis_driver']);
 
-        return new $driverClass($redis, $options);
+        return new $driverClass($redis, $configs);
     }
 
     /**
      * 分析连接配置.
      */
-    protected function getConnectOption(string $connect): array
+    protected function getConnectConfig(string $connect): array
     {
-        return $this->filterNullOfOption(parent::getConnectOption($connect));
+        return $this->filterNullOfConfig(parent::getConnectConfig($connect));
     }
 }

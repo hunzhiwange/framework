@@ -137,13 +137,13 @@ final class RedisTest extends TestCase
         static::assertNull($redis->close()); // 关闭多次不做任何事
     }
 
-    protected function makeRedis(IRedis $phpRedis, array $option = []): Redis
+    protected function makeRedis(IRedis $phpRedis, array $config = []): Redis
     {
         $default = [
             'expire' => 86400,
         ];
-        $option = array_merge($default, $option);
+        $config = array_merge($default, $config);
 
-        return new Redis($phpRedis, $option);
+        return new Redis($phpRedis, $config);
     }
 }

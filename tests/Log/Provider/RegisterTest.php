@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Log\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Leevel\Log\Provider\Register;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 final class RegisterTest extends TestCase
@@ -50,7 +50,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'log' => [
                 'default' => 'file',
                 'levels' => [
@@ -80,7 +80,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $eventDispatch = $this->createMock(IDispatch::class);
 

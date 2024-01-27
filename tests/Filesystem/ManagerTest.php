@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Tests\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Filesystem\Manager;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 #[Api([
@@ -55,12 +55,12 @@ class Demo
 
 ## filesystem 配置
 
-系统的 filesystem 配置位于应用下面的 `option/filesystem.php` 文件。
+系统的 filesystem 配置位于应用下面的 `config/filesystem.php` 文件。
 
 可以定义多个文件系统连接，并且支持切换，每一个连接支持驱动设置。
 
 ``` php
-{[file_get_contents('option/filesystem.php')]}
+{[file_get_contents('config/filesystem.php')]}
 ```
 
 filesystem 参数根据不同的连接会有所区别。
@@ -126,7 +126,7 @@ final class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'filesystem' => [
                 'default' => $connect,
                 'connect' => [
@@ -163,7 +163,7 @@ final class ManagerTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }

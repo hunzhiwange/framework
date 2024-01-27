@@ -17,14 +17,14 @@ abstract class View implements IView
     /**
      * 配置.
      */
-    protected array $option = [];
+    protected array $config = [];
 
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [])
+    public function __construct(array $config = [])
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
     }
 
     /**
@@ -136,7 +136,7 @@ abstract class View implements IView
         }
 
         return $this->getThemePath().'/'.$file.
-            ($ext ?: $this->option['suffix']);
+            ($ext ?: $this->config['suffix']);
     }
 
     /**
@@ -146,10 +146,10 @@ abstract class View implements IView
      */
     protected function getThemePath(): string
     {
-        if (!$this->option['theme_path']) {
+        if (!$this->config['theme_path']) {
             throw new \RuntimeException('Theme path must be set.');
         }
 
-        return $this->option['theme_path'];
+        return $this->config['theme_path'];
     }
 }

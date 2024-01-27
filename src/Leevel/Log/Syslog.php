@@ -17,7 +17,7 @@ class Syslog extends Log implements ILog
      *
      * @see \Monolog\Handler\AbstractSyslogHandler
      */
-    protected array $option = [
+    protected array $config = [
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
@@ -34,8 +34,8 @@ class Syslog extends Log implements ILog
         // @phpstan-ignore-next-line
         return $this->setHandlerLineFormatter(
             new SyslogHandler(
-                $this->option['channel'],
-                $this->option['facility'],
+                $this->config['channel'],
+                $this->config['facility'],
                 // @phpstan-ignore-next-line
                 $this->normalizeMonologLevel($level),
             ),

@@ -11,7 +11,7 @@ class Text
      */
     public static function handle(string $strings, bool $deep = true, array $black = []): string
     {
-        if (true === $deep && !$black) {
+        if ($deep && !$black) {
             $black = [
                 ' ', '&nbsp;', '&', '=', '-',
                 '#', '%', '!', '@', '^', '*', 'amp;',

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\I18n\Console;
 
+use Leevel\Config\Config;
+use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
 use Leevel\I18n\Console\Cache;
 use Leevel\I18n\Console\Clear;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
-use Leevel\Option\Option;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
@@ -179,8 +179,8 @@ final class ClearTest extends TestCase
 
         $container->singleton(IApp::class, $app);
 
-        // 注册 option
-        $option = new Option([
+        // 注册 config
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [],
@@ -191,11 +191,11 @@ final class ClearTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
-        $container->singleton(IOption::class, $option);
+        $container->singleton(IConfig::class, $config);
     }
 }
 

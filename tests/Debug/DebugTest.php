@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Debug;
 
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
+use Leevel\Config\IConfig;
 use Leevel\Database\IDatabase;
 use Leevel\Debug\Debug;
 use Leevel\Di\Container;
@@ -17,8 +19,6 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Option\IOption;
-use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\Database;
@@ -59,14 +59,7 @@ final class DebugTest extends TestCase
 
         $content = $response->getContent();
 
-        static::assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/vendor/font-awesome/css/font-awesome.min.css">', $content);
-
-        static::assertStringContainsString('<link rel="stylesheet" type="text/css" href="/debugbar/debugbar.css">', $content);
-
-        static::assertStringContainsString('var phpdebugbar = new PhpDebugBar.DebugBar()', $content);
-
         static::assertStringContainsString("console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );", $content);
-
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
@@ -711,7 +704,7 @@ EOT,
 
         $container->instance('session', $this->createSession());
 
-        $container->instance('option', $this->createOption());
+        $container->instance('config', $this->createConfig());
 
         $eventDispatch = new Dispatch($container);
         $container->singleton(IDispatch::class, $eventDispatch);
@@ -732,7 +725,7 @@ EOT,
 
         $container->instance('app', $app);
         $container->instance('session', $this->createSession());
-        $container->instance('option', $this->createOption());
+        $container->instance('config', $this->createConfig());
 
         $eventDispatch = new Dispatch($container);
         $container->singleton(IDispatch::class, $eventDispatch);
@@ -743,9 +736,9 @@ EOT,
         return $app;
     }
 
-    protected function createDebug(array $option = []): Debug
+    protected function createDebug(array $config = []): Debug
     {
-        return new Debug($this->createApp()->container(), $option);
+        return new Debug($this->createApp()->container(), $config);
     }
 
     protected function createApp(): App
@@ -758,7 +751,7 @@ EOT,
 
         $container->instance('log', $this->createLog());
 
-        $container->instance('option', $this->createOption());
+        $container->instance('config', $this->createConfig());
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
@@ -799,7 +792,7 @@ EOT,
         return $database;
     }
 
-    protected function createOption(): IOption
+    protected function createConfig(): IConfig
     {
         $data = [
             'app' => [
@@ -812,11 +805,11 @@ EOT,
             ],
         ];
 
-        $option = new Option($data);
+        $config = new Config($data);
 
-        $this->assertInstanceof(IOption::class, $option);
+        $this->assertInstanceof(IConfig::class, $config);
 
-        return $option;
+        return $config;
     }
 
     protected function getDatabaseTable(): array

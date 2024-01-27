@@ -55,7 +55,7 @@ trait Date
      */
     protected function compareTime(int $left, int $right, bool $before = false): bool
     {
-        if (true === $before) {
+        if ($before) {
             return $left < $right;
         }
 
@@ -83,7 +83,7 @@ trait Date
         // @phpstan-ignore-next-line
         $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
 
-        if (true === $before) {
+        if ($before) {
             [$param[0], $value] = [$value, $param[0]];
         }
 

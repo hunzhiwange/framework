@@ -31,7 +31,7 @@ __(string $text, ...$data): string;
 
 ### 语言目录
 
- * 国际化语言配置位于 `option/i18n.php`，可以定义当前的语言。
+ * 国际化语言配置位于 `config/i18n.php`，可以定义当前的语言。
  * 主要语言包文件位于 `assets/i18n` 目录，包含 `zh-CN`、`zh-TW`、`en-US`。
  * 扩展语言 `extra.leevel.i18ns` 目录，在 `composer.json` 中定义。
  * 扩展语言包 `extra.leevel.i18n-paths` 目录，在 `composer.json` 中定义。

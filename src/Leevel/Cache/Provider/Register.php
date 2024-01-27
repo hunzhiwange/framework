@@ -7,8 +7,6 @@ namespace Leevel\Cache\Provider;
 use Leevel\Cache\Cache;
 use Leevel\Cache\ICache;
 use Leevel\Cache\Manager;
-use Leevel\Cache\Redis\IRedis;
-use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 
@@ -22,7 +20,6 @@ class Register extends Provider
      */
     public function register(): void
     {
-        $this->redis();
         $this->caches();
         $this->cache();
     }
@@ -33,7 +30,6 @@ class Register extends Provider
     public static function providers(): array
     {
         return [
-            'redis' => [IRedis::class, PhpRedis::class],
             'caches' => Manager::class,
             'cache' => [ICache::class, Cache::class],
         ];
@@ -45,25 +41,6 @@ class Register extends Provider
     public static function isDeferred(): bool
     {
         return true;
-    }
-
-    /**
-     * 注册 redis 服务.
-     */
-    protected function redis(): void
-    {
-        $this->container
-            ->singleton(
-                'redis',
-                function (IContainer $container): PhpRedis {
-                    /** @var \Leevel\Option\IOption $option */
-                    $option = $container->make('option');
-                    $options = $option->get('cache\\connect.redis');
-
-                    return new PhpRedis((array) $options);
-                },
-            )
-        ;
     }
 
     /**

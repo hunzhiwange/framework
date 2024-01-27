@@ -18,7 +18,6 @@ use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Whoops\Handler\JsonResponseHandler;
-use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -252,8 +251,6 @@ abstract class Runtime implements IRuntime
         $prettyPage = new PrettyPageHandler();
         $prettyPage->handleUnconditionally(true);
         $whoops->pushHandler($prettyPage);
-        $plainText = new PlainTextHandler();
-        $whoops->pushHandler($plainText);
 
         return $whoops->handleException($e);
     }

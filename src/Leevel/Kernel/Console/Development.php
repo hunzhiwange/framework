@@ -32,7 +32,7 @@ class Development extends Command
         $this->line('Start to clears caches.');
         $this->callI18n();
         $this->callLog();
-        $this->callOption();
+        $this->callConfig();
         $this->callRouter();
         $this->callSession();
         $this->callView();
@@ -66,14 +66,14 @@ class Development extends Command
     }
 
     /**
-     * 执行清理 option 缓存.
+     * 执行清理 config 缓存.
      *
      * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
-    protected function callOption(): void
+    protected function callConfig(): void
     {
         $this->line('');
-        $this->call('option:clear');
+        $this->call('config:clear');
     }
 
     /**

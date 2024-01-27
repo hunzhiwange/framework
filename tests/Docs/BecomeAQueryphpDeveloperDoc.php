@@ -126,8 +126,8 @@ php leevel migrate:migrate
 安装过程
 
 ```
-using config file ./phinx.php
-using config parser php
+using option file ./phinx.php
+using option parser php
 using migration paths
 - /data/codes/test/queryphp/database/migrations
 using seed paths
@@ -160,8 +160,8 @@ using database queryphp_development_db
 == 20181112024450 PermissionResource: migrating
 == 20181112024450 PermissionResource: migrated 0.0305s
 
-== 20181203130724 Option: migrating
-== 20181203130724 Option: migrated 0.0170s
+== 20181203130724 Config: migrating
+== 20181203130724 Config: migrated 0.0170s
 
 == 20181203144731 Test: migrating
 == 20181203144731 Test: migrated 0.0133s
@@ -282,8 +282,8 @@ php leevel migrate:migrate --env=.env.phpunit
 安装过程
 
 ```
-using config file ./phinx.php
-using config parser php
+using option file ./phinx.php
+using option parser php
 using migration paths
 - /data/codes/test/queryphp/database/migrations
 using seed paths
@@ -316,8 +316,8 @@ using database queryphp_development_test
 == 20181112024450 PermissionResource: migrating
 == 20181112024450 PermissionResource: migrated 0.0305s
 
-== 20181203130724 Option: migrating
-== 20181203130724 Option: migrated 0.0170s
+== 20181203130724 Config: migrating
+== 20181203130724 Config: migrated 0.0170s
 
 == 20181203144731 Test: migrating
 == 20181203144731 Test: migrated 0.0133s
@@ -420,7 +420,7 @@ EOT,
             No syntax errors detected in common/Test.php
             Running Code Sniffer...
             Loaded config default from ".php_cs.dist".
-            Paths from configuration file have been overridden by paths provided as command arguments.
+            Paths from optionuration file have been overridden by paths provided as command arguments.
             1) common/Test.php Fixed all files in 0.009 seconds, 12.000 MB memory used
             The file has been automatically formatted.
             [13:04:00] Working directory changed to /data/codes/test/queryphp/frontend
@@ -625,8 +625,8 @@ php vendor/bin/phinx migrate
 ```
 Phinx by CakePHP - https://phinx.org. 0.9.2
 
-using config file ./phinx.php
-using config parser php
+using option file ./phinx.php
+using option parser php
 using migration paths
  - /data/codes/test/queryphp/vendor/hunzhiwange/framework/tests/assert/database/migrations
 using seed paths
@@ -751,7 +751,7 @@ EOT,
             No syntax errors detected in tests/Name.php
             Running Code Sniffer...
             Loaded config default from ".php_cs.dist".
-            Paths from configuration file have been overridden by paths provided as command arguments.
+            Paths from optionuration file have been overridden by paths provided as command arguments.
             1) tests/Name.php Fixed all files in 0.009 seconds, 12.000 MB memory used
             The file has been automatically formatted.
             [master 20f2f845] 测试格式化

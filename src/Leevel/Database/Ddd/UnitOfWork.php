@@ -34,7 +34,12 @@ class UnitOfWork
     /**
      * 根实体.
      */
-    protected Entity $entity;
+    protected ?Entity $entity = null;
+
+    /**
+     * 数据库连接.
+     */
+    protected ?IDatabase $connection = null;
 
     /**
      * 注入的新增实体.
@@ -147,21 +152,19 @@ class UnitOfWork
      * - 事务工作单元大量参考了 Doctrine2 以及 Java Bean 的实现和设计.
      * - 最早基于 .NET 里面关于领域驱动设计代码实现，事务工作单元、仓储等概念均来源于此.
      */
-    public function __construct()
+    public function __construct(?Entity $entity = null)
     {
-        $this->entity = new class() extends Entity {
-            public const TABLE = '';
-            public const ID = null;
-            public const AUTO = null;
-        };
+        if ($entity) {
+            $this->setEntity($entity);
+        }
     }
 
     /**
      * 创建一个事务工作单元.
      */
-    public static function make(): static
+    public static function make(?Entity $entity = null): static
     {
-        return new static();
+        return new static($entity);
     }
 
     /**
@@ -184,7 +187,6 @@ class UnitOfWork
             $this->processingEntities();
             $this->commit();
         } catch (\Throwable $e) {
-            $this->close();
             $this->rollBack();
 
             throw $e;
@@ -512,22 +514,10 @@ class UnitOfWork
     /**
      * 设置实体.
      */
-    public function setEntity(Entity $entity, ?string $connect = null): self
+    public function setEntity(?Entity $entity = null): self
     {
         $this->entity = $entity;
-        if (null !== $connect) {
-            $this->setConnect($connect);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 设置连接.
-     */
-    public function setConnect(?string $connect = null): self
-    {
-        $this->entity->withConnect($connect);
+        $this->connection = null;
 
         return $this;
     }
@@ -537,7 +527,15 @@ class UnitOfWork
      */
     public function connect(): IDatabase
     {
-        return $this->entity->select()->databaseConnect();
+        if (!$this->entity) {
+            $this->initDefaultEntity();
+        }
+
+        if ($this->connection) {
+            return $this->connection;
+        }
+
+        return $this->connection = $this->entity->select()->databaseConnect();
     }
 
     /**
@@ -554,6 +552,7 @@ class UnitOfWork
     public function rollBack(): void
     {
         $this->connect()->rollBack();
+        $this->close();
     }
 
     /**
@@ -562,6 +561,7 @@ class UnitOfWork
     public function commit(): void
     {
         $this->connect()->commit();
+        $this->close();
     }
 
     /**
@@ -573,13 +573,11 @@ class UnitOfWork
 
         try {
             $result = $action($this);
-            $this->flush();
             $this->commit();
 
             return $result;
         } catch (\Throwable $e) {
             $this->rollBack();
-            $this->close();
 
             throw $e;
         }
@@ -618,6 +616,8 @@ class UnitOfWork
     {
         $this->clear();
         $this->closed = true;
+        $this->entity = null;
+        $this->connection = null;
     }
 
     /**
@@ -651,6 +651,24 @@ class UnitOfWork
         }
 
         return self::STATE_NEW;
+    }
+
+    protected function initDefaultEntity(): void
+    {
+        $this->entity = new class() extends Entity {
+            public const TABLE = '';
+            public const ID = null;
+            public const AUTO = null;
+        };
+    }
+
+    protected function setDefaultEntity(null|Entity|\Closure $entity): void
+    {
+        if (null === $entity && $this->entity) {
+            $this->setEntity();
+        } elseif (!$this->entity && $entity instanceof Entity) {
+            $this->entity = $entity;
+        }
     }
 
     /**
@@ -751,6 +769,7 @@ class UnitOfWork
 
         $this->entityCreates[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
+        $this->setDefaultEntity($entity);
 
         return $this;
     }
@@ -777,6 +796,7 @@ class UnitOfWork
 
         $this->entityUpdates[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
+        $this->setDefaultEntity($entity);
 
         return $this;
     }
@@ -800,6 +820,7 @@ class UnitOfWork
 
         $this->entityReplaces[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
+        $this->setDefaultEntity($entity);
 
         return $this;
     }
@@ -822,7 +843,11 @@ class UnitOfWork
                 }
             }
 
-            if (true === $remove) {
+            if ($remove) {
+                if ($this->entity && spl_object_id($this->entity) === $id) {
+                    $this->setDefaultEntity(null);
+                }
+
                 return $this;
             }
         }
@@ -835,7 +860,11 @@ class UnitOfWork
                 }
             }
 
-            if (true === $remove) {
+            if ($remove) {
+                if ($this->entity && spl_object_id($this->entity) === $id) {
+                    $this->setDefaultEntity(null);
+                }
+
                 return $this;
             }
         }
@@ -848,7 +877,11 @@ class UnitOfWork
                 }
             }
 
-            if (true === $remove) {
+            if ($remove) {
+                if ($this->entity && spl_object_id($this->entity) === $id) {
+                    $this->setDefaultEntity(null);
+                }
+
                 return $this;
             }
         }
@@ -864,6 +897,7 @@ class UnitOfWork
         $this->{'deletesFlag'.$position}[spl_object_id($entity)] = $priority;
         $this->entityDeletes[$id] = $entity;
         $this->entityStates[$id] = self::STATE_REMOVED;
+        $this->setDefaultEntity($entity);
 
         return $this;
     }

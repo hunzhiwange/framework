@@ -11,7 +11,7 @@ class CustomStripslashes
      */
     public static function handle(mixed $data, bool $recursive = true): mixed
     {
-        if (true === $recursive && \is_array($data)) {
+        if ($recursive && \is_array($data)) {
             $result = [];
             foreach ($data as $key => $value) {
                 $result[self::handle($key)] = self::handle($value);

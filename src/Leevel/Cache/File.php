@@ -24,7 +24,7 @@ class File extends Cache implements ICache
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'expire' => 86400,
         'path' => '',
     ];
@@ -239,11 +239,11 @@ class File extends Cache implements ICache
      */
     protected function getCachePath(string $name): string
     {
-        if (!$this->option['path']) {
+        if (!$this->config['path']) {
             throw new \InvalidArgumentException('Cache path is not allowed empty.');
         }
 
-        return $this->option['path'].'/'.$this->getCacheName($name).'.php';
+        return $this->config['path'].'/'.$this->getCacheName($name).'.php';
     }
 
     /**

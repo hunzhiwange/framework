@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Router\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Http\Request;
-use Leevel\Option\Option;
 use Leevel\Router\IRouter;
 use Leevel\Router\Provider\Register;
 use Leevel\Router\Redirect;
@@ -37,7 +37,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'cookie' => [
                 'domain' => '',
                 'path' => '/',
@@ -51,7 +51,7 @@ final class RegisterTest extends TestCase
                 'fail' => 'fail',
             ],
         ]);
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $request = $this->createMock(Request::class);
         $request->method('getEnter')->willReturn('');

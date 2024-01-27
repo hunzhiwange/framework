@@ -33,10 +33,10 @@ use Leevel\Filesystem\Manager;
  * @method static array                              getConnects()                                                 取回所有连接.
  * @method static string                             getDefaultConnect()                                           返回默认连接.
  * @method static void                               setDefaultConnect(string $name)                               设置默认连接.
- * @method static mixed                              getContainerOption(?string $name = null)                      获取容器配置值.
- * @method static void                               setContainerOption(string $name, mixed $value)                设置容器配置值.
+ * @method static mixed                              getContainerConfig(?string $name = null)                      获取容器配置值.
+ * @method static void                               setContainerConfig(string $name, mixed $value)                设置容器配置值.
  * @method static void                               extend(string $connect, \Closure $callback)                   扩展自定义连接.
- * @method static array                              normalizeConnectOption(string $connect)                       整理连接配置.
+ * @method static array                              normalizeConnectConfig(string $connect)                       整理连接配置.
  */
 class Filesystem
 {

@@ -616,13 +616,13 @@ class ArrMyArray implements IArray
 
 class ArrMyJson implements IJson
 {
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        if (null === $option) {
-            $option = JSON_UNESCAPED_UNICODE;
+        if (null === $config) {
+            $config = JSON_UNESCAPED_UNICODE;
         }
 
-        return json_encode(['hello' => 'IJson'], $option);
+        return json_encode(['hello' => 'IJson'], $config);
     }
 }
 

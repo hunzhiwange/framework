@@ -280,7 +280,7 @@ final class EntityJsonSerializeTest extends TestCase
         );
     }
 
-    public function testWithJsonEncodeCustomOption1(): void
+    public function testWithJsonEncodeCustomConfig1(): void
     {
         $entity = $this->makeBlackEntity();
 
@@ -298,7 +298,7 @@ final class EntityJsonSerializeTest extends TestCase
         );
     }
 
-    public function testWithJsonEncodeCustomOption2(): void
+    public function testWithJsonEncodeCustomConfig2(): void
     {
         $entity = $this->makeBlackEntity();
 

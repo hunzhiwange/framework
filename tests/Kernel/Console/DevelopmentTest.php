@@ -30,7 +30,7 @@ final class DevelopmentTest extends TestCase
             [
                 new DemoI18nClear(),
                 new DemoLogClear(),
-                new DemoOptionClear(),
+                new DemoConfigClear(),
                 new DemoRouterClear(),
                 new DemoSessionClear(),
                 new DemoViewClear(),
@@ -89,9 +89,9 @@ class DemoLogClear extends Command
     }
 }
 
-class DemoOptionClear extends Command
+class DemoConfigClear extends Command
 {
-    protected string $name = 'option:clear';
+    protected string $name = 'config:clear';
 
     protected string $description = 'This is a demo command';
 
@@ -148,7 +148,7 @@ class DemoAutoloadClear extends Command
         return 0;
     }
 
-    protected function getOptions(): array
+    protected function getConfigs(): array
     {
         return [
             [
@@ -162,7 +162,7 @@ class DemoAutoloadClear extends Command
                 'dev',
                 '-d',
                 InputOption::VALUE_NONE,
-                'Without `--no-dev` option for `composer dump-autoload --optimize`.',
+                'Without `--no-dev` config for `composer dump-autoload --optimize`.',
             ],
         ];
     }

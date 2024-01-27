@@ -216,7 +216,7 @@ Web 根目录已经内置了 `www/.htaccess` 文件来为隐藏 index.php,需要
 ```
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
+        Configs -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On

@@ -258,11 +258,11 @@ class ManyMany extends Relation
             return;
         }
 
-        if (true === $this->middleWithSoftDeleted) {
+        if ($this->middleWithSoftDeleted) {
             return;
         }
 
-        if (true === $this->middleOnlySoftDeleted) {
+        if ($this->middleOnlySoftDeleted) {
             $value = ['>', 0];
         } else {
             $value = 0;

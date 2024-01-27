@@ -18,7 +18,7 @@ class Zip extends Filesystem implements IFilesystem
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'path' => '',
     ];
 
@@ -31,10 +31,10 @@ class Zip extends Filesystem implements IFilesystem
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        if (empty($this->option['path'])) {
-            throw new \InvalidArgumentException('The zip driver requires path option.');
+        if (empty($this->config['path'])) {
+            throw new \InvalidArgumentException('The zip driver requires path config.');
         }
 
-        return new ZipArchiveAdapter(new FilesystemZipArchiveProvider($this->option['path']));
+        return new ZipArchiveAdapter(new FilesystemZipArchiveProvider($this->config['path']));
     }
 }

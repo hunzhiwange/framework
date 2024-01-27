@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Bootstrap;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
@@ -11,7 +12,6 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 #[Api([
@@ -50,7 +50,7 @@ final class LoadI18nTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -63,11 +63,11 @@ final class LoadI18nTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
-        static::assertSame('en-US', $container['option']['i18n\\default']);
+        static::assertSame('en-US', $container['config']['i18n\\default']);
         static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         static::assertFalse($app->isCachedI18n('en-US'));
         static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
@@ -108,7 +108,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -121,11 +121,11 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
-        static::assertSame('en-US', $container['option']['i18n\\default']);
+        static::assertSame('en-US', $container['config']['i18n\\default']);
         static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         static::assertFalse($app->isCachedI18n('en-US'));
         static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
@@ -164,7 +164,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 ':composer' => [
                     'i18ns' => [
@@ -177,8 +177,8 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
 
         $bootstrap->handle($app);

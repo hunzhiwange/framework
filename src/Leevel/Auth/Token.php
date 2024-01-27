@@ -14,7 +14,7 @@ class Token extends Auth implements IAuth
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'token' => null,
         'expire' => null,
     ];
@@ -22,9 +22,9 @@ class Token extends Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(protected ICache $cache, array $option = [])
+    public function __construct(protected ICache $cache, array $config = [])
     {
-        parent::__construct($option);
+        parent::__construct($config);
     }
 
     /**

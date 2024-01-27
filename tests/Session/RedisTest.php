@@ -115,7 +115,7 @@ final class RedisTest extends TestCase
 
     protected function createRedisSessionHandler(): Redis
     {
-        $option = [
+        $config = [
             'host' => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['HOST'],
             'port' => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['PORT'],
             'password' => $GLOBALS['LEEVEL_ENV']['SESSION']['REDIS']['PASSWORD'],
@@ -124,6 +124,6 @@ final class RedisTest extends TestCase
             'persistent' => false,
         ];
 
-        return new Redis(new CacheRedis(new PhpRedis($option)));
+        return new Redis(new CacheRedis(new PhpRedis($config)));
     }
 }

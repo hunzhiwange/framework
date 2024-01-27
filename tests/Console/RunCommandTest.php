@@ -57,9 +57,9 @@ EOT,
         static::assertStringContainsString($this->normalizeContent('call other command test.'), $result);
         static::assertStringContainsString($this->normalizeContent('load1 test1'), $result);
 
-        // argument and option
+        // argument and config
         static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        static::assertStringContainsString($this->normalizeContent('option is {"env":null,"help":false'), $result);
+        static::assertStringContainsString($this->normalizeContent('config is {"env":null,"help":false'), $result);
 
         // table
         static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);

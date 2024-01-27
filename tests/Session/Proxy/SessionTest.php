@@ -6,9 +6,9 @@ namespace Tests\Session\Proxy;
 
 use Leevel\Cache\Manager as CacheManager;
 use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Option\Option;
 use Leevel\Session\Manager;
 use Leevel\Session\Proxy\Session;
 use Tests\TestCase;
@@ -97,7 +97,7 @@ final class SessionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'cache' => [
                 'default' => 'file',
                 'expire' => 86400,
@@ -140,12 +140,12 @@ final class SessionTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }
 
-    protected function makePhpRedis(array $option = []): PhpRedis
+    protected function makePhpRedis(array $config = []): PhpRedis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -156,9 +156,9 @@ final class SessionTest extends TestCase
             'persistent' => false,
         ];
 
-        $option = array_merge($default, $option);
+        $config = array_merge($default, $config);
 
-        return new PhpRedis($option);
+        return new PhpRedis($config);
     }
 
     protected function createContainer(): Container

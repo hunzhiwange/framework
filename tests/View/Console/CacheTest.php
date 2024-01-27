@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\View\Console;
 
+use Leevel\Config\Config;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
-use Leevel\Option\Option;
 use Leevel\View\Console\Cache;
 use Leevel\View\Manager;
 use Tests\Console\BaseCommand;
@@ -230,7 +230,7 @@ final class CacheTest extends TestCase
 
     protected function makeViewViews(IContainer $container): void
     {
-        $option = new Option([
+        $config = new Config([
             'view' => [
                 'default' => 'html',
                 'action_fail' => 'public/fail',
@@ -247,7 +247,7 @@ final class CacheTest extends TestCase
                 ],
             ],
         ]);
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $container
             ->singleton(

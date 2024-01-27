@@ -654,7 +654,7 @@ EOT,
         $router->dispatch($request);
     }
 
-    public function testOptionsForCorsWillBackCorsResponse(): void
+    public function testConfigsForCorsWillBackCorsResponse(): void
     {
         $pathInfo = '';
         $attributes = [];

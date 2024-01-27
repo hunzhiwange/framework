@@ -53,7 +53,7 @@ final class MigrateBreakpointTest extends TestCase
         );
 
         static::assertStringContainsString(
-            $this->normalizeContent('using config parser php'),
+            $this->normalizeContent('using option parser php'),
             $result
         );
 

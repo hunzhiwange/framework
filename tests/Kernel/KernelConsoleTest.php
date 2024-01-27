@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Leevel\Config\Config;
+use Leevel\Config\IConfig;
 use Leevel\Console\Application;
 use Leevel\Database\Console\SeedRun;
 use Leevel\Di\Container;
@@ -13,8 +15,6 @@ use Leevel\Kernel\IApp;
 use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\KernelConsole;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\IOption;
-use Leevel\Option\Option;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tests\TestCase;
@@ -98,7 +98,7 @@ EOT,
         $app = new AppKernelConsole($container = new Container(), '');
         $container->instance('app', $app);
 
-        $this->createOption($container);
+        $this->createConfig($container);
 
         $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
@@ -124,16 +124,16 @@ EOT,
     {
         $app = new AppKernelConsole($container = new Container(), '');
         $container->instance('app', $app);
-        $this->createOption($container);
+        $this->createConfig($container);
         $kernel = new KernelConsole3($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         static::assertSame(0, $kernel->handle());
     }
 
-    protected function createOption(IContainer $container): void
+    protected function createConfig(IContainer $container): void
     {
-        $optionData = [
+        $configData = [
             'app' => [
                 ':composer' => [
                     'commands' => [
@@ -147,16 +147,16 @@ EOT,
                 'template' => [],
             ],
         ];
-        $option = new Option($optionData);
-        static::assertSame([], $option->get('console\\template'));
+        $config = new Config($configData);
+        static::assertSame([], $config->get('console\\template'));
         static::assertSame([
             'Tests\\Kernel\\Commands\\Test',
             'Tests\\Kernel\\Commands\\Console',
             SeedRun::class,
-        ], $option->get(':composer.commands'));
+        ], $config->get(':composer.commands'));
 
-        $container->singleton('option', function () use ($option): IOption {
-            return $option;
+        $container->singleton('config', function () use ($config): IConfig {
+            return $config;
         });
     }
 }

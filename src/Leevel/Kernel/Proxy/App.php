@@ -7,6 +7,8 @@ namespace Leevel\Kernel\Proxy;
 use Leevel\Di\Container;
 use Leevel\Kernel\App as BaseApp;
 
+// 这里需要整理di中的方法
+
 /**
  * 代理 app.
  *
@@ -20,8 +22,8 @@ use Leevel\Kernel\App as BaseApp;
  * @method static string                storagePath(string $path = '')                                                                获取存储路径.
  * @method static void                  setThemesPath(string $path)                                                                   设置主题路径.
  * @method static string                themesPath(string $path = '')                                                                 获取主题路径.
- * @method static void                  setOptionPath(string $path)                                                                   设置配置路径.
- * @method static string                optionPath(string $path = '')                                                                 获取配置路径.
+ * @method static void                  setConfigPath(string $path)                                                                   设置配置路径.
+ * @method static string                configPath(string $path = '')                                                                 获取配置路径.
  * @method static void                  setI18nPath(string $path)                                                                     设置语言包路径.
  * @method static string                i18nPath(?string $path = null)                                                                获取语言包路径.
  * @method static void                  setEnvPath(string $path)                                                                      设置环境变量路径.
@@ -32,9 +34,9 @@ use Leevel\Kernel\App as BaseApp;
  * @method static void                  setI18nCachedPath(string $i18nCachedPath)                                                     设置语言包缓存路径.
  * @method static string                i18nCachedPath(string $i18n)                                                                  获取语言包缓存路径.
  * @method static bool                  isCachedI18n(string $i18n)                                                                    是否存在语言包缓存.
- * @method static void                  setOptionCachedPath(string $optionCachedPath)                                                 设置配置缓存路径.
- * @method static string                optionCachedPath()                                                                            获取配置缓存路径.
- * @method static bool                  isCachedOption()                                                                              是否存在配置缓存.
+ * @method static void                  setConfigCachedPath(string $configCachedPath)                                                 设置配置缓存路径.
+ * @method static string                configCachedPath()                                                                            获取配置缓存路径.
+ * @method static bool                  isCachedConfig()                                                                              是否存在配置缓存.
  * @method static void                  setRouterCachedPath(string $routerCachedPath)                                                 设置路由缓存路径.
  * @method static string                routerCachedPath()                                                                            获取路由缓存路径.
  * @method static bool                  isCachedRouter()                                                                              是否存在路由缓存.

@@ -62,7 +62,7 @@ class Load
      */
     public function loadData(): array
     {
-        if (true === $this->isLoaded) {
+        if ($this->isLoaded) {
             return $this->loaded;
         }
 

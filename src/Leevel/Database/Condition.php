@@ -44,7 +44,7 @@ class Condition
     /**
      * 查询条件参数.
      */
-    public array $options = [];
+    public array $configs = [];
 
     /**
      * 条件逻辑连接符.
@@ -101,7 +101,7 @@ class Condition
     /**
      * 连接参数.
      */
-    protected static array $optionsDefault = [
+    protected static array $configsDefault = [
         'comment' => null,
         'prefix' => [],
         'distinct' => false,
@@ -119,7 +119,7 @@ class Condition
         'limitQuery' => true,
         'forUpdate' => false,
         'lockShare' => false,
-        'middlewaresOptions' => [],
+        'middlewaresConfigs' => [],
     ];
 
     /**
@@ -178,7 +178,7 @@ class Condition
     public function __construct(IDatabase $connect)
     {
         $this->connect = $connect;
-        $this->initOption();
+        $this->initConfig();
     }
 
     /**
@@ -354,7 +354,7 @@ class Condition
             // 构造 delete 语句
             $sql = [];
             $sql[] = 'DELETE';
-            if (1 === \count($this->options['from'])) {
+            if (1 === \count($this->configs['from'])) {
                 $sql[] = 'FROM';
                 $sql[] = $this->parseTable();
                 $sql[] = $this->parseWhere();
@@ -431,16 +431,16 @@ class Condition
     /**
      * 重置查询条件.
      */
-    public function reset(?string $option = null): self
+    public function reset(?string $config = null): self
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
 
-        if (null === $option) {
-            $this->initOption();
-        } elseif (\array_key_exists($option, static::$optionsDefault)) {
-            $this->options[$option] = static::$optionsDefault[$option];
+        if (null === $config) {
+            $this->initConfig();
+        } elseif (\array_key_exists($config, static::$configsDefault)) {
+            $this->configs[$config] = static::$configsDefault[$config];
         }
 
         return $this;
@@ -455,7 +455,7 @@ class Condition
             return $this;
         }
 
-        $this->options['comment'] = $comment;
+        $this->configs['comment'] = $comment;
 
         return $this;
     }
@@ -469,7 +469,7 @@ class Condition
             return $this;
         }
 
-        $this->options['prefix'][] = $prefix;
+        $this->configs['prefix'][] = $prefix;
 
         return $this;
     }
@@ -529,7 +529,7 @@ class Condition
             $table = $this->getTable();
         }
 
-        $this->options['columns'] = [];
+        $this->configs['columns'] = [];
         $this->addCols($table, $cols);
 
         return $this;
@@ -579,8 +579,8 @@ class Condition
             return $this;
         }
 
-        $this->options['middlewaresOptions'] = $this->throughMiddleware($handleMiddlewares, $this->options['middlewaresOptions'] ?? [], function (\Closure $next, self $condition, array $middlewaresOptions): array {
-            return $middlewaresOptions;
+        $this->configs['middlewaresConfigs'] = $this->throughMiddleware($handleMiddlewares, $this->configs['middlewaresConfigs'] ?? [], function (\Closure $next, self $condition, array $middlewaresConfigs): array {
+            return $middlewaresConfigs;
         });
 
         return $this;
@@ -889,7 +889,7 @@ class Condition
         foreach ($indexes as $value) {
             $value = (array) Normalize::handle($value);
             foreach ($value as $tmp) {
-                $this->options['index'][$type][] = $tmp;
+                $this->configs['index'][$type][] = $tmp;
             }
         }
 
@@ -1015,7 +1015,7 @@ class Condition
         }
 
         foreach ($selects as $tmp) {
-            $this->options['union'][] = [$tmp, $type];
+            $this->configs['union'][] = [$tmp, $type];
         }
 
         return $this;
@@ -1052,7 +1052,7 @@ class Condition
                     $tmp = $matches[2];
                 }
                 $tmp = $this->normalizeColumn($tmp, $currentTableName);
-                $this->options['group'][] = $tmp;
+                $this->configs['group'][] = $tmp;
             }
         }
 
@@ -1246,7 +1246,7 @@ class Condition
                         $sort = $orderDefault;
                     }
 
-                    $this->options['order'][] = $tmp.' '.$sort;
+                    $this->configs['order'][] = $tmp.' '.$sort;
                 } else {
                     $currentTableName = $tableName;
                     $sort = $orderDefault;
@@ -1264,7 +1264,7 @@ class Condition
                         $tmp = $this->normalizeTableOrColumn("{$currentTableName}.{$tmp}");
                     }
 
-                    $this->options['order'][] = $tmp.' '.$sort;
+                    $this->configs['order'][] = $tmp.' '.$sort;
                 }
             }
         }
@@ -1297,7 +1297,7 @@ class Condition
             return $this;
         }
 
-        $this->options['distinct'] = $flag;
+        $this->configs['distinct'] = $flag;
 
         return $this;
     }
@@ -1371,9 +1371,9 @@ class Condition
             return $this;
         }
 
-        $this->options['limitCount'] = 1;
-        $this->options['limitOffset'] = null;
-        $this->options['limitQuery'] = false;
+        $this->configs['limitCount'] = 1;
+        $this->configs['limitOffset'] = null;
+        $this->configs['limitQuery'] = false;
 
         return $this;
     }
@@ -1387,13 +1387,13 @@ class Condition
             return $this;
         }
 
-        if ($this->options['limitQuery']) {
+        if ($this->configs['limitQuery']) {
             return $this;
         }
 
-        $this->options['limitCount'] = null;
-        $this->options['limitOffset'] = null;
-        $this->options['limitQuery'] = true;
+        $this->configs['limitCount'] = null;
+        $this->configs['limitOffset'] = null;
+        $this->configs['limitQuery'] = true;
 
         return $this;
     }
@@ -1423,9 +1423,9 @@ class Condition
             return $this->top($offset);
         }
 
-        $this->options['limitCount'] = $count;
-        $this->options['limitOffset'] = $offset;
-        $this->options['limitQuery'] = true;
+        $this->configs['limitCount'] = $count;
+        $this->configs['limitOffset'] = $offset;
+        $this->configs['limitQuery'] = true;
 
         return $this;
     }
@@ -1441,11 +1441,11 @@ class Condition
             return $this;
         }
 
-        if ($flag && $this->options['lockShare']) {
+        if ($flag && $this->configs['lockShare']) {
             throw new \RuntimeException('Lock share and for update cannot exist at the same time.');
         }
 
-        $this->options['forUpdate'] = $flag;
+        $this->configs['forUpdate'] = $flag;
 
         return $this;
     }
@@ -1461,11 +1461,11 @@ class Condition
             return $this;
         }
 
-        if ($flag && $this->options['forUpdate']) {
+        if ($flag && $this->configs['forUpdate']) {
             throw new \RuntimeException('Lock share and for update cannot exist at the same time.');
         }
 
-        $this->options['lockShare'] = $flag;
+        $this->configs['lockShare'] = $flag;
 
         return $this;
     }
@@ -1479,14 +1479,14 @@ class Condition
         $sql['comment'] = $this->parseComment();
         $sql['select'] = 'SELECT';
 
-        foreach (array_keys($this->options) as $option) {
-            $option = (string) $option;
-            if ('from' === $option) {
+        foreach (array_keys($this->configs) as $config) {
+            $config = (string) $config;
+            if ('from' === $config) {
                 $sql['from'] = '';
-            } elseif (\in_array($option, ['comment', 'union'], true)) {
+            } elseif (\in_array($config, ['comment', 'union'], true)) {
                 continue;
-            } elseif (method_exists($this, $method = 'parse'.ucfirst($option))) {
-                $sql[$option] = $this->{$method}();
+            } elseif (method_exists($this, $method = 'parse'.ucfirst($config))) {
+                $sql[$config] = $this->{$method}();
             }
         }
 
@@ -1499,15 +1499,15 @@ class Condition
         }
 
         // 删除空元素
-        foreach ($sql as $offset => $option) {
-            if ('' === trim($option)) {
+        foreach ($sql as $offset => $config) {
+            if ('' === trim($config)) {
                 unset($sql[$offset]);
             }
         }
 
         $result = trim(implode(' ', $sql));
 
-        if (true === $withLogicGroup) {
+        if ($withLogicGroup) {
             return '('.$result.')';
         }
 
@@ -1541,7 +1541,7 @@ class Condition
     /**
      * 穿越中间件.
      */
-    protected function throughMiddleware(array $extendMiddlewares, array $middlewaresOptions, \Closure $then): array
+    protected function throughMiddleware(array $extendMiddlewares, array $middlewaresConfigs, \Closure $then): array
     {
         if (!static::$container) {
             throw new \Exception('Container was not set.');
@@ -1549,7 +1549,7 @@ class Condition
 
         // @phpstan-ignore-next-line
         return (new Pipeline(static::$container))
-            ->send([$this, $middlewaresOptions])
+            ->send([$this, $middlewaresConfigs])
             ->through($extendMiddlewares)
             ->then($then)
         ;
@@ -1566,7 +1566,7 @@ class Condition
 
         // @phpstan-ignore-next-line
         return (new Pipeline(static::$container))
-            ->send([$this, $this->options['middlewaresOptions'] ?? [], $makeSql])
+            ->send([$this, $this->configs['middlewaresConfigs'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
         ;
@@ -1682,11 +1682,11 @@ class Condition
      */
     protected function parseComment(): string
     {
-        if (empty($this->options['comment'])) {
+        if (empty($this->configs['comment'])) {
             return '';
         }
 
-        return '/*'.$this->options['comment'].'*/';
+        return '/*'.$this->configs['comment'].'*/';
     }
 
     /**
@@ -1694,11 +1694,11 @@ class Condition
      */
     protected function parsePrefix(): string
     {
-        if (empty($this->options['prefix'])) {
+        if (empty($this->configs['prefix'])) {
             return '';
         }
 
-        return implode(' ', $this->options['prefix']);
+        return implode(' ', $this->configs['prefix']);
     }
 
     /**
@@ -1706,7 +1706,7 @@ class Condition
      */
     protected function parseDistinct(): string
     {
-        if (!$this->options['distinct']) {
+        if (!$this->configs['distinct']) {
             return '';
         }
 
@@ -1718,12 +1718,12 @@ class Condition
      */
     protected function parseColumns(): string
     {
-        if (empty($this->options['columns'])) {
+        if (empty($this->configs['columns'])) {
             return '';
         }
 
         $columns = [];
-        foreach ($this->options['columns'] as $item) {
+        foreach ($this->configs['columns'] as $item) {
             [$tableName, $col, $alias] = $item;
 
             // 表达式支持
@@ -1746,13 +1746,13 @@ class Condition
      */
     protected function parseAggregate(): string
     {
-        if (empty($this->options['aggregate'])) {
+        if (empty($this->configs['aggregate'])) {
             return '';
         }
 
         $columns = [];
 
-        foreach ($this->options['aggregate'] as $item) {
+        foreach ($this->configs['aggregate'] as $item) {
             [, $field, $alias] = $item;
             $columns[] = $field.' AS '.$alias;
         }
@@ -1765,13 +1765,13 @@ class Condition
      */
     protected function parseFrom(): string
     {
-        if (empty($this->options['from'])) {
+        if (empty($this->configs['from'])) {
             return '';
         }
 
         $from = [];
 
-        foreach ($this->options['from'] as $alias => $value) {
+        foreach ($this->configs['from'] as $alias => $value) {
             $tmp = '';
 
             // 如果不是第一个 FROM，则添加 JOIN
@@ -1805,7 +1805,7 @@ class Condition
     protected function parseTable(): string
     {
         $alias = null;
-        foreach ($this->options['from'] as $alias => $value) {
+        foreach ($this->configs['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
                 $alias = $this->normalizeTableOrColumn("{$value['schema']}.{$value['table_name']}");
             }
@@ -1823,12 +1823,12 @@ class Condition
     {
         $index = '';
         foreach (['FORCE', 'IGNORE'] as $type) {
-            if (empty($this->options['index'][$type])) {
+            if (empty($this->configs['index'][$type])) {
                 continue;
             }
 
             $index .= ($index ? ' ' : '').$type.' INDEX('.
-                implode(',', $this->options['index'][$type]).')';
+                implode(',', $this->configs['index'][$type]).')';
         }
 
         return $index;
@@ -1839,7 +1839,7 @@ class Condition
      */
     protected function parseWhere(bool $child = false): string
     {
-        if (empty($this->options['where'])) {
+        if (empty($this->configs['where'])) {
             return '';
         }
 
@@ -1851,13 +1851,13 @@ class Condition
      */
     protected function parseUnion(): string
     {
-        if (empty($this->options['union'])) {
+        if (empty($this->configs['union'])) {
             return '';
         }
 
         $sql = '';
-        $optionsCount = \count($this->options['union']);
-        foreach ($this->options['union'] as $index => $value) {
+        $configsCount = \count($this->configs['union']);
+        foreach ($this->configs['union'] as $index => $value) {
             [$union, $type] = $value;
             if ($union instanceof self || $union instanceof Select) {
                 if ($union instanceof self) {
@@ -1873,7 +1873,7 @@ class Condition
                 }
             }
 
-            if ($index <= $optionsCount - 1) {
+            if ($index <= $configsCount - 1) {
                 $sql .= PHP_EOL.$type.' '.$union;
             }
         }
@@ -1886,11 +1886,11 @@ class Condition
      */
     protected function parseOrder(): string
     {
-        if (empty($this->options['order'])) {
+        if (empty($this->configs['order'])) {
             return '';
         }
 
-        return 'ORDER BY '.implode(',', array_unique($this->options['order']));
+        return 'ORDER BY '.implode(',', array_unique($this->configs['order']));
     }
 
     /**
@@ -1898,11 +1898,11 @@ class Condition
      */
     protected function parseGroup(): string
     {
-        if (empty($this->options['group'])) {
+        if (empty($this->configs['group'])) {
             return '';
         }
 
-        return 'GROUP BY '.implode(',', $this->options['group']);
+        return 'GROUP BY '.implode(',', $this->configs['group']);
     }
 
     /**
@@ -1910,7 +1910,7 @@ class Condition
      */
     protected function parseHaving(bool $child = false): string
     {
-        if (empty($this->options['having'])) {
+        if (empty($this->configs['having'])) {
             return '';
         }
 
@@ -1922,14 +1922,14 @@ class Condition
      */
     protected function parseLimitCount(bool $withoutOffset = false): string
     {
-        if (null === $this->options['limitOffset']
-            && null === $this->options['limitCount']) {
+        if (null === $this->configs['limitOffset']
+            && null === $this->configs['limitCount']) {
             return '';
         }
 
         return $this->connect->limitCount(
-            $this->options['limitCount'],
-            $withoutOffset ? null : $this->options['limitOffset']
+            $this->configs['limitCount'],
+            $withoutOffset ? null : $this->configs['limitOffset']
         );
     }
 
@@ -1938,7 +1938,7 @@ class Condition
      */
     protected function parseForUpdate(): string
     {
-        if (!$this->options['forUpdate']) {
+        if (!$this->configs['forUpdate']) {
             return '';
         }
 
@@ -1950,7 +1950,7 @@ class Condition
      */
     protected function parseLockShare(): string
     {
-        if (!$this->options['lockShare']) {
+        if (!$this->configs['lockShare']) {
             return '';
         }
 
@@ -1995,7 +1995,7 @@ class Condition
     {
         $sqlCond = [];
         $table = $this->getTable();
-        foreach ($this->options[$condType] as $key => $cond) {
+        foreach ($this->configs[$condType] as $key => $cond) {
             // 逻辑连接符
             if (\in_array($cond, [static::LOGIC_AND, static::LOGIC_OR], true)) {
                 $sqlCond[] = strtoupper($cond);
@@ -2467,22 +2467,22 @@ class Condition
         if ($type) {
             // 支持嵌套的 string
             if (':string' === $type) {
-                if (empty($this->options[$typeAndLogic[0]][$type])) {
-                    $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
-                    $this->options[$typeAndLogic[0]][$type] = [];
+                if (empty($this->configs[$typeAndLogic[0]][$type])) {
+                    $this->configs[$typeAndLogic[0]][] = $typeAndLogic[1];
+                    $this->configs[$typeAndLogic[0]][$type] = [];
                 }
-                $this->options[$typeAndLogic[0]][$type][] = $items;
+                $this->configs[$typeAndLogic[0]][$type][] = $items;
             } elseif (':stringSimple' === $type) {
-                $this->options[$typeAndLogic[0]][$type][] = $typeAndLogic[1];
-                $this->options[$typeAndLogic[0]][$type][] = $items;
+                $this->configs[$typeAndLogic[0]][$type][] = $typeAndLogic[1];
+                $this->configs[$typeAndLogic[0]][$type][] = $items;
             }
         } else {
             // 格式化时间
             if ($inTimeCondition = $this->getInTimeCondition()) {
                 $items[1] = '@'.$inTimeCondition.' '.$items[1];
             }
-            $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
-            $this->options[$typeAndLogic[0]][] = $items;
+            $this->configs[$typeAndLogic[0]][] = $typeAndLogic[1];
+            $this->configs[$typeAndLogic[0]][] = $items;
         }
     }
 
@@ -2540,7 +2540,7 @@ class Condition
     protected function addJoin(string $joinType, array|\Closure|Condition|Select|string $names, array|string $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
-        if (\count($this->options['union'])) {
+        if (\count($this->configs['union'])) {
             throw new \InvalidArgumentException('JOIN queries cannot be used while using UNION queries.');
         }
 
@@ -2602,7 +2602,7 @@ class Condition
         }
 
         // 确定 table_name 和 schema
-        if (true === $parseSchema) {
+        if ($parseSchema) {
             $tmp = explode('.', $table);
             if (isset($tmp[1])) {
                 $schema = $tmp[0];
@@ -2642,7 +2642,7 @@ class Condition
         }
 
         // 添加一个要查询的数据表
-        $this->options['from'][$alias] = [
+        $this->configs['from'][$alias] = [
             'join_type' => $joinType,
             'table_name' => $tableName,
             'schema' => $schema,
@@ -2684,7 +2684,7 @@ class Condition
                     }
                 }
 
-                $this->options['columns'][] = [
+                $this->configs['columns'][] = [
                     $currentTableName,
                     $col,
                     \is_string($alias) ? $alias : null,
@@ -2698,7 +2698,7 @@ class Condition
      */
     protected function addAggregate(string $type, string $field, string $alias): self
     {
-        $this->options['columns'] = [];
+        $this->configs['columns'] = [];
         $tableName = $this->getTable();
 
         // 表达式支持
@@ -2720,7 +2720,7 @@ class Condition
 
         $field = "{$type}({$field})";
 
-        $this->options['aggregate'][] = [
+        $this->configs['aggregate'][] = [
             $type,
             $field,
             $alias,
@@ -2766,11 +2766,11 @@ class Condition
                 }
             }
 
-            if (true === $pdoNamedParameter || (true === $isExpression && !empty($matches))) {
+            if ($pdoNamedParameter || ($isExpression && !empty($matches))) {
                 $values[] = $value;
             } else {
                 // 转换位置占位符至命名占位符
-                if (true === $pdoPositionalParameter) {
+                if ($pdoPositionalParameter) {
                     if (isset($bind[$pdoPositionalParameterIndex])) {
                         $key = 'positional_param_'.$pdoPositionalParameterIndex;
                         $value = $bind[$pdoPositionalParameterIndex];
@@ -2965,14 +2965,14 @@ class Condition
     /**
      * 初始化查询条件.
      */
-    protected function initOption(): void
+    protected function initConfig(): void
     {
-        $this->options = static::$optionsDefault;
+        $this->configs = static::$configsDefault;
     }
 
     protected function parseTerminateMiddlewares(array $terminateMiddlewares, array $sql): array
     {
-        return $this->throughMiddlewareTerminate($terminateMiddlewares, $sql, function (\Closure $next, self $condition, array $middlewaresOptions, array $makeSql): array {
+        return $this->throughMiddlewareTerminate($terminateMiddlewares, $sql, function (\Closure $next, self $condition, array $middlewaresConfigs, array $makeSql): array {
             return $makeSql;
         });
     }

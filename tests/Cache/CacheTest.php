@@ -49,12 +49,12 @@ class Demo
 
 ## 缓存配置
 
-系统的缓存配置位于应用下面的 `option/cache.php` 文件。
+系统的缓存配置位于应用下面的 `config/cache.php` 文件。
 
 可以定义多个缓存连接，并且支持切换，每一个连接支持驱动设置。
 
 ``` php
-{[file_get_contents('option/cache.php')]}
+{[file_get_contents('config/cache.php')]}
 ```
 
 缓存参数根据不同的连接会有所区别，通用的缓存参数如下：
@@ -83,7 +83,7 @@ final class CacheTest extends TestCase
 {[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Cache\ICache::class, 'set', 'define')]}
 ```
 
-缓存配置 `$option` 根据不同缓存驱动支持不同的一些配置。
+缓存配置 `$config` 根据不同缓存驱动支持不同的一些配置。
 
 **file 驱动**
 

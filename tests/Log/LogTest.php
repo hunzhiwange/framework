@@ -68,12 +68,12 @@ class Demo
 
 ## log 配置
 
-系统的 log 配置位于应用下面的 `option/log.php` 文件。
+系统的 log 配置位于应用下面的 `config/log.php` 文件。
 
 可以定义多个日志连接，并且支持切换，每一个连接支持驱动设置。
 
 ``` php
-{[file_get_contents('option/log.php')]}
+{[file_get_contents('config/log.php')]}
 ```
 
 log 参数根据不同的连接会有所区别，通用的 log 参数如下：
@@ -205,10 +205,10 @@ EOT,
         $log->log('notFound', 'hello world');
     }
 
-    protected function createFileConnect(array $option = []): File
+    protected function createFileConnect(array $config = []): File
     {
         return new File(array_merge([
             'path' => __DIR__.'/cacheLog',
-        ], $option));
+        ], $config));
     }
 }

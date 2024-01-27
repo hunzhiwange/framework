@@ -14,9 +14,9 @@ class Session extends Auth implements IAuth
     /**
      * 构造函数.
      */
-    public function __construct(protected ISession $session, array $option = [])
+    public function __construct(protected ISession $session, array $config = [])
     {
-        parent::__construct($option);
+        parent::__construct($config);
     }
 
     /**

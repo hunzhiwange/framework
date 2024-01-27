@@ -22,7 +22,7 @@ class Html extends View implements IView
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'theme_path' => '',
         'suffix' => '.html',
         'cache_path' => '',
@@ -74,11 +74,11 @@ class Html extends View implements IView
      */
     protected function getCachePath(): string
     {
-        if (!$this->option['cache_path']) {
+        if (!$this->config['cache_path']) {
             throw new \RuntimeException('Theme cache path must be set.');
         }
 
-        return $this->option['cache_path'];
+        return $this->config['cache_path'];
     }
 
     /**

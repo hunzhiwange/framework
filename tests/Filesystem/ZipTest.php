@@ -36,7 +36,7 @@ final class ZipTest extends TestCase
     public function testPathNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The zip driver requires path option.');
+        $this->expectExceptionMessage('The zip driver requires path config.');
 
         $zip = new zip([
             'path' => '',

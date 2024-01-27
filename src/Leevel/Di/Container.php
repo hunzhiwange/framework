@@ -18,31 +18,16 @@ class Container implements IContainer, \ArrayAccess
      */
     protected static ?IContainer $instance = null;
 
-    /**
-     * 注册的服务.
-     *
-     * - Registered services.
-     */
-    protected array $services = [];
-
-    /**
-     * 注册的实例.
-     *
-     * - Registered instances.
-     */
-    protected array $instances = [];
-
-    /**
-     * 注册的单一实例.
-     *
-     * - Registered singletons.
-     */
-    protected array $singletons = [];
+    protected ?\ArrayObject $defaultContext = null;
 
     /**
      * 别名支持.
      */
     protected array $alias = [];
+
+    protected array $contextKeys = [];
+
+    protected ?\Closure $contextResolver = null;
 
     /**
      * 是否已经初始引导.
@@ -70,6 +55,11 @@ class Container implements IContainer, \ArrayAccess
      * 已经引导过的服务提供者.
      */
     protected array $bootedProviders = [];
+
+    public function __construct()
+    {
+        $this->defaultContext = new \ArrayObject();
+    }
 
     /**
      * 实现魔术方法 __clone.
@@ -137,10 +127,10 @@ class Container implements IContainer, \ArrayAccess
             $service = $name;
         }
 
-        $this->services[$name] = $service;
+        $this->setContextValue(IContainer::SERVICES, $name, $service);
 
         if ($share) {
-            $this->singletons[] = $name;
+            $this->setContextValue(IContainer::SINGLETONS, $name, true);
         }
 
         return $this;
@@ -160,7 +150,7 @@ class Container implements IContainer, \ArrayAccess
             $service = $name;
         }
 
-        $this->instances[$name] = $service;
+        $this->setContextValue(IContainer::INSTANCES, $name, $service);
 
         return $this;
     }
@@ -206,23 +196,24 @@ class Container implements IContainer, \ArrayAccess
             $this->registerDeferredProvider($name);
         }
 
-        if (isset($this->instances[$name])) {
-            return $this->instances[$name];
+        if (null !== ($instance = $this->getContextValue(IContainer::INSTANCES, $name))) {
+            return $instance;
         }
 
         try {
             // 生成实例
-            if (!isset($this->services[$name])) {
+            if (!$this->existsContextValue(IContainer::SERVICES, $name)) {
                 $instance = $this->getInjectionObject($name, $args);
             } else {
-                if (!\is_string($this->services[$name]) && \is_callable($this->services[$name])) {
+                $service = $this->getContextValue(IContainer::SERVICES, $name);
+                if (!\is_string($service) && \is_callable($service)) {
                     array_unshift($args, $this);
-                    $instance = $this->services[$name](...$args);
+                    $instance = $service(...$args);
                 } else {
-                    if (\is_string($this->services[$name])) {
-                        $instance = $this->getInjectionObject($this->services[$name], $args);
+                    if (\is_string($service)) {
+                        $instance = $this->getInjectionObject($service, $args);
                     } else {
-                        $instance = $this->services[$name];
+                        $instance = $service;
                     }
                 }
             }
@@ -235,8 +226,8 @@ class Container implements IContainer, \ArrayAccess
         }
 
         // 单一实例
-        if (\in_array($name, $this->singletons, true)) {
-            return $this->instances[$name] = $instance;
+        if ($this->existsContextValue(IContainer::SINGLETONS, $name)) {
+            $this->setContextValue(IContainer::INSTANCES, $name, $instance);
         }
 
         return $instance;
@@ -259,6 +250,9 @@ class Container implements IContainer, \ArrayAccess
                 $isStatic = true;
             }
         }
+        /*elseif (is_object($callback)) {
+            $callback = [$callback, '__invoke'];
+         }*/
 
         if (false === $isStatic && \is_array($callback)) {
             if (!\is_object($callback[0])) {
@@ -286,11 +280,10 @@ class Container implements IContainer, \ArrayAccess
     public function remove(string $name): void
     {
         $name = $this->normalize($name);
-        foreach (['services', 'instances', 'singletons'] as $item) {
-            if (isset($this->{$item}[$name])) {
-                unset($this->{$item}[$name]);
-            }
-        }
+
+        $this->removeContextValue(IContainer::SERVICES, $name);
+        $this->removeContextValue(IContainer::INSTANCES, $name);
+        $this->removeContextValue(IContainer::SINGLETONS, $name);
 
         foreach ($this->alias as $alias => $service) {
             if ($name === $service) {
@@ -307,8 +300,8 @@ class Container implements IContainer, \ArrayAccess
         $name = $this->normalize($name);
         $name = $this->getAlias($name);
 
-        return isset($this->services[$name])
-            || isset($this->instances[$name]);
+        return $this->existsContextValue(IContainer::SERVICES, $name)
+            || $this->existsContextValue(IContainer::INSTANCES, $name);
     }
 
     /**
@@ -316,18 +309,63 @@ class Container implements IContainer, \ArrayAccess
      */
     public function clear(): void
     {
-        $prop = [
-            'services',
-            'instances',
-            'singletons',
-            'alias',
-        ];
+        $this->clearContextValue(IContainer::SERVICES, true);
+        $this->clearContextValue(IContainer::INSTANCES, true);
+        $this->clearContextValue(IContainer::SINGLETONS, true);
+        $this->clearContextValue(IContainer::SERVICES);
+        $this->clearContextValue(IContainer::INSTANCES);
+        $this->clearContextValue(IContainer::SINGLETONS);
 
-        foreach ($prop as $item) {
-            $this->{$item} = [];
+        $this->alias = [];
+        $this->isBootstrap = false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addContextKeys(string ...$contextKeys): void
+    {
+        $this->contextKeys = [$this->contextKeys, ...$contextKeys];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeContextKeys(string ...$contextKeys): void
+    {
+        $this->contextKeys = array_diff($this->contextKeys, $contextKeys);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContextResolver(?\Closure $contextResolver = null): void
+    {
+        $this->contextResolver = $contextResolver;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function inContext(?string $name = null): bool
+    {
+        if (!$this->contextResolver) {
+            return false;
         }
 
-        $this->isBootstrap = false;
+        if (null === $name) {
+            return true;
+        }
+
+        return \in_array($name, $this->contextKeys, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function enabledCoroutine(): bool
+    {
+        return true === $this->make(IContainer::ENABLED_COROUTINE, throw: false);
     }
 
     /**
@@ -718,5 +756,47 @@ class Container implements IContainer, \ArrayAccess
     protected function parseAlias(array $name): array
     {
         return [key($name), current($name)];
+    }
+
+    protected function setContextValue(string $type, string $name, mixed $service): void
+    {
+        $this->getContext($name)[$type][$name] = $service;
+    }
+
+    protected function getContextValue(string $type, string $name): mixed
+    {
+        return $this->getContext($name)[$type][$name] ?? null;
+    }
+
+    protected function existsContextValue(string $type, string $name): bool
+    {
+        return isset($this->getContext($name)[$type][$name]);
+    }
+
+    protected function removeContextValue(string $type, string $name): void
+    {
+        if (isset($this->getContext($name)[$type][$name])) {
+            unset($this->getContext($name)[$type][$name]);
+        }
+    }
+
+    protected function clearContextValue(string $type, bool $defaultContext = false): void
+    {
+        $this->getContext(null, $defaultContext)[$type] = [];
+    }
+
+    protected function getContext(?string $name = null, bool $defaultContext = false): \ArrayObject
+    {
+        if ($defaultContext) {
+            return $this->defaultContext;
+        }
+
+        if ($this->inContext($name)) {
+            $contextResolver = $this->contextResolver;
+
+            return $contextResolver();
+        }
+
+        return $this->defaultContext;
     }
 }

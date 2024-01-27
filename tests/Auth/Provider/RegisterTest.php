@@ -7,8 +7,8 @@ namespace Tests\Auth\Provider;
 use Leevel\Auth\Provider\Register;
 use Leevel\Auth\Session;
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
-use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Tests\TestCase;
 
@@ -53,7 +53,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'web',
                 'web_default' => 'session',
@@ -72,7 +72,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('session', $this->createSession());
 
         return $container;

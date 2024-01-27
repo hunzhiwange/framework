@@ -23,13 +23,13 @@ class Register extends Provider
             ->singleton(
                 'encryption',
                 function (IContainer $container): Encryption {
-                    $option = $container['option'];
+                    $config = $container['config'];
 
                     return new Encryption(
-                        $option['auth_key'],
-                        $option['auth_cipher'],
-                        $option['auth_rsa_private'],
-                        $option['auth_rsa_public']
+                        $config['auth_key'],
+                        $config['auth_cipher'],
+                        $config['auth_rsa_private'],
+                        $config['auth_rsa_public']
                     );
                 },
             )

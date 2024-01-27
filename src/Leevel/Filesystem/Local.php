@@ -18,7 +18,7 @@ class Local extends Filesystem implements IFilesystem
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'path' => '',
         'permissions' => [],
         'write_flags' => LOCK_EX,
@@ -32,15 +32,15 @@ class Local extends Filesystem implements IFilesystem
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        if (empty($this->option['path'])) {
-            throw new \InvalidArgumentException('The local driver requires path option.');
+        if (empty($this->config['path'])) {
+            throw new \InvalidArgumentException('The local driver requires path config.');
         }
 
         return new LocalFilesystemAdapter(
-            $this->option['path'],
-            PortableVisibilityConverter::fromArray($this->option['permissions']),
-            $this->option['write_flags'],
-            $this->option['link_handling'],
+            $this->config['path'],
+            PortableVisibilityConverter::fromArray($this->config['permissions']),
+            $this->config['write_flags'],
+            $this->config['link_handling'],
         );
     }
 }

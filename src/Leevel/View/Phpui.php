@@ -12,7 +12,7 @@ class Phpui extends View implements IView
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'theme_path' => '',
         'suffix' => '.php',
     ];

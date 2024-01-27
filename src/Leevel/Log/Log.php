@@ -36,7 +36,7 @@ abstract class Log extends AbstractLogger implements ILog
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
@@ -46,9 +46,9 @@ abstract class Log extends AbstractLogger implements ILog
     /**
      * 构造函数.
      */
-    public function __construct(array $option = [], ?IDispatch $dispatch = null)
+    public function __construct(array $config = [], ?IDispatch $dispatch = null)
     {
-        $this->option = array_merge($this->option, $option);
+        $this->config = array_merge($this->config, $config);
         $this->dispatch = $dispatch;
         $this->createMonolog();
     }
@@ -73,7 +73,7 @@ abstract class Log extends AbstractLogger implements ILog
 
         $message = (string) $message;
         $messageCategory = $this->parseMessageCategory($message);
-        $minLevel = $this->getMinLevel($messageCategory, $this->option['level']);
+        $minLevel = $this->getMinLevel($messageCategory, $this->config['level']);
         if (ILog::LEVEL_PRIORITY[$level] > ILog::LEVEL_PRIORITY[$minLevel]) {
             return;
         }
@@ -135,7 +135,7 @@ abstract class Log extends AbstractLogger implements ILog
      */
     protected function createMonolog(): void
     {
-        $this->monolog = new Logger($this->option['channel']);
+        $this->monolog = new Logger($this->config['channel']);
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class Log extends AbstractLogger implements ILog
      */
     protected function createLineFormatter(): LineFormatter
     {
-        return new LineFormatter(null, $this->option['format'], true, true);
+        return new LineFormatter(null, $this->config['format'], true, true);
     }
 
     /**

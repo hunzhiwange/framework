@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Debug\Middleware;
 
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
+use Leevel\Config\IConfig;
 use Leevel\Debug\Debug;
 use Leevel\Debug\Middleware\Debug as MiddlewareDebug;
 use Leevel\Di\Container;
@@ -13,8 +15,6 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Log\File as LogFile;
 use Leevel\Log\ILog;
-use Leevel\Option\IOption;
-use Leevel\Option\Option;
 use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +83,7 @@ final class DebugTest extends TestCase
         $container->instance('app', $app);
         $container->instance('session', $this->createSession());
         $container->instance('log', $this->createLog());
-        $container->instance('option', $this->createOption($debug));
+        $container->instance('config', $this->createConfig($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
         static::assertNull($eventDispatch->handle('event'));
@@ -114,7 +114,7 @@ final class DebugTest extends TestCase
         return $log;
     }
 
-    protected function createOption(bool $debug = true): IOption
+    protected function createConfig(bool $debug = true): IConfig
     {
         $data = [
             'app' => [
@@ -128,11 +128,11 @@ final class DebugTest extends TestCase
             ],
         ];
 
-        $option = new Option($data);
+        $config = new Config($data);
 
-        $this->assertInstanceof(IOption::class, $option);
+        $this->assertInstanceof(IConfig::class, $config);
 
-        return $option;
+        return $config;
     }
 }
 

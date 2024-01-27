@@ -12,11 +12,11 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function parseDsn(array $option): string
+    public function parseDsn(array $config): string
     {
         $dsn = [];
         foreach (['Base', 'Port', 'Socket', 'Charset'] as $method) {
-            $dsn[] = $this->{'parse'.$method}($option);
+            $dsn[] = $this->{'parse'.$method}($config);
         }
 
         return implode('', $dsn);
@@ -227,44 +227,44 @@ GROUP BY
     /**
      * 基本.
      */
-    protected function parseBase(array $option): string
+    protected function parseBase(array $config): string
     {
-        return 'mysql:dbname='.$option['name'].';host='.$option['host'];
+        return 'mysql:dbname='.$config['name'].';host='.$config['host'];
     }
 
     /**
      * 端口.
      */
-    protected function parsePort(array $option): string
+    protected function parsePort(array $config): string
     {
-        if (empty($option['port'])) {
+        if (empty($config['port'])) {
             return '';
         }
 
-        return ';port='.$option['port'];
+        return ';port='.$config['port'];
     }
 
     /**
      * 用 unix socket 加速 php-fpm、mysql、redis 连接.
      */
-    protected function parseSocket(array $option): string
+    protected function parseSocket(array $config): string
     {
-        if (empty($option['socket'])) {
+        if (empty($config['socket'])) {
             return '';
         }
 
-        return ';unix_socket='.$option['socket'];
+        return ';unix_socket='.$config['socket'];
     }
 
     /**
      * 编码.
      */
-    protected function parseCharset(array $option): string
+    protected function parseCharset(array $config): string
     {
-        if (empty($option['charset'])) {
+        if (empty($config['charset'])) {
             return '';
         }
 
-        return ';charset='.$option['charset'];
+        return ';charset='.$config['charset'];
     }
 }

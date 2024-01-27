@@ -89,11 +89,11 @@ class Register extends Provider
             ->singleton(
                 'response',
                 function (IContainer $container): Response {
-                    $option = $container['option'];
+                    $config = $container['config'];
 
                     return (new Response($container['view'], $container['redirect']))
-                        ->setViewSuccessTemplate($option->get('view\\success'))
-                        ->setViewFailTemplate($option->get('view\\fail'))
+                        ->setViewSuccessTemplate($config->get('view\\success'))
+                        ->setViewFailTemplate($config->get('view\\fail'))
                     ;
                 },
             )
@@ -105,8 +105,8 @@ class Register extends Provider
      */
     protected function cookie(): void
     {
-        /** @var \Leevel\Option\IOption $option */
-        $option = $this->container->make('option');
-        CookieUtils::initOption((array) $option->get('cookie\\', []));
+        /** @var \Leevel\Config\IConfig $config */
+        $config = $this->container->make('config');
+        CookieUtils::initConfig((array) $config->get('cookie\\', []));
     }
 }

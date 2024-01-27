@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Database\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
 use Leevel\Database\Provider\Register;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
-use Leevel\Option\Option;
 use Tests\Database\DatabaseTestCase as TestCase;
 
 final class RegisterTest extends TestCase
@@ -92,7 +92,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'database' => [
                 'default' => 'mysql',
                 'connect' => [
@@ -104,7 +104,7 @@ final class RegisterTest extends TestCase
                         'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                         'charset' => 'utf8',
-                        'options' => [
+                        'configs' => [
                             \PDO::ATTR_PERSISTENT => false,
                             \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                             \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -143,11 +143,11 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $eventDispatch = $this->createMock(IDispatch::class);
         static::assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $cacheManager = $this->createCacheManager($container, $config, 'file');
         $container->singleton('caches', $cacheManager);
         $container->singleton('cache', $cacheManager->connect());
 

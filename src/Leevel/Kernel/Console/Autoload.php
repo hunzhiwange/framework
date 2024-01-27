@@ -68,7 +68,7 @@ class Autoload extends Command
                 'dev',
                 '-d',
                 InputOption::VALUE_NONE,
-                'Without `--no-dev` option for `composer dump-autoload --optimize`.',
+                'Without `--no-dev` config for `composer dump-autoload --optimize`.',
             ],
         ];
     }

@@ -30,18 +30,18 @@ trait BaseResponse
     /**
      * 设置 COOKIE.
      */
-    public function setCookie(string $name, ?string $value = null, array $option = []): void
+    public function setCookie(string $name, ?string $value = null, array $config = []): void
     {
-        $this->headers->setCookie(CookieUtils::makeCookie($name, $value, $option));
+        $this->headers->setCookie(CookieUtils::makeCookie($name, $value, $config));
     }
 
     /**
      * 批量设置 COOKIE.
      */
-    public function withCookies(array $cookies, array $option = []): void
+    public function withCookies(array $cookies, array $config = []): void
     {
         foreach ($cookies as $key => $value) {
-            $this->setCookie($key, $value, $option);
+            $this->setCookie($key, $value, $config);
         }
     }
 }

@@ -20,29 +20,29 @@ EOT,
 final class JsonResponseTest extends TestCase
 {
     #[Api([
-        'zh-CN:title' => 'getEncodingOptions 获取 JSON 编码参数',
+        'zh-CN:title' => 'getEncodingConfigs 获取 JSON 编码参数',
     ])]
-    public function testGetEncodingOptions(): void
+    public function testGetEncodingConfigs(): void
     {
         $response = new JsonResponse();
-        static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
+        static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingConfigs());
     }
 
     #[Api([
         'zh-CN:title' => 'setData 设置 JSON 数据支持 JSON 编码参数',
     ])]
-    public function testSetDataWithEncodingOptions(): void
+    public function testSetDataWithEncodingConfigs(): void
     {
         $response = new JsonResponse();
 
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('["成都","QueryPHP"]', $response->getContent());
 
-        $response->setEncodingOptions(0);
+        $response->setEncodingConfigs(0);
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
 
-        $response->setEncodingOptions(JSON_FORCE_OBJECT);
+        $response->setEncodingConfigs(JSON_FORCE_OBJECT);
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
     }
@@ -69,7 +69,7 @@ final class JsonResponseTest extends TestCase
 ```
 EOT,
     ])]
-    public function testSetEncodingOptions(): void
+    public function testSetEncodingConfigs(): void
     {
         $response = new JsonResponse();
         $response->setData(['foo' => 'bar']);
@@ -96,13 +96,13 @@ class JsonResponseMyArray implements IArray
 
 class JsonResponseMyJson implements IJson
 {
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        if (null === $option) {
-            $option = JSON_UNESCAPED_UNICODE;
+        if (null === $config) {
+            $config = JSON_UNESCAPED_UNICODE;
         }
 
-        return json_encode(['hello' => 'IJson'], $option);
+        return json_encode(['hello' => 'IJson'], $config);
     }
 }
 

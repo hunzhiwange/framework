@@ -12,7 +12,7 @@ interface IHash
     /**
      * 生成密码.
      */
-    public function password(string $password, array $option = []): string;
+    public function password(string $password, array $config = []): string;
 
     /**
      * 校验密码.

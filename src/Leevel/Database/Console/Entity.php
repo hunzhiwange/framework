@@ -39,23 +39,23 @@ class Entity extends Make
 
           <info>php %command.full_name% Job::Job</info>
 
-        You can also by using the <comment>--table</comment> option:
+        You can also by using the <comment>--table</comment> config:
 
           <info>php %command.full_name% name --table=test</info>
 
-        You can also by using the <comment>--stub</comment> option:
+        You can also by using the <comment>--stub</comment> config:
 
           <info>php %command.full_name% name --stub=stub/entity</info>
 
-        You can also by using the <comment>--force</comment> option:
+        You can also by using the <comment>--force</comment> config:
 
           <info>php %command.full_name% name --force</info>
 
-        You can also by using the <comment>--refresh</comment> option:
+        You can also by using the <comment>--refresh</comment> config:
 
           <info>php %command.full_name% name --refresh</info>
 
-        You can also by using the <comment>--connect</comment> option:
+        You can also by using the <comment>--connect</comment> config:
 
         <info>php %command.full_name% name --connect=db_product</info>
         EOF;
@@ -83,7 +83,7 @@ class Entity extends Make
     /**
      * 应用的 composer 配置.
      */
-    protected ?array $composerOption = null;
+    protected ?array $composerConfig = null;
 
     /**
      * 表名.
@@ -165,11 +165,11 @@ class Entity extends Make
      */
     protected function handleRefresh(): void
     {
-        if (true === $this->getOption('force')) {
+        if ($this->getOption('force')) {
             return;
         }
 
-        if (true !== $this->getOption('refresh')) {
+        if (!$this->getOption('refresh')) {
             return;
         }
 
@@ -341,7 +341,7 @@ class Entity extends Make
      */
     protected function getStruct(array $columns): string
     {
-        $showPropBlackColumn = $this->composerOption()['show_prop_black'];
+        $showPropBlackColumn = $this->composerConfig()['show_prop_black'];
         $struct = [];
         foreach ($columns['list'] as $val) {
             if (str_contains($val['comment'], ' ')) {
@@ -455,7 +455,7 @@ class Entity extends Make
      */
     protected function getConstExtend(array $columns): string
     {
-        $deleteAtColumn = $this->composerOption()['delete_at'];
+        $deleteAtColumn = $this->composerConfig()['delete_at'];
         if (!$deleteAtColumn || !isset($columns['list'][$deleteAtColumn])) {
             return '';
         }
@@ -473,26 +473,26 @@ class Entity extends Make
     /**
      * 取得应用的 composer 配置.
      */
-    protected function composerOption(): array
+    protected function composerConfig(): array
     {
-        if (null !== $this->composerOption) {
-            return $this->composerOption;
+        if (null !== $this->composerConfig) {
+            return $this->composerConfig;
         }
 
         $path = $this->app->path().'/composer.json';
         if (!is_file($path)) {
-            return $this->composerOption = [
+            return $this->composerConfig = [
                 'show_prop_black' => [],
                 'delete_at' => null,
             ];
         }
 
-        $option = $this->getFileContent($path);
-        $option = $option['extra']['leevel-console']['database-entity'];
+        $config = $this->getFileContent($path);
+        $config = $config['extra']['leevel-console']['database-entity'];
 
-        return $this->composerOption = [
-            'show_prop_black' => $option['show_prop_black'] ?? [],
-            'delete_at' => $option['delete_at'] ?? null,
+        return $this->composerConfig = [
+            'show_prop_black' => $config['show_prop_black'] ?? [],
+            'delete_at' => $config['delete_at'] ?? null,
         ];
     }
 

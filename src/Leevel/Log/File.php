@@ -17,7 +17,7 @@ class File extends Log implements ILog
      *
      * @see \Monolog\Handler\StreamHandler
      */
-    protected array $option = [
+    protected array $config = [
         'level' => [
             ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::DEBUG,
         ],
@@ -41,8 +41,8 @@ class File extends Log implements ILog
                 // @phpstan-ignore-next-line
                 $this->normalizeMonologLevel($level),
                 true,
-                $this->option['file_permission'],
-                $this->option['use_locking'],
+                $this->config['file_permission'],
+                $this->config['use_locking'],
             ),
         );
     }
@@ -54,12 +54,12 @@ class File extends Log implements ILog
      */
     protected function normalizePath(string $level, string $category): string
     {
-        if (!$this->option['path']) {
+        if (!$this->config['path']) {
             throw new \InvalidArgumentException('Path for log has not set.');
         }
 
-        return $this->option['path'].'/'.$this->option['channel'].'.'.
+        return $this->config['path'].'/'.$this->config['channel'].'.'.
             $level.'/'.($category ? $category.'-' : '').
-            date($this->option['name']).'.log';
+            date($this->config['name']).'.log';
     }
 }

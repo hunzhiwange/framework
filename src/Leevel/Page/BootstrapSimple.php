@@ -14,7 +14,7 @@ class BootstrapSimple extends Bootstrap
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
         // center,justify
         'align' => 'center',
         'template' => '{header} {ul} {prev} {next} {endul} {footer}',
@@ -23,7 +23,7 @@ class BootstrapSimple extends Bootstrap
     /**
      * 初始化配置.
      */
-    protected function intOption(): void
+    protected function intConfig(): void
     {
     }
 
@@ -52,7 +52,7 @@ class BootstrapSimple extends Bootstrap
             return sprintf(
                 '<li class="%s"><a aria-label="Previous" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
-                'justify' === $this->option['align'] ? 'previous' : '',
+                'justify' === $this->config['align'] ? 'previous' : '',
                 $this->replace(
                     $this->page->parsePrevRenderPrev()
                 ),
@@ -63,7 +63,7 @@ class BootstrapSimple extends Bootstrap
         return sprintf(
             '<li class="disabled%s"><a aria-label="Previous">'.
                 '<span aria-hidden="true">%s</span></a></li>',
-            'justify' === $this->option['align'] ? ' previous' : '',
+            'justify' === $this->config['align'] ? ' previous' : '',
             __('上一页')
         );
     }
@@ -77,7 +77,7 @@ class BootstrapSimple extends Bootstrap
             return sprintf(
                 '<li class="%s"><a aria-label="Next" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
-                'justify' === $this->option['align'] ? 'next' : '',
+                'justify' === $this->config['align'] ? 'next' : '',
                 $this->replace(
                     $this->page->getCurrentPage() + 1
                 ),
@@ -88,7 +88,7 @@ class BootstrapSimple extends Bootstrap
         return sprintf(
             '<li class="disabled%s"><a aria-label="Next">'.
                 '<span aria-hidden="true">%s</span></a></li>',
-            'justify' === $this->option['align'] ? ' next' : '',
+            'justify' === $this->config['align'] ? ' next' : '',
             __('下一页')
         );
     }

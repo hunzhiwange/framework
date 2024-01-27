@@ -168,7 +168,7 @@ class IdeHelper
         $result = substr($result, strpos($result, '<'));
         $result = rtrim($result, '] ');
         $result = str_replace(
-            ['<required> ', '<optional> ', ' = Array', '= NULL'],
+            ['<required> ', '<configal> ', ' = Array', '= NULL'],
             ['', '', ' = []', '= null'],
             $result,
         );

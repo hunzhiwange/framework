@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Leevel\Server\Pool\IConnection;
+
 /**
  * 缓存接口.
  */
-interface ICache
+interface ICache extends IConnection
 {
     /**
      * 批量设置缓存.
@@ -67,4 +69,13 @@ interface ICache
      * 设置缓存键值正则.
      */
     public function setKeyRegex(string $keyRegex): void;
+
+    /**
+     * 释放当前连接.
+     *
+     * - 用于归还当前的数据库连接到连接池
+     *
+     * @todo 加入到各种ide-helper中
+     */
+    public function releaseConnect(): void;
 }

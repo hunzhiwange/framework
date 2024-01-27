@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Console;
 
+use Leevel\Config\IConfig;
 use Leevel\Console\Command;
 use Leevel\I18n\GettextGenerator;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 
 /**
  * 语言包生成.
@@ -27,15 +27,15 @@ class Generate extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app, IOption $option): int
+    public function handle(IApp $app, IConfig $config): int
     {
         $this->line('Start to generate i18n file.');
 
         $gettextGenerator = new GettextGenerator();
         $generatedLanguageFiles = $gettextGenerator->generatorPoFiles(
-            $option->get(':composer.i18n-paths', []),
+            $config->get(':composer.i18n-paths', []),
             // @phpstan-ignore-next-line
-            explode(',', $option->get('console\\app_i18n')),
+            explode(',', $config->get('console\\app_i18n')),
             $app->path('assets/i18n')
         );
 

@@ -98,6 +98,6 @@ class Session
      */
     protected function getSessionExpire(): int
     {
-        return $this->manager->getSessionOption()['cookie_expire'] ?? 0;
+        return $this->manager->getSessionConfig()['cookie_expire'] ?? 0;
     }
 }

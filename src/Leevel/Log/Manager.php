@@ -24,33 +24,33 @@ use Leevel\Support\Manager as Managers;
  * @method static array                 getConnects()                                                 取回所有连接.
  * @method static string                getDefaultConnect()                                           返回默认连接.
  * @method static void                  setDefaultConnect(string $name)                               设置默认连接.
- * @method static mixed                 getContainerOption(?string $name = null)                      获取容器配置值.
- * @method static void                  setContainerOption(string $name, mixed $value)                设置容器配置值.
+ * @method static mixed                 getContainerConfig(?string $name = null)                      获取容器配置值.
+ * @method static void                  setContainerConfig(string $name, mixed $value)                设置容器配置值.
  * @method static void                  extend(string $connect, \Closure $callback)                   扩展自定义连接.
- * @method static array                 normalizeConnectOption(string $connect)                       整理连接配置.
+ * @method static array                 normalizeConnectConfig(string $connect)                       整理连接配置.
  */
 class Manager extends Managers
 {
     /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $newConnect = false): ILog
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ILog
     {
-        return parent::connect($connect, $newConnect);
+        return parent::connect($connect, $newConnect, ...$arguments);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function reconnect(?string $connect = null): ILog
+    public function reconnect(?string $connect = null, ...$arguments): ILog
     {
-        return parent::reconnect($connect);
+        return parent::reconnect($connect, ...$arguments);
     }
 
     /**
      * 取得配置命名空间.
      */
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'log';
     }
@@ -63,7 +63,7 @@ class Manager extends Managers
         $driverClass = $this->getDriverClass(File::class, $driverClass);
 
         return new $driverClass(
-            $this->normalizeConnectOption($connect),
+            $this->normalizeConnectConfig($connect),
             $this->container->make('event')
         );
     }
@@ -76,7 +76,7 @@ class Manager extends Managers
         $driverClass = $this->getDriverClass(Syslog::class, $driverClass);
 
         return new $driverClass(
-            $this->normalizeConnectOption($connect),
+            $this->normalizeConnectConfig($connect),
             $this->container->make('event')
         );
     }

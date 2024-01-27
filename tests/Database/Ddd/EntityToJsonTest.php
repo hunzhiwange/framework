@@ -31,7 +31,7 @@ final class EntityToJsonTest extends TestCase
         );
     }
 
-    public function testJsonEncodeWithCustomOptions(): void
+    public function testJsonEncodeWithCustomConfigs(): void
     {
         $entity = $this->makeEntity();
 

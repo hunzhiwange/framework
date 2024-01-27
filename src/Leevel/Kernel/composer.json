@@ -17,7 +17,7 @@
         "leevel/support": "^1.1",
         "leevel/http": "^1.1",
         "leevel/i18n": "^1.1",
-        "leevel/option": "^1.1",
+        "leevel/config": "^1.1",
         "leevel/event": "^1.1",
         "leevel/log": "^1.1",
         "leevel/router": "^1.1",

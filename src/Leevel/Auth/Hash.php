@@ -17,11 +17,11 @@ class Hash implements IHash
     /**
      * {@inheritDoc}
      */
-    public function password(string $password, array $option = []): string
+    public function password(string $password, array $config = []): string
     {
-        $algo = $option[self::ALGO] ?? PASSWORD_BCRYPT;
+        $algo = $config[self::ALGO] ?? PASSWORD_BCRYPT;
 
-        return password_hash($password, (int) $algo, $option);
+        return password_hash($password, (int) $algo, $config);
     }
 
     /**

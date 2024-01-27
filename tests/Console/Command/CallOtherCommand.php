@@ -18,7 +18,7 @@ class CallOtherCommand extends Command
 
         $this->info('argument is '.json_encode($this->getArgument()));
 
-        $this->info('option is '.json_encode($this->getOption()));
+        $this->info('config is '.json_encode($this->getOption()));
 
         $this->table([
             'Item',

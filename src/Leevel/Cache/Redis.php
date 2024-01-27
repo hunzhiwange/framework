@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Leevel\Cache\Redis\IRedis;
-
 /**
  * redis 扩展缓存.
  */
@@ -14,22 +12,38 @@ class Redis extends Cache implements ICache
     /**
      * 缓存服务句柄.
      */
-    protected IRedis $handle;
+    protected ?\Redis $handle = null;
 
     /**
      * 配置.
      */
-    protected array $option = [
+    protected array $config = [
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0,
+        'persistent' => false,
         'expire' => 86400,
     ];
 
     /**
      * 构造函数.
      */
-    public function __construct(IRedis $handle, array $option = [])
+    public function __construct(array $config = [])
     {
-        parent::__construct($option);
-        $this->handle = $handle;
+        parent::__construct($config);
+        $this->connect();
+    }
+
+    /**
+     * 实现魔术方法 __call.
+     */
+    public function __call(string $method, array $args): mixed
+    {
+        $this->checkConnect();
+
+        return $this->handle->{$method}(...$args);
     }
 
     /**
@@ -37,6 +51,8 @@ class Redis extends Cache implements ICache
      */
     public function get(string $name, mixed $defaults = false): mixed
     {
+        $this->checkConnect();
+
         /** @phpstan-ignore-next-line */
         $data = $this->handle->get($this->getCacheName($name));
         if (false === $data) {
@@ -51,8 +67,18 @@ class Redis extends Cache implements ICache
      */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
+        $this->checkConnect();
         $expire = $this->normalizeExpire($expire);
-        $this->handle->set($this->getCacheName($name), $this->encodeData($data), $expire);
+        $name = $this->getCacheName($name);
+        $data = $this->encodeData($data);
+
+        if ($expire) {
+            // @phpstan-ignore-next-line
+            $this->handle->setex($name, $expire, $data);
+        } else {
+            // @phpstan-ignore-next-line
+            $this->handle->set($name, $data);
+        }
     }
 
     /**
@@ -60,7 +86,9 @@ class Redis extends Cache implements ICache
      */
     public function delete(string $name): void
     {
-        $this->handle->delete($this->getCacheName($name));
+        $this->checkConnect();
+
+        $this->handle->del($this->getCacheName($name));
     }
 
     /**
@@ -68,7 +96,9 @@ class Redis extends Cache implements ICache
      */
     public function has(string $name): bool
     {
-        return $this->handle->has($this->getCacheName($name));
+        $this->checkConnect();
+
+        return 1 === $this->handle->exists($this->getCacheName($name));
     }
 
     /**
@@ -76,7 +106,7 @@ class Redis extends Cache implements ICache
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
-        return $this->doIncreaseOrDecrease('increase', $name, $step, $expire);
+        return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
     }
 
     /**
@@ -84,7 +114,7 @@ class Redis extends Cache implements ICache
      */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
-        return $this->doIncreaseOrDecrease('decrease', $name, $step, $expire);
+        return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
     }
 
     /**
@@ -92,7 +122,9 @@ class Redis extends Cache implements ICache
      */
     public function ttl(string $name): int
     {
-        return $this->handle->ttl($name);
+        $this->checkConnect();
+
+        return (int) $this->handle->ttl($name);
     }
 
     /**
@@ -100,7 +132,23 @@ class Redis extends Cache implements ICache
      */
     public function close(): void
     {
+        if (!$this->handle) {
+            return;
+        }
+
+        // @phpstan-ignore-next-line
         $this->handle->close();
+        $this->handle = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @todo 是否返回 handle
+     */
+    public function getHandle(): ?\Redis
+    {
+        return $this->handle;
     }
 
     /**
@@ -108,9 +156,59 @@ class Redis extends Cache implements ICache
      */
     protected function doIncreaseOrDecrease(string $type, string $name, int $step = 1, ?int $expire = null): false|int
     {
+        $this->checkConnect();
+
         $name = $this->getCacheName($name);
         $expire = $this->normalizeExpire($expire);
 
-        return $this->handle->{$type}($name, $step, $expire);
+        /** @phpstan-ignore-next-line */
+        $newName = false === $this->handle->get($name);
+        if ($newName && $expire) {
+            // @phpstan-ignore-next-line
+            $this->handle->setex($name, $expire, $result = 'incrby' === $type ? $step : -$step);
+        } else {
+            $result = $this->handle->{$type}($name, $step);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 连接 Redis.
+     */
+    protected function connect(): void
+    {
+        $this->handle = $this->createRedis();
+        $this->handle->{$this->config['persistent'] ? 'pconnect' : 'connect'}(
+            $this->config['host'],
+            (int) $this->config['port'],
+            $this->config['timeout']
+        );
+
+        if ($this->config['password']) {
+            $this->handle->auth($this->config['password']);
+        }
+
+        if ($this->config['select']) {
+            $this->handle->select($this->config['select']);
+        }
+    }
+
+    /**
+     * 校验是否连接.
+     */
+    protected function checkConnect(): void
+    {
+        if (!$this->handle) {
+            $this->connect();
+        }
+    }
+
+    /**
+     * 返回 redis 对象.
+     */
+    protected function createRedis(): \Redis
+    {
+        return new \Redis();
     }
 }

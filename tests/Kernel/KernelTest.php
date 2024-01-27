@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
+use Leevel\Config\IConfig;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\JsonResponse;
@@ -17,7 +18,6 @@ use Leevel\Kernel\IKernel;
 use Leevel\Kernel\Kernel;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Log\ILog;
-use Leevel\Option\IOption;
 use Leevel\Router\IRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Kernel\Middlewares\Demo1;
@@ -81,7 +81,7 @@ EOT,
         $response = $this->createMock(Response::class);
 
         $router = $this->createRouter($response);
-        $this->createOption($container, $debug);
+        $this->createConfig($container, $debug);
         $this->createLog($container);
         $this->createRuntime($container);
 
@@ -114,7 +114,7 @@ EOT,
         $response = new JsonResponse(['foo' => 'bar']);
 
         $router = $this->createRouter($response);
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntime($container);
 
@@ -144,7 +144,7 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $router = $this->createRouterWithException();
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntimeWithRender($container);
 
@@ -155,7 +155,7 @@ EOT,
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         static::assertStringContainsString('hello foo bar.', $resultResponse->getContent());
         static::assertStringContainsString('Exception: hello foo bar. in file', $resultResponse->getContent());
-        static::assertStringContainsString('Exception->()', $resultResponse->getContent());
+        static::assertStringContainsString('Exception-&gt;()', $resultResponse->getContent());
     }
 
     #[Api([
@@ -176,7 +176,7 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $router = $this->createRouterWithError();
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntimeWithRender($container);
 
@@ -187,7 +187,7 @@ EOT,
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
 
         static::assertStringContainsString('ErrorException: hello bar foo', $resultResponse->getContent());
-        static::assertStringContainsString('ErrorException->()', $resultResponse->getContent());
+        static::assertStringContainsString('ErrorException-&gt;()', $resultResponse->getContent());
     }
 
     #[Api([
@@ -217,7 +217,7 @@ EOT,
         $response = $this->createMock(Response::class);
 
         $router = $this->createRouter($response);
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntime($container);
 
@@ -257,7 +257,7 @@ EOT,
         $response = $this->createMock(Response::class);
 
         $router = $this->createRouter($response);
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntime($container);
 
@@ -297,7 +297,7 @@ EOT,
         $response = $this->createMock(Response::class);
 
         $router = $this->createRouter($response);
-        $this->createOption($container, true);
+        $this->createConfig($container, true);
         $this->createLog($container);
         $this->createRuntime($container);
 
@@ -318,11 +318,11 @@ EOT,
         });
     }
 
-    protected function createOption(IContainer $container, bool $debug): void
+    protected function createConfig(IContainer $container, bool $debug): void
     {
-        $option = $this->createMock(IOption::class);
+        $config = $this->createMock(IConfig::class);
 
-        $option
+        $config
             ->method('get')
             ->willReturnCallback(function (string $k) use ($debug) {
                 $map = [
@@ -334,11 +334,11 @@ EOT,
             })
         ;
 
-        static::assertSame($debug, $option->get('debug'));
-        static::assertSame('development', $option->get('environment'));
+        static::assertSame($debug, $config->get('debug'));
+        static::assertSame('development', $config->get('environment'));
 
-        $container->singleton('option', function () use ($option) {
-            return $option;
+        $container->singleton('config', function () use ($config) {
+            return $config;
         });
     }
 

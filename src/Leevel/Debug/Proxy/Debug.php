@@ -33,7 +33,6 @@ use Leevel\Di\Container;
  * @method static string                                         getStackDataSessionNamespace()                                                                                        获取 session 中保存数据的 key.
  * @method static \DebugBar\DebugBar                             setStackAlwaysUseSessionStorage(bool $enabled = true)                                                                 设置是否仅使用 session 来保存数据，即使已启用存储.
  * @method static bool                                           isStackAlwaysUseSessionStorage()                                                                                      检查 session 是否始终用于保存数据，即使已启用存储.
- * @method static \DebugBar\JavascriptRenderer                   getJavascriptRenderer(?string $baseUrl = null, ?string $basePath = null)                                              返回此实例的 \DebugBar\JavascriptRenderer.
  * @method static \Leevel\Di\IContainer                          getContainer()                                                                                                        返回应用.
  * @method static void                                           handle(\Leevel\Http\Request $request, \Symfony\Component\HttpFoundation\Response $response)                           响应.
  * @method static void                                           disable()                                                                                                             关闭调试.

@@ -7,10 +7,10 @@ namespace Tests\Auth\Middleware;
 use Leevel\Auth\Manager;
 use Leevel\Auth\Middleware\Auth as MiddlewareAuth;
 use Leevel\Cache\File as CacheFile;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
-use Leevel\Option\Option;
 use Leevel\Session\File;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -69,7 +69,7 @@ final class AuthTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'web',
                 'web_default' => 'session',
@@ -88,7 +88,7 @@ final class AuthTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('session', $this->createSession());
 
         $manager->login(['foo' => 'bar']);
@@ -104,7 +104,7 @@ final class AuthTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'auth' => [
                 'default' => 'web',
                 'web_default' => 'session',
@@ -123,7 +123,7 @@ final class AuthTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $container->singleton('session', $this->createSession());
 
         return $manager;

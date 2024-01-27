@@ -12,7 +12,7 @@ use Leevel\Di\IContainer;
 interface IApp
 {
     /**
-     * Leevel 版本.
+     * 框架版本.
      *
      * @var string
      */
@@ -24,7 +24,7 @@ interface IApp
     public const DEFAULT_ENV = '.env';
 
     /**
-     * 获取程序版本.
+     * 获取框架版本.
      */
     public function version(): string;
 
@@ -76,12 +76,12 @@ interface IApp
     /**
      * 设置配置路径.
      */
-    public function setOptionPath(string $path): void;
+    public function setConfigPath(string $path): void;
 
     /**
      * 获取配置路径.
      */
-    public function optionPath(string $path = ''): string;
+    public function configPath(string $path = ''): string;
 
     /**
      * 设置语言包路径.
@@ -136,17 +136,17 @@ interface IApp
     /**
      * 设置配置缓存路径.
      */
-    public function setOptionCachedPath(string $optionCachedPath): void;
+    public function setConfigCachedPath(string $configCachedPath): void;
 
     /**
      * 获取配置缓存路径.
      */
-    public function optionCachedPath(): string;
+    public function configCachedPath(): string;
 
     /**
      * 是否存在配置缓存.
      */
-    public function isCachedOption(): bool;
+    public function isCachedConfig(): bool;
 
     /**
      * 设置路由缓存路径.

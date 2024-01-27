@@ -1811,7 +1811,7 @@ EOT,
     {
         $e = new DuplicateKeyException();
         $e->setUniqueIndex('hello');
-        $this->assertSame('hello', $e->getUniqueIndex());
+        static::assertSame('hello', $e->getUniqueIndex());
     }
 
     #[Api([
@@ -1951,7 +1951,7 @@ EOT,
     public function testSetConnectNotFoundWillThrowException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Connection hello option is not an array.');
+        $this->expectExceptionMessage('Connection hello config is not an array.');
 
         $work = UnitOfWork::make();
         $this->assertInstanceof(UnitOfWork::class, $work);
@@ -3653,7 +3653,7 @@ EOT,
             'id2' => 2,
             'name' => 'old',
         ]);
-        $compositeCall = function() use($compositeId): mixed {
+        $compositeCall = function () use ($compositeId): mixed {
             return $compositeId->save()->flush();
         };
 

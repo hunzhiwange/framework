@@ -29,7 +29,7 @@ abstract class Manager
     /**
      * 过滤全局配置项.
      */
-    protected array $defaultCommonOption = [
+    protected array $defaultCommonConfig = [
         'default',
         'connect',
     ];
@@ -63,7 +63,7 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    public function connect(?string $connect = null, bool $newConnect = false): object
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): object
     {
         if (!$connect) {
             $connect = $this->getDefaultConnect();
@@ -74,19 +74,24 @@ abstract class Manager
         }
 
         if (isset($this->extendConnect[$connect])) {
-            return $this->connects[$connect] = $this->extendConnect[$connect]($this);
+            $instance = $this->extendConnect[$connect]($this, ...$arguments);
+            if ($newConnect) {
+                return $instance;
+            }
+
+            return $this->connects[$connect] = $instance;
         }
 
-        if (!\is_array($options = $this->getContainerOption('connect.'.$connect))) {
-            throw new \InvalidArgumentException(sprintf('Connection %s option is not an array.', $connect));
+        if (!\is_array($configs = $this->getContainerConfig('connect.'.$connect))) {
+            throw new \InvalidArgumentException(sprintf('Connection %s config is not an array.', $connect));
         }
 
-        if (!isset($options['driver'])) {
+        if (!isset($configs['driver'])) {
             throw new \InvalidArgumentException(sprintf('Connection %s driver is not set.', $connect));
         }
 
-        $instance = $this->makeConnect($connect, $options['driver'], $options['driver_class'] ?? null);
-        if (true === $newConnect) {
+        $instance = $this->makeConnect($connect, $configs['driver'], $configs['driver_class'] ?? null, ...$arguments);
+        if ($newConnect) {
             return $instance;
         }
 
@@ -96,11 +101,11 @@ abstract class Manager
     /**
      * 重新连接.
      */
-    public function reconnect(?string $connect = null): object
+    public function reconnect(?string $connect = null, ...$arguments): object
     {
         $this->disconnect($connect);
 
-        return $this->connect($connect);
+        return $this->connect($connect, ...$arguments);
     }
 
     /**
@@ -130,7 +135,7 @@ abstract class Manager
      */
     public function getDefaultConnect(): string
     {
-        return (string) $this->getContainerOption('default');
+        return (string) $this->getContainerConfig('default');
     }
 
     /**
@@ -138,26 +143,26 @@ abstract class Manager
      */
     public function setDefaultConnect(string $name): void
     {
-        $this->setContainerOption('default', $name);
+        $this->setContainerConfig('default', $name);
     }
 
     /**
      * 获取容器配置值.
      */
-    public function getContainerOption(?string $name = null): mixed
+    public function getContainerConfig(?string $name = null): mixed
     {
-        $name = $this->getOptionName($name);
+        $name = $this->getConfigName($name);
 
-        return $this->container['option'][$name];
+        return $this->container['config'][$name];
     }
 
     /**
      * 设置容器配置值.
      */
-    public function setContainerOption(string $name, mixed $value): void
+    public function setContainerConfig(string $name, mixed $value): void
     {
-        $name = $this->getOptionName($name);
-        $this->container['option'][$name] = $value;
+        $name = $this->getConfigName($name);
+        $this->container['config'][$name] = $value;
     }
 
     /**
@@ -171,30 +176,30 @@ abstract class Manager
     /**
      * 整理连接配置.
      */
-    public function normalizeConnectOption(string $connect): array
+    public function normalizeConnectConfig(string $connect): array
     {
-        $options = $this->getConnectOption($connect);
-        $options = array_merge($this->getConnectOption($options['driver']), $options);
-        foreach ($this->getCommonOption() as $k => $v) {
-            if (!isset($options[$k])) {
-                $options[$k] = $v;
+        $configs = $this->getConnectConfig($connect);
+        $configs = array_merge($this->getConnectConfig($configs['driver']), $configs);
+        foreach ($this->getCommonConfig() as $k => $v) {
+            if (!isset($configs[$k])) {
+                $configs[$k] = $v;
             }
         }
 
-        return $options;
+        return $configs;
     }
 
     /**
      * 取得配置命名空间.
      */
-    abstract protected function getOptionNamespace(): string;
+    abstract protected function getConfigNamespace(): string;
 
     /**
      * 取得连接名字.
      */
-    protected function getOptionName(?string $name = null): string
+    protected function getConfigName(?string $name = null): string
     {
-        return $this->getOptionNamespace().'\\'.$name;
+        return $this->getConfigNamespace().'\\'.$name;
     }
 
     /**
@@ -202,10 +207,10 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeConnect(string $connect, string $driver, ?string $driverClass = null): object
+    protected function makeConnect(string $connect, string $driver, ?string $driverClass = null, ...$arguments): object
     {
         if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
-            return $this->{$makeDriver}($connect, $driverClass);
+            return $this->{$makeDriver}($connect, $driverClass, ...$arguments);
         }
 
         throw new \InvalidArgumentException(sprintf('Connection %s driver `%s` is invalid.', $connect, $driver));
@@ -214,39 +219,39 @@ abstract class Manager
     /**
      * 读取连接全局配置.
      */
-    protected function getCommonOption(): array
+    protected function getCommonConfig(): array
     {
-        return $this->filterCommonOption($this->getContainerOption());
+        return $this->filterCommonConfig($this->getContainerConfig());
     }
 
     /**
      * 过滤全局配置.
      */
-    protected function filterCommonOption(array $options): array
+    protected function filterCommonConfig(array $configs): array
     {
-        foreach ($this->defaultCommonOption as $item) {
-            if (isset($options[$item])) {
-                unset($options[$item]);
+        foreach ($this->defaultCommonConfig as $item) {
+            if (isset($configs[$item])) {
+                unset($configs[$item]);
             }
         }
 
-        return $options;
+        return $configs;
     }
 
     /**
      * 分析连接配置.
      */
-    protected function getConnectOption(string $connect): array
+    protected function getConnectConfig(string $connect): array
     {
-        return (array) $this->getContainerOption('connect.'.$connect);
+        return (array) $this->getContainerConfig('connect.'.$connect);
     }
 
     /**
      * 清除配置 NULL 值.
      */
-    protected function filterNullOfOption(array $options): array
+    protected function filterNullOfConfig(array $configs): array
     {
-        return array_filter($options, fn ($value): bool => null !== $value);
+        return array_filter($configs, fn ($value): bool => null !== $value);
     }
 
     /**

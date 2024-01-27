@@ -116,10 +116,11 @@ class Tree implements IJson, IArray
         }
 
         $children = $this->getChildren($id);
-        if (true === $strict && array_diff($validateChildren, $children)) {
+        if ($strict && array_diff($validateChildren, $children)) {
             return false;
         }
-        if (false === $strict && array_intersect($validateChildren, $children)) {
+
+        if (!$strict && array_intersect($validateChildren, $children)) {
             return true;
         }
 
@@ -139,7 +140,8 @@ class Tree implements IJson, IArray
         if (\array_key_exists($this->map[$id], $this->map)) {
             $data[] = $this->map[$id];
         }
-        if (true === $withItSelf) {
+
+        if ($withItSelf) {
             $data[] = $id;
         }
 
@@ -153,7 +155,7 @@ class Tree implements IJson, IArray
     {
         $data = $this->getParentsReal($id);
         sort($data);
-        if (true === $withItSelf) {
+        if ($withItSelf) {
             $data[] = $id;
         }
 
@@ -230,9 +232,9 @@ class Tree implements IJson, IArray
     /**
      * {@inheritDoc}
      */
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        return ConvertJson::handle($this->toArray(), $option);
+        return ConvertJson::handle($this->toArray(), $config);
     }
 
     /**

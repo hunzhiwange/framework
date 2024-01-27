@@ -6,13 +6,13 @@ namespace Tests;
 
 use Leevel\Cache\Manager as CacheManager;
 use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Config\Config;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Manager;
 use Leevel\Database\Mysql;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Option\Option;
 use PDO;
 use PDOException;
 
@@ -23,22 +23,22 @@ trait Database
 {
     protected $databaseConnects = [];
 
-    protected function createDatabaseConnectMock(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
+    protected function createDatabaseConnectMock(array $config = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
-        if ($option) {
-            return $this->createDatabaseConnectMockReal($option, $connect, $dispatch);
+        if ($config) {
+            return $this->createDatabaseConnectMockReal($config, $connect, $dispatch);
         }
 
         return $this->createDatabaseConnect($dispatch, $connect);
     }
 
-    protected function createDatabaseConnectMockReal(array $option = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
+    protected function createDatabaseConnectMockReal(array $config = [], ?string $connect = null, ?IDispatch $dispatch = null): Mysql
     {
         if (null === $connect) {
             $connect = Mysql::class;
         }
 
-        $connect = new $connect($option, $dispatch);
+        $connect = new $connect($config, $dispatch);
         $this->databaseConnects[] = $connect;
 
         return $connect;
@@ -57,7 +57,7 @@ trait Database
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -85,7 +85,7 @@ trait Database
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                 'charset' => 'utf8',
-                'options' => [
+                'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                     \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -155,7 +155,7 @@ trait Database
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'database' => [
                 'default' => 'mysql',
                 'connect' => [
@@ -167,7 +167,7 @@ trait Database
                         'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
                         'charset' => 'utf8',
-                        'options' => [
+                        'configs' => [
                             \PDO::ATTR_PERSISTENT => false,
                             \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
                             \PDO::ATTR_ORACLE_NULLS => \PDO::NULL_NATURAL,
@@ -214,11 +214,11 @@ trait Database
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
         $eventDispatch = $this->createMock(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
-        $cacheManager = $this->createCacheManager($container, $option, 'file');
+        $cacheManager = $this->createCacheManager($container, $config, 'file');
         $container->singleton('caches', $cacheManager);
         $container->singleton('cache', $cacheManager->connect());
 
@@ -227,7 +227,7 @@ trait Database
         return $manager;
     }
 
-    protected function createCacheManager(Container $container, Option $option, string $connect = 'file'): CacheManager
+    protected function createCacheManager(Container $container, Config $config, string $connect = 'file'): CacheManager
     {
         $manager = new CacheManager($container);
 
@@ -235,7 +235,7 @@ trait Database
         $this->assertInstanceof(Container::class, $manager->container());
 
         if ('redis' === $connect) {
-            $redis = new PhpRedis($option->get('cache\\connect.redis'));
+            $redis = new PhpRedis($config->get('cache\\connect.redis'));
             $container->singleton('redis', $redis);
         }
 

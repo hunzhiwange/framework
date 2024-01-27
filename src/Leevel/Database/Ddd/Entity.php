@@ -1800,15 +1800,15 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
         $result = [];
-        foreach ($prop as $k => $option) {
+        foreach ($prop as $k => $config) {
             $isRelationProp = static::isRelation($k);
             $unCamelizeProp = static::unCamelizeProp($k);
             $value = $this->propGetter($unCamelizeProp, true);
             if (null === $value) {
-                if (!\array_key_exists(self::SHOW_PROP_NULL, $option)) {
+                if (!\array_key_exists(self::SHOW_PROP_NULL, $config)) {
                     continue;
                 }
-                $value = $option[self::SHOW_PROP_NULL];
+                $value = $config[self::SHOW_PROP_NULL];
                 if ($this->showPropEachCallbackFramework) {
                     $showPropEachCallback = $this->showPropEachCallbackFramework;
                     $value = $showPropEachCallback($value, $k);
@@ -1825,7 +1825,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
 
             // 格式化后保留源数据
-            $shouldFormatRaw = $option[self::COLUMN_STRUCT]['format_raw'] ?? false;
+            $shouldFormatRaw = $config[self::COLUMN_STRUCT]['format_raw'] ?? false;
             if ($shouldFormatRaw) {
                 $result[$unCamelizeProp.'_format_raw'] = $this->getter($unCamelizeProp);
             }
@@ -1843,9 +1843,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * {@inheritDoc}
      */
-    public function toJson(?int $option = null): string
+    public function toJson(?int $config = null): string
     {
-        return ConvertJson::handle($this->toArray(), $option);
+        return ConvertJson::handle($this->toArray(), $config);
     }
 
     /**
@@ -2317,10 +2317,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected function updateReal(): self
     {
         $this->handleEvent(self::BEFORE_UPDATE_EVENT);
-        if (true === $this->isSoftDeleteFramework) {
+        if ($this->isSoftDeleteFramework) {
             $this->handleEvent(self::BEFORE_SOFT_DELETE_EVENT);
         }
-        if (true === $this->isSoftRestoreFramework) {
+        if ($this->isSoftRestoreFramework) {
             $this->handleEvent(self::BEFORE_SOFT_RESTORE_EVENT);
         }
         $this->parseAutoFill('update');
@@ -2345,10 +2345,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $hasVersion = $this->parseVersionData($condition, $saveData);
         $this->flushFramework = function (array $condition, array $saveData) use ($hasVersion): int {
             $this->handleEvent(self::BEFORE_UPDATING_EVENT, $saveData, $condition);
-            if (true === $this->isSoftDeleteFramework) {
+            if ($this->isSoftDeleteFramework) {
                 $this->handleEvent(self::BEFORE_SOFT_DELETING_EVENT, $saveData, $condition);
             }
-            if (true === $this->isSoftRestoreFramework) {
+            if ($this->isSoftRestoreFramework) {
                 $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
@@ -2364,11 +2364,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
 
             $this->handleEvent(self::AFTER_UPDATED_EVENT);
-            if (true === $this->isSoftDeleteFramework) {
+            if ($this->isSoftDeleteFramework) {
                 $this->handleEvent(self::AFTER_SOFT_DELETED_EVENT);
                 $this->isSoftDeleteFramework = false;
             }
-            if (true === $this->isSoftRestoreFramework) {
+            if ($this->isSoftRestoreFramework) {
                 $this->handleEvent(self::AFTER_SOFT_RESTORED_EVENT);
                 $this->isSoftRestoreFramework = false;
             }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
+use Leevel\Config\IConfig;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
-use Leevel\Option\IOption;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -29,17 +29,17 @@ class DocFramework extends Command
      *
      * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
-    public function handle(IApp $app, IOption $option): int
+    public function handle(IApp $app, IConfig $config): int
     {
         $input = [
             'path' => $this->getArgument('path'),
-            'outputdir' => $option->get('console\\framework_doc_outputdir'),
+            'outputdir' => $config->get('console\\framework_doc_outputdir'),
             '--bootstrap' => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
-            '--git' => $option->get('console\\framework_doc_git'),
-            '--logdir' => $option->get('console\\framework_doc_logdir'),
+            '--git' => $config->get('console\\framework_doc_git'),
+            '--logdir' => $config->get('console\\framework_doc_logdir'),
         ];
 
-        $i18n = explode(',', (string) $option->get('console\\framework_doc_i18n'));
+        $i18n = explode(',', (string) $config->get('console\\framework_doc_i18n'));
         foreach ($i18n as $v) {
             $input['--i18n'] = $v;
             $this->call('make:doc', $input);

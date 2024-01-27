@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\View\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\App;
-use Leevel\Option\Option;
 use Leevel\View\Manager;
 use Leevel\View\Provider\Register;
 use Tests\TestCase;
@@ -52,7 +52,7 @@ final class RegisterTest extends TestCase
         static::assertSame(__DIR__.'/assert', $app->themesPath());
         static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
-        $option = new Option([
+        $config = new Config([
             'view' => [
                 'default' => 'html',
                 'action_fail' => 'public/fail',
@@ -66,7 +66,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         $request = new ExtendRequest();
 

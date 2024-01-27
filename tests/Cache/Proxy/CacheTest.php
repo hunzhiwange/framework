@@ -6,10 +6,10 @@ namespace Tests\Cache\Proxy;
 
 use Leevel\Cache\Manager;
 use Leevel\Cache\Proxy\Cache;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 final class CacheTest extends TestCase
@@ -60,7 +60,7 @@ final class CacheTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'cache' => [
                 'default' => 'file',
                 'expire' => 86400,
@@ -84,7 +84,7 @@ final class CacheTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }

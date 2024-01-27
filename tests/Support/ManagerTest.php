@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Kernel\Utils\Api;
-use Leevel\Option\Option;
 use Leevel\Support\Manager;
 use Tests\TestCase;
 
@@ -63,8 +63,8 @@ EOT,
 
         static::assertSame([
             'driver' => 'foo',
-            'option1' => 'world',
-        ], $foo->option());
+            'config1' => 'world',
+        ], $foo->config());
 
         static::assertSame('hello foo', $foo->foo());
         static::assertSame('hello foo bar', $foo->bar('bar'));
@@ -73,9 +73,9 @@ EOT,
 
         static::assertSame([
             'driver' => 'bar',
-            'option1' => 'foo',
-            'option2' => 'bar',
-        ], $bar->option());
+            'config1' => 'foo',
+            'config2' => 'bar',
+        ], $bar->config());
         static::assertSame('hello bar', $bar->foo());
         static::assertSame('hello bar bar', $bar->bar('bar'));
         static::assertSame('hello bar 1', $bar->bar('1'));
@@ -124,7 +124,7 @@ EOT,
         static::assertSame('hello foo bar', $foo->bar('bar'));
 
         $manager->extend('foo', function (Manager $manager): FooExtend {
-            return new FooExtend($manager->normalizeConnectOption('foo'));
+            return new FooExtend($manager->normalizeConnectConfig('foo'));
         });
 
         $manager->disconnect('foo');
@@ -238,11 +238,11 @@ EOT,
         static::assertSame('hello bar 2', $manager->bar('2'));
     }
 
-    public function testParseOptionParamConnectIsNotArray(): void
+    public function testParseConfigParamConnectIsNotArray(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connection notarray option is not an array'
+            'Connection notarray config is not an array'
         );
 
         $manager = $this->createManager();
@@ -253,7 +253,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Connection notFound option is not an array'
+            'Connection notFound config is not an array'
         );
 
         $manager = $this->createManager();
@@ -293,20 +293,20 @@ EOT,
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'test1' => [
                 'default' => 'foo',
                 'connect' => [
                     'foo' => [
                         'driver' => 'foo',
-                        'option1' => 'hello',
-                        'option1' => 'world',
+                        'config1' => 'hello',
+                        'config1' => 'world',
                         'null1' => null,
                     ],
                     'bar' => [
                         'driver' => 'bar',
-                        'option1' => 'foo',
-                        'option2' => 'bar',
+                        'config1' => 'foo',
+                        'config2' => 'bar',
                     ],
                     'notarray' => null,
                     'notFoundConnectDriver' => [],
@@ -317,7 +317,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }
@@ -325,30 +325,30 @@ EOT,
 
 class Test1 extends Manager
 {
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'test1';
     }
 
     protected function makeConnectFoo(): Foo
     {
-        return new Foo($this->normalizeConnectOption('foo'));
+        return new Foo($this->normalizeConnectConfig('foo'));
     }
 
-    protected function makeConnectBar($options = []): Bar
+    protected function makeConnectBar($configs = []): Bar
     {
-        return new Bar($this->normalizeConnectOption('bar'));
+        return new Bar($this->normalizeConnectConfig('bar'));
     }
 
-    protected function getConnectOption(string $connect): array
+    protected function getConnectConfig(string $connect): array
     {
-        return $this->filterNullOfOption(parent::getConnectOption($connect));
+        return $this->filterNullOfConfig(parent::getConnectConfig($connect));
     }
 }
 
 interface IConnect
 {
-    public function option(): array;
+    public function config(): array;
 
     public function foo(): string;
 
@@ -357,16 +357,16 @@ interface IConnect
 
 class Foo implements IConnect
 {
-    protected $option = [];
+    protected $config = [];
 
-    public function __construct(array $option)
+    public function __construct(array $config)
     {
-        $this->option = $option;
+        $this->config = $config;
     }
 
-    public function option(): array
+    public function config(): array
     {
-        return $this->option;
+        return $this->config;
     }
 
     public function foo(): string
@@ -382,16 +382,16 @@ class Foo implements IConnect
 
 class Bar implements IConnect
 {
-    protected $option = [];
+    protected $config = [];
 
-    public function __construct(array $option)
+    public function __construct(array $config)
     {
-        $this->option = $option;
+        $this->config = $config;
     }
 
-    public function option(): array
+    public function config(): array
     {
-        return $this->option;
+        return $this->config;
     }
 
     public function foo(): string
@@ -407,16 +407,16 @@ class Bar implements IConnect
 
 class FooExtend implements IConnect
 {
-    protected $option = [];
+    protected $config = [];
 
-    public function __construct(array $option)
+    public function __construct(array $config)
     {
-        $this->option = $option;
+        $this->config = $config;
     }
 
-    public function option(): array
+    public function config(): array
     {
-        return $this->option;
+        return $this->config;
     }
 
     public function foo(): string

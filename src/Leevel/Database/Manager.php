@@ -6,6 +6,7 @@ namespace Leevel\Database;
 
 use Leevel\Event\IDispatch;
 use Leevel\Support\Manager as Managers;
+use Swoole\Coroutine;
 
 /**
  * 数据库管理器.
@@ -33,7 +34,7 @@ use Leevel\Support\Manager as Managers;
  * @method static void                                                                   freePDOStatement()                                                                                                                                                 释放 PDO 预处理查询.
  * @method static void                                                                   closeConnects()                                                                                                                                                    关闭数据库连接.
  * @method static string                                                                 getRawSql(string $sql, array $bindParams)                                                                                                                          从 PDO 预处理语句中获取原始 SQL 查询字符串.
- * @method static string                                                                 parseDsn(array $option)                                                                                                                                            DSN 解析.
+ * @method static string                                                                 parseDsn(array $config)                                                                                                                                            DSN 解析.
  * @method static array                                                                  getTableNames(string $dbName, bool|int $master = false)                                                                                                            取得数据库表名列表.
  * @method static array                                                                  getTableColumns(string $tableName, bool|int $master = false)                                                                                                       取得数据库表字段信息.
  * @method static string                                                                 identifierColumn(string $name)                                                                                                                                     SQL 字段格式化.
@@ -68,16 +69,16 @@ use Leevel\Support\Manager as Managers;
  * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                                                                最大值.
  * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                                                                最小值.
  * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                                                                合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $option = [])                                                                                分页查询.
- * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $option = [])                                                                                                 创建一个无限数据的分页查询.
- * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $option = [])                                                                                              创建一个只有上下页的分页查询.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $config = [])                                                                                分页查询.
+ * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                                                                 创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                                                              创建一个只有上下页的分页查询.
  * @method static int                                                                    pageCount(string $cols = '*')                                                                                                                                      取得分页查询记录数量.
  * @method static string                                                                 makeSql(bool $withLogicGroup = false)                                                                                                                              获得查询字符串.
  * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                                                                      设置查询缓存.
  * @method static \Leevel\Database\Select                                                forPage(int $page, int $perPage = 10)                                                                                                                              根据分页设置条件.
  * @method static \Leevel\Database\Select                                                time(string $type = 'date')                                                                                                                                        时间控制语句开始.
  * @method static \Leevel\Database\Select                                                endTime()                                                                                                                                                          时间控制语句结束.
- * @method static \Leevel\Database\Select                                                reset(?string $option = null)                                                                                                                                      重置查询条件.
+ * @method static \Leevel\Database\Select                                                reset(?string $config = null)                                                                                                                                      重置查询条件.
  * @method static \Leevel\Database\Select                                                comment(string $comment)                                                                                                                                           查询注释.
  * @method static \Leevel\Database\Select                                                prefix(string $prefix)                                                                                                                                             prefix 查询.
  * @method static \Leevel\Database\Select                                                table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')                                                   添加一个要查询的表及其要查询的字段.
@@ -164,33 +165,48 @@ use Leevel\Support\Manager as Managers;
  * @method static array                                                                  getConnects()                                                                                                                                                      取回所有连接.
  * @method static string                                                                 getDefaultConnect()                                                                                                                                                返回默认连接.
  * @method static void                                                                   setDefaultConnect(string $name)                                                                                                                                    设置默认连接.
- * @method static mixed                                                                  getContainerOption(?string $name = null)                                                                                                                           获取容器配置值.
- * @method static void                                                                   setContainerOption(string $name, mixed $value)                                                                                                                     设置容器配置值.
+ * @method static mixed                                                                  getContainerConfig(?string $name = null)                                                                                                                           获取容器配置值.
+ * @method static void                                                                   setContainerConfig(string $name, mixed $value)                                                                                                                     设置容器配置值.
  * @method static void                                                                   extend(string $connect, \Closure $callback)                                                                                                                        扩展自定义连接.
- * @method static array                                                                  normalizeConnectOption(string $connect)                                                                                                                            整理连接配置.
+ * @method static array                                                                  normalizeConnectConfig(string $connect)                                                                                                                            整理连接配置.
  */
 class Manager extends Managers
 {
     /**
+     * 数据库连接池.
+     */
+    protected array $pools = [];
+
+    /**
+     * 数据库连接池事务管理器.
+     */
+    protected array $poolTransactions = [];
+
+    /**
      * {@inheritDoc}
      */
-    public function connect(?string $connect = null, bool $newConnect = false): IDatabase
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IDatabase
     {
-        return parent::connect($connect, $newConnect);
+        // 协程环境每次从创建驱动中获取连接
+        if ($this->container->enabledCoroutine()) {
+            $newConnect = true;
+        }
+
+        return parent::connect($connect, $newConnect, ...$arguments);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function reconnect(?string $connect = null): IDatabase
+    public function reconnect(?string $connect = null, ...$arguments): IDatabase
     {
-        return parent::reconnect($connect);
+        return parent::reconnect($connect, ...$arguments);
     }
 
     /**
      * 取得配置命名空间.
      */
-    protected function getOptionNamespace(): string
+    protected function getConfigNamespace(): string
     {
         return 'database';
     }
@@ -198,14 +214,31 @@ class Manager extends Managers
     /**
      * 创建 MySQL 连接.
      */
-    protected function makeConnectMysql(string $connect, ?string $driverClass = null): Mysql
+    protected function makeConnectMysql(string $connect, ?string $driverClass = null, bool $newConnect = false): Mysql
+    {
+        $configs = $this->normalizeDatabaseConfig($this->normalizeConnectConfig($connect));
+        $enabledCoroutine = $this->container->enabledCoroutine();
+        $poolTransaction = null;
+        if ($enabledCoroutine) {
+            $poolTransaction = $this->getPoolTransaction($connect);
+        }
+
+        if (!$newConnect && $enabledCoroutine) {
+            return $this->getConnectionFromFool($configs, $connect, $poolTransaction);
+        }
+
+        return $this->createMysql($configs, $driverClass, $poolTransaction);
+    }
+
+    protected function createMysql(array $configs, ?string $driverClass = null, ?PoolTransaction $poolTransaction = null): Mysql
     {
         $driverClass = $this->getDriverClass(Mysql::class, $driverClass);
 
         /** @var Mysql $mysql */
         $mysql = new $driverClass(
-            $this->normalizeDatabaseOption($this->normalizeConnectOption($connect)),
+            $configs,
             $this->container->make(IDispatch::class),
+            $poolTransaction,
         );
         $mysql->setCache($this->container->make('cache'));
 
@@ -213,45 +246,81 @@ class Manager extends Managers
     }
 
     /**
+     * 创建连接池.
+     */
+    protected function getPool(string $connect, array $configs): Pool
+    {
+        if (isset($this->pools[$connect])) {
+            return $this->pools[$connect];
+        }
+
+        return $this->pools[$connect] = new Pool($this, $connect, $configs);
+    }
+
+    protected function getPoolTransaction(string $connect): PoolTransaction
+    {
+        if (isset($this->poolTransactions[$connect])) {
+            return $this->poolTransactions[$connect];
+        }
+
+        return $this->poolTransactions[$connect] = new PoolTransaction($this->container, $connect);
+    }
+
+    protected function getConnectionFromFool(array $configs, string $connect, PoolTransaction $poolTransaction): IDatabase
+    {
+        if ($poolTransaction->in()) {
+            return $poolTransaction->get();
+        }
+
+        $pool = $this->getPool($connect, $configs['master'] ?? []);
+        $connection = $pool->get();
+
+        // 协程关闭前归还当前连接到数据库连接池
+        Coroutine::defer(fn () => $connection->releaseConnect());
+
+        return $connection;
+    }
+
+    /**
      * 分析数据库配置参数.
      *
      * @throws \InvalidArgumentException
      */
-    protected function normalizeDatabaseOption(array $option): array
+    protected function normalizeDatabaseConfig(array $config): array
     {
-        $source = $option;
+        $source = $config;
         $type = ['distributed', 'separate', 'driver', 'master', 'slave'];
 
-        foreach (array_keys($option) as $t) {
+        foreach (array_keys($config) as $t) {
             if (\in_array($t, $type, true)) {
                 if (isset($source[$t])) {
                     unset($source[$t]);
                 }
-            } elseif (isset($option[$t])) {
-                unset($option[$t]);
+            } elseif (isset($config[$t])) {
+                unset($config[$t]);
             }
         }
 
         foreach (['master', 'slave'] as $t) {
-            if (!\is_array($option[$t])) {
-                throw new \InvalidArgumentException(sprintf('Database option `%s` must be an array.', $t));
+            if (!\is_array($config[$t])) {
+                throw new \InvalidArgumentException(sprintf('Database config `%s` must be an array.', $t));
             }
         }
 
-        $option['master'] = array_merge($option['master'], $source);
+        $config['master'] = array_merge($config['master'], $source);
 
-        if (!$option['distributed']) {
-            $option['slave'] = [];
-        } elseif ($option['slave']) {
-            if (\count($option['slave']) === \count($option['slave'], COUNT_RECURSIVE)) {
-                $option['slave'] = [$option['slave']];
+        if (!$config['distributed']) {
+            $config['slave'] = [];
+        } elseif ($config['slave']) {
+            if (\count($config['slave']) === \count($config['slave'], COUNT_RECURSIVE)) {
+                $config['slave'] = [$config['slave']];
             }
 
-            foreach ($option['slave'] as &$slave) {
+            foreach ($config['slave'] as &$slave) {
                 $slave = array_merge($slave, $source);
             }
         }
 
-        return $option;
+        return $config;
     }
 }

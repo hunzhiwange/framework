@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Session\Middleware;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
-use Leevel\Option\Option;
 use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -93,7 +93,7 @@ final class SessionTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'session' => [
                 'default' => 'test',
                 'id' => null,
@@ -106,7 +106,7 @@ final class SessionTest extends TestCase
                 ],
             ],
         ]);
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $manager;
     }

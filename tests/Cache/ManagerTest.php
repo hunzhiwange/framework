@@ -6,10 +6,10 @@ namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
 use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper\DeleteDirectory;
-use Leevel\Option\Option;
 use RedisException;
 use Tests\TestCase;
 
@@ -101,7 +101,7 @@ final class ManagerTest extends TestCase
         }
     }
 
-    protected function makePhpRedis(array $option = []): PhpRedis
+    protected function makePhpRedis(array $config = []): PhpRedis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -112,9 +112,9 @@ final class ManagerTest extends TestCase
             'persistent' => false,
         ];
 
-        $option = array_merge($default, $option);
+        $config = array_merge($default, $config);
 
-        return new PhpRedis($option);
+        return new PhpRedis($config);
     }
 
     protected function createManager(string $connect = 'file'): Manager
@@ -125,7 +125,7 @@ final class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        $option = new Option([
+        $config = new Config([
             'cache' => [
                 'default' => $connect,
                 'expire' => 86400,
@@ -149,10 +149,10 @@ final class ManagerTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         if ('redis' === $connect) {
-            $redis = new PhpRedis($option->get('cache\\connect.redis'));
+            $redis = new PhpRedis($config->get('cache\\connect.redis'));
             $container->singleton('redis', $redis);
         }
 

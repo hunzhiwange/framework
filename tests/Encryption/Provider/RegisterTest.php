@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Encryption\Provider;
 
+use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Encryption\IEncryption;
 use Leevel\Encryption\Provider\Register;
-use Leevel\Option\Option;
 use Tests\TestCase;
 
 final class RegisterTest extends TestCase
@@ -45,7 +45,7 @@ final class RegisterTest extends TestCase
     {
         $container = new Container();
 
-        $option = new Option([
+        $config = new Config([
             'app' => [
                 'auth_key' => '7becb888f518b20224a988906df51e05',
                 'auth_cipher' => 'AES-256-CBC',
@@ -54,7 +54,7 @@ final class RegisterTest extends TestCase
             ],
         ]);
 
-        $container->singleton('option', $option);
+        $container->singleton('config', $config);
 
         return $container;
     }
