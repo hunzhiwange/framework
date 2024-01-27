@@ -72,9 +72,9 @@ EOT,
 如果值为 `null` 直接返回正确结果。
 EOT,
     ])]
-    public function testAssertConfigal(): void
+    public function testAssertOptional(): void
     {
-        Assert::configalNotEmpty(null);
+        Assert::optionalNotEmpty(null);
 
         static::assertSame(1, 1);
     }
@@ -82,14 +82,14 @@ EOT,
     #[Api([
         'zh-CN:title' => '可选断言失败',
     ])]
-    public function testAssertConfigalFailed(): void
+    public function testAssertOptionalFailed(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
 
-        Assert::configalNotEmpty(0);
+        Assert::optionalNotEmpty(0);
     }
 
     #[Api([
@@ -124,12 +124,12 @@ EOT,
     #[Api([
         'zh-CN:title' => '断言支持多个校验也支持可选',
         'zh-CN:description' => <<<'EOT'
-必须每一个都满足规则才算校验成功, 可选会跳过验证，可选必须在最前面，即不支持 `multiConfigal` 这种写法。
+必须每一个都满足规则才算校验成功, 可选会跳过验证，可选必须在最前面，即不支持 `multiOptional` 这种写法。
 EOT,
     ])]
-    public function testAssertMultiWithConfigal(): void
+    public function testAssertMultiWithOptional(): void
     {
-        Assert::configalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
+        Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
 
         static::assertSame(1, 1);
     }
@@ -164,14 +164,14 @@ EOT,
 链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。
 EOT,
     ])]
-    public function testAssertChainSupportConfigalMulti(): void
+    public function testAssertChainSupportOptionalMulti(): void
     {
         Assert::make(5, 'Assert success.')
             ->notEmpty()
             ->lessThan([7])
             ->multiNotEmpty()
-            ->configalNotEmpty()
-            ->configalMultiNotEmpty()
+            ->optionalNotEmpty()
+            ->optionalMultiNotEmpty()
         ;
 
         static::assertSame(1, 1);
@@ -308,20 +308,20 @@ EOT,
         ;
     }
 
-    public function testAssertConfigalMultiAllWasNull(): void
+    public function testAssertOptionalMultiAllWasNull(): void
     {
-        Assert::configalMultiNotEmpty([null, null, null]);
+        Assert::optionalMultiNotEmpty([null, null, null]);
         static::assertSame(1, 1);
     }
 
-    public function testAssertConfigalMultiAllWasNullFailed(): void
+    public function testAssertOptionalMultiAllWasNullFailed(): void
     {
         $this->expectException(\Leevel\Validate\AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
 
-        Assert::configalMultiLessThan([null, 8, null], [5]);
+        Assert::optionalMultiLessThan([null, 8, null], [5]);
     }
 
     public function testAssertExceptionReportable(): void

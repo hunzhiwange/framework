@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Session\Proxy;
 
 use Leevel\Cache\Manager as CacheManager;
-use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -145,7 +145,7 @@ final class SessionTest extends TestCase
         return $manager;
     }
 
-    protected function makePhpRedis(array $config = []): PhpRedis
+    protected function makePhpRedis(array $config = []): Redis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -158,7 +158,7 @@ final class SessionTest extends TestCase
 
         $config = array_merge($default, $config);
 
-        return new PhpRedis($config);
+        return new Redis($config);
     }
 
     protected function createContainer(): Container

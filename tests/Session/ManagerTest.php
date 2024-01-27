@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Session;
 
 use Leevel\Cache\Manager as CacheManager;
-use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
@@ -125,13 +125,13 @@ final class ManagerTest extends TestCase
         }
 
         try {
-            $this->makePhpRedis();
+            $this->makeRedis();
         } catch (RedisException) {
             static::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
-    protected function makePhpRedis(array $config = []): PhpRedis
+    protected function makeRedis(array $config = []): Redis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -144,7 +144,7 @@ final class ManagerTest extends TestCase
 
         $config = array_merge($default, $config);
 
-        return new PhpRedis($config);
+        return new Redis($config);
     }
 
     protected function createManager(string $connect = 'test'): Manager
@@ -157,7 +157,7 @@ final class ManagerTest extends TestCase
         $manager = new Manager($container);
         $cacheManager = new CacheManager($container);
         $container->instance('caches', $cacheManager);
-        $container->instance('redis', $this->makePhpRedis());
+        $container->instance('redis', $this->makeRedis());
 
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());

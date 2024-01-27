@@ -44,6 +44,7 @@ class Autoload extends Command
             '%s dump-autoload --optimize',
             escapeshellarg((string) $this->getOption('composer'))
         );
+
         if (false === (bool) $this->getOption('dev')) {
             $command .= ' --no-dev';
         }

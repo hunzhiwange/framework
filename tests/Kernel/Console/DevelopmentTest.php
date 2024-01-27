@@ -73,7 +73,7 @@ class DemoI18nClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -85,7 +85,7 @@ class DemoLogClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -97,7 +97,7 @@ class DemoConfigClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -109,7 +109,7 @@ class DemoRouterClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -121,7 +121,7 @@ class DemoSessionClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -133,7 +133,7 @@ class DemoViewClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -145,10 +145,10 @@ class DemoAutoloadClear extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 
-    protected function getConfigs(): array
+    protected function getOptions(): array
     {
         return [
             [

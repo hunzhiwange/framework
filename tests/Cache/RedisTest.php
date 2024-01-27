@@ -5,145 +5,222 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\Redis;
-use Leevel\Cache\Redis\IRedis;
+use RedisException;
 use Tests\TestCase;
 
 final class RedisTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!\extension_loaded('redis')) {
+            static::markTestSkipped('Redis extension must be loaded before use.');
+        }
+
+        try {
+            $this->makeRedis();
+        } catch (RedisException) {
+            static::markTestSkipped('Redis read error on connection and ignore.');
+        }
+    }
+
     public function testBaseUse(): void
     {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
+        $redis = $this->makeRedis();
 
-        $phpRedis->method('get')->willReturn(false);
-        static::assertFalse($phpRedis->get('foo'));
+        $redis->set('hello', 'world');
+        $redis->set('foo', 'bar');
+        $redis->set('num', 123);
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertFalse($redis->get('foo'));
-    }
-
-    public function testGet(): void
-    {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('get')->willReturn('"bar"');
-        static::assertSame('"bar"', $phpRedis->get('foo'));
-
-        $redis = $this->makeRedis($phpRedis);
+        static::assertSame('world', $redis->get('hello'));
         static::assertSame('bar', $redis->get('foo'));
-    }
+        static::assertSame(123, $redis->get('num'));
 
-    public function testGetInt(): void
-    {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
+        $redis->delete('hello');
+        $redis->delete('foo');
+        $redis->delete('num');
 
-        $phpRedis->method('get')->willReturn('1');
-        static::assertSame('1', $phpRedis->get('num'));
+        static::assertFalse($redis->get('hello'));
+        static::assertFalse($redis->get('foo'));
+        static::assertFalse($redis->get('num'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertSame(1, $redis->get('num'));
-    }
-
-    public function testGetWithException(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('get')->willReturn(5);
-        static::assertSame(5, $phpRedis->get('foo'));
-
-        $redis = $this->makeRedis($phpRedis);
-        $redis->get('foo');
+        $this->assertInstanceof(\Redis::class, $redis->getHandle());
+        static::assertNull($redis->close());
+        static::assertNull($redis->getHandle());
     }
 
     public function testSet(): void
     {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-        static::assertNull($phpRedis->set('foo', 'bar', 60));
+        $redis = $this->makeRedis();
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertNull($redis->set('foo', 'bar', 60));
-    }
+        $redis->set('testset', 'world');
 
-    public function testDelete(): void
-    {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-        static::assertNull($phpRedis->delete('foo'));
+        static::assertSame('world', $redis->get('testset'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertNull($redis->delete('foo'));
-    }
+        $redis->delete('testset');
 
-    public function testHas(): void
-    {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-        $phpRedis->method('has')->willReturn(true);
-        static::assertTrue($phpRedis->has('foo'));
+        static::assertFalse($redis->get('hello'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertTrue($redis->has('foo'));
-    }
+        $redis->set('testfoo', 'bar', 1);
 
-    public function testTtl(): void
-    {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-        $phpRedis->method('ttl')->willReturn(80);
-        static::assertSame(80, $phpRedis->ttl('foo'));
+        static::assertSame('bar', $redis->get('testfoo'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertSame(80, $redis->ttl('foo'));
+        // 0.7 秒未过期
+        usleep(700000);
+        static::assertSame('bar', $redis->get('testfoo'));
+
+        // 1.1 就过期
+        usleep(400000);
+        static::assertFalse($redis->get('testfoo'));
     }
 
     public function testIncrease(): void
     {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testIncrease'));
+        static::assertSame(1, $redis->increase('testIncrease'));
+        static::assertSame(101, $redis->increase('testIncrease', 100));
+        static::assertSame(201, $redis->increase('testIncrease', 100));
+        $redis->delete('testIncrease');
+        static::assertFalse($redis->get('testIncrease'));
+    }
 
-        $phpRedis->method('increase')->willReturn(100);
-        static::assertSame(100, $phpRedis->increase('foo', 100, 5));
+    public function testIncreaseWithExpire(): void
+    {
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testIncreaseWithExpire'));
+        static::assertSame(1, $redis->increase('testIncreaseWithExpire', 1, 1));
+        static::assertSame(1, $redis->get('testIncreaseWithExpire'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertSame(100, $redis->increase('foo'));
+        // 0.7 秒未过期
+        usleep(700000);
+        static::assertSame(1, $redis->get('testIncreaseWithExpire'));
+
+        // 1.1 就过期
+        usleep(400000);
+        static::assertFalse($redis->get('testIncreaseWithExpire'));
+    }
+
+    public function testIncreaseReturnFalse(): void
+    {
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testIncreaseReturnFalse'));
+        $redis->set('testIncreaseReturnFalse', 'world');
+        static::assertFalse($redis->increase('testIncreaseReturnFalse'));
+        $redis->delete('testIncreaseReturnFalse');
+        static::assertFalse($redis->get('testIncreaseReturnFalse'));
     }
 
     public function testDecrease(): void
     {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-
-        $phpRedis->method('decrease')->willReturn(-100);
-        static::assertSame(-100, $phpRedis->decrease('foo', 100, 5));
-
-        $redis = $this->makeRedis($phpRedis);
-        static::assertSame(-100, $redis->decrease('foo'));
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testDecrease'));
+        static::assertSame(-1, $redis->decrease('testDecrease'));
+        static::assertSame(-101, $redis->decrease('testDecrease', 100));
+        static::assertSame(-201, $redis->decrease('testDecrease', 100));
+        $redis->delete('testDecrease');
+        static::assertFalse($redis->get('testIncrease'));
     }
 
-    public function testClose(): void
+    public function testDecreaseWithExpire(): void
     {
-        $phpRedis = $this->createMock(IRedis::class);
-        $this->assertInstanceof(IRedis::class, $phpRedis);
-        static::assertNull($phpRedis->close());
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testDecreaseWithExpire'));
+        static::assertSame(-1, $redis->decrease('testDecreaseWithExpire', 1, 1));
+        static::assertSame(-1, $redis->get('testDecreaseWithExpire'));
 
-        $redis = $this->makeRedis($phpRedis);
-        static::assertNull($redis->close());
-        static::assertNull($redis->close()); // 关闭多次不做任何事
+        // 0.7 秒未过期
+        usleep(700000);
+        static::assertSame(-1, $redis->get('testDecreaseWithExpire'));
+
+        // 1.1 就过期
+        usleep(400000);
+        static::assertFalse($redis->get('testDecreaseWithExpire'));
     }
 
-    protected function makeRedis(IRedis $phpRedis, array $config = []): Redis
+    public function testDecreaseReturnFalse(): void
+    {
+        $redis = $this->makeRedis();
+        static::assertFalse($redis->get('testDecreaseReturnFalse'));
+        $redis->set('testDecreaseReturnFalse', 'world');
+        static::assertFalse($redis->decrease('testDecreaseReturnFalse'));
+        $redis->delete('testDecreaseReturnFalse');
+        static::assertFalse($redis->get('testDecreaseReturnFalse'));
+    }
+
+    public function testHas(): void
+    {
+        $redis = $this->makeRedis();
+
+        static::assertFalse($redis->has('has'));
+        $redis->set('has', 'world');
+        static::assertTrue($redis->has('has'));
+        $redis->delete('has');
+    }
+
+    public function testTtl(): void
+    {
+        $redis = $this->makeRedis();
+
+        static::assertFalse($redis->has('ttl'));
+        static::assertSame(-2, $redis->ttl('ttl'));
+        $redis->set('ttl', 'world');
+        static::assertSame(-1, $redis->ttl('ttl'));
+        $redis->set('ttl', 'world', 1);
+        static::assertSame(1, $redis->ttl('ttl'));
+        $redis->set('ttl', 'world', 0);
+        static::assertSame(-1, $redis->ttl('ttl'));
+        $redis->delete('ttl');
+    }
+
+    public function testCall(): void
+    {
+        $redis = $this->makeRedis();
+
+        static::assertSame([], $redis->keys('hello'));
+        $redis->set('hello', 'world');
+        static::assertSame(['hello'], $redis->keys('hello'));
+        $redis->delete('hello');
+    }
+
+    public function testSelect(): void
+    {
+        $redis = $this->makeRedis([
+            'select' => 1,
+        ]);
+
+        $redis->set('selecttest', 'world');
+
+        static::assertSame('world', $redis->get('selecttest'));
+
+        $redis->delete('selecttest');
+
+        static::assertFalse($redis->get('selecttest'));
+    }
+
+    public function testWithPassword(): void
+    {
+        static::assertTrue(true);
+        $this->expectException(\RedisException::class);
+
+        $redis = $this->makeRedis([
+            'password' => 'error password',
+        ]);
+    }
+
+    protected function makeRedis(array $config = []): Redis
     {
         $default = [
-            'expire' => 86400,
+            'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
+            'port' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PORT'],
+            'password' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['PASSWORD'],
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
+            'expire' => 0,
         ];
+
         $config = array_merge($default, $config);
 
-        return new Redis($phpRedis, $config);
+        return new Redis($config);
     }
 }

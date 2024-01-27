@@ -6,7 +6,7 @@ namespace Tests\Cache\Provider;
 
 use Leevel\Cache\File;
 use Leevel\Cache\Provider\Register;
-use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Filesystem\Helper;
@@ -65,11 +65,7 @@ final class RegisterTest extends TestCase
         $test->register();
         $container->alias($test->providers());
 
-        // redis
-        $redis = $container->make('redis');
-        static::assertInstanceOf(PhpRedis::class, $redis);
-        $redis->set('hello', 'world');
-        static::assertSame('world', $redis->get('hello'));
+        static::assertInstanceOf(Redis::class, $container->make('caches')->connect('redis'));
     }
 
     protected function createContainer(): Container

@@ -20,12 +20,12 @@ EOT,
 final class JsonResponseTest extends TestCase
 {
     #[Api([
-        'zh-CN:title' => 'getEncodingConfigs 获取 JSON 编码参数',
+        'zh-CN:title' => 'getEncodingOptions 获取 JSON 编码参数',
     ])]
     public function testGetEncodingConfigs(): void
     {
         $response = new JsonResponse();
-        static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingConfigs());
+        static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
     #[Api([
@@ -38,11 +38,11 @@ final class JsonResponseTest extends TestCase
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('["成都","QueryPHP"]', $response->getContent());
 
-        $response->setEncodingConfigs(0);
+        $response->setEncodingOptions(0);
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
 
-        $response->setEncodingConfigs(JSON_FORCE_OBJECT);
+        $response->setEncodingOptions(JSON_FORCE_OBJECT);
         $response->setData(['成都', 'QueryPHP']);
         static::assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
     }

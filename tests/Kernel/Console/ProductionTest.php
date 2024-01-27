@@ -71,7 +71,7 @@ class DemoRouterCache extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -83,7 +83,7 @@ class DemoConfigCache extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -95,7 +95,7 @@ class DemoI18nCache extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -107,7 +107,7 @@ class DemoViewCache extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -119,10 +119,10 @@ class DemoAutoload extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 
-    protected function getConfigs(): array
+    protected function getOptions(): array
     {
         return [
             [

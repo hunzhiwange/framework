@@ -87,7 +87,6 @@ class Redis extends Cache implements ICache
     public function delete(string $name): void
     {
         $this->checkConnect();
-
         $this->handle->del($this->getCacheName($name));
     }
 

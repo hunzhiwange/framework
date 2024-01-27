@@ -6,7 +6,7 @@ namespace Leevel\Filesystem;
 
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Ftp\FtpAdapter;
-use League\Flysystem\Ftp\FtpConnectionConfigs;
+use League\Flysystem\Ftp\FtpConnectionOptions;
 
 /**
  * Filesystem ftp.
@@ -49,6 +49,6 @@ class Ftp extends Filesystem implements IFilesystem
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        return new FtpAdapter(FtpConnectionConfigs::fromArray($this->config));
+        return new FtpAdapter(FtpConnectionOptions::fromArray($this->config));
     }
 }

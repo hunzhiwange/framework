@@ -1753,7 +1753,7 @@ EOT,
 如果校验规则中有 `OPTIONAL` ，那么字段值为 `null` 则不会执行验证规则。
 EOT,
     ])]
-    public function testConfigal(): void
+    public function testOptional(): void
     {
         $validate = new Validator(
             [
@@ -1778,7 +1778,7 @@ EOT,
 如果校验规则中有 `OPTIONAL_STRING` ，那么字段值为 `null` 或者空字符串则不会执行验证规则。
 EOT,
     ])]
-    public function testConfigalString(): void
+    public function testOptionalString(): void
     {
         $validate = new Validator(
             [

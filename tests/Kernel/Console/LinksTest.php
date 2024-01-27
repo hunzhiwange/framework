@@ -68,7 +68,7 @@ class DemoLinkApis extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -80,7 +80,7 @@ class DemoLinkStatic extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -92,7 +92,7 @@ class DemoLinkAttachments extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }
 
@@ -104,6 +104,6 @@ class DemoLinkDebugbar extends Command
 
     public function handle(): int
     {
-        return 0;
+        return self::SUCCESS;
     }
 }

@@ -12,6 +12,7 @@ use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper\DeleteDirectory;
 use RedisException;
 use Tests\TestCase;
+use Leevel\Cache\Redis;
 
 final class ManagerTest extends TestCase
 {
@@ -101,7 +102,7 @@ final class ManagerTest extends TestCase
         }
     }
 
-    protected function makePhpRedis(array $config = []): PhpRedis
+    protected function makePhpRedis(array $config = []): Redis
     {
         $default = [
             'host' => $GLOBALS['LEEVEL_ENV']['CACHE']['REDIS']['HOST'],
@@ -114,7 +115,7 @@ final class ManagerTest extends TestCase
 
         $config = array_merge($default, $config);
 
-        return new PhpRedis($config);
+        return new Redis($config);
     }
 
     protected function createManager(string $connect = 'file'): Manager
@@ -150,11 +151,6 @@ final class ManagerTest extends TestCase
         ]);
 
         $container->singleton('config', $config);
-
-        if ('redis' === $connect) {
-            $redis = new PhpRedis($config->get('cache\\connect.redis'));
-            $container->singleton('redis', $redis);
-        }
 
         return $manager;
     }
