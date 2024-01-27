@@ -1,6 +1,6 @@
 {
-  "name": "leevel/go",
-  "description": "The Leevel Go Package.",
+  "name": "leevel/server",
+  "description": "The Leevel Server Package.",
   "license": "MIT",
   "homepage": "http://queryphp.com",
   "support": {
