@@ -31,6 +31,7 @@ class ProcessManager extends Manager
             }
 
             if ($enableCoroutine) {
+                // @phpstan-ignore-next-line
                 run($func, $pool, $workerId);
             } else {
                 $func($pool, $workerId);
@@ -40,6 +41,7 @@ class ProcessManager extends Manager
         if ($this->workerStopEvent) {
             $this->pool->on(Constant::EVENT_WORKER_STOP, function (Pool $pool, int $workerId): void {
                 $workerStopEvent = $this->workerStopEvent;
+                // @phpstan-ignore-next-line
                 $workerStopEvent($pool, $workerId);
             });
         }

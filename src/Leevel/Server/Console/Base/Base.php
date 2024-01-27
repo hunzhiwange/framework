@@ -6,6 +6,7 @@ namespace Leevel\Server\Console\Base;
 
 use Leevel\Di\Container;
 use Leevel\Server\IServer;
+use Leevel\Server\Manager;
 
 trait Base
 {
@@ -25,7 +26,10 @@ trait Base
      */
     protected function createServer(): IServer
     {
-        return Container::singletons()->make('servers')->connect($this->connect);
+        /** @var Manager $manager */
+        $manager = Container::singletons()->make('servers');
+
+        return $manager->connect($this->connect);
     }
 
     /**

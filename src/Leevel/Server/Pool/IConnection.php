@@ -20,5 +20,5 @@ interface IConnection
     public function setPool(Pool $pool): void;
 
     // 关闭连接.
-    // public function close(): void;
+    public function close(): void;
 }

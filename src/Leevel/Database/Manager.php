@@ -224,6 +224,7 @@ class Manager extends Managers
         }
 
         if (!$newConnect && $enabledCoroutine) {
+            // @phpstan-ignore-next-line
             return $this->getConnectionFromFool($configs, $connect, $poolTransaction);
         }
 

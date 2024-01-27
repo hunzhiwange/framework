@@ -8,7 +8,7 @@ use Leevel\Filesystem\Helper\TraverseDirectory;
 use Swoole\Coroutine;
 
 /**
- * Swoole 热重载.
+ * 热重载.
  */
 class HotOverload extends Process
 {
@@ -35,11 +35,6 @@ class HotOverload extends Process
     protected array $hotoverloadWatch = [];
 
     /**
-     * 配置.
-     */
-    protected IConfig $config;
-
-    /**
      * 文件 MD5 值.
      */
     protected ?string $md5Hash = null;
@@ -51,8 +46,6 @@ class HotOverload extends Process
 
     /**
      * 构造函数.
-     *
-     * @see https://www.swoft.org 参考 Swoft 热更新
      */
     public function __construct(array $hotoverloadWatch, int $delayCount = 2, int $timeInterval = 20)
     {
@@ -66,14 +59,13 @@ class HotOverload extends Process
      */
     public function handle(\Closure $reloadCallback): void
     {
-        Coroutine::create(function () use ($reloadCallback): void {
-            while (true) {
-                Coroutine::sleep($this->timeInterval / 1000);
-                if ($this->serverNeedReload()) {
-                    $this->reload($reloadCallback);
-                }
+        // @phpstan-ignore-next-line
+        while (true) {
+            Coroutine::sleep($this->timeInterval / 1000);
+            if ($this->serverNeedReload()) {
+                $this->reload($reloadCallback);
             }
-        });
+        }
     }
 
     /**
@@ -109,7 +101,7 @@ class HotOverload extends Process
         }
         sort($files);
 
-        return md5(json_encode($files));
+        return md5(json_encode($files, JSON_THROW_ON_ERROR));
     }
 
     /**

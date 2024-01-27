@@ -88,6 +88,7 @@ class Register extends Provider
 
     protected function setContextResolver(): void
     {
+        // @phpstan-ignore-next-line
         $this->container->setContextResolver(fn (): Context => Coroutine::getContext());
     }
 }

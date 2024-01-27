@@ -38,8 +38,6 @@ abstract class Server implements IServer
      */
     public function __construct(IContainer $container, array $config = [], ?IDispatch $dispatch = null)
     {
-        //  $container->remove('request');
-        // $container->setCoroutine($coroutine);
         $this->container = $container;
         $this->config = array_merge($this->config, $config);
         $this->dispatch = $dispatch;
@@ -139,9 +137,7 @@ abstract class Server implements IServer
     }
 
     /**
-     * 设置 swoole 进程名称.
-     *
-     * @throws \InvalidArgumentException
+     * 设置进程名称.
      */
     protected function setProcessName(string $name): void
     {

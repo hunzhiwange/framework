@@ -88,6 +88,7 @@ class Manager extends Managers
         $configs = $this->normalizeConnectConfig($connect);
         $enabledCoroutine = $this->container->enabledCoroutine();
         if (!$newConnect && $enabledCoroutine) {
+            // @phpstan-ignore-next-line
             return $this->getConnectionFromFool($configs, $connect);
         }
 

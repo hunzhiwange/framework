@@ -17,6 +17,7 @@ use Swoole\Process\Pool;
 use Swoole\Table;
 use Swoole\Timer;
 use Swoole\WebSocket\CloseFrame;
+use Swoole\WebSocket\Frame;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -174,6 +175,7 @@ class Http extends Server implements IServer
 
     protected function close(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, string|false|Frame|CloseFrame $frame): void
     {
+        // @phpstan-ignore-next-line
         $this->onClose($swooleRequest, $swooleResponse, $workerId, $frame);
         unset($this->connections[$swooleRequest->fd]);
         $swooleResponse->close();
@@ -186,11 +188,13 @@ class Http extends Server implements IServer
         }
 
         $this->connections[spl_object_id($swooleResponse)] = $swooleResponse;
-        $response = $this->onOpen($swooleRequest, $swooleResponse, $workerId);
-        $swooleResponse->push((string) $response);
+        // @phpstan-ignore-next-line
+        $this->onOpen($swooleRequest, $swooleResponse, $workerId);
 
         while (true) {
+            /** @phpstan-ignore-next-line */
             $frame = $swooleResponse->recv(-1);
+
             if ('' === $frame) {
                 $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
 
@@ -201,12 +205,14 @@ class Http extends Server implements IServer
 
                 break;
             }
+            // @phpstan-ignore-next-line
             if ('close' === $frame->data || CloseFrame::class === $frame::class) {
                 $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
 
                 break;
             }
 
+            // @phpstan-ignore-next-line
             $this->onMessage($swooleRequest, $swooleResponse, $workerId, $frame);
         }
     }
@@ -267,6 +273,8 @@ class Http extends Server implements IServer
         }
 
         $this->status = StatusEnum::STOPPING;
+
+        // @phpstan-ignore-next-line
         $server->shutdown();
     }
 

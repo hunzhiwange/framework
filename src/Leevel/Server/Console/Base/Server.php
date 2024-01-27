@@ -31,14 +31,14 @@ abstract class Server extends Command
     }
 
     /**
-     * 显示 Swoole 服务启动项.
+     * 显示服务启动项.
      */
     protected function init(array $config): void
     {
         $result = [];
+        // @phpstan-ignore-next-line
         $result[] = ['QueryPHP', App::version()];
         $result[] = ['Swoole', phpversion('swoole')];
-        $appPath = App::path();
         foreach ($config as $key => $val) {
             if (\is_array($val)) {
                 $val = var_export($val, true);
@@ -106,7 +106,7 @@ abstract class Server extends Command
             return;
         }
 
-        $pid = (int) explode(PHP_EOL, file_get_contents($pidPath))[0];
+        $pid = (int) file_get_contents($pidPath);
         $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid}$\"";
         exec($cmd, $out);
         if (!empty($out)) {

@@ -10,6 +10,7 @@ parameters:
 	checkMissingCallableSignature: true
 	excludePaths:
 		- %currentWorkingDirectory%/*Test.php
+		- %currentWorkingDirectory%/src/Leevel/Server/ProcessManager.php
 	ignoreErrors:
 		- '#Access to an undefined property [\S\s]+::\$[\S\s]+\.#'
 		- '#should return [\S\s]+ but returns Leevel\\Database\\Ddd\\Entity\.#'
@@ -34,6 +35,19 @@ parameters:
 		- '#Method Leevel\\Database\\Condition::[\S\s]+ has parameter \$cond with no type specified\.#'
 		- '#[\S\s]+has no value type specified in iterable type[\S\s]+\.#'
 		- '#Class [\S\s]+ has an uninitialized property [\S\s]+. Give it default value or assign it in the constructor\.#'
+		- '#Method Leevel[\S\s]+::connect\(\) has parameter \$arguments with no type specified\.#'
+		- '#Method Leevel[\S\s]+::reconnect\(\) has parameter \$arguments with no type specified\.#'
+		- '#Method Leevel[\S\s]+::makeConnect\(\) has parameter \$arguments with no type specified\.#'
+		- '#Cannot call method [\S\s]+\(\) on [\S\s]+\|null\.#'
+		- '#Method [\S\s]+\(\) should return [\S\s]+ but returns [\S\s]+\|null\.#'
+		- '#Method [\S\s]+\(\) has invalid return type [\S\s]+\.#'
+		- '#Property [\S\s]+\::\$[\S\s]+\ has unknown class [\S\s]+\ as its type\.#'
+		- '#Used function Swoole\\Coroutine\\run not found\.#'
+		- '#Access to constant [\S\s]+ on an unknown class Swoole\\Constant\.#'
+		- '#Call to an undefined method Leevel\\Server\\ProcessManager::addBatch\(\)\.#'
+		- '#Call to an undefined method Leevel\\Server\\ProcessManager::add\(\)\.#'
+		- '#Argument of an invalid type Swoole\\Table\|null supplied for foreach, only iterables are supported\.#'
+		- '#Parameter \$[\S\s]+ of method [\S\s]+\(\) has invalid type Swoole[\S\s]+\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'

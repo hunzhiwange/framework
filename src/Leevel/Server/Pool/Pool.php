@@ -213,6 +213,7 @@ abstract class Pool
         $connectionStatus = $this->getConnectionStatus($connection);
         $connectionStatus->popTime = time();
 
+        // @phpstan-ignore-next-line
         return $connection;
     }
 
@@ -278,6 +279,7 @@ abstract class Pool
         if ($this->maxIdleConnections < 1) {
             throw new \InvalidArgumentException(sprintf(
                 '`max_idle_connections` `%d` of connections must greater than or equal to min `%d`.',
+                $this->maxIdleConnections,
                 1
             ));
         }

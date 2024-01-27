@@ -10,7 +10,6 @@ use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\WebSocket\CloseFrame;
 use Swoole\WebSocket\Frame;
-use Swoole\Websocket\Server as SwooleWebsocketServer;
 
 /**
  * Websocket 服务.
@@ -85,14 +84,13 @@ class Websocket extends Http
     /**
      * WebSocket 客户端与服务器建立连接并完成握手后.
      */
-    public function onOpen(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId)
+    public function onOpen(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId): void
     {
         $this->setClientPathInfo($swooleRequest->fd, $swooleRequest->server['path_info']);
         $request = $this->normalizeRequest($swooleRequest);
         $request->setPathInfo($this->normalizePathInfo($request->getPathInfo(), self::OPEN));
         $this->setPreRequestMatched($request, [$this, $swooleRequest, $swooleResponse, $workerId]);
-
-        return $this->dispatchRouter($request);
+        $this->dispatchRouter($request);
     }
 
     /**
@@ -155,18 +153,6 @@ class Websocket extends Http
     }
 
     /**
-     * 创建 Swoole 服务.
-     */
-    protected function createSwooleServer(): void
-    {
-        $this->server = new SwooleWebsocketServer(
-            (string) $this->config['host'],
-            (int) $this->config['port']
-        );
-        $this->initSwooleServer();
-    }
-
-    /**
      * 获取客户端连接 PathInfo.
      */
     protected function getClientPathInfo(int $fd): false|string
@@ -177,6 +163,7 @@ class Websocket extends Http
             return false;
         }
 
+        // @phpstan-ignore-next-line
         return $pathInfo;
     }
 

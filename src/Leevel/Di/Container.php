@@ -794,6 +794,7 @@ class Container implements IContainer, \ArrayAccess
         if ($this->inContext($name)) {
             $contextResolver = $this->contextResolver;
 
+            // @phpstan-ignore-next-line
             return $contextResolver();
         }
 

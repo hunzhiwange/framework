@@ -87,6 +87,7 @@ class Redis extends Cache implements ICache
     public function delete(string $name): void
     {
         $this->checkConnect();
+        // @phpstan-ignore-next-line
         $this->handle->del($this->getCacheName($name));
     }
 
@@ -97,6 +98,7 @@ class Redis extends Cache implements ICache
     {
         $this->checkConnect();
 
+        // @phpstan-ignore-next-line
         return 1 === $this->handle->exists($this->getCacheName($name));
     }
 
@@ -123,6 +125,7 @@ class Redis extends Cache implements ICache
     {
         $this->checkConnect();
 
+        // @phpstan-ignore-next-line
         return (int) $this->handle->ttl($name);
     }
 

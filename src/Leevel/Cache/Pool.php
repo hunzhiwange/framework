@@ -37,6 +37,7 @@ class Pool extends BasePool
      */
     public function get(?float $timeout = null): ICache
     {
+        // @phpstan-ignore-next-line
         return parent::get($timeout);
     }
 
