@@ -26,7 +26,7 @@ do
 
         cd $TMP_DIR;
 
-        git init;
+        git init --initial-branch=master;
 
         git pull ../ $SPLIT_NEW_BRANCH
 
