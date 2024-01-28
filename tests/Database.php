@@ -38,7 +38,7 @@ trait Database
             $connect = Mysql::class;
         }
 
-        $connect = new $connect($config, $dispatch);
+        $connect = new $connect(new Container(), $config, $dispatch);
         $this->databaseConnects[] = $connect;
 
         return $connect;

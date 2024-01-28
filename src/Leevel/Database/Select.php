@@ -9,6 +9,8 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Collection;
 use Leevel\Support\Str\UnCamelize;
+use Swoole\Coroutine;
+use Swoole\Coroutine\WaitGroup;
 
 /**
  * 数据库查询器.
@@ -96,8 +98,6 @@ use Leevel\Support\Str\UnCamelize;
  * @method static \Leevel\Database\Select elif(mixed $value = false)                                                                                                 条件语句 elif.
  * @method static \Leevel\Database\Select else()                                                                                                                     条件语句 else.
  * @method static \Leevel\Database\Select fi()                                                                                                                       条件语句 fi.
- * @method static \Leevel\Database\Select setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                               设置当前条件表达式状态.
- * @method static bool                    checkFlowControl()                                                                                                         验证一下条件表达式是否通过.
  */
 class Select
 {
@@ -127,7 +127,7 @@ class Select
      * 查询类型.
      *
      * - master: bool,false (读服务器),true (写服务器)
-     * - master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     * - master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::PDO_MASTER 表示主服务器
      * - as_some: 每一项记录以某种包装返回，null 表示默认返回
      * - as_args: 包装附加参数
      * - as_collection: 以对象集合方法返回
@@ -150,13 +150,9 @@ class Select
     /**
      * 构造函数.
      *
-     * - This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
-     * - 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
+     * - 查询器主体方法参考自早年 QeePHP 数据库查询 Api.
      * - 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
      * - 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
-     *
-     * @see http://qeephp.com
-     * @see http://qeephp.cn/docs/qeephp-manual/
      */
     public function __construct(IDatabase $connect)
     {
@@ -638,11 +634,66 @@ class Select
      */
     public function page(int $currentPage, int $perPage = 10, string $column = '*', array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, $this->pageCount($column), $config);
-        $data = $this
-            ->limit($page->getFromRecord(), $perPage)
-            ->findAll()
-        ;
+        $page = new Page($currentPage, $perPage, null, $config);
+
+        if ($this->connect->getContainer()->enabledCoroutine()) {
+            $wg = new WaitGroup();
+
+            $exceptions = [];
+
+            // 启动一个协程
+            $wg->add();
+            $totalRecord = 0;
+            // 克隆对象避免协程数据竞争的问题
+            // 查询分页走专用的数据库连接,避免两个协程同时访问同一个资源
+            $that = clone $this;
+            Coroutine::create(function () use ($wg, $column, &$totalRecord, &$exceptions, $that): void {
+                try {
+                    $that->connect->pdo(false, true);
+                    $totalRecord = $that->pageCount($column);
+                } catch (\Throwable $e) {
+                    $exceptions[] = $e;
+                }
+
+                // 标记协程完成
+                $wg->done();
+            });
+
+            // 启动一个协程
+            $wg->add();
+
+            $data = null;
+            Coroutine::create(function () use ($wg, $page, $perPage, &$data, &$exceptions): void {
+                try {
+                    $data = $this
+                        ->limit($page->getFromRecord(), $perPage)
+                        ->findAll()
+                    ;
+                    sleep(1);
+                } catch (\Throwable $e) {
+                    $exceptions[] = $e;
+                }
+
+                // 标记协程完成
+                $wg->done();
+            });
+
+            // 挂起当前协程，等待所有任务完成后恢复
+            $wg->wait();
+
+            if ($exceptions) {
+                throw $exceptions[0];
+            }
+        } else {
+            $totalRecord = $this->pageCount($column);
+            $data = $this
+                ->limit($page->getFromRecord(), $perPage)
+                ->findAll()
+            ;
+            sleep(1);
+        }
+
+        $page->setTotalRecord($totalRecord);
         $page->setData($data);
 
         return $page;

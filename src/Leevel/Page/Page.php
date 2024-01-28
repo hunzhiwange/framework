@@ -288,6 +288,14 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     }
 
     /**
+     * 设置总记录数量.
+     */
+    public function setTotalRecord(?int $totalRecord = null): void
+    {
+        $this->totalRecord = $totalRecord;
+    }
+
+    /**
      * 返回总记录数量.
      */
     public function getTotalRecord(): ?int

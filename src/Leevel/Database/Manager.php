@@ -158,8 +158,6 @@ use Swoole\Coroutine;
  * @method static \Leevel\Database\Select                                                elif(mixed $value = false)                                                                                                                                         条件语句 elif.
  * @method static \Leevel\Database\Select                                                else()                                                                                                                                                             条件语句 else.
  * @method static \Leevel\Database\Select                                                fi()                                                                                                                                                               条件语句 fi.
- * @method static \Leevel\Database\Select                                                setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                                                                       设置当前条件表达式状态.
- * @method static bool                                                                   checkFlowControl()                                                                                                                                                 验证一下条件表达式是否通过.
  * @method static \Leevel\Di\IContainer                                                  container()                                                                                                                                                        返回 IOC 容器.
  * @method static void                                                                   disconnect(?string $connect = null)                                                                                                                                删除连接.
  * @method static array                                                                  getConnects()                                                                                                                                                      取回所有连接.
@@ -237,6 +235,7 @@ class Manager extends Managers
 
         /** @var Mysql $mysql */
         $mysql = new $driverClass(
+            $this->container,
             $configs,
             $this->container->make(IDispatch::class),
             $poolTransaction,

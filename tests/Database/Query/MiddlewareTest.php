@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database\Query;
 
 use Leevel\Database\Condition;
-use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Query\Database\Demo;
@@ -20,13 +19,6 @@ use Tests\Database\Query\Database\ForceMaster;
 ])]
 final class MiddlewareTest extends TestCase
 {
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        Condition::withContainer(null);
-    }
-
     #[Api([
         'zh-CN:title' => 'middleware 基础用法',
         'zh-CN:description' => <<<'EOT'
@@ -40,7 +32,6 @@ EOT,
     public function testBaseUse(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -70,7 +61,6 @@ EOT,
     public function test1(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -100,7 +90,6 @@ EOT,
     public function test2(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -130,7 +119,6 @@ EOT,
     public function test3(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -171,14 +159,12 @@ EOT,
         );
 
         $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
         Condition::registerMiddlewares([1]);
     }
 
     public function test5(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -219,7 +205,6 @@ EOT,
         );
 
         $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
         Condition::registerMiddlewares([Demo3::class]);
     }
 
@@ -229,7 +214,6 @@ EOT,
     public function testRegisterMiddlewares(): void
     {
         $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
         $data = Condition::registerMiddlewares([Demo::class]);
 
         $result = <<<'eot'
@@ -252,7 +236,6 @@ EOT,
     public function testRegisterMiddlewares2(): void
     {
         $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
         $data = Condition::registerMiddlewares([Demo::class, Demo::class], true);
 
         $result = <<<'eot'
@@ -285,7 +268,6 @@ EOT,
     public function testBaseUseWithArgs(): void
     {
         $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(new Container());
 
         $sql = <<<'eot'
             [
@@ -316,49 +298,5 @@ EOT,
                 $connect
             )
         );
-    }
-
-    public function test7(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(
-            'Container was not set.'
-        );
-
-        $connect = $this->createDatabaseConnectMock();
-
-        $connect
-            ->table('test_query')
-            ->middlewares(ForceMaster::class)
-            ->where('id', '=', 5)
-            ->findAll()
-        ;
-    }
-
-    public function test8(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(
-            'Container was not set.'
-        );
-
-        $connect = $this->createDatabaseConnectMock();
-        $condition = new Condition($connect);
-        $this->invokeTestMethod($condition, 'throughMiddlewareTerminate', [[], [], function (): void {
-        }]);
-    }
-
-    public function test9(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(
-            'Container was not set.'
-        );
-
-        $connect = $this->createDatabaseConnectMock();
-        Condition::withContainer(null);
-        $condition = new Condition($connect);
-        $this->invokeTestMethod($condition, 'throughMiddleware', [[], [], function (): void {
-        }]);
     }
 }

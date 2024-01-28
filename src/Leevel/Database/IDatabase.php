@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
+use Leevel\Di\IContainer;
 use Leevel\Server\Pool\IConnection;
 
 /**
@@ -129,8 +130,6 @@ use Leevel\Server\Pool\IConnection;
  * @method static \Leevel\Database\Select                                                elif(mixed $value = false)                                                                                                 条件语句 elif.
  * @method static \Leevel\Database\Select                                                else()                                                                                                                     条件语句 else.
  * @method static \Leevel\Database\Select                                                fi()                                                                                                                       条件语句 fi.
- * @method static \Leevel\Database\Select                                                setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                               设置当前条件表达式状态.
- * @method static bool                                                                   checkFlowControl()                                                                                                         验证一下条件表达式是否通过.
  */
 interface IDatabase extends IConnection
 {
@@ -142,12 +141,24 @@ interface IDatabase extends IConnection
     /**
      * 主服务 PDO 标识.
      */
-    public const MASTER = 0;
+    public const PDO_MASTER = 0;
+
+    /**
+     * 分页 PDO 标识.
+     */
+    public const PDO_PAGE = 99999999;
 
     /**
      * SQL 日志事件.
      */
     public const SQL_EVENT = 'database.sql';
+
+    /**
+     * 获取IOC容器.
+     *
+     * @todo 加入到IDE-HELPER中去
+     */
+    public function getContainer(): IContainer;
 
     /**
      * 设置缓存.
@@ -168,9 +179,9 @@ interface IDatabase extends IConnection
      * 返回 PDO 查询连接.
      *
      * - $master: bool,false (读服务器),true (写服务器)
-     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::MASTER 表示主服务器
+     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::PDO_MASTER 表示主服务器
      */
-    public function pdo(bool|int $master = false): ?\PDO;
+    public function pdo(bool|int $master = false, bool $page = false): ?\PDO;
 
     /**
      * 查询数据记录.

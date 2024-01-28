@@ -851,9 +851,9 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertNull($connect->pdo(IDatabase::MASTER));
+        static::assertNull($connect->pdo(IDatabase::PDO_MASTER));
         $this->assertInstanceof(\PDO::class, $connect->pdo(true));
-        $this->assertInstanceof(\PDO::class, $connect->pdo(IDatabase::MASTER));
+        $this->assertInstanceof(\PDO::class, $connect->pdo(IDatabase::PDO_MASTER));
         static::assertNull($connect->pdo(5));
 
         $connect->close();

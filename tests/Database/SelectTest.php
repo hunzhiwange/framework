@@ -2243,8 +2243,8 @@ EOT,
 
 class AsSomeDemo
 {
-    public $name;
-    public $content;
+    public string $name = '';
+    public string $content = '';
 
     public function __construct(array $data)
     {

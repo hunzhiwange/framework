@@ -166,8 +166,6 @@ use Leevel\Database\Ddd\Select;
  * @method static \Leevel\Database\Ddd\Select                                            elif(mixed $value = false)                                                                                                                                         条件语句 elif.
  * @method static \Leevel\Database\Ddd\Select                                            else()                                                                                                                                                             条件语句 else.
  * @method static \Leevel\Database\Ddd\Select                                            fi()                                                                                                                                                               条件语句 fi.
- * @method static \Leevel\Database\Ddd\Select                                            setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                                                                       设置当前条件表达式状态.
- * @method static bool                                                                   checkFlowControl()                                                                                                                                                 验证一下条件表达式是否通过.
  */
 abstract class Relation
 {

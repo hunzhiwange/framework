@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
+use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Server\Pool\Connection;
 use Throwable;
@@ -131,8 +132,6 @@ use Throwable;
  * @method static \Leevel\Database\Select                                                elif(mixed $value = false)                                                                                                 条件语句 elif.
  * @method static \Leevel\Database\Select                                                else()                                                                                                                     条件语句 else.
  * @method static \Leevel\Database\Select                                                fi()                                                                                                                       条件语句 fi.
- * @method static \Leevel\Database\Select                                                setFlowControl(bool $inFlowControl, bool $isFlowControlTrue)                                                               设置当前条件表达式状态.
- * @method static bool                                                                   checkFlowControl()                                                                                                         验证一下条件表达式是否通过.
  */
 abstract class Database implements IDatabase
 {
@@ -247,6 +246,11 @@ abstract class Database implements IDatabase
     protected ?ICache $cache = null;
 
     /**
+     * IOC 容器.
+     */
+    protected IContainer $container;
+
+    /**
      * 数据库连接池事务管理器.
      */
     protected ?PoolTransaction $poolTransaction = null;
@@ -254,8 +258,9 @@ abstract class Database implements IDatabase
     /**
      * 构造函数.
      */
-    public function __construct(array $config, ?IDispatch $dispatch = null, ?PoolTransaction $poolTransaction = null)
+    public function __construct(IContainer $container, array $config, ?IDispatch $dispatch = null, ?PoolTransaction $poolTransaction = null)
     {
+        $this->container = $container;
         $this->config = array_merge($this->config, $config);
         $this->dispatch = $dispatch;
         $this->poolTransaction = $poolTransaction;
@@ -277,6 +282,14 @@ abstract class Database implements IDatabase
         $this->initSelect();
 
         return $this->select->{$method}(...$args);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContainer(): IContainer
+    {
+        return $this->container;
     }
 
     /**
@@ -311,10 +324,10 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function pdo(bool|int $master = false): ?\PDO
+    public function pdo(bool|int $master = false, bool $page = false): ?\PDO
     {
         if (\is_bool($master)) {
-            return false === $master ? $this->readConnect() : $this->writeConnect();
+            return false === $master ? $this->readConnect($page) : $this->writeConnect($page);
         }
 
         return $this->connects[$master] ?? null;
@@ -797,42 +810,48 @@ abstract class Database implements IDatabase
     /**
      * 连接主服务器.
      */
-    protected function writeConnect(): \PDO
+    protected function writeConnect(bool $page): \PDO
     {
         // @phpstan-ignore-next-line
-        return $this->connect = $this->commonConnect($this->config['master'], IDatabase::MASTER, true);
+        return $this->connect = $this->commonConnect($this->config['master'], $page ? IDatabase::PDO_PAGE : IDatabase::PDO_MASTER, true);
     }
 
     /**
      * 连接读服务器.
      */
-    protected function readConnect(): \PDO
+    protected function readConnect(bool $page): \PDO
     {
         if (false === $this->config['distributed'] || empty($this->config['slave'])) {
-            return $this->writeConnect();
+            return $this->writeConnect($page);
         }
 
         if (!empty($this->config['sticky']) && $this->inTransaction()) {
-            return $this->writeConnect();
+            return $this->writeConnect($page);
         }
 
         if (\count($this->connects) <= 1) {
             foreach ($this->config['slave'] as $index => $read) {
+                // @todo 分页专用查询
                 $this->commonConnect($read, (int) $index + 1);
             }
 
             if (0 === \count($this->connects)) {
-                return $this->writeConnect();
+                return $this->writeConnect($page);
             }
         }
 
         $connects = $this->connects;
-        if (true === $this->config['separate'] && isset($connects[IDatabase::MASTER])) {
-            unset($connects[IDatabase::MASTER]);
+
+        if (!$page && isset($connects[IDatabase::PDO_PAGE])) {
+            unset($connects[IDatabase::PDO_PAGE]);
+        }
+
+        if (true === $this->config['separate'] && isset($connects[IDatabase::PDO_MASTER])) {
+            unset($connects[IDatabase::PDO_MASTER]);
         }
 
         if (!$connects) {
-            return $this->writeConnect();
+            return $this->writeConnect($page);
         }
 
         $connects = array_values($connects);

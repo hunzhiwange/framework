@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Leevel\Di\IContainer;
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
 use Leevel\Support\Pipeline;
@@ -166,11 +165,6 @@ class Condition
      * 查询中间件.
      */
     protected static array $middlewares = [];
-
-    /**
-     * IOC 容器.
-     */
-    protected static ?IContainer $container = null;
 
     /**
      * 构造函数.
@@ -553,14 +547,6 @@ class Condition
         }
 
         return static::RAW_LEFT.'~~{#!'.static::$rawRandKey.$raw.static::$rawRandKey.'!#}~~'.static::RAW_RIGHT;
-    }
-
-    /**
-     * 设置容器.
-     */
-    public static function withContainer(?IContainer $container): void
-    {
-        static::$container = $container;
     }
 
     /**
@@ -1543,12 +1529,8 @@ class Condition
      */
     protected function throughMiddleware(array $extendMiddlewares, array $middlewaresConfigs, \Closure $then): array
     {
-        if (!static::$container) {
-            throw new \Exception('Container was not set.');
-        }
-
         // @phpstan-ignore-next-line
-        return (new Pipeline(static::$container))
+        return (new Pipeline($this->connect->getContainer()))
             ->send([$this, $middlewaresConfigs])
             ->through($extendMiddlewares)
             ->then($then)
@@ -1560,12 +1542,8 @@ class Condition
      */
     protected function throughMiddlewareTerminate(array $extendMiddlewares, array $makeSql, \Closure $then): array
     {
-        if (!static::$container) {
-            throw new \Exception('Container was not set.');
-        }
-
         // @phpstan-ignore-next-line
-        return (new Pipeline(static::$container))
+        return (new Pipeline($this->connect->getContainer()))
             ->send([$this, $this->configs['middlewaresConfigs'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
