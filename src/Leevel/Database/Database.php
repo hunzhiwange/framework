@@ -153,11 +153,6 @@ abstract class Database implements IDatabase
     protected ?\PDOStatement $pdoStatement = null;
 
     /**
-     * 数据查询组件.
-     */
-    protected ?Select $select = null;
-
-    /**
      * 数据库连接参数.
      *
      * - separate:数据库读写是否分离
