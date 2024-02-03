@@ -8,7 +8,6 @@ use Leevel\Cache\ICache;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Server\Pool\Connection;
-use Throwable;
 
 /**
  * 数据库抽象层.
@@ -138,11 +137,6 @@ abstract class Database implements IDatabase
     use Connection;
 
     /**
-     * 所有数据库连接.
-     */
-    protected array $connects = [];
-
-    /**
      * 当前数据库连接.
      */
     protected ?\PDO $connect = null;
@@ -151,11 +145,6 @@ abstract class Database implements IDatabase
      * 当前数据库读连接.
      */
     protected ?\PDO $readConnect = null;
-
-    /**
-     * PDO 预处理语句对象
-     */
-    protected ?\PDOStatement $pdoStatement = null;
 
     /**
      * 数据库连接参数.
@@ -337,8 +326,8 @@ abstract class Database implements IDatabase
             return $result;
         }
 
-        $this->prepare($sql, $bindParams, $master);
-        $result = $this->fetchResult();
+        $statement = $this->prepare($sql, $bindParams, $master);
+        $result = $this->fetchResult($statement);
         if ($cacheName) {
             $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
@@ -355,8 +344,9 @@ abstract class Database implements IDatabase
             return (array) $result;
         }
 
-        $this->prepare($sql, $bindParams, $master);
-        $result = $this->fetchProcedureResult();
+        $statement = $this->prepare($sql, $bindParams, $master);
+        $result = $this->fetchProcedureResult($statement);
+
         if ($cacheName) {
             $this->setDataToCache($cacheName, $result, $cacheExpire, $cache);
         }
@@ -386,10 +376,10 @@ abstract class Database implements IDatabase
      */
     public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator
     {
-        $this->prepare($sql, $bindParams, $master);
+        $statement = $this->prepare($sql, $bindParams, $master);
 
         // @phpstan-ignore-next-line
-        while ($value = $this->pdoStatement->fetch(\PDO::FETCH_OBJ)) {
+        while ($value = $statement->fetch(\PDO::FETCH_OBJ)) {
             yield $value;
         }
     }
@@ -403,11 +393,10 @@ abstract class Database implements IDatabase
         $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
 
         try {
-            $this->pdoStatement = $this->pdo($master)->prepare($sql);
-            $this->bindParams($bindParamsResult);
-            // @phpstan-ignore-next-line
-            $this->pdoStatement->execute();
-            $this->setLastSql($this->normalizeLastSql($this->pdoStatement).$rawSql);
+            $statement = $this->pdo($master)->prepare($sql);
+            $this->bindParams($statement, $bindParamsResult);
+            $statement->execute();
+            $this->setLastSql($this->normalizeLastSql($statement).$rawSql);
             $this->reconnectRetry = 0;
         } catch (\PDOException $e) {
             if ($this->needReconnect($e)) {
@@ -417,8 +406,8 @@ abstract class Database implements IDatabase
                 return $this->prepare($sql, $bindParams, $master);
             }
 
-            if ($this->pdoStatement) {
-                $sql = $this->normalizeLastSql($this->pdoStatement);
+            if (isset($statement)) {
+                $sql = $this->normalizeLastSql($statement);
             } else {
                 $sql = $this->normalizeErrorLastSql($sql, $bindParamsResult);
             }
@@ -426,11 +415,9 @@ abstract class Database implements IDatabase
             $this->pdoException($e);
         }
 
-        // @phpstan-ignore-next-line
-        $this->numRows = $this->pdoStatement->rowCount();
+        $this->numRows = $statement->rowCount();
 
-        // @phpstan-ignore-next-line
-        return $this->pdoStatement;
+        return $statement;
     }
 
     /**
@@ -609,33 +596,8 @@ abstract class Database implements IDatabase
      */
     public function close(): void
     {
-        $this->freePDOStatement();
-        $this->closeConnects();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function freePDOStatement(): void
-    {
-        // Fix errors
-        // Error while sending STMT_CLOSE packet. PID=32336
-        // PHP Fatal error:  Uncaught Error while sending STMT_CLOSE packet. PID=32336
-        try {
-            $this->pdoStatement = null;
-            // @codeCoverageIgnoreStart
-        } catch (Throwable) { // @phpstan-ignore-line
-        }
-        // @codeCoverageIgnoreEnd
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function closeConnects(): void
-    {
-        $this->connects = [];
         $this->connect = null;
+        $this->readConnect = null;
     }
 
     /**
@@ -892,10 +854,10 @@ abstract class Database implements IDatabase
     /**
      * PDO 参数绑定.
      */
-    protected function bindParams(array $bindParams): void
+    protected function bindParams(\PDOStatement $statement, array $bindParams): void
     {
         foreach ($bindParams as $key => &$val) {
-            $this->pdoStatement->{\count($val) >= 3 ? 'bindParam' : 'bindValue'}($key, ...$val);
+            $statement->{\count($val) >= 3 ? 'bindParam' : 'bindValue'}($key, ...$val);
         }
     }
 
@@ -929,24 +891,21 @@ abstract class Database implements IDatabase
     /**
      * 获得数据集.
      */
-    protected function fetchResult(): array
+    protected function fetchResult(\PDOStatement $statement): array
     {
         // PHP8.0 开始 fetchAll 方法现在始终返回一个数组，而以前 false 可能在失败时返回。
-        // @phpstan-ignore-next-line
-        return $this->pdoStatement->fetchAll(\PDO::FETCH_OBJ);
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
     /**
      * 获得存储过程数据集.
      */
-    protected function fetchProcedureResult(): array
+    protected function fetchProcedureResult(\PDOStatement $statement): array
     {
         $result = [];
-        // @phpstan-ignore-next-line
-        while ($this->pdoStatement->columnCount()) {
-            $result[] = $this->fetchResult();
-            // @phpstan-ignore-next-line
-            $this->pdoStatement->nextRowset();
+        while ($statement->columnCount()) {
+            $result[] = $this->fetchResult($statement);
+            $statement->nextRowset();
         }
 
         return $result;

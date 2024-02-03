@@ -264,16 +264,6 @@ interface IDatabase extends IConnection
     public function close(): void;
 
     /**
-     * 释放 PDO 预处理查询.
-     */
-    public function freePDOStatement(): void;
-
-    /**
-     * 关闭数据库连接.
-     */
-    public function closeConnects(): void;
-
-    /**
      * 从 PDO 预处理语句中获取原始 SQL 查询字符串.
      *
      * - This method borrows heavily from the pdo-debug package and is part of the pdo-debug package.
