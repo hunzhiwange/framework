@@ -15,7 +15,7 @@ use Throwable;
  *
  * @method static \Leevel\Database\Condition                                             databaseCondition()                                                                                                        查询对象.
  * @method static \Leevel\Database\IDatabase                                             databaseConnect()                                                                                                          返回数据库连接对象.
- * @method static \Leevel\Database\Select                                                master(bool|int $master = false)                                                                                           设置是否查询主服务器.
+ * @method static \Leevel\Database\Select                                                master(bool $master = false)                                                                                               设置是否查询主服务器.
  * @method static \Leevel\Database\Select                                                asSome(?\Closure $asSome = null, array $args = [])                                                                         设置以某种包装返会结果.
  * @method static \Leevel\Database\Select                                                asArray(?\Closure $asArray = null)                                                                                         设置返会结果为数组.
  * @method static \Leevel\Database\Select                                                asCollection(bool $asCollection = true, array $valueTypes = [])                                                            设置是否以集合返回.
@@ -148,6 +148,11 @@ abstract class Database implements IDatabase
     protected ?\PDO $connect = null;
 
     /**
+     * 当前数据库读连接.
+     */
+    protected ?\PDO $readConnect = null;
+
+    /**
      * PDO 预处理语句对象
      */
     protected ?\PDOStatement $pdoStatement = null;
@@ -156,7 +161,6 @@ abstract class Database implements IDatabase
      * 数据库连接参数.
      *
      * - separate:数据库读写是否分离
-     * - distributed:是否采用分布式
      * - master:分布式服务部署主服务器
      * - master.host:数据库 host，默认为 localhost
      * - master.port:端口
@@ -169,7 +173,6 @@ abstract class Database implements IDatabase
      */
     protected array $config = [
         'separate' => false,
-        'distributed' => false,
         'sticky' => true,
         'master' => [
             'host' => '127.0.0.1',
@@ -312,19 +315,23 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function pdo(bool|int $master = false, bool $page = false): ?\PDO
+    public function pdo(bool $master = false): \PDO
     {
-        if (\is_bool($master)) {
-            return false === $master ? $this->readConnect($page) : $this->writeConnect($page);
+        if (!$this->connect) {
+            $this->initConnect($this->config);
         }
 
-        return $this->connects[$master] ?? null;
+        if ($master) {
+            return $this->connect;
+        }
+
+        return $this->readConnect ?? $this->connect;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
+    public function query(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
             return $result;
@@ -342,7 +349,7 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
+    public function procedure(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
             return (array) $result;
@@ -377,7 +384,7 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator
+    public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator
     {
         $this->prepare($sql, $bindParams, $master);
 
@@ -390,7 +397,7 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement
+    public function prepare(string $sql, array $bindParams = [], bool $master = false): \PDOStatement
     {
         $bindParamsResult = $this->normalizeBindParams($bindParams);
         $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
@@ -708,6 +715,18 @@ abstract class Database implements IDatabase
     }
 
     /**
+     * 初始化连接.
+     */
+    public function initConnect(array $config): void
+    {
+        $this->connect = $this->createMasterConnection($config);
+
+        if (!empty($config['separate']) && !empty($config['slave'])) {
+            $this->readConnect = $this->createSlaveConnection($config);
+        }
+    }
+
+    /**
      * 从缓存中获取查询数据.
      */
     protected function getDataFromCache(string $cacheName, ?ICache $cache = null): mixed
@@ -778,69 +797,56 @@ abstract class Database implements IDatabase
     }
 
     /**
+     * 获取主库配置.
+     */
+    protected function getMasterConfig(array $config): array
+    {
+        return $this->getMasterSlaveConfig($config, true);
+    }
+
+    /**
+     * 获取从库配置.
+     */
+    protected function getSlaveConfig(array $config): array
+    {
+        return $this->getMasterSlaveConfig($config, false);
+    }
+
+    /**
+     * 获取主从配置.
+     */
+    protected function getMasterSlaveConfig(array $config, bool $master): array
+    {
+        $type = $master ? 'master' : 'slave';
+
+        return isset($config[$type][0])
+            ? $config[$type][array_rand($config[$type])]
+            : $config[$type];
+    }
+
+    /**
      * 连接主服务器.
      */
-    protected function writeConnect(bool $page): \PDO
+    protected function createMasterConnection(array $config): \PDO
     {
         // @phpstan-ignore-next-line
-        return $this->connect = $this->commonConnect($this->config['master'], $page ? IDatabase::PDO_PAGE : IDatabase::PDO_MASTER, true);
+        return $this->createPdoConnection($this->getMasterConfig($config), true);
     }
 
     /**
-     * 连接读服务器.
+     * 连接从服务器.
      */
-    protected function readConnect(bool $page): \PDO
+    protected function createSlaveConnection(array $config): \PDO
     {
-        if (false === $this->config['distributed'] || empty($this->config['slave'])) {
-            return $this->writeConnect($page);
-        }
-
-        if (!empty($this->config['sticky']) && $this->inTransaction()) {
-            return $this->writeConnect($page);
-        }
-
-        if (\count($this->connects) <= 1) {
-            foreach ($this->config['slave'] as $index => $read) {
-                // @todo 分页专用查询
-                $this->commonConnect($read, (int) $index + 1);
-            }
-
-            if (0 === \count($this->connects)) {
-                return $this->writeConnect($page);
-            }
-        }
-
-        $connects = $this->connects;
-
-        if (!$page && isset($connects[IDatabase::PDO_PAGE])) {
-            unset($connects[IDatabase::PDO_PAGE]);
-        }
-
-        if (true === $this->config['separate'] && isset($connects[IDatabase::PDO_MASTER])) {
-            unset($connects[IDatabase::PDO_MASTER]);
-        }
-
-        if (!$connects) {
-            return $this->writeConnect($page);
-        }
-
-        $connects = array_values($connects);
-        if (1 === \count($connects)) {
-            return $connects[0];
-        }
-
-        return $this->connect = $connects[floor(random_int(0, \count($connects) - 1))];
+        // @phpstan-ignore-next-line
+        return $this->createPdoConnection($this->getSlaveConfig($config), true);
     }
 
     /**
-     * 连接数据库.
+     * 连接pdo数据库.
      */
-    protected function commonConnect(array $config, int $linkId, bool $throwException = false): \PDO|bool
+    protected function createPdoConnection(array $config, bool $throwException): \PDO|false
     {
-        if (!empty($this->connects[$linkId])) {
-            return $this->connects[$linkId];
-        }
-
         if (\is_array($config['configs']) && isset($config['configs'][\PDO::ATTR_ERRMODE])) {
             ConnectionException::errModeExceptionOnly();
         }
@@ -854,7 +860,7 @@ abstract class Database implements IDatabase
             );
             $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-            return $this->connects[$linkId] = $connection;
+            return $connection;
         } catch (\PDOException $e) {
             if (false === $throwException) {
                 return false;

@@ -13,7 +13,7 @@ use Leevel\Server\Pool\IConnection;
  *
  * @method static \Leevel\Database\Condition                                             databaseCondition()                                                                                                        查询对象.
  * @method static \Leevel\Database\IDatabase                                             databaseConnect()                                                                                                          返回数据库连接对象.
- * @method static \Leevel\Database\Select                                                master(bool|int $master = false)                                                                                           设置是否查询主服务器.
+ * @method static \Leevel\Database\Select                                                master(bool $master = false)                                                                                               设置是否查询主服务器.
  * @method static \Leevel\Database\Select                                                asSome(?\Closure $asSome = null, array $args = [])                                                                         设置以某种包装返会结果.
  * @method static \Leevel\Database\Select                                                asArray(?\Closure $asArray = null)                                                                                         设置返会结果为数组.
  * @method static \Leevel\Database\Select                                                asCollection(bool $asCollection = true, array $valueTypes = [])                                                            设置是否以集合返回.
@@ -136,17 +136,7 @@ interface IDatabase extends IConnection
     /**
      * 断线重连尝试次数.
      */
-    public const RECONNECT_MAX = 3;
-
-    /**
-     * 主服务 PDO 标识.
-     */
-    public const PDO_MASTER = 0;
-
-    /**
-     * 分页 PDO 标识.
-     */
-    public const PDO_PAGE = 99999999;
+    public const RECONNECT_MAX = 2;
 
     /**
      * SQL 日志事件.
@@ -177,21 +167,18 @@ interface IDatabase extends IConnection
 
     /**
      * 返回 PDO 查询连接.
-     *
-     * - $master: bool,false (读服务器),true (写服务器)
-     * - $master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::PDO_MASTER 表示主服务器
      */
-    public function pdo(bool|int $master = false, bool $page = false): ?\PDO;
+    public function pdo(bool $master = false): \PDO;
 
     /**
      * 查询数据记录.
      */
-    public function query(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed; /** @codeCoverageIgnore */
+    public function query(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed; /** @codeCoverageIgnore */
 
     /**
      * 查询存储过程数据记录.
      */
-    public function procedure(string $sql, array $bindParams = [], bool|int $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array; /** @codeCoverageIgnore */
+    public function procedure(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array; /** @codeCoverageIgnore */
 
     /**
      * 执行 SQL 语句.
@@ -201,7 +188,7 @@ interface IDatabase extends IConnection
     /**
      * 游标查询.
      */
-    public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator; /** @codeCoverageIgnore */
+    public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator; /** @codeCoverageIgnore */
 
     /**
      * SQL 预处理.
@@ -209,7 +196,7 @@ interface IDatabase extends IConnection
      * - 记录 SQL 日志
      * - 支持重连
      */
-    public function prepare(string $sql, array $bindParams = [], bool|int $master = false): \PDOStatement; /** @codeCoverageIgnore */
+    public function prepare(string $sql, array $bindParams = [], bool $master = false): \PDOStatement; /** @codeCoverageIgnore */
 
     /**
      * 执行数据库事务.
@@ -305,17 +292,17 @@ interface IDatabase extends IConnection
     /**
      * 取得数据库表名列表.
      */
-    public function getTableNames(string $dbName, bool|int $master = false): array;
+    public function getTableNames(string $dbName, bool $master = false): array;
 
     /**
      * 取得数据库表字段信息.
      */
-    public function getTableColumns(string $tableName, bool|int $master = false): array;
+    public function getTableColumns(string $tableName, bool $master = false): array;
 
     /**
      * 取得数据库表唯一索引信息.
      */
-    public function getUniqueIndex(string $tableName, bool|int $master = false): array;
+    public function getUniqueIndex(string $tableName, bool $master = false): array;
 
     /**
      * SQL 字段格式化.

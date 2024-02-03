@@ -113,7 +113,6 @@ final class RegisterTest extends TestCase
                             \PDO::ATTR_TIMEOUT => 30,
                         ],
                         'separate' => false,
-                        'distributed' => false,
                         'master' => [],
                         'slave' => [],
                     ],

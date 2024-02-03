@@ -128,33 +128,35 @@ abstract class Pool
             return;
         }
 
-        if (null !== $connection) {
-            if (!$this->isHealthy($connection)) {
-                $this->disconnect($connection);
-                --$this->connectionNumber;
-                $this->make();
-
-                return;
-            }
-
-            if (null === $timeout) {
-                $timeout = $this->maxPushTimeout;
-            }
-
-            if (!$this->pool->push($connection, $timeout)) {
-                $this->disconnect($connection);
-                --$this->connectionNumber;
-                $this->make();
-
-                return;
-            }
-
-            if ($connectionStatus = $this->getConnectionStatus($connection)) {
-                $connectionStatus->pushTime = time();
-            }
-        } else {
+        if (null === $connection) {
             --$this->connectionNumber;
             $this->make();
+
+            return;
+        }
+
+        if (!$this->isHealthy($connection)) {
+            $this->disconnect($connection);
+            --$this->connectionNumber;
+            $this->make();
+
+            return;
+        }
+
+        if (null === $timeout) {
+            $timeout = $this->maxPushTimeout;
+        }
+
+        if (!$this->pool->push($connection, $timeout)) {
+            $this->disconnect($connection);
+            --$this->connectionNumber;
+            $this->make();
+
+            return;
+        }
+
+        if ($connectionStatus = $this->getConnectionStatus($connection)) {
+            $connectionStatus->pushTime = time();
         }
     }
 

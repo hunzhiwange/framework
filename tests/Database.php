@@ -49,7 +49,6 @@ trait Database
         $connect = $this->createDatabaseConnectMockReal([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => false,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -77,7 +76,6 @@ trait Database
         $connect = $this->createDatabaseConnectMockReal([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => false,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -176,7 +174,6 @@ trait Database
                             \PDO::ATTR_TIMEOUT => 30,
                         ],
                         'separate' => false,
-                        'distributed' => false,
                         'master' => [],
                         'slave' => [],
                     ],

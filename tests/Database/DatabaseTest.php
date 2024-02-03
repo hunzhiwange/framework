@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database;
 
 use Leevel\Database\Database;
-use Leevel\Database\IDatabase;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
 use Leevel\Filesystem\Helper;
@@ -851,11 +850,8 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertNull($connect->pdo(IDatabase::PDO_MASTER));
+        static::assertNull($connect->pdo(true));
         $this->assertInstanceof(\PDO::class, $connect->pdo(true));
-        $this->assertInstanceof(\PDO::class, $connect->pdo(IDatabase::PDO_MASTER));
-        static::assertNull($connect->pdo(5));
-
         $connect->close();
     }
 
@@ -1027,7 +1023,7 @@ EOT,
     #[Api([
         'zh-CN:title' => '数据库主从',
         'zh-CN:description' => <<<'EOT'
-数据库配置项 `distributed` 表示主从，如果从数据库均连接失败，则还是会走主库。
+数据库配置项 `separate` 表示主从读写分离。
 EOT,
     ])]
     public function testReadConnectDistributed(): void
@@ -1035,7 +1031,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => true,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -1098,7 +1093,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => true,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -1168,7 +1162,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => true,
-            'distributed' => true,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -1234,7 +1227,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => false,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => '5566',
@@ -1267,7 +1259,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => true,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],
@@ -1302,7 +1293,6 @@ EOT,
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => false,
-            'distributed' => true,
             'master' => [
                 'host' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['HOST'],
                 'port' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PORT'],

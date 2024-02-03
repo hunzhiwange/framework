@@ -126,8 +126,7 @@ class Select
     /**
      * 查询类型.
      *
-     * - master: bool,false (读服务器),true (写服务器)
-     * - master: int,其它去对应服务器连接 ID，\Leevel\Database\IDatabase::PDO_MASTER 表示主服务器
+     * - master: false=读服务器,true=写服务器
      * - as_some: 每一项记录以某种包装返回，null 表示默认返回
      * - as_args: 包装附加参数
      * - as_collection: 以对象集合方法返回
@@ -263,7 +262,7 @@ class Select
     /**
      * 设置是否查询主服务器.
      */
-    public function master(bool|int $master = false): self
+    public function master(bool $master = false): self
     {
         $this->queryParams['master'] = $master;
 
@@ -645,56 +644,62 @@ class Select
     {
         $page = new Page($currentPage, $perPage, null, $config);
 
-        if ($this->connect->getContainer()->enabledCoroutine()) {
-            $wg = new WaitGroup();
-            $exceptions = [];
-
-            // 启动一个协程
-            $wg->add();
-            $totalRecord = 0;
-            // 克隆对象避免协程数据竞争的问题
-            // 查询分页走专用的数据库连接,避免两个协程同时访问同一个资源
-            $that = clone $this;
-            Coroutine::create(function () use ($wg, $column, &$totalRecord, &$exceptions, $that): void {
-                try {
-                    $totalRecord = $that->pageCount($column);
-                } catch (\Throwable $e) {
-                    $exceptions[] = $e;
-                }
-
-                // 标记协程完成
-                $wg->done();
-            });
-
-            // 启动一个协程
-            $wg->add();
-            $data = null;
-            Coroutine::create(function () use ($wg, $page, $perPage, &$data, &$exceptions): void {
-                try {
-                    $data = $this
-                        ->limit($page->getFromRecord(), $perPage)
-                        ->findAll()
-                    ;
-                } catch (\Throwable $e) {
-                    $exceptions[] = $e;
-                }
-
-                // 标记协程完成
-                $wg->done();
-            });
-
-            // 挂起当前协程，等待所有任务完成后恢复
-            $wg->wait();
-
-            if ($exceptions) {
-                throw $exceptions[0];
-            }
-        } else {
+        if (!$this->connect->getContainer()->enabledCoroutine()) {
             $totalRecord = $this->pageCount($column);
             $data = $this
                 ->limit($page->getFromRecord(), $perPage)
                 ->findAll()
             ;
+            $page->setTotalRecord($totalRecord);
+            $page->setData($data);
+
+            return $page;
+        }
+
+        // 协程模式
+        $wg = new WaitGroup();
+        $exceptions = [];
+
+        // 启动一个协程
+        $wg->add();
+        $totalRecord = 0;
+        // 克隆对象避免协程数据竞争的问题
+        // 查询分页走专用的数据库连接,避免两个协程同时访问同一个资源
+        $that = clone $this;
+        Coroutine::create(function () use ($wg, $column, &$totalRecord, &$exceptions, $that): void {
+            try {
+                // $that->master(IDatabase::PDO_PAGE);
+                $totalRecord = $that->pageCount($column);
+            } catch (\Throwable $e) {
+                $exceptions[] = $e;
+            }
+
+            // 标记协程完成
+            $wg->done();
+        });
+
+        // 启动一个协程
+        $wg->add();
+        $data = null;
+        Coroutine::create(function () use ($wg, $page, $perPage, &$data, &$exceptions): void {
+            try {
+                $data = $this
+                    ->limit($page->getFromRecord(), $perPage)
+                    ->findAll()
+                ;
+            } catch (\Throwable $e) {
+                $exceptions[] = $e;
+            }
+
+            // 标记协程完成
+            $wg->done();
+        });
+
+        // 挂起当前协程，等待所有任务完成后恢复
+        $wg->wait();
+
+        if ($exceptions) {
+            throw $exceptions[0];
         }
 
         $page->setTotalRecord($totalRecord);

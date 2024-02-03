@@ -79,9 +79,9 @@ EOT,
     #[Api([
         'zh-CN:title' => '数据库主从设置',
         'zh-CN:description' => <<<'EOT'
-QueryPHP 允许用户一个主数据库作为写入、更新以及删除,外加多个附属从数据库作为只读数据库来共同提供数据库服务。
-多个数据库需要需要开启 `distributed`，而 `separate` 主要用于读写分离。
-`master` 为主数据库，`slave` 为附属从数据库设置。
+框架允许用户一个主数据库作为写入、更新以及删除,外加多个附属从数据库作为只读数据库来共同提供数据库服务。
+需要系统配置需要开启 `separate`,主要用于读写分离。
+`master` 为主数据库负责写，`slave` 为附属从数据库设置负责读。
 EOT,
     ])]
     public function testParseDatabaseConfigDistributedIsTrue(): void
@@ -105,7 +105,6 @@ EOT,
                 \PDO::ATTR_TIMEOUT => 30,
             ],
             'separate' => false,
-            'distributed' => true,
             'master' => [],
             'slave' => ['host' => '127.0.0.1'],
         ];
@@ -116,7 +115,6 @@ EOT,
             {
                 "driver": "mysql",
                 "separate": false,
-                "distributed": true,
                 "master": {
                     "host": "127.0.0.1",
                     "port": 3306,
@@ -187,7 +185,6 @@ EOT,
                 \PDO::ATTR_TIMEOUT => 30,
             ],
             'separate' => false,
-            'distributed' => true,
             'master' => [],
             'slave' => [
                 ['host' => '127.0.0.1'],
@@ -201,7 +198,6 @@ EOT,
             {
                 "driver": "mysql",
                 "separate": false,
-                "distributed": true,
                 "master": {
                     "host": "127.0.0.1",
                     "port": 3306,
@@ -293,7 +289,6 @@ EOT,
                 \PDO::ATTR_TIMEOUT => 30,
             ],
             'separate' => false,
-            'distributed' => true,
             'master' => [],
             'slave' => 'notarray',
         ];

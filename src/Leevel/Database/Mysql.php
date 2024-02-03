@@ -25,7 +25,7 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function getTableNames(string $dbName, bool|int $master = false): array
+    public function getTableNames(string $dbName, bool $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$dbName;
         $result = [];
@@ -41,7 +41,7 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function getTableColumns(string $tableName, bool|int $master = false): array
+    public function getTableColumns(string $tableName, bool $master = false): array
     {
         $result = [
             'list' => [],
@@ -73,7 +73,7 @@ class Mysql extends Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function getUniqueIndex(string $tableName, bool|int $master = false): array
+    public function getUniqueIndex(string $tableName, bool $master = false): array
     {
         $sql = 'SELECT
     TABLE_NAME,
@@ -200,7 +200,7 @@ GROUP BY
     /**
      * 分析数据库表字段信息.
      */
-    protected function parseTableColumn(string $tableName, bool|int $master = false): array
+    protected function parseTableColumn(string $tableName, bool $master = false): array
     {
         $sql = 'SHOW FULL COLUMNS FROM `'.$tableName.'`';
 
@@ -210,7 +210,7 @@ GROUP BY
     /**
      * 分析数据库表信息.
      */
-    protected function parseTableInfo(string $tableName, bool|int $master = false): array
+    protected function parseTableInfo(string $tableName, bool $master = false): array
     {
         $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
             'information_schema.tables WHERE table_name=\''.$tableName.'\';';
