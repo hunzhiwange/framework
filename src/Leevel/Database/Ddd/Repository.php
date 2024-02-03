@@ -308,10 +308,7 @@ class Repository
      */
     public function condition(?\Closure $condition = null): Select
     {
-        $select = $this
-            ->select()
-            ->databaseSelect()
-        ;
+        $select = $this->select();
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);

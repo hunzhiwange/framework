@@ -298,15 +298,6 @@ interface IDatabase extends IConnection
     public static function getRawSql(string $sql, array $bindParams): string;
 
     /**
-     * 释放当前连接.
-     *
-     * - 用于归还当前的数据库连接到连接池
-     *
-     * @todo 加入到各种ide-helper中
-     */
-    public function releaseConnect(): void;
-
-    /**
      * DSN 解析.
      */
     public function parseDsn(array $config): string;

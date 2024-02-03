@@ -83,7 +83,7 @@ class UniqueRule
         }
 
         if (str_contains($field, self::SEPARATE)) {
-            $select = $entity->select()->databaseSelect();
+            $select = $entity->select();
             foreach (explode(self::SEPARATE, $field) as $v) {
                 $select->where($v, $value);
             }

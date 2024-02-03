@@ -69,16 +69,6 @@ abstract class Cache implements ICache
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function releaseConnect(): void
-    {
-        // 缓存驱动 \Leevel\Cache\ICache 需要实现 \Leevel\Server\Pool\IConnection
-        // 归还连接池方法为 \Leevel\Server\Pool\IConnection::release
-        $this->release();
-    }
-
-    /**
      * 编码数据.
      *
      * @throws \InvalidArgumentException

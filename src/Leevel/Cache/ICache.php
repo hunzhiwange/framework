@@ -69,13 +69,4 @@ interface ICache extends IConnection
      * 设置缓存键值正则.
      */
     public function setKeyRegex(string $keyRegex): void;
-
-    /**
-     * 释放当前连接.
-     *
-     * - 用于归还当前的数据库连接到连接池
-     *
-     * @todo 加入到各种ide-helper中
-     */
-    public function releaseConnect(): void;
 }

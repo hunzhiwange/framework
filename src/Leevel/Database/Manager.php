@@ -276,7 +276,7 @@ class Manager extends Managers
         $connection = $pool->get();
 
         // 协程关闭前归还当前连接到数据库连接池
-        Coroutine::defer(fn () => $connection->releaseConnect());
+        Coroutine::defer(fn () => $connection->release());
 
         return $connection;
     }

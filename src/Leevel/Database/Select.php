@@ -106,7 +106,7 @@ class Select
      *
      * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
      */
-    public const PAGE_COUNT_CACHE_SUFFIX = ':pagecount';
+    public const PAGE_COUNT_CACHE_SUFFIX = ':count';
 
     /**
      * 数据库连接.
@@ -159,6 +159,15 @@ class Select
         $this->connect = $connect;
         $this->condition = new Condition($connect);
         $this->initConfig();
+    }
+
+    public function __clone()
+    {
+        // 深度拷贝数据库连接和查询条件
+        $this->connect = clone $this->connect;
+        // 查询条件中的数据库连接仅仅是一些基础方法处理
+        // 因为不涉及数据库资源连接,所以内部浅拷贝即可
+        $this->condition = clone $this->condition;
     }
 
     /**
@@ -638,7 +647,6 @@ class Select
 
         if ($this->connect->getContainer()->enabledCoroutine()) {
             $wg = new WaitGroup();
-
             $exceptions = [];
 
             // 启动一个协程
@@ -649,7 +657,6 @@ class Select
             $that = clone $this;
             Coroutine::create(function () use ($wg, $column, &$totalRecord, &$exceptions, $that): void {
                 try {
-                    $that->connect->pdo(false, true);
                     $totalRecord = $that->pageCount($column);
                 } catch (\Throwable $e) {
                     $exceptions[] = $e;
@@ -661,7 +668,6 @@ class Select
 
             // 启动一个协程
             $wg->add();
-
             $data = null;
             Coroutine::create(function () use ($wg, $page, $perPage, &$data, &$exceptions): void {
                 try {
@@ -669,7 +675,6 @@ class Select
                         ->limit($page->getFromRecord(), $perPage)
                         ->findAll()
                     ;
-                    sleep(1);
                 } catch (\Throwable $e) {
                     $exceptions[] = $e;
                 }
@@ -690,7 +695,6 @@ class Select
                 ->limit($page->getFromRecord(), $perPage)
                 ->findAll()
             ;
-            sleep(1);
         }
 
         $page->setTotalRecord($totalRecord);

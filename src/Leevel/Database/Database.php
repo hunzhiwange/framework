@@ -279,9 +279,7 @@ abstract class Database implements IDatabase
      */
     public function __call(string $method, array $args): mixed
     {
-        $this->initSelect();
-
-        return $this->select->{$method}(...$args);
+        return $this->databaseSelect()->{$method}(...$args);
     }
 
     /**
@@ -313,12 +311,7 @@ abstract class Database implements IDatabase
      */
     public function databaseSelect(): Select
     {
-        if (!$this->select) {
-            $this->initSelect();
-        }
-
-        // @phpstan-ignore-next-line
-        return $this->select;
+        return new Select($this);
     }
 
     /**
@@ -342,7 +335,6 @@ abstract class Database implements IDatabase
             return $result;
         }
 
-        $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchResult();
         if ($cacheName) {
@@ -361,7 +353,6 @@ abstract class Database implements IDatabase
             return (array) $result;
         }
 
-        $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
         $result = $this->fetchProcedureResult();
         if ($cacheName) {
@@ -376,7 +367,6 @@ abstract class Database implements IDatabase
      */
     public function execute(string $sql, array $bindParams = []): int|string
     {
-        $this->initSelect();
         $this->prepare($sql, $bindParams, true);
         $lastInsertId = $this->lastInsertId();
         // @phpstan-ignore-next-line
@@ -394,7 +384,6 @@ abstract class Database implements IDatabase
      */
     public function cursor(string $sql, array $bindParams = [], bool|int $master = false): \Generator
     {
-        $this->initSelect();
         $this->prepare($sql, $bindParams, $master);
 
         // @phpstan-ignore-next-line
@@ -721,20 +710,6 @@ abstract class Database implements IDatabase
         }
 
         return (string) preg_replace($keys, $values, $sql, 1, $count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function releaseConnect(): void
-    {
-        if (!$this->poolTransaction || $this->poolTransaction->in()) {
-            return;
-        }
-
-        // 数据库驱动 \Leevel\Database\IDatabase 需要实现 \Leevel\Server\Pool\IConnection
-        // 归还连接池方法为 \Leevel\Server\Pool\IConnection::release
-        $this->release();
     }
 
     /**
@@ -1087,13 +1062,5 @@ abstract class Database implements IDatabase
         }
 
         return '';
-    }
-
-    /**
-     * 初始化查询组件.
-     */
-    protected function initSelect(): void
-    {
-        $this->select = new Select($this);
     }
 }
