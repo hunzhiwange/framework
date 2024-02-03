@@ -183,7 +183,7 @@ interface IDatabase extends IConnection
     /**
      * 执行 SQL 语句.
      */
-    public function execute(string $sql, array $bindParams = []): int|string; /** @codeCoverageIgnore */
+    public function execute(string $sql, array $bindParams = [], bool $insert = false): int|string; /** @codeCoverageIgnore */
 
     /**
      * 游标查询.
@@ -234,11 +234,6 @@ interface IDatabase extends IConnection
     public function hasSavepoints(): bool;
 
     /**
-     * 获取最后插入 ID 或者列.
-     */
-    public function lastInsertId(?string $name = null): string;
-
-    /**
      * 获取最近一次查询的 SQL 语句.
      */
     public function getLastSql(): string;
@@ -252,11 +247,6 @@ interface IDatabase extends IConnection
      * 获取最近一次真实查询的 SQL 语句.
      */
     public function getRealLastSql(): array;
-
-    /**
-     * 返回影响记录.
-     */
-    public function numRows(): int;
 
     /**
      * 关闭数据库.

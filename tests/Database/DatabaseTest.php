@@ -986,36 +986,32 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'numRows 返回影响记录',
+        'zh-CN:title' => '返回影响记录',
     ])]
     public function testNumRows(): void
     {
         $connect = $this->createDatabaseConnect();
-
-        static::assertSame(0, $connect->numRows());
 
         $connect
             ->table('guest_book')
             ->insert(['name' => 'jerry', 'content' => ''])
         ;
 
-        static::assertSame(1, $connect->numRows());
-
-        $connect
+        $numRows = $connect
             ->table('guest_book')
             ->where('id', 1)
             ->update(['name' => 'jerry'])
         ;
 
-        static::assertSame(0, $connect->numRows());
+        static::assertSame(0, $numRows);
 
-        $connect
+        $numRows = $connect
             ->table('guest_book')
             ->where('id', 1)
             ->update(['name' => 'tom'])
         ;
 
-        static::assertSame(1, $connect->numRows());
+        static::assertSame(1, $numRows);
     }
 
     #[Api([

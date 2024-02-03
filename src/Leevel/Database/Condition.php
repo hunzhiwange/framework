@@ -233,7 +233,7 @@ class Condition
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return ['execute', $data, $bind];
+        return ['execute', $data, $bind, true];
     }
 
     /**
@@ -291,7 +291,7 @@ class Condition
         $data = implode(' ', $sql);
         $bind = array_merge($this->getBindParams(), $bind);
 
-        return ['execute', $data, $bind];
+        return ['execute', $data, $bind, true];
     }
 
     /**

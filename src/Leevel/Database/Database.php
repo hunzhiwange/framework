@@ -8,6 +8,7 @@ use Leevel\Cache\ICache;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Server\Pool\Connection;
+use Leevel\Support\Arr\Normalize;
 
 /**
  * 数据库抽象层.
@@ -193,11 +194,6 @@ abstract class Database implements IDatabase
     protected array $realLastSql = [];
 
     /**
-     * SQL 影响记录数量.
-     */
-    protected int $numRows = 0;
-
-    /**
      * 事务等级.
      */
     protected int $transactionLevel = 0;
@@ -357,18 +353,23 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function execute(string $sql, array $bindParams = []): int|string
+    public function execute(string $sql, array $bindParams = [], bool $insert = false): int|string
     {
-        $this->prepare($sql, $bindParams, true);
-        $lastInsertId = $this->lastInsertId();
+        $statement = $this->prepare($sql, $bindParams, true);
+
+        if (!$insert) {
+            return $statement->rowCount();
+        }
+
+        $lastInsertId = $this->connect->lastInsertId() ?: '0';
         // @phpstan-ignore-next-line
         if (!\is_int($lastInsertId) && ctype_digit($lastInsertId)) {
             $lastInsertId = (int) $lastInsertId;
         }
 
-        // 底层数据库不支持自增字段或者表没有设计自增字段，insert 操作 lastInsertId 会返回 0，此时将会返回受影响记录。
-        // 这个场景开发者需要注意一下。
-        return $lastInsertId ?: $this->numRows;
+        // 底层数据库不支持自增字段或者表没有设计自增字段，
+        // insert 操作 lastInsertId 会返回 0
+        return $lastInsertId;
     }
 
     /**
@@ -377,8 +378,6 @@ abstract class Database implements IDatabase
     public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator
     {
         $statement = $this->prepare($sql, $bindParams, $master);
-
-        // @phpstan-ignore-next-line
         while ($value = $statement->fetch(\PDO::FETCH_OBJ)) {
             yield $value;
         }
@@ -414,8 +413,6 @@ abstract class Database implements IDatabase
             $this->setLastSql($sql.$rawSql, true);
             $this->pdoException($e);
         }
-
-        $this->numRows = $statement->rowCount();
 
         return $statement;
     }
@@ -471,7 +468,6 @@ abstract class Database implements IDatabase
      */
     public function inTransaction(): bool
     {
-        // @phpstan-ignore-next-line
         return $this->pdo(true)->inTransaction();
     }
 
@@ -489,7 +485,6 @@ abstract class Database implements IDatabase
         }
 
         if (1 === $this->transactionLevel) {
-            // @phpstan-ignore-next-line
             $this->pdo(true)->commit();
 
             if ($this->poolTransaction) {
@@ -553,15 +548,6 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function lastInsertId(?string $name = null): string
-    {
-        // @phpstan-ignore-next-line
-        return $this->connect->lastInsertId($name) ?: '0';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getLastSql(): string
     {
         return $this->sql;
@@ -581,14 +567,6 @@ abstract class Database implements IDatabase
     public function getRealLastSql(): array
     {
         return $this->realLastSql;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function numRows(): int
-    {
-        return $this->numRows;
     }
 
     /**
@@ -731,10 +709,10 @@ abstract class Database implements IDatabase
     /**
      * 整理当前执行 SQL.
      */
-    protected function normalizeLastSql(?\PDOStatement $pdoStatement = null): string
+    protected function normalizeLastSql(?\PDOStatement $statement = null): string
     {
         ob_start();
-        $pdoStatement?->debugDumpParams();
+        $statement?->debugDumpParams();
         $sql = trim(ob_get_contents() ?: '', PHP_EOL.' ');
         $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
@@ -791,8 +769,7 @@ abstract class Database implements IDatabase
      */
     protected function createMasterConnection(array $config): \PDO
     {
-        // @phpstan-ignore-next-line
-        return $this->createPdoConnection($this->getMasterConfig($config), true);
+        return $this->createPdoConnection($this->getMasterConfig($config));
     }
 
     /**
@@ -800,36 +777,56 @@ abstract class Database implements IDatabase
      */
     protected function createSlaveConnection(array $config): \PDO
     {
-        // @phpstan-ignore-next-line
-        return $this->createPdoConnection($this->getSlaveConfig($config), true);
+        return $this->createPdoConnection($this->getSlaveConfig($config));
     }
 
     /**
      * 连接pdo数据库.
      */
-    protected function createPdoConnection(array $config, bool $throwException): \PDO|false
+    protected function createPdoConnection(array $config): \PDO
     {
         if (\is_array($config['configs']) && isset($config['configs'][\PDO::ATTR_ERRMODE])) {
             ConnectionException::errModeExceptionOnly();
         }
 
-        try {
-            $connection = new \PDO(
-                $this->parseDsn($config),
-                $config['user'],
-                $config['password'],
-                $config['configs'] ?? null,
-            );
-            $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $e = null;
+        foreach ($this->parseHost($config) as $host) {
+            $config['host'] = $host;
 
-            return $connection;
-        } catch (\PDOException $e) {
-            if (false === $throwException) {
-                return false;
+            try {
+                $connection = new \PDO(
+                    $this->parseDsn($config),
+                    $config['user'],
+                    $config['password'],
+                    $config['configs'] ?? null,
+                );
+                $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+                return $connection;
+            } catch (\PDOException $e) {
+                continue;
             }
-
-            throw $e;
         }
+
+        throw $e;
+    }
+
+    /**
+     * 解析数据库地址.
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseHost(array $config): array
+    {
+        $host = Normalize::handle($config['host']);
+
+        if (\is_array($host) && $host) {
+            shuffle($host);
+
+            return $host;
+        }
+
+        throw new \InvalidArgumentException('Database host is invalid.');
     }
 
     /**
@@ -945,7 +942,6 @@ abstract class Database implements IDatabase
     protected function createSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
-        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 
@@ -959,7 +955,6 @@ abstract class Database implements IDatabase
     protected function rollbackSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
-        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 
@@ -973,7 +968,6 @@ abstract class Database implements IDatabase
     protected function releaseSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
-        // @phpstan-ignore-next-line
         $this->pdo(true)->exec($sql);
     }
 
