@@ -84,7 +84,7 @@ EOT,
 `master` 为主数据库负责写，`slave` 为附属从数据库设置负责读。
 EOT,
     ])]
-    public function testParseDatabaseConfigDistributedIsTrue(): void
+    public function testParseDatabaseConfigSeparateIsTrue(): void
     {
         $manager = $this->createDatabaseManager();
 
@@ -104,7 +104,7 @@ EOT,
                 \PDO::ATTR_EMULATE_PREPARES => false,
                 \PDO::ATTR_TIMEOUT => 30,
             ],
-            'separate' => false,
+            'separate' => true,
             'master' => [],
             'slave' => ['host' => '127.0.0.1'],
         ];
@@ -114,7 +114,7 @@ EOT,
         $data = <<<'eot'
             {
                 "driver": "mysql",
-                "separate": false,
+                "separate": true,
                 "master": {
                     "host": "127.0.0.1",
                     "port": 3306,
@@ -164,7 +164,7 @@ EOT,
 从数据库支持多个，支持二维数组
 EOT,
     ])]
-    public function testParseDatabaseConfigDistributedIsTrueWithTwoDimensionalArray(): void
+    public function testParseDatabaseConfigSeparateIsTrueWithTwoDimensionalArray(): void
     {
         $manager = $this->createDatabaseManager();
 
@@ -184,7 +184,7 @@ EOT,
                 \PDO::ATTR_EMULATE_PREPARES => false,
                 \PDO::ATTR_TIMEOUT => 30,
             ],
-            'separate' => false,
+            'separate' => true,
             'master' => [],
             'slave' => [
                 ['host' => '127.0.0.1'],
@@ -197,7 +197,7 @@ EOT,
         $data = <<<'eot'
             {
                 "driver": "mysql",
-                "separate": false,
+                "separate": true,
                 "master": {
                     "host": "127.0.0.1",
                     "port": 3306,

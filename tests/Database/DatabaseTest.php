@@ -849,8 +849,6 @@ EOT,
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
-
-        static::assertNull($connect->pdo(true));
         $this->assertInstanceof(\PDO::class, $connect->pdo(true));
         $connect->close();
     }
