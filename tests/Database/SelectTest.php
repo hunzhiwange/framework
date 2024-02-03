@@ -2027,7 +2027,7 @@ EOT,
 
         $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
-        $cacheFilePageCount = $cacheDir.'/testcachekey/pagecount.php';
+        $cacheFilePageCount = $cacheDir.'/testcachekey/count.php';
 
         $result = $manager
             ->table('guest_book')
