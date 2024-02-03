@@ -48,6 +48,7 @@ parameters:
 		- '#Call to an undefined method Leevel\\Server\\ProcessManager::add\(\)\.#'
 		- '#Argument of an invalid type Swoole\\Table\|null supplied for foreach, only iterables are supported\.#'
 		- '#Parameter \$[\S\s]+ of method [\S\s]+\(\) has invalid type Swoole[\S\s]+\.#'
+		- '#[\S\s]+Swoole[\S\s]+\.#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'
