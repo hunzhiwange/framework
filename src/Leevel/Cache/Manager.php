@@ -120,7 +120,7 @@ class Manager extends Managers
         $connection = $pool->get();
 
         // 协程关闭前归还当前连接到缓存连接池
-        Coroutine::defer(fn () => $connection->releas());
+        Coroutine::defer(fn () => $connection->release());
 
         return $connection;
     }
