@@ -897,9 +897,9 @@ class Select
     /**
      * 原生 SQL 执行方法.
      */
-    protected function runNativeSql(string $type, string $data, array $bindParams = []): mixed
+    protected function runNativeSql(string $type, string $data, array $bindParams = [], ?bool $master = null): mixed
     {
-        $args = [$data, $bindParams, $this->queryParams['master']];
+        $args = [$data, $bindParams, $master ?? $this->queryParams['master']];
         $this->setRealLastSql($args);
         if ('query' === $type) {
             $args = array_merge($args, $this->queryParams['cache']);
