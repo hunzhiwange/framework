@@ -183,7 +183,7 @@ interface IDatabase extends IConnection
     /**
      * 执行 SQL 语句.
      */
-    public function execute(string $sql, array $bindParams = [], bool $insert = false): int|string; /** @codeCoverageIgnore */
+    public function execute(string $sql, array $bindParams = [], bool $master = false, bool $insert = false): int|string; /** @codeCoverageIgnore */
 
     /**
      * 游标查询.

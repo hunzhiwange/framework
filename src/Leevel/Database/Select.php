@@ -897,12 +897,14 @@ class Select
     /**
      * 原生 SQL 执行方法.
      */
-    protected function runNativeSql(string $type, string $data, array $bindParams = [], ?bool $master = null): mixed
+    protected function runNativeSql(string $type, string $data, array $bindParams = [], bool $insert = false): mixed
     {
-        $args = [$data, $bindParams, $master ?? $this->queryParams['master']];
+        $args = [$data, $bindParams, $this->queryParams['master']];
         $this->setRealLastSql($args);
-        if ('query' === $type) {
+        if (\in_array($type, ['query', 'procedure'], true)) {
             $args = array_merge($args, $this->queryParams['cache']);
+        } elseif ('execute' === $type) {
+            $args[] = $insert;
         }
 
         return $this->connect->{$type}(...$args);

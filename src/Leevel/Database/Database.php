@@ -353,7 +353,7 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function execute(string $sql, array $bindParams = [], bool $insert = false): int|string
+    public function execute(string $sql, array $bindParams = [], bool $master = false, bool $insert = false): int|string
     {
         $statement = $this->prepare($sql, $bindParams, true);
 
@@ -405,7 +405,7 @@ abstract class Database implements IDatabase
                 return $this->prepare($sql, $bindParams, $master);
             }
 
-            if (isset($statement)) {
+            if ($statement instanceof \PDOStatement) {
                 $sql = $this->normalizeLastSql($statement);
             } else {
                 $sql = $this->normalizeErrorLastSql($sql, $bindParamsResult);
@@ -414,6 +414,7 @@ abstract class Database implements IDatabase
             $this->pdoException($e);
         }
 
+        // @phpstan-ignore-next-line
         return $statement;
     }
 
@@ -709,10 +710,10 @@ abstract class Database implements IDatabase
     /**
      * 整理当前执行 SQL.
      */
-    protected function normalizeLastSql(?\PDOStatement $statement = null): string
+    protected function normalizeLastSql(\PDOStatement $statement): string
     {
         ob_start();
-        $statement?->debugDumpParams();
+        $statement->debugDumpParams();
         $sql = trim(ob_get_contents() ?: '', PHP_EOL.' ');
         $sql = str_replace(PHP_EOL, ' | ', $sql);
         ob_end_clean();
@@ -782,6 +783,8 @@ abstract class Database implements IDatabase
 
     /**
      * 连接pdo数据库.
+     *
+     * @throws \PDOException
      */
     protected function createPdoConnection(array $config): \PDO
     {
@@ -808,6 +811,7 @@ abstract class Database implements IDatabase
             }
         }
 
+        // @phpstan-ignore-next-line
         throw $e;
     }
 
