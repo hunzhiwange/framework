@@ -1786,7 +1786,7 @@ EOT,
         $connect = $this->createDatabaseConnect();
 
         static::assertSame(
-            1,
+            0,
             $connect
                 ->table('without_primarykey')
                 ->insert([
@@ -1829,12 +1829,12 @@ CREATE TABLE `without_primarykey` (
 ```
 EOT,
     ])]
-    public function testUpdateWithoutPrimarykeyAndAllAreKey(): void
+    public function testUpdateWithoutPrimaryKeyAndAllAreKey(): void
     {
         $connect = $this->createDatabaseConnect();
 
         static::assertSame(
-            1,
+            0,
             $connect
                 ->table('without_primarykey')
                 ->insert([

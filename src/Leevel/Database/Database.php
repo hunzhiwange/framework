@@ -355,13 +355,13 @@ abstract class Database implements IDatabase
      */
     public function execute(string $sql, array $bindParams = [], bool $master = false, bool $insert = false): int|string
     {
-        $statement = $this->prepare($sql, $bindParams, true);
+        $statement = $this->prepare($sql, $bindParams, $master);
 
         if (!$insert) {
             return $statement->rowCount();
         }
 
-        $lastInsertId = $this->connect->lastInsertId() ?: '0';
+        $lastInsertId = $this->pdo($master)->lastInsertId() ?: 0;
         // @phpstan-ignore-next-line
         if (!\is_int($lastInsertId) && ctype_digit($lastInsertId)) {
             $lastInsertId = (int) $lastInsertId;
@@ -405,7 +405,8 @@ abstract class Database implements IDatabase
                 return $this->prepare($sql, $bindParams, $master);
             }
 
-            if ($statement instanceof \PDOStatement) {
+            // @phpstan-ignore-next-line
+            if (isset($statement)) {
                 $sql = $this->normalizeLastSql($statement);
             } else {
                 $sql = $this->normalizeErrorLastSql($sql, $bindParamsResult);

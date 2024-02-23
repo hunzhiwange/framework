@@ -69,7 +69,7 @@ EOT,
         );
 
         static::assertSame(
-            1,
+            0,
             $connect
                 ->table('post_content')
                 ->insert([

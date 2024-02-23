@@ -3588,7 +3588,7 @@ EOT,
         $work->flush();
 
         static::assertSame(1, $connect->table('composite_id')->findCount());
-        static::assertSame(1, $work->getFlushResult($compositeId));
+        static::assertSame(0, $work->getFlushResult($compositeId));
     }
 
     #[Api([
@@ -3614,7 +3614,7 @@ EOT,
         $work->flush();
 
         static::assertSame(1, $connect->table('composite_id')->findCount());
-        static::assertSame(1, $work->getFlushResult($compositeCall));
+        static::assertSame(0, $work->getFlushResult($compositeCall));
     }
 
     protected function getDatabaseTable(): array

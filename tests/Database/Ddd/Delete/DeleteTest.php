@@ -565,7 +565,7 @@ EOT,
         $connect = $this->createDatabaseConnect();
 
         static::assertSame(
-            1,
+            0,
             $connect
                 ->table('composite_id')
                 ->insert([

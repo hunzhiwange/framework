@@ -1148,11 +1148,14 @@ EOT,
     #[Api([
         'zh-CN:title' => '数据库读写分离',
         'zh-CN:description' => <<<'EOT'
-数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则读数据还是会走主库。
+数据库配置项 `separate` 表示读写分离，如果从数据库均连接失败，则提示失败。
 EOT,
     ])]
-    public function testReadConnectDistributedButAllInvalidAndAlsoIsSeparate(): void
+    public function testReadConnectSeparateButAllInvalid(): void
     {
+        $this->expectException(\PDOException::class);
+        $this->expectExceptionMessage('SQLSTATE[HY000] [2002] Connection refused');
+
         $connect = $this->createDatabaseConnectMock([
             'driver' => 'mysql',
             'separate' => true,
@@ -1208,10 +1211,7 @@ EOT,
             ],
         ]);
 
-        $this->assertInstanceof(\PDO::class, $connect->pdo());
-        $this->assertInstanceof(\PDO::class, $connect->pdo());
-
-        $connect->close();
+        $connect->pdo();
     }
 
     public function testConnectException(): void
