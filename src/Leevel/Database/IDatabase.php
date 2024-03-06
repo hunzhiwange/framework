@@ -168,7 +168,7 @@ interface IDatabase extends IConnection
     /**
      * 返回 PDO 查询连接.
      */
-    public function pdo(bool $master = false): \PDO;
+    public function getPdo(bool $master = false): \PDO;
 
     /**
      * 查询数据记录.

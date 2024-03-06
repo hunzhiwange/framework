@@ -138,19 +138,20 @@ abstract class Database implements IDatabase
     use Connection;
 
     /**
-     * 当前数据库连接.
+     * 当前数据库主连接.
      */
-    protected ?\PDO $connect = null;
+    protected ?\PDO $masterPdo = null;
 
     /**
-     * 当前数据库读连接.
+     * 当前数据库从连接.
      */
-    protected ?\PDO $readConnect = null;
+    protected ?\PDO $slavePdo = null;
 
     /**
      * 数据库连接参数.
      *
      * - separate:数据库读写是否分离
+     * - sticky:如果该配置项设置为 true 的话，在同一个事务中，写入的数据会被立刻读取到
      * - master:分布式服务部署主服务器
      * - master.host:数据库 host，默认为 localhost
      * - master.port:端口
@@ -300,17 +301,9 @@ abstract class Database implements IDatabase
     /**
      * {@inheritDoc}
      */
-    public function pdo(bool $master = false): \PDO
+    public function getPdo(bool $master = false): \PDO
     {
-        if (!$this->connect) {
-            $this->initConnect($this->config);
-        }
-
-        if ($master) {
-            return $this->connect;
-        }
-
-        return $this->readConnect ?? $this->connect;
+        return $master ? $this->getMasterPdo() : $this->getSlavePdo();
     }
 
     /**
@@ -320,6 +313,13 @@ abstract class Database implements IDatabase
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
             return $result;
+        }
+
+        // 兼容阿里云 RDS MySQL 主从
+        // RDS MySQL 读写分离如何确保数据读取的时效性
+        // https://help.aliyun.com/zh/rds/support/how-do-i-ensure-the-timeliness-of-reading-data-on-an-apsaradb-rds-for-mysql-instance-when-the-read-or-write-splitting-feature-is-enabled
+        if ($master || $this->shouldSticky()) {
+            $sql = '/*FORCE_MASTER*/ '.$sql;
         }
 
         $statement = $this->prepare($sql, $bindParams, $master);
@@ -361,7 +361,7 @@ abstract class Database implements IDatabase
             return $statement->rowCount();
         }
 
-        $lastInsertId = $this->pdo($master)->lastInsertId() ?: 0;
+        $lastInsertId = $this->getPdo($master)->lastInsertId() ?: 0;
         // @phpstan-ignore-next-line
         if (!\is_int($lastInsertId) && ctype_digit($lastInsertId)) {
             $lastInsertId = (int) $lastInsertId;
@@ -392,7 +392,7 @@ abstract class Database implements IDatabase
         $rawSql = ' ('.static::getRawSql($sql, $bindParamsResult).')';
 
         try {
-            $statement = $this->pdo($master)->prepare($sql);
+            $statement = $this->getPdo($master)->prepare($sql);
             $this->bindParams($statement, $bindParamsResult);
             $statement->execute();
             $this->setLastSql($this->normalizeLastSql($statement).$rawSql);
@@ -447,7 +447,7 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             try { // @codeCoverageIgnore
-                $this->pdo(true)->beginTransaction(); // @phpstan-ignore-line
+                $this->getPdo(true)->beginTransaction(); // @phpstan-ignore-line
 
                 if ($this->poolTransaction) {
                     $this->poolTransaction->set($this);
@@ -470,7 +470,7 @@ abstract class Database implements IDatabase
      */
     public function inTransaction(): bool
     {
-        return $this->pdo(true)->inTransaction();
+        return $this->getPdo(true)->inTransaction();
     }
 
     /**
@@ -487,7 +487,7 @@ abstract class Database implements IDatabase
         }
 
         if (1 === $this->transactionLevel) {
-            $this->pdo(true)->commit();
+            $this->getPdo(true)->commit();
 
             if ($this->poolTransaction) {
                 $this->poolTransaction->remove();
@@ -510,7 +510,7 @@ abstract class Database implements IDatabase
 
         if (1 === $this->transactionLevel) {
             $this->transactionLevel = 0;
-            $this->pdo(true)->rollBack();
+            $this->getPdo(true)->rollBack();
             $this->isRollbackOnly = false;
 
             if ($this->poolTransaction) {
@@ -576,8 +576,8 @@ abstract class Database implements IDatabase
      */
     public function close(): void
     {
-        $this->connect = null;
-        $this->readConnect = null;
+        $this->masterPdo = null;
+        $this->slavePdo = null;
     }
 
     /**
@@ -661,11 +661,34 @@ abstract class Database implements IDatabase
      */
     public function initConnect(array $config): void
     {
-        $this->connect = $this->createMasterConnection($config);
+        $this->masterPdo = $this->createMasterConnection($config);
 
         if (!empty($config['separate']) && !empty($config['slave'])) {
-            $this->readConnect = $this->createSlaveConnection($config);
+            $this->slavePdo = $this->createSlaveConnection($config);
         }
+    }
+
+    protected function getMasterPdo(): \PDO
+    {
+        if (!$this->masterPdo) {
+            $this->initConnect($this->config);
+        }
+
+        return $this->masterPdo;
+    }
+
+    protected function getSlavePdo(): \PDO
+    {
+        if ($this->shouldSticky()) {
+            return $this->getMasterPdo();
+        }
+
+        return $this->slavePdo ?? $this->getMasterPdo();
+    }
+
+    protected function shouldSticky(): bool
+    {
+        return $this->transactionLevel > 0 && !empty($this->config['sticky']);
     }
 
     /**
@@ -947,7 +970,7 @@ abstract class Database implements IDatabase
     protected function createSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'SAVEPOINT '.$savepointName);
-        $this->pdo(true)->exec($sql);
+        $this->getPdo(true)->exec($sql);
     }
 
     /**
@@ -960,7 +983,7 @@ abstract class Database implements IDatabase
     protected function rollbackSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'ROLLBACK TO SAVEPOINT '.$savepointName);
-        $this->pdo(true)->exec($sql);
+        $this->getPdo(true)->exec($sql);
     }
 
     /**
@@ -973,7 +996,7 @@ abstract class Database implements IDatabase
     protected function releaseSavepoint(string $savepointName): void
     {
         $this->setLastSql($sql = 'RELEASE SAVEPOINT '.$savepointName);
-        $this->pdo(true)->exec($sql);
+        $this->getPdo(true)->exec($sql);
     }
 
     /**

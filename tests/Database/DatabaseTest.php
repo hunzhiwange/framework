@@ -722,7 +722,7 @@ EOT,
             ;
         }
 
-        $pdoStatement = $connect->pdo(true)->prepare('CALL test_procedure2(0,:name)');
+        $pdoStatement = $connect->getPdo(true)->prepare('CALL test_procedure2(0,:name)');
         $outName = null;
         $pdoStatement->bindParam(':name', $outName, \PDO::PARAM_STR | \PDO::PARAM_INPUT_OUTPUT, 200);
         $pdoStatement->execute();
@@ -844,12 +844,12 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'pdo 返回 PDO 查询连接',
+        'zh-CN:title' => 'getPdo 返回 PDO 查询连接',
     ])]
     public function testPdo(): void
     {
         $connect = $this->createDatabaseConnect();
-        $this->assertInstanceof(\PDO::class, $connect->pdo(true));
+        $this->assertInstanceof(\PDO::class, $connect->getPdo(true));
         $connect->close();
     }
 
@@ -1077,7 +1077,7 @@ EOT,
             ],
         ]);
 
-        $this->assertInstanceof(\PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->getPdo());
 
         $connect->close();
     }
@@ -1139,8 +1139,8 @@ EOT,
             ],
         ]);
 
-        $this->assertInstanceof(\PDO::class, $connect->pdo());
-        $this->assertInstanceof(\PDO::class, $connect->pdo());
+        $this->assertInstanceof(\PDO::class, $connect->getPdo());
+        $this->assertInstanceof(\PDO::class, $connect->getPdo());
 
         $connect->close();
     }
@@ -1211,7 +1211,7 @@ EOT,
             ],
         ]);
 
-        $connect->pdo();
+        $connect->getPdo();
     }
 
     public function testConnectException(): void
@@ -1240,7 +1240,7 @@ EOT,
             'slave' => [],
         ]);
 
-        $connect->pdo(true);
+        $connect->getPdo(true);
     }
 
     public function testReconnectRetryForQuery(): void

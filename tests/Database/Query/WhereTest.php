@@ -2583,7 +2583,7 @@ eot;
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, configs_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id)",
                 [],
                 false
             ]
@@ -2597,7 +2597,7 @@ eot;
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
                     ->else()
-                    ->whereRaw('FIND_IN_SET(1, configs_id)')
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->fi()
                     ->findAll(),
                 $connect
@@ -2643,7 +2643,7 @@ eot;
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, configs_id) OR FIND_IN_SET(1, goods_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, options_id) OR FIND_IN_SET(1, goods_id)",
                 [],
                 false
             ]
@@ -2656,9 +2656,9 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->orWhereRaw('FIND_IN_SET(1, configs_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
                     ->else()
-                    ->whereRaw('FIND_IN_SET(1, configs_id)')
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
                     ->fi()
                     ->findAll(),
@@ -2675,7 +2675,7 @@ eot;
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, configs_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE FIND_IN_SET(1, goods_id) OR FIND_IN_SET(1, options_id)",
                 [],
                 false
             ]
@@ -2688,9 +2688,9 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereRaw('FIND_IN_SET(1, goods_id)')
-                    ->orWhereRaw('FIND_IN_SET(1, configs_id)')
+                    ->orWhereRaw('FIND_IN_SET(1, options_id)')
                     ->else()
-                    ->whereRaw('FIND_IN_SET(1, configs_id)')
+                    ->whereRaw('FIND_IN_SET(1, options_id)')
                     ->orWhereRaw('FIND_IN_SET(1, goods_id)')
                     ->fi()
                     ->findAll(),
