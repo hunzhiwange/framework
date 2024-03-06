@@ -166,7 +166,7 @@ abstract class Server implements IServer
     {
         $processName = 'WORKER';
         if (-1 === $workeId) {
-            $processName = 'PDO_MASTER';
+            $processName = 'MASTER';
         } elseif ($this->isCustomWorker($workeId)) {
             $processName = 'CUSTOM';
         }

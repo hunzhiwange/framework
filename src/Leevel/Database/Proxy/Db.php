@@ -10,6 +10,7 @@ use Leevel\Di\Container;
 /**
  * 代理 database.
  *
+ * @method static \Leevel\Di\IContainer                                                  getContainer()                                                                                                                                                 获取IOC容器.
  * @method static void                                                                   setCache(?\Leevel\Cache\Manager $cache)                                                                                                                        设置缓存.
  * @method static ?\Leevel\Cache\Manager                                                 getCache()                                                                                                                                                     获取缓存.
  * @method static \Leevel\Database\Select                                                databaseSelect()                                                                                                                                               返回查询对象.
@@ -64,7 +65,7 @@ use Leevel\Di\Container;
  * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                                                            最大值.
  * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                                                            最小值.
  * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                                                            合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $config = [])                                                                            分页查询.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [])                                                                              分页查询.
  * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                                                             创建一个无限数据的分页查询.
  * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                                                          创建一个只有上下页的分页查询.
  * @method static int                                                                    pageCount(string $cols = '*')                                                                                                                                  取得分页查询记录数量.

@@ -9,8 +9,6 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Collection;
 use Leevel\Support\Str\UnCamelize;
-use Swoole\Coroutine;
-use Swoole\Coroutine\WaitGroup;
 
 /**
  * 数据库查询器.
@@ -102,13 +100,6 @@ use Swoole\Coroutine\WaitGroup;
 class Select
 {
     /**
-     * 分页统计数量缓存后缀.
-     *
-     * - 分页统计数量缓存 KEY 需要加一个后缀与分页数据区分.
-     */
-    public const PAGE_COUNT_CACHE_SUFFIX = ':count';
-
-    /**
      * 数据库连接.
      */
     protected IDatabase $connect;
@@ -117,11 +108,6 @@ class Select
      * 查询条件.
      */
     protected Condition $condition;
-
-    /**
-     * 分页查询条件备份.
-     */
-    protected array $backupPage = [];
 
     /**
      * 查询类型.
@@ -158,15 +144,6 @@ class Select
         $this->connect = $connect;
         $this->condition = new Condition($connect);
         $this->initConfig();
-    }
-
-    public function __clone()
-    {
-        // 深度拷贝数据库连接和查询条件
-        $this->connect = clone $this->connect;
-        // 查询条件中的数据库连接仅仅是一些基础方法处理
-        // 因为不涉及数据库资源连接,所以内部浅拷贝即可
-        $this->condition = clone $this->condition;
     }
 
     /**
@@ -637,72 +614,14 @@ class Select
 
     /**
      * 分页查询.
-     *
-     * - 可以渲染 HTML.
      */
-    public function page(int $currentPage, int $perPage = 10, string $column = '*', array $config = []): Page
+    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, null, $config);
-
-        if (!$this->connect->getContainer()->enabledCoroutine()) {
-            $totalRecord = $this->pageCount($column);
-            $data = $this
-                ->limit($page->getFromRecord(), $perPage)
-                ->findAll()
-            ;
-            $page->setTotalRecord($totalRecord);
-            $page->setData($data);
-
-            return $page;
-        }
-
-        // 协程模式
-        $wg = new WaitGroup();
-        $exceptions = [];
-
-        // 启动一个协程
-        $wg->add();
-        $totalRecord = 0;
-        // 克隆对象避免协程数据竞争的问题
-        // 查询分页走专用的数据库连接,避免两个协程同时访问同一个资源
-        $that = clone $this;
-        Coroutine::create(function () use ($wg, $column, &$totalRecord, &$exceptions, $that): void {
-            try {
-                // $that->master(IDatabase::PDO_PAGE);
-                $totalRecord = $that->pageCount($column);
-            } catch (\Throwable $e) {
-                $exceptions[] = $e;
-            }
-
-            // 标记协程完成
-            $wg->done();
-        });
-
-        // 启动一个协程
-        $wg->add();
-        $data = null;
-        Coroutine::create(function () use ($wg, $page, $perPage, &$data, &$exceptions): void {
-            try {
-                $data = $this
-                    ->limit($page->getFromRecord(), $perPage)
-                    ->findAll()
-                ;
-            } catch (\Throwable $e) {
-                $exceptions[] = $e;
-            }
-
-            // 标记协程完成
-            $wg->done();
-        });
-
-        // 挂起当前协程，等待所有任务完成后恢复
-        $wg->wait();
-
-        if ($exceptions) {
-            throw $exceptions[0];
-        }
-
-        $page->setTotalRecord($totalRecord);
+        $page = new Page($currentPage, $perPage, $count, $config);
+        $data = $this
+            ->limit($page->getFromRecord(), $perPage)
+            ->findAll()
+        ;
         $page->setData($data);
 
         return $page;
@@ -713,14 +632,7 @@ class Select
      */
     public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, Page::MACRO, $config);
-        $data = $this
-            ->limit($page->getFromRecord(), $perPage)
-            ->findAll()
-        ;
-        $page->setData($data);
-
-        return $page;
+        return $this->page($currentPage, $perPage, Page::MACRO, $config);
     }
 
     /**
@@ -728,29 +640,7 @@ class Select
      */
     public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
     {
-        $page = new Page($currentPage, $perPage, null, $config);
-        $data = $this
-            ->limit($page->getFromRecord(), $perPage)
-            ->findAll()
-        ;
-        $page->setData($data);
-
-        return $page;
-    }
-
-    /**
-     * 取得分页查询记录数量.
-     */
-    public function pageCount(string $cols = '*'): int
-    {
-        $this->backupPageArgs();
-        if (!empty($this->queryParams['cache'][0])) {
-            $this->queryParams['cache'][0] .= self::PAGE_COUNT_CACHE_SUFFIX;
-        }
-        $count = $this->findCount($cols);
-        $this->restorePageArgs();
-
-        return $count;
+        return $this->page($currentPage, $perPage, null, $config);
     }
 
     /**
@@ -908,29 +798,6 @@ class Select
         }
 
         return $this->connect->{$type}(...$args);
-    }
-
-    /**
-     * 备份分页查询条件.
-     */
-    protected function backupPageArgs(): void
-    {
-        $this->backupPage = [];
-        $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['aggregate'] = $this->condition->configs['aggregate'];
-        $this->backupPage['columns'] = $this->condition->configs['columns'];
-        $this->backupPage['bind_params'] = $this->condition->getBindParams();
-    }
-
-    /**
-     * 恢复分页查询条件.
-     */
-    protected function restorePageArgs(): void
-    {
-        $this->queryParams = $this->backupPage['query_params'];
-        $this->condition->configs['aggregate'] = $this->backupPage['aggregate'];
-        $this->condition->configs['columns'] = $this->backupPage['columns'];
-        $this->condition->resetBindParams($this->backupPage['bind_params']);
     }
 
     /**

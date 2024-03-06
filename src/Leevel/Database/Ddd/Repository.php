@@ -7,6 +7,8 @@ namespace Leevel\Database\Ddd;
 use Leevel\Database\Page;
 use Leevel\Event\IDispatch;
 use Leevel\Support\Collection;
+use Swoole\Coroutine;
+use Swoole\Coroutine\WaitGroup;
 
 /**
  * 仓储.
@@ -18,6 +20,7 @@ use Leevel\Support\Collection;
  * @method static \Leevel\Database\Ddd\Entity                                            findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = [])                                                                           通过主键或条件查找实体，未找到则抛出异常.
  * @method static \Leevel\Database\Ddd\Select                                            withSoftDeleted()                                                                                                                                              包含软删除数据的实体查询对象.
  * @method static \Leevel\Database\Ddd\Select                                            onlySoftDeleted()
+ * @method static \Leevel\Di\IContainer                                                  getContainer()                                                                                                                                                 获取IOC容器.
  * @method static void                                                                   setCache(?\Leevel\Cache\Manager $cache)                                                                                                                        设置缓存.
  * @method static ?\Leevel\Cache\Manager                                                 getCache()                                                                                                                                                     获取缓存.
  * @method static \Leevel\Database\Ddd\Select                                            databaseSelect()                                                                                                                                               返回查询对象.
@@ -65,7 +68,7 @@ use Leevel\Support\Collection;
  * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                                                            最大值.
  * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                                                            最小值.
  * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                                                            合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, string $column = '*', array $config = [])                                                                            分页查询.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [])                                                                              分页查询.
  * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                                                             创建一个无限数据的分页查询.
  * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                                                          创建一个只有上下页的分页查询.
  * @method static int                                                                    pageCount(string $cols = '*')                                                                                                                                  取得分页查询记录数量.
@@ -243,14 +246,59 @@ class Repository
 
     /**
      * 分页查询.
-     *
-     * - 可以渲染 HTML.
      */
     public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = []): Page
     {
-        $select = $this->condition($condition);
+        if (!$this->select()->getContainer()->enabledCoroutine()) {
+            $count = $this->findCount($condition, $column);
+            $page = $this->condition($condition)->page($currentPage, $perPage, null, $config);
+            $page->setTotalRecord($count);
 
-        return $select->page($currentPage, $perPage, $column, $config);
+            return $page;
+        }
+
+        // 协程模式
+        $wg = new WaitGroup();
+        $exceptions = [];
+
+        // 启动一个协程
+        $wg->add();
+        $count = 0;
+        Coroutine::create(function () use ($wg, $condition, $column, &$count, &$exceptions): void {
+            try {
+                $count = $this->findCount($condition, $column);
+            } catch (\Throwable $e) {
+                $exceptions[] = $e;
+            }
+
+            // 标记协程完成
+            $wg->done();
+        });
+
+        // 启动一个协程
+        $wg->add();
+        $page = null;
+        Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, &$page, &$exceptions): void {
+            try {
+                $page = $this->condition($condition)->page($currentPage, $perPage, null, $config);
+            } catch (\Throwable $e) {
+                $exceptions[] = $e;
+            }
+
+            // 标记协程完成
+            $wg->done();
+        });
+
+        // 挂起当前协程，等待所有任务完成后恢复
+        $wg->wait();
+
+        if ($exceptions) {
+            throw $exceptions[0];
+        }
+
+        $page->setTotalRecord($count);
+
+        return $page;
     }
 
     /**

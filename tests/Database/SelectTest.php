@@ -1035,44 +1035,6 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'pageCount 取得分页查询记录数量',
-    ])]
-    public function testPageCount(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        $data = ['name' => 'tom', 'content' => 'I love movie.'];
-
-        for ($n = 0; $n <= 5; ++$n) {
-            $connect
-                ->table('guest_book')
-                ->insert($data)
-            ;
-        }
-
-        static::assertSame(
-            6,
-            $connect
-                ->table('guest_book')
-                ->pageCount(),
-        );
-
-        static::assertSame(
-            6,
-            $connect
-                ->table('guest_book')
-                ->pageCount('*'),
-        );
-
-        static::assertSame(
-            6,
-            $connect
-                ->table('guest_book')
-                ->pageCount('id'),
-        );
-    }
-
-    #[Api([
         'zh-CN:title' => 'page 分页查询',
     ])]
     public function testPage(): void
