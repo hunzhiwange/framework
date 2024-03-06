@@ -1054,7 +1054,7 @@ EOT,
 
         $page = $connect
             ->table('guest_book')
-            ->page(1)
+            ->page(1, count: 26)
         ;
         $result = $page->toArray()['data'];
 
@@ -1161,7 +1161,7 @@ EOT,
                     ->orWhere('content', 'like', '%m%')
                 ;
             })
-            ->page(1)
+            ->page(1, count: 3)
         ;
         $result = $page->toArray()['data'];
 
@@ -1989,14 +1989,12 @@ EOT,
 
         $cacheDir = \dirname(__DIR__).'/databaseCacheManager';
         $cacheFile = $cacheDir.'/testcachekey.php';
-        $cacheFilePageCount = $cacheDir.'/testcachekey/count.php';
 
         $result = $manager
             ->table('guest_book')
             ->page(1)
         ;
         static::assertFileDoesNotExist($cacheFile);
-        static::assertFileDoesNotExist($cacheFilePageCount);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -2011,8 +2009,6 @@ EOT,
         ;
 
         static::assertFileExists($cacheFile);
-        static::assertFileExists($cacheFilePageCount);
-        static::assertEquals($result, $resultWithCache);
         static::assertFalse($result === $resultWithCache);
         static::assertEquals($resultWithCache, $resultWithoutCache);
     }

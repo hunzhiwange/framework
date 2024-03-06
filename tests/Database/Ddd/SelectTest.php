@@ -857,7 +857,7 @@ final class SelectTest extends TestCase
 
         $select = new Select($post = Post::select()->findEntity(1));
         $select->eager(['user']);
-        $page = $select->page(1, 10);
+        $page = $select->page(1, count: 2);
         $sql = <<<'eot'
             SQL: [63] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:user_id_in0) | Params:  1 | Key: Name: [12] :user_id_in0 | paramno=0 | name=[12] ":user_id_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
