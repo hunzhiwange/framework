@@ -12,6 +12,7 @@ use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
+use Swoole\Coroutine;
 
 /**
  * 日志抽象类.
@@ -27,6 +28,11 @@ abstract class Log extends AbstractLogger implements ILog
      * 事件处理器.
      */
     protected ?IDispatch $dispatch = null;
+
+    /**
+     * 是否起用协程.
+     */
+    protected bool $enabledCoroutine = false;
 
     /**
      * 日志处理器.
@@ -46,10 +52,11 @@ abstract class Log extends AbstractLogger implements ILog
     /**
      * 构造函数.
      */
-    public function __construct(array $config = [], ?IDispatch $dispatch = null)
+    public function __construct(array $config = [], ?IDispatch $dispatch = null, bool $enabledCoroutine = false)
     {
         $this->config = array_merge($this->config, $config);
         $this->dispatch = $dispatch;
+        $this->enabledCoroutine = $enabledCoroutine;
         $this->createMonolog();
     }
 
@@ -65,6 +72,19 @@ abstract class Log extends AbstractLogger implements ILog
      * {@inheritDoc}
      */
     public function log($level, string|\Stringable $message, array $context = []): void
+    {
+        if (!$this->enabledCoroutine) {
+            $this->saveLog($level, $message, $context);
+
+            return;
+        }
+
+        Coroutine::create(function () use ($level, $message, $context): void {
+            $this->saveLog($level, $message, $context);
+        });
+    }
+
+    protected function saveLog(mixed $level, string|\Stringable $message, array $context = []): void
     {
         $level = (string) $level;
         if (!\defined(LogLevel::class.'::'.strtoupper($level))) {
@@ -85,6 +105,7 @@ abstract class Log extends AbstractLogger implements ILog
 
         // 记录日志
         $this->addHandlers($level, $messageCategory);
+        $this->monolog->useLoggingLoopDetection(false);
         $this->monolog->{$level}($message, $context);
     }
 

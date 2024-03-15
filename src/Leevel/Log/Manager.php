@@ -64,7 +64,8 @@ class Manager extends Managers
 
         return new $driverClass(
             $this->normalizeConnectConfig($connect),
-            $this->container->make('event')
+            $this->container->make('event'),
+            $this->container->enabledCoroutine(),
         );
     }
 
@@ -77,7 +78,8 @@ class Manager extends Managers
 
         return new $driverClass(
             $this->normalizeConnectConfig($connect),
-            $this->container->make('event')
+            $this->container->make('event'),
+            $this->container->enabledCoroutine(),
         );
     }
 }
