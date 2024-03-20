@@ -69,6 +69,8 @@ abstract class Manager
             $connect = $this->getDefaultConnect();
         }
 
+        $connect = $this->normalizeConnect($connect);
+
         if (false === $newConnect && isset($this->connects[$connect])) {
             return $this->connects[$connect];
         }
@@ -116,6 +118,8 @@ abstract class Manager
         if (!$connect) {
             $connect = $this->getDefaultConnect();
         }
+
+        $connect = $this->normalizeConnect($connect);
 
         if (isset($this->connects[$connect])) {
             unset($this->connects[$connect]);
@@ -260,5 +264,31 @@ abstract class Manager
     protected function getDriverClass(string $defaultDriverClass, ?string $driverClass = null): string
     {
         return $driverClass ?? $defaultDriverClass;
+    }
+
+    /**
+     * 整理驱动.
+     *
+     * @throw new \InvalidArgumentException
+     */
+    protected function normalizeConnect(string $connect): string
+    {
+        if (!str_starts_with($connect, ':')) {
+            return $connect;
+        }
+
+        // 动态链接支持，第一个字符为:开头作为标识
+        // 动态链接字符串本身是一个普通函数，字符串返回值作为生成的动态链接
+        $dynamicConnectFunction = substr($connect, 1);
+        if (!\function_exists($dynamicConnectFunction)) {
+            throw new \InvalidArgumentException(sprintf('Dynamic connect function `%s` was not found.', $dynamicConnectFunction));
+        }
+
+        $connect = $dynamicConnectFunction();
+        if (!\is_string($connect)) {
+            throw new \InvalidArgumentException(sprintf('Dynamic connect function `%s` must return string.', $dynamicConnectFunction));
+        }
+
+        return $connect;
     }
 }
