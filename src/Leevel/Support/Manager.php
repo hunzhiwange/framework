@@ -279,6 +279,8 @@ abstract class Manager
 
         // 动态链接支持，第一个字符为:开头作为标识
         // 动态链接字符串本身是一个普通函数，字符串返回值作为生成的动态链接
+        // 我们可以在业务中提前设置动态链接的配置来加载对应的驱动
+        // 比如说数据库驱动 \Leevel\Config\Proxy\Config::set('database\\connect.'.$dynamicConnect, $config)
         $dynamicConnectFunction = substr($connect, 1);
         if (!\function_exists($dynamicConnectFunction)) {
             throw new \InvalidArgumentException(sprintf('Dynamic connect function `%s` was not found.', $dynamicConnectFunction));
