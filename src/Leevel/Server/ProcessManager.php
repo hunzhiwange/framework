@@ -10,6 +10,9 @@ use Swoole\Process\Pool;
 
 use function Swoole\Coroutine\run;
 
+/**
+ * 进程管理器.
+ */
 class ProcessManager extends Manager
 {
     protected ?\Closure $managerStartEvent = null;
@@ -18,6 +21,9 @@ class ProcessManager extends Manager
 
     protected ?\Closure $workerStopEvent = null;
 
+    /**
+     * 启动进程.
+     */
     public function start(): void
     {
         $this->pool = new Pool(\count($this->startFuncMap), $this->ipcType, $this->msgQueueKey, false);

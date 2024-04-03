@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Leevel\Server\Process;
 
 use Leevel\Filesystem\Helper\TraverseDirectory;
+use Leevel\Server\IServer;
+use Leevel\Support\Str\Camelize;
 use Swoole\Coroutine;
+use Swoole\Process as SwooleProcess;
 
 /**
  * 热重载.
@@ -32,7 +35,12 @@ class HotOverload extends Process
      */
     protected int $timeInterval = 20;
 
-    protected array $hotoverloadWatch = [];
+    /**
+     * 源代码监听目录.
+     *
+     * - 该目录的文件发生变化工作进程会重启
+     */
+    protected array $hotOverloadWatch = [];
 
     /**
      * 文件 MD5 值.
@@ -47,24 +55,46 @@ class HotOverload extends Process
     /**
      * 构造函数.
      */
-    public function __construct(array $hotoverloadWatch, int $delayCount = 2, int $timeInterval = 20)
+    public function __construct(array $config = [])
     {
-        $this->hotoverloadWatch = $hotoverloadWatch;
-        $this->delayCount = $delayCount;
-        $this->timeInterval = $timeInterval;
+        $props = [
+            'hot_overload_watch',
+            'delay_count',
+            'time_interval',
+        ];
+
+        foreach ($props as $k) {
+            if (isset($config[$k])) {
+                $prop = Camelize::handle($k);
+                $this->{$prop} = $config[$k];
+            }
+        }
     }
 
     /**
-     * 响应句柄.
+     * {@inheritDoc}
      */
-    public function handle(\Closure $reloadCallback): void
+    public function handle(IServer $server): void
     {
         // @phpstan-ignore-next-line
         while (true) {
             Coroutine::sleep($this->timeInterval / 1000);
             if ($this->serverNeedReload()) {
-                $this->reload($reloadCallback);
+                $this->reload(function () use ($server): void {
+                    $this->reloadWorkerServer($server);
+                });
             }
+        }
+    }
+
+    /**
+     * 重启工作服务.
+     */
+    protected function reloadWorkerServer(IServer $server): void
+    {
+        // 开发阶段,热重启立刻强制杀掉所有进程,全部重启拉起新的进程
+        foreach ($server->getProcessStatisticTable() as $v) {
+            SwooleProcess::kill($v['pid'], SIGKILL);
         }
     }
 
@@ -110,7 +140,7 @@ class HotOverload extends Process
     protected function files(): array
     {
         $files = [];
-        foreach ($this->hotoverloadWatch as $dir) {
+        foreach ($this->hotOverloadWatch as $dir) {
             if (is_file($dir)) {
                 $files[] = $dir;
 

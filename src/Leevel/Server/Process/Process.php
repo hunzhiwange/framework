@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Leevel\Server\Process;
 
+use Leevel\Server\IServer;
+
 /**
- * Swoole 进程抽象类.
+ * 进程抽象类.
  */
 abstract class Process
 {
     /**
      * 进程名字.
      */
-    protected string $name;
+    protected string $name = '';
 
     /**
      * 获取进程名称.
@@ -21,4 +23,9 @@ abstract class Process
     {
         return $this->name;
     }
+
+    /**
+     * 响应句柄.
+     */
+    abstract public function handle(IServer $server): void;
 }

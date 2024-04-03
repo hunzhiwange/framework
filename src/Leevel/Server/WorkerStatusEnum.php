@@ -8,14 +8,11 @@ use Leevel\Support\Enum;
 use Leevel\Support\Msg;
 
 /**
- * 运行状态枚举.
+ * 工作进程运行状态枚举.
  */
-enum StatusEnum: int
+enum WorkerStatusEnum: int
 {
     use Enum;
-
-    #[Msg('未知')]
-    case UNKNOWN = 0;
 
     #[Msg('正常')]
     case OK = 1;

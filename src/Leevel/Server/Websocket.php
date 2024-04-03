@@ -6,6 +6,8 @@ namespace Leevel\Server;
 
 use Leevel\Http\Request;
 use Leevel\Router\IRouter;
+use Swoole\Coroutine;
+use Swoole\Coroutine\Http\Server as SwooleHttpServer;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Swoole\WebSocket\CloseFrame;
@@ -52,34 +54,34 @@ class Websocket extends Http
         // https://wiki.swoole.com/#/coroutine/http_server
         'ssl' => false,
 
-        // Swoole 进程名称
-        'process_name' => 'server.http',
+        // 进程名称
+        'process_name' => 'SERVER.WEBSOCKET',
 
-        // Swoole 进程保存路径
+        // 进程保存路径
         'pid_path' => '',
 
         // 设置启动的 worker 进程数
         'worker_num' => 8,
 
-        // 开启静态路径
-        // 配合 Nginx 可以设置这里为 false,Nginx 设置规则解析静态路径动态路由转发给 Swoole
-        'enable_static_handler' => false,
-
-        // 开启静态路径目录
-        'document_root' => '',
-
         // 自定义进程
-        'processes' => [],
+        'custom_process' => [],
 
-        // 设置 worker 进程的最大任务数。【默认值：0 即不会退出进程】
-        'max_request' => 0,
-
-        'max_wait_time' => 10,
-
-        // 系统配置
-        'settings' => [
-        ],
+        // 服务配置
+        'settings' => [],
     ];
+
+    /**
+     * 客户连接.
+     */
+    protected array $connections = [];
+
+    /**
+     * 获取客户连接.
+     */
+    public function getConnections(): array
+    {
+        return $this->connections;
+    }
 
     /**
      * WebSocket 客户端与服务器建立连接并完成握手后.
@@ -121,6 +123,81 @@ class Websocket extends Http
         $request = $this->createRequestWithPathInfo($pathInfo, self::CLOSE);
         $this->setPreRequestMatched($request, [$this, $swooleRequest, $swooleResponse, $frame, $workerId]);
         $this->dispatchRouter($request);
+    }
+
+    protected function runRequest(SwooleHttpServer $server, int $workerId): void
+    {
+        if (self::class === static::class) {
+            $this->onWebsocketRequest($server, $workerId);
+        } else {
+            $this->onHttpRequest($server, $workerId);
+        }
+    }
+
+    protected function onWebsocketRequest(SwooleHttpServer $server, int $workerId): void
+    {
+        $server->handle('/websocket', function (SwooleHttpRequest $request, SwooleHttpResponse $response) use ($workerId): void {
+            $this->processStatisticTable->incr((string) $workerId, 'request_count');
+            Coroutine::create(function () use ($request, $response, $workerId): void {
+                $header = $request->header;
+                if (!empty($header['connection'])
+                    && !empty($header['upgrade'])
+                    && 'Upgrade' === $header['connection']
+                    && 'websocket' === $header['upgrade']) {
+                    $this->onHandShake($request, $response, $workerId);
+                } else {
+                    $this->onRequest($request, $response);
+                }
+            });
+        });
+    }
+
+    protected function onHandShake(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId): void
+    {
+        if (!$swooleResponse->upgrade()) {
+            return;
+        }
+
+        $this->connections[spl_object_id($swooleResponse)] = $swooleResponse;
+
+        // @phpstan-ignore-next-line
+        $this->onOpen($swooleRequest, $swooleResponse, $workerId);
+
+        while (true) {
+            /** @phpstan-ignore-next-line */
+            $frame = $swooleResponse->recv(-1);
+
+            if ('' === $frame) {
+                $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
+
+                break;
+            }
+            if (false === $frame) {
+                $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
+
+                break;
+            }
+            // @phpstan-ignore-next-line
+            if ('close' === $frame->data || CloseFrame::class === $frame::class) {
+                $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
+
+                break;
+            }
+
+            // @phpstan-ignore-next-line
+            $this->onMessage($swooleRequest, $swooleResponse, $workerId, $frame);
+        }
+    }
+
+    /**
+     * 关闭连接.
+     */
+    protected function close(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, string|false|Frame|CloseFrame $frame): void
+    {
+        // @phpstan-ignore-next-line
+        $this->onClose($swooleRequest, $swooleResponse, $workerId, $frame);
+        unset($this->connections[$swooleRequest->fd]);
+        $swooleResponse->close();
     }
 
     /**

@@ -7,12 +7,14 @@ namespace Leevel\Server;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Server\Process\Process;
 use Swoole\Coroutine\Http\Server as SwooleHttpServer;
 use Swoole\Coroutine\Server as SwooleServer;
 use Swoole\Process\Pool;
+use Swoole\Table;
 
 /**
- * Swoole 服务基类.
+ * 服务基类.
  */
 abstract class Server implements IServer
 {
@@ -31,7 +33,20 @@ abstract class Server implements IServer
      */
     protected ?IDispatch $dispatch = null;
 
+    /**
+     * 服务.
+     */
     protected SwooleServer|SwooleHttpServer|null $server = null;
+
+    /**
+     * 工作进程运行状态.
+     */
+    protected WorkerStatusEnum $workerStatus = WorkerStatusEnum::STOPPED;
+
+    /**
+     * 进程统计信息.
+     */
+    protected ?Table $processStatisticTable = null;
 
     /**
      * 构造函数.
@@ -40,23 +55,15 @@ abstract class Server implements IServer
     {
         $this->container = $container;
         $this->config = array_merge($this->config, $config);
+        // @todo 暂时没有用，以后可以接入一些事件
         $this->dispatch = $dispatch;
+        // 全局启用协程,启用后部分底层代码将采用协程方式运行
         $this->container->instance(IContainer::ENABLED_COROUTINE, true);
     }
 
-    public function getConfig(): array
-    {
-        $config = $this->config;
-        foreach (['server'] as $key) {
-            if (isset($config[$key])) {
-                unset($config[$key]);
-            }
-        }
-
-        return $config;
-    }
-
     /**
+     * {@inheritDoc}
+     *
      * @throws \RuntimeException
      */
     public function getServer(): SwooleServer|SwooleHttpServer
@@ -69,53 +76,90 @@ abstract class Server implements IServer
     }
 
     /**
-     *  工作进程启动.
+     * {@inheritDoc}
+     */
+    public function getConfig(): array
+    {
+        $config = $this->config;
+        if (isset($config['server'])) {
+            unset($config['server']);
+        }
+
+        return $config;
+    }
+
+    /**
+     * {@inheritDoc}
      *
-     * - 每个 Worker 进程启动或重启时都会执行.
+     * @throw \RuntimeException
      */
-    public function workerStart(Pool $pool, int $workeId): void
+    public function getProcessStatisticTable(): Table
     {
-        // 开启 opcache 重连后需要刷新
-        if (\function_exists('opcache_reset')) {
-            opcache_reset();
+        if (!$this->processStatisticTable) {
+            throw new \RuntimeException('Process statistic table was not create.');
         }
 
-        if (\function_exists('apc_clear_cache')) {
-            apc_clear_cache();
-        }
-
-        $this->setProcessName($processName = $this->getProcessName($workeId));
-
-        $this->message(sprintf(
-            '[%s] Process is started at pid:%s',
-            $processName,
-            posix_getpid(),
-        ));
+        return $this->processStatisticTable;
     }
 
     /**
-     * 工作进程终止时发生
+     * 创建进程管理器.
      */
-    public function workerStop(Pool $pool, int $workerId): void
+    protected function createProcessManager(): ProcessManager
     {
-        $processName = $this->getProcessName($workerId);
-        $this->message(sprintf(
-            '[%s] Process is shutdown',
-            $processName,
-        ));
-    }
+        $processManager = new ProcessManager();
 
-    protected function isCustomWorker(int $workerId): bool
-    {
-        return $workerId >= $this->config['worker_num'];
+        $processManager->setManagerStartEvent(function (Pool $pool): void {
+            $this->onManagerStart($pool);
+        });
+
+        $processManager->setWorkerStartEvent(function (Pool $pool, int $workerId): void {
+            $this->workerStatus = WorkerStatusEnum::OK;
+            $this->onWorkerStart($pool, $workerId);
+        });
+
+        $processManager->setWorkerStopEvent(function (Pool $pool, int $workerId): void {
+            $this->workerStatus = WorkerStatusEnum::STOPPED;
+            $this->onWorkerStop($pool, $workerId);
+        });
+
+        return $processManager;
     }
 
     /**
+     * 运行自定义进程.
+     *
+     * @throw \InvalidArgumentException
+     */
+    protected function runCustomProcess(ProcessManager $processManager): void
+    {
+        foreach ($this->config['custom_process'] as $customProcess => $customProcessConfig) {
+            $processManager->add(function (Pool $pool, int $workerId) use ($customProcess, $customProcessConfig): void {
+                /** @var Process $process */
+                $process = new $customProcess($customProcessConfig);
+                if (!$process instanceof Process) {
+                    throw new \InvalidArgumentException(sprintf('Expected an instance of Process, got %s instead.', $process::class));
+                }
+
+                try {
+                    $process->handle($this);
+                } catch (\Throwable $e) {
+                    $this->message('[WARNING]'.$e->getMessage());
+                }
+            }, true);
+        }
+    }
+
+    /**
+     * 管理主进程启动成功回调.
+     *
+     * - 进程创建成功后会将进程ID存放到运行文件中，以便于对该进程进行管理。
+     *
      * @throws \InvalidArgumentException
      */
-    protected function managerStart(): void
+    protected function onManagerStart(Pool $poll): void
     {
-        if (!$pidPath = $this->config['pid_path']) {
+        if (!$this->config['pid_path']) {
             throw new \InvalidArgumentException('Pid path is not set');
         }
 
@@ -137,40 +181,97 @@ abstract class Server implements IServer
     }
 
     /**
-     * 设置进程名称.
+     *  工作进程启动成功回调.
+     *
+     * - 每个 Worker 进程启动或重启时都会执行.
      */
-    protected function setProcessName(string $name): void
+    protected function onWorkerStart(Pool $poll, int $workerId): void
     {
-        try {
-            if (\function_exists('cli_set_process_title')) {
-                cli_set_process_title($name);
-            } else {
-                if (\function_exists('swoole_set_process_name')) {
-                    swoole_set_process_name($name);
-                } else {
-                    throw new \InvalidArgumentException('Require cli_set_process_title or swoole_set_process_name.');
-                }
-            }
-        } catch (\Throwable $e) {
-            $this->message('[WARNING]'.$e->getMessage());
+        // 开启 opcache 重连后需要刷新
+        if (\function_exists('opcache_reset')) {
+            opcache_reset();
         }
+
+        if (\function_exists('apc_clear_cache')) {
+            apc_clear_cache();
+        }
+
+        $this->setProcessName($processName = $this->getProcessName($workerId));
+
+        $this->message(sprintf(
+            '[%s] Process is started at pid:%s',
+            $processName,
+            posix_getpid(),
+        ));
     }
 
+    /**
+     * 工作进程终止成功回调.
+     */
+    protected function onWorkerStop(Pool $poll, int $workerId): void
+    {
+        $processName = $this->getProcessName($workerId);
+        $this->message(sprintf(
+            '[%s] Process is shutdown',
+            $processName,
+        ));
+    }
+
+    /**
+     * 进程消息.
+     */
     protected function message(string $message): void
     {
         $time = sprintf('[%s]', date('Y-m-d H:i:s'));
         fwrite(STDOUT, $time.' '.$message.PHP_EOL);
     }
 
-    protected function getProcessName(int $workeId = -1): string
+    /**
+     * 设置进程名称.
+     */
+    protected function setProcessName(string $name): void
+    {
+        try {
+            cli_set_process_title($name);
+        } catch (\Throwable $e) {
+            $this->message('[WARNING]'.$e->getMessage());
+        }
+    }
+
+    /**
+     * 获取进程名字.
+     */
+    protected function getProcessName(int $workerId = -1): string
     {
         $processName = 'WORKER';
-        if (-1 === $workeId) {
+        if (-1 === $workerId) {
             $processName = 'MASTER';
-        } elseif ($this->isCustomWorker($workeId)) {
+        } elseif ($this->isCustomWorker($workerId)) {
             $processName = 'CUSTOM';
         }
 
-        return $this->config['process_name'].'.'.$processName.($workeId > -1 ? ' #'.$workeId : '');
+        return $this->config['process_name'].'.'.$processName.($workerId > -1 ? ' #'.$workerId : '');
+    }
+
+    /**
+     * 判断是否为自定义进程.
+     *
+     * - 比如说代码更新后热重启进程就是自定义进程
+     */
+    protected function isCustomWorker(int $workerId): bool
+    {
+        return $workerId >= (int) $this->config['worker_num'];
+    }
+
+    /**
+     * 创建进程统计表.
+     */
+    protected function createProcessStatisticTable(): void
+    {
+        $this->processStatisticTable = new Table(1024);
+        $this->processStatisticTable->column('pid', Table::TYPE_INT);
+        $this->processStatisticTable->column('request_count', Table::TYPE_INT);
+        $this->processStatisticTable->column('kill_start_time', Table::TYPE_INT);
+        $this->processStatisticTable->create();
     }
 }
