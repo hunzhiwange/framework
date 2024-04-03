@@ -63,7 +63,7 @@
         "robmorgan/phinx": "^0.13.4",
         "league/flysystem-sftp": "^3.10.3",
         "league/flysystem-ziparchive": "^3.12.0",
-        "swoole/ide-helper": "^5.1.1"
+        "swoole/ide-helper": "^5.1.2"
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",

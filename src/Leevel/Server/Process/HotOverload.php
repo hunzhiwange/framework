@@ -18,7 +18,7 @@ class HotOverload extends Process
     /**
      * 进程名字.
      */
-    protected string $name = 'hot.overload';
+    protected string $name = 'HOT.OVERLOAD';
 
     /**
      * 时间记录.

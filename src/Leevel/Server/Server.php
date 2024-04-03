@@ -49,6 +49,11 @@ abstract class Server implements IServer
     protected ?Table $processStatisticTable = null;
 
     /**
+     * 自定义工作进程名字.
+     */
+    protected array $customWorkerProcessName = [];
+
+    /**
      * 构造函数.
      */
     public function __construct(IContainer $container, array $config = [], ?IDispatch $dispatch = null)
@@ -113,11 +118,6 @@ abstract class Server implements IServer
             $this->onManagerStart($pool);
         });
 
-        $processManager->setWorkerStartEvent(function (Pool $pool, int $workerId): void {
-            $this->workerStatus = WorkerStatusEnum::OK;
-            $this->onWorkerStart($pool, $workerId);
-        });
-
         $processManager->setWorkerStopEvent(function (Pool $pool, int $workerId): void {
             $this->workerStatus = WorkerStatusEnum::STOPPED;
             $this->onWorkerStop($pool, $workerId);
@@ -134,6 +134,10 @@ abstract class Server implements IServer
     protected function runCustomProcess(ProcessManager $processManager): void
     {
         foreach ($this->config['custom_process'] as $customProcess => $customProcessConfig) {
+            if (!isset($customProcessConfig['enabled']) || true !== $customProcessConfig['enabled']) {
+                continue;
+            }
+
             $processManager->add(function (Pool $pool, int $workerId) use ($customProcess, $customProcessConfig): void {
                 /** @var Process $process */
                 $process = new $customProcess($customProcessConfig);
@@ -142,6 +146,8 @@ abstract class Server implements IServer
                 }
 
                 try {
+                    $this->customWorkerProcessName[$workerId] = $process->getName();
+                    $this->onWorkerStart($pool, $workerId);
                     $process->handle($this);
                 } catch (\Throwable $e) {
                     $this->message('[WARNING]'.$e->getMessage());
@@ -247,7 +253,7 @@ abstract class Server implements IServer
         if (-1 === $workerId) {
             $processName = 'MASTER';
         } elseif ($this->isCustomWorker($workerId)) {
-            $processName = 'CUSTOM';
+            $processName = $this->customWorkerProcessName[$workerId];
         }
 
         return $this->config['process_name'].'.'.$processName.($workerId > -1 ? ' #'.$workerId : '');
@@ -260,7 +266,7 @@ abstract class Server implements IServer
      */
     protected function isCustomWorker(int $workerId): bool
     {
-        return $workerId >= (int) $this->config['worker_num'];
+        return isset($this->customWorkerProcessName[$workerId]);
     }
 
     /**

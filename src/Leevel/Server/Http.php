@@ -61,6 +61,7 @@ class Http extends Server implements IServer
         $processManager = $this->createProcessManager();
         $processManager->addBatch($this->config['worker_num'], function (Pool $pool, int $workerId): void {
             $this->initWorkerProcessStatisticInfo($workerId);
+            $this->onWorkerStart($pool, $workerId);
             $this->server = $this->createHttpServer();
             $this->seedServerShutdownSignal($this->server);
             $this->runRequest($this->server, $workerId);

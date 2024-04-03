@@ -17,7 +17,7 @@ class MaxRequest extends Process
     /**
      * 进程名字.
      */
-    protected string $name = 'max.request';
+    protected string $name = 'MAX.REQUEST';
 
     /**
      * 最大等待时.
