@@ -54,6 +54,12 @@ abstract class Kernel implements IKernel
         if ($this->middlewares) {
             $this->resolvedMiddlewares = $this->parseMiddlewares($this->middlewares);
         }
+
+        // 如果是协程模式，请求对象注册到协程上下文
+        $this->app
+            ->container()
+            ->addContextKeys('request')
+        ;
     }
 
     /**
@@ -144,17 +150,11 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 根据请求返回响应.
+     * 路由调度.
+     *
+     * - 根据请求返回响应.
      */
     protected function getResponseWithRequest(Request $request): Response
-    {
-        return $this->dispatchRouter($request);
-    }
-
-    /**
-     * 路由调度.
-     */
-    protected function dispatchRouter(Request $request): Response
     {
         return $this->router->dispatch($request);
     }

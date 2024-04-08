@@ -136,7 +136,7 @@ class Websocket extends Http
 
     protected function onWebsocketRequest(SwooleHttpServer $server, int $workerId): void
     {
-        $server->handle('/websocket', function (SwooleHttpRequest $request, SwooleHttpResponse $response) use ($workerId): void {
+        $server->handle('/', function (SwooleHttpRequest $request, SwooleHttpResponse $response) use ($workerId): void {
             $this->processStatisticTable->incr((string) $workerId, 'request_count');
             Coroutine::create(function () use ($request, $response, $workerId): void {
                 $header = $request->header;
@@ -172,11 +172,13 @@ class Websocket extends Http
 
                 break;
             }
+
             if (false === $frame) {
                 $this->close($swooleRequest, $swooleResponse, $workerId, $frame);
 
                 break;
             }
+
             // @phpstan-ignore-next-line
             if ('close' === $frame->data || CloseFrame::class === $frame::class) {
                 $this->close($swooleRequest, $swooleResponse, $workerId, $frame);

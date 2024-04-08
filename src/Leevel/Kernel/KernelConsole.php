@@ -54,6 +54,11 @@ abstract class KernelConsole implements IKernelConsole
      */
     public function __construct(protected IApp $app)
     {
+        // 如果是协程模式，请求对象注册到协程上下文
+        $this->app
+            ->container()
+            ->addContextKeys('request')
+        ;
     }
 
     /**
