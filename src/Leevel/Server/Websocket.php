@@ -251,6 +251,7 @@ class Websocket extends Http
      */
     protected function setClientPathInfo(int $fd, string $pathInfo): void
     {
+        $this->container->addContextKeys(self::PATHINFO.$fd);
         $this->container->instance(self::PATHINFO.$fd, $pathInfo);
     }
 }
