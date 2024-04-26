@@ -11,6 +11,7 @@ use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Leevel\Validate\ValidatorException;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'title' => 'Validate',
@@ -1581,9 +1582,7 @@ EOT,
         $validate->success();
     }
 
-    /**
-     * @dataProvider skipRuleProvider
-     */
+    #[DataProvider('skipRuleProvider')]
     public function testSkipRule(string $skipRule): void
     {
         $validate = new Validator(

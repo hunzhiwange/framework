@@ -7,6 +7,7 @@ namespace Tests\Validate\Validator;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '验证器.两个字段是否不同',
@@ -14,12 +15,7 @@ use Tests\TestCase;
 ])]
 final class DifferentTest extends TestCase
 {
-    /**
-     * @dataProvider baseUseProvider
-     *
-     * @param mixed $value
-     * @param mixed $valueCompare
-     */
+    #[DataProvider('baseUseProvider')]
     #[Api([
         'zh-CN:title' => '验证通过的数据',
         'zh-CN:description' => <<<'EOT'
@@ -59,12 +55,7 @@ EOT,
         ];
     }
 
-    /**
-     * @dataProvider badProvider
-     *
-     * @param mixed $value
-     * @param mixed $valueCompare
-     */
+    #[DataProvider('badProvider')]
     #[Api([
         'zh-CN:title' => '未验证通过的数据',
         'zh-CN:description' => <<<'EOT'
