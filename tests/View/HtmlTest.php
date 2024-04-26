@@ -12,6 +12,7 @@ use Tests\TestCase;
 
 final class HtmlTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         Helper::deleteDirectory(__DIR__.'/cache_html');

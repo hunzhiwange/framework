@@ -69,6 +69,7 @@ EOT,
 ])]
 final class ManagerTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {

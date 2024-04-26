@@ -34,6 +34,7 @@ EOT,
 ])]
 final class ValidatorTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $container = Container::singletons();
@@ -46,6 +47,7 @@ final class ValidatorTest extends TestCase
         Validate::initMessages();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();

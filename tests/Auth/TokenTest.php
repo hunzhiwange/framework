@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 final class TokenTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $path = __DIR__.'/cacheFile';

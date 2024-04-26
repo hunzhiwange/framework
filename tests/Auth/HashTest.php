@@ -32,6 +32,7 @@ EOT,
 ])]
 final class HashTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         if (isset($_SERVER['SUDO_USER']) && 'vagrant' === $_SERVER['SUDO_USER']) {

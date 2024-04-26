@@ -21,6 +21,7 @@ EOT,
 ])]
 class TransformResponseTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         if (!\extension_loaded('swoole')) {
@@ -32,6 +33,7 @@ class TransformResponseTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         if (isset($GLOBALS['swoole.response'])) {

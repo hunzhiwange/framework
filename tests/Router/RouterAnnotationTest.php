@@ -30,11 +30,13 @@ EOT,
 ])]
 final class RouterAnnotationTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->containerClear();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->setUp();

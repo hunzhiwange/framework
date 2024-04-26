@@ -49,6 +49,7 @@ EOT,
 ])]
 final class EntityTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

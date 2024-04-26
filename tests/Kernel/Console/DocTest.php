@@ -16,11 +16,13 @@ final class DocTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $outputDirName = \dirname(__DIR__).'/Utils/Assert/Doc/Output';

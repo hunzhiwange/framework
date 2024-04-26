@@ -23,6 +23,7 @@ final class MakeTest extends TestCase
 {
     use BaseMake;
 
+    #[\Override]
     protected function setUp(): void
     {
         $dirs = [

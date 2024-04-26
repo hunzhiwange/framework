@@ -20,6 +20,7 @@ EOT,
 ])]
 final class EntityEventTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         Entity::withEventDispatch(null);

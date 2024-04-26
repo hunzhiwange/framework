@@ -13,12 +13,14 @@ final class DatabaseTest extends TestCase
 {
     use Database;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

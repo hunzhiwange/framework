@@ -22,6 +22,7 @@ EOT,
 ])]
 final class EnumTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $container = Container::singletons();
@@ -32,6 +33,7 @@ final class EnumTest extends TestCase
         });
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();

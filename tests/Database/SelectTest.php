@@ -22,6 +22,7 @@ use Tests\Database\Ddd\Entity\Guestbook;
 ])]
 final class SelectTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

@@ -18,6 +18,7 @@ final class CacheTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function tearDown(): void
     {
         if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {

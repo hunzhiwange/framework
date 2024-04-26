@@ -14,11 +14,13 @@ final class MigrateSeedCreateTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $seedsFile = \dirname(__DIR__, 2).'/assets/database/seeds/HelloWorld.php';

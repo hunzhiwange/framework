@@ -22,6 +22,7 @@ EOT,
 ])]
 final class PageTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $container = Container::singletons();
@@ -32,6 +33,7 @@ final class PageTest extends TestCase
         });
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();

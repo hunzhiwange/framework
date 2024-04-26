@@ -16,11 +16,13 @@ final class LinkStaticTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $dirs = [

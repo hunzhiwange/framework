@@ -24,6 +24,7 @@ EOT,
 ])]
 final class UnitOfWorkTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,6 +33,7 @@ final class UnitOfWorkTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

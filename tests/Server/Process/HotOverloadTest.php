@@ -19,6 +19,7 @@ EOT,
 ])]
 class HotOverloadTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         if (!\extension_loaded('swoole')) {

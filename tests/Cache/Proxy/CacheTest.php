@@ -14,11 +14,13 @@ use Tests\TestCase;
 
 final class CacheTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Helper::deleteDirectory(__DIR__.'/cacheManager');

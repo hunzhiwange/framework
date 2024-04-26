@@ -16,11 +16,13 @@ final class IdeHelperFunctionTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $cacheDir = \dirname(__DIR__).'/Utils/Assert/cache/';

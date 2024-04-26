@@ -74,11 +74,13 @@ EOT,
 ])]
 final class SessionTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cache';

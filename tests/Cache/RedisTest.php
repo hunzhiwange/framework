@@ -10,6 +10,7 @@ use Tests\TestCase;
 
 final class RedisTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         if (!\extension_loaded('redis')) {

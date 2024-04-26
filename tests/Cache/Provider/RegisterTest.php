@@ -14,6 +14,7 @@ use Tests\TestCase;
 
 final class RegisterTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         if (!\extension_loaded('redis')) {

@@ -31,11 +31,13 @@ final class RegisterExceptionRuntimeTest extends TestCase
     protected int $oldErrorReporting;
     protected string $oldDisplayErrors;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();

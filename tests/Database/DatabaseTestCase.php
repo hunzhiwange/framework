@@ -12,12 +12,14 @@ abstract class DatabaseTestCase extends TestCase
 {
     use Database;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->clearDatabaseTable();
         $this->metaWithDatabase();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->clearDatabaseTable();

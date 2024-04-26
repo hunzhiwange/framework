@@ -18,6 +18,7 @@ use Tests\MysqlNeedReconnectMock;
 ])]
 final class DatabaseTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

@@ -10,6 +10,7 @@ final class CompilerPairedTagExceptionTest extends TestCase
 {
     use Compiler;
 
+    #[\Override]
     protected function tearDown(): void
     {
         $file = __DIR__.'/tag_source.html';

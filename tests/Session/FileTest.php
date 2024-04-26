@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 final class FileTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $dirPath = __DIR__.'/cacheFile';

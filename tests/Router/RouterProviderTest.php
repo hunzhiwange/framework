@@ -28,6 +28,7 @@ EOT,
 ])]
 final class RouterProviderTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $file = __DIR__.'/router_cached.php';

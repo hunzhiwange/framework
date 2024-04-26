@@ -18,6 +18,7 @@ final class GenerateTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function tearDown(): void
     {
         $path = __DIR__.'/../cachePath';

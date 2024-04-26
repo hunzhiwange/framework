@@ -16,12 +16,14 @@ final class EntityTest extends TestCase
 {
     use BaseMake;
 
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->clearConsoleFiles();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

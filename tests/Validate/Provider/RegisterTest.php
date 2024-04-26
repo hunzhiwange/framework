@@ -12,6 +12,7 @@ use Tests\TestCase;
 
 final class RegisterTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $container = Container::singletons();
@@ -22,6 +23,7 @@ final class RegisterTest extends TestCase
         });
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();

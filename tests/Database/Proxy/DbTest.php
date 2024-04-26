@@ -11,12 +11,14 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 final class DbTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();

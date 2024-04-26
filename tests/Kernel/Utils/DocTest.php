@@ -18,6 +18,7 @@ use Tests\TestCase;
 
 final class DocTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $dirs = [
@@ -31,6 +32,7 @@ final class DocTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->setUp();

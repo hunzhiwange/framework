@@ -66,6 +66,7 @@ EOT,
 ])]
 final class CacheTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $path = __DIR__.'/cache';

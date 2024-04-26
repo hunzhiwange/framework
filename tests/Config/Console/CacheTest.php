@@ -15,6 +15,7 @@ final class CacheTest extends TestCase
 {
     use BaseCommand;
 
+    #[\Override]
     protected function setUp(): void
     {
         $dirs = [
@@ -33,6 +34,7 @@ final class CacheTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->setUp();

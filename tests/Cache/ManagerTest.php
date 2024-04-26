@@ -16,6 +16,7 @@ use Leevel\Cache\Redis;
 
 final class ManagerTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         $path = __DIR__.'/cacheManager';

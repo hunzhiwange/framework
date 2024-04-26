@@ -18,6 +18,7 @@ EOT,
 ])]
 final class EncryptionTest extends TestCase
 {
+    #[\Override]
     protected function tearDown(): void
     {
         if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {

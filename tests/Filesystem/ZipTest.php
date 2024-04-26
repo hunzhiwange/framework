@@ -10,6 +10,7 @@ use Tests\TestCase;
 
 final class ZipTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $file = __DIR__.'/hello.zip';
@@ -18,6 +19,7 @@ final class ZipTest extends TestCase
         }
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         $this->setUp();

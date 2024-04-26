@@ -11,11 +11,13 @@ use Tests\TestCase;
 
 final class ConfigTest extends TestCase
 {
+    #[\Override]
     protected function setUp(): void
     {
         $this->tearDown();
     }
 
+    #[\Override]
     protected function tearDown(): void
     {
         Container::singletons()->clear();
