@@ -6,18 +6,19 @@ namespace Tests\Server;
 
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Server\TransformResponse;
 use Swoole\Http\Response as SwooleHttpResponse;
 use Tests\Server\Fixtures\SwooleHttpResponseDemo;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="转换响应对象",
- *     path="server/transformresponse",
- *     zh-CN:description="Leevel 响应转 Swoole 响应后，然后传递给 Swoole 完成响应给用户。",
- * )
- */
+#[Api([
+    'zh-CN:title' => '转换响应对象',
+    'path' => 'server/transformresponse',
+    'zh-CN:description' => <<<'EOT'
+Leevel 响应转 Swoole 响应后，然后传递给 Swoole 完成响应给用户。
+EOT,
+])]
 class TransformResponseTest extends TestCase
 {
     protected function setUp(): void
@@ -33,16 +34,14 @@ class TransformResponseTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->setUp();
+        if (isset($GLOBALS['swoole.response'])) {
+            unset($GLOBALS['swoole.response']);
+        }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Leevel 响应的 header",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Leevel 响应的 header',
+    ])]
     public function testResponseWithHeader(): void
     {
         $leevel2Swoole = new TransformResponse();
@@ -98,13 +97,9 @@ class TransformResponseTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Leevel 响应的 cookie",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Leevel 响应的 cookie',
+    ])]
     public function testResponseWithCookie(): void
     {
         $leevel2Swoole = new TransformResponse();
@@ -159,13 +154,9 @@ class TransformResponseTest extends TestCase
         static::assertStringContainsString('hello=world;', $headers[3][1]);
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Leevel 跳转响应",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Leevel 跳转响应',
+    ])]
     public function testRedirectResponse(): void
     {
         $leevel2Swoole = new TransformResponse();

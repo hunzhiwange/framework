@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Tests\Server;
 
 use Leevel\Http\Request;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Server\TransformRequest;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="转换请求对象",
- *     path="server/transformrequest",
- *     zh-CN:description="Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。",
- * )
- */
+#[Api([
+    'zh-CN:title' => '转换请求对象',
+    'path' => 'server/transformrequest',
+    'zh-CN:description' => <<<'EOT'
+Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。
+EOT,
+])]
 class TransformRequestTest extends TestCase
 {
     protected function setUp(): void
@@ -25,13 +26,9 @@ class TransformRequestTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Swoole 请求的 header",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Swoole 请求的 header',
+    ])]
     public function testSwooleRequestWithHeader(): void
     {
         $swoole2Leevel = new TransformRequest();
@@ -82,13 +79,9 @@ class TransformRequestTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Swoole 请求的 server",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Swoole 请求的 server',
+    ])]
     public function testSwooleRequestWithServer(): void
     {
         $swoole2Leevel = new TransformRequest();
@@ -151,13 +144,9 @@ class TransformRequestTest extends TestCase
         );
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="转换 Swoole 请求的其它属性",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '转换 Swoole 请求的其它属性',
+    ])]
     public function testSwooleRequestWithOther(): void
     {
         $swoole2Leevel = new TransformRequest();

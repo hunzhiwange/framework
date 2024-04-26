@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace Tests\Server\Process;
 
 use Leevel\Config\Config;
+use Leevel\Kernel\Utils\Api;
 use Leevel\Server\IServer;
 use Tests\Server\Process\Fixtures\HotOverloadDemo;
 use Tests\TestCase;
 
-/**
- * @api(
- *     zh-CN:title="代码热重启进程",
- *     path="server/process/hotoverload",
- *     zh-CN:description="监听某些目录，当代码发生变化，重启服务方便开发调试。",
- * )
- */
+#[Api([
+    'zh-CN:title' => '代码热重启进程',
+    'path' => 'server/process/hotoverload',
+    'zh-CN:description' => <<<'EOT'
+监听某些目录，当代码发生变化，重启服务方便开发调试。
+EOT,
+])]
 class HotOverloadTest extends TestCase
 {
     protected function setUp(): void
@@ -29,13 +30,9 @@ class HotOverloadTest extends TestCase
         }
     }
 
-    /**
-     * @api(
-     *     zh-CN:title="测试代码热重启",
-     *     zh-CN:description="",
-     *     zh-CN:note="",
-     * )
-     */
+    #[Api([
+        'zh-CN:title' => '测试代码热重启',
+    ])]
     public function testHotOverload(): void
     {
         $config = new Config([
