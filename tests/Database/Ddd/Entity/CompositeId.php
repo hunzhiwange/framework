@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class CompositeId extends Entity
 {
-    public const TABLE = 'composite_id';
+    public const string TABLE = 'composite_id';
 
-    public const ID = ['id1', 'id2'];
+    public const array ID = ['id1', 'id2'];
 
-    public const AUTO = null;
+    public const ?string AUTO = null;
 
     #[Struct([
     ])]

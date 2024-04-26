@@ -9,16 +9,16 @@ use Leevel\Database\Ddd\Struct;
 
 class DemoUniqueNew extends Entity
 {
-    public const TABLE = 'test_unique';
+    public const string TABLE = 'test_unique';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     /**
      * Unique key.
      */
-    public const UNIQUE = [
+    public const array UNIQUE = [
         ['identity'],
     ];
 

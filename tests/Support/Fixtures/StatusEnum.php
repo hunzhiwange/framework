@@ -12,11 +12,11 @@ class StatusEnum
     use Enum;
 
     #[msg]
-    public const ENABLE = 1;
+    public const string ENABLE = 1;
 
     #[msg]
-    public const DISABLE = 0;
+    public const string DISABLE = 0;
 
     #[Msg('第三种可能')]
-    public const THREE = 3;
+    public const string THREE = 3;
 }

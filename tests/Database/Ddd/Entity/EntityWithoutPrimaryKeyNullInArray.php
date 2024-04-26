@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class EntityWithoutPrimaryKeyNullInArray extends Entity
 {
-    public const TABLE = 'test';
+    public const string TABLE = 'test';
 
-    public const ID = [null];
+    public const array ID = [null];
 
-    public const AUTO = null;
+    public const null AUTO = null;
 
     #[Struct([
     ])]

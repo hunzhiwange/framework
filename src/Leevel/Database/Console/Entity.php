@@ -302,6 +302,7 @@ class Entity extends Make
             'table_name' => $tableName = $this->getTableName(),
             'file_title' => $columns['table_comment'] ?: $tableName,
             'primary_key' => $this->getPrimaryKey($columns),
+            'primary_key_type' => $this->getPrimaryKeyType($columns),
             'auto_increment' => $this->getAutoIncrement($columns),
             'unique_index' => $this->parseUniqueIndex($uniqueIndex),
             'struct' => $this->getStruct($columns),
@@ -325,6 +326,22 @@ class Entity extends Make
         }
 
         return "'{$columns['primary_key'][0]}'";
+    }
+
+    /**
+     * 获取主键类型.
+     */
+    protected function getPrimaryKeyType(array $columns): string
+    {
+        if (!$columns['primary_key']) {
+            return 'null';
+        }
+
+        if (\count($columns['primary_key']) > 1) {
+            return 'array';
+        }
+
+        return 'string';
     }
 
     /**
@@ -466,7 +483,7 @@ class Entity extends Make
                 /**
                  * Soft delete column.
                  */
-                public const DELETE_AT = 'delete_at';
+                public const string DELETE_AT = 'delete_at';
             EOT;
     }
 
@@ -638,7 +655,7 @@ class Entity extends Make
         $outputString = '    /**'.PHP_EOL;
         $outputString .= '     * Unique Index.'.PHP_EOL;
         $outputString .= '     */'.PHP_EOL;
-        $outputString .= '    public const UNIQUE_INDEX = ['.PHP_EOL;
+        $outputString .= '    public const array UNIQUE_INDEX = ['.PHP_EOL;
         foreach ($uniqueIndex as $indexName => $indexInfo) {
             $outputString .= "        '{$indexName}' => [".PHP_EOL;
             $outputString .= "            'field' => ['".implode("', '", $indexInfo['field'])."'],".PHP_EOL;

@@ -9,13 +9,13 @@ use Leevel\Database\Ddd\Struct;
 
 class PostNew extends Entity
 {
-    public const TABLE = 'post';
+    public const string TABLE = 'post';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
-    public const DELETE_AT = 'delete_at';
+    public const string DELETE_AT = 'delete_at';
 
     #[Struct([
         self::READONLY => true,

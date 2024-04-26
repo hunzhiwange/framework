@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class DemoToArrayWhiteEntity extends Entity
 {
-    public const TABLE = 'test';
+    public const string TABLE = 'test';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
     ])]

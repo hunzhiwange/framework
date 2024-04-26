@@ -14,28 +14,28 @@ interface IContainer extends ContainerInterface
     /**
      * 是否起用协程.
      */
-    public const ENABLED_COROUTINE = 'enabledCoroutine';
+    public const string ENABLED_COROUTINE = 'enabledCoroutine';
 
     /**
      * 注册的服务.
      *
      * - Registered services.
      */
-    public const SERVICES = 'services';
+    public const string SERVICES = 'services';
 
     /**
      * 注册的实例.
      *
      * - Registered instances.
      */
-    public const INSTANCES = 'instances';
+    public const string INSTANCES = 'instances';
 
     /**
      * 注册的单一实例.
      *
      * - Registered singletons.
      */
-    public const SINGLETONS = 'singletons';
+    public const string SINGLETONS = 'singletons';
 
     /**
      * 生成 IOC 容器.

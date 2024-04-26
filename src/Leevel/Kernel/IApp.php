@@ -16,12 +16,12 @@ interface IApp
      *
      * @var string
      */
-    public const VERSION = 'v1.1.36';
+    public const string VERSION = 'v1.1.36';
 
     /**
      * 默认环境变量名字.
      */
-    public const DEFAULT_ENV = '.env';
+    public const string DEFAULT_ENV = '.env';
 
     /**
      * 获取框架版本.

@@ -163,7 +163,7 @@ class Repository
     /**
      * 批量插入数据事件.
      */
-    public const INSERT_ALL_EVENT = 'database.repository.insertall';
+    public const string INSERT_ALL_EVENT = 'database.repository.insertall';
 
     /**
      * 批量插入回调.

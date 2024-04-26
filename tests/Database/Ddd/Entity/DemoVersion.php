@@ -9,13 +9,13 @@ use Leevel\Database\Ddd\Struct;
 
 class DemoVersion extends Entity
 {
-    public const TABLE = 'test_version';
+    public const string TABLE = 'test_version';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
-    public const VERSION = 'version';
+    public const string VERSION = 'version';
 
     #[Struct([
         self::READONLY => true,

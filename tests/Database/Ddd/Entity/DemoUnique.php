@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class DemoUnique extends Entity
 {
-    public const TABLE = 'test_unique';
+    public const string TABLE = 'test_unique';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
         self::READONLY => true,

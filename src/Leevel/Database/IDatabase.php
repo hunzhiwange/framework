@@ -136,12 +136,12 @@ interface IDatabase extends IConnection
     /**
      * 断线重连尝试次数.
      */
-    public const RECONNECT_MAX = 2;
+    public const int RECONNECT_MAX = 2;
 
     /**
      * SQL 日志事件.
      */
-    public const SQL_EVENT = 'database.sql';
+    public const string SQL_EVENT = 'database.sql';
 
     /**
      * 获取IOC容器.

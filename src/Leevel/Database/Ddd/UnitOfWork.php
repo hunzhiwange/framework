@@ -14,22 +14,22 @@ class UnitOfWork
     /**
      * 已经被管理的实体状态.
      */
-    public const STATE_MANAGED = 1;
+    public const int STATE_MANAGED = 1;
 
     /**
      * 尚未被管理的实体状态.
      */
-    public const STATE_NEW = 2;
+    public const int STATE_NEW = 2;
 
     /**
      * 已经持久化并且脱离管理的实体状态.
      */
-    public const STATE_DETACHED = 3;
+    public const int STATE_DETACHED = 3;
 
     /**
      * 被标识为删除的实体状态.
      */
-    public const STATE_REMOVED = 4;
+    public const int STATE_REMOVED = 4;
 
     /**
      * 根实体.
@@ -650,9 +650,9 @@ class UnitOfWork
     protected function initDefaultEntity(): void
     {
         $this->entity = new class() extends Entity {
-            public const TABLE = '';
-            public const ID = null;
-            public const AUTO = null;
+            public const string TABLE = '';
+            public const null ID = null;
+            public const ?string AUTO = null;
         };
     }
 

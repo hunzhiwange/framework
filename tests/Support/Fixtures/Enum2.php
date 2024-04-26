@@ -12,5 +12,5 @@ class Enum2
     use Enum;
 
     #[Msg('错误类型%s:%s', '我是', '谁')]
-    public const ERROR_ONE = 100010;
+    public const int ERROR_ONE = 100010;
 }

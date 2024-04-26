@@ -89,25 +89,25 @@ class Test1Entity extends Entity
 
 class Test2Entity extends Entity
 {
-    public const TABLE = 'test2';
+    public const string TABLE = 'test2';
 }
 
 class Test3Entity extends Entity
 {
-    public const TABLE = 'test2';
+    public const string TABLE = 'test2';
 
-    public const ID = [
+    public const array ID = [
         'id',
     ];
 }
 
 class Test4Entity extends Entity
 {
-    public const TABLE = 'test2';
+    public const string TABLE = 'test2';
 
-    public const ID = [
+    public const array ID = [
         'id',
     ];
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 }

@@ -1242,7 +1242,7 @@ class Exception8 extends MethodNotAllowedHttpException
 
 class ExceptionCanReportable extends \Exception
 {
-    public function reportable(): bool
+    public function reportable(): true
     {
         return true;
     }
@@ -1255,7 +1255,7 @@ class ExceptionCanReportable extends \Exception
 
 class ExceptionCannotReportable extends \Exception
 {
-    public function reportable(): bool
+    public function reportable(): false
     {
         return false;
     }

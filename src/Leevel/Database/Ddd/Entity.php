@@ -30,139 +30,139 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 初始化全局事件.
      */
-    public const BOOT_EVENT = 'boot';
+    public const string BOOT_EVENT = 'boot';
 
     /**
      * 数据分析前的保存前事件.
      */
-    public const BEFORE_SAVE_EVENT = 'save';
+    public const string BEFORE_SAVE_EVENT = 'save';
 
     /**
      * 数据分析后的保存前事件.
      */
-    public const BEFORE_SAVING_EVENT = 'saving';
+    public const string BEFORE_SAVING_EVENT = 'saving';
 
     /**
      * 保存后事件.
      */
-    public const AFTER_SAVED_EVENT = 'saved';
+    public const string AFTER_SAVED_EVENT = 'saved';
 
     /**
      * 数据分析前的新建前事件.
      */
-    public const BEFORE_CREATE_EVENT = 'create';
+    public const string BEFORE_CREATE_EVENT = 'create';
 
     /**
      * 数据分析后的新建前事件.
      */
-    public const BEFORE_CREATING_EVENT = 'creating';
+    public const string BEFORE_CREATING_EVENT = 'creating';
 
     /**
      * 新建后事件.
      */
-    public const AFTER_CREATED_EVENT = 'created';
+    public const string AFTER_CREATED_EVENT = 'created';
 
     /**
      * 数据分析前的更新前事件.
      */
-    public const BEFORE_UPDATE_EVENT = 'update';
+    public const string BEFORE_UPDATE_EVENT = 'update';
 
     /**
      * 数据分析后的更新前事件.
      */
-    public const BEFORE_UPDATING_EVENT = 'updating';
+    public const string BEFORE_UPDATING_EVENT = 'updating';
 
     /**
      * 更新后事件.
      */
-    public const AFTER_UPDATED_EVENT = 'updated';
+    public const string AFTER_UPDATED_EVENT = 'updated';
 
     /**
      * 数据分析前的删除前事件.
      */
-    public const BEFORE_DELETE_EVENT = 'delete';
+    public const string BEFORE_DELETE_EVENT = 'delete';
 
     /**
      * 数据分析后的删除前事件.
      */
-    public const BEFORE_DELETING_EVENT = 'deleting';
+    public const string BEFORE_DELETING_EVENT = 'deleting';
 
     /**
      * 删除后事件.
      */
-    public const AFTER_DELETED_EVENT = 'deleted';
+    public const string AFTER_DELETED_EVENT = 'deleted';
 
     /**
      * 数据分析前的软删除前事件.
      */
-    public const BEFORE_SOFT_DELETE_EVENT = 'softDelete';
+    public const string BEFORE_SOFT_DELETE_EVENT = 'softDelete';
 
     /**
      * 数据分析后的软删除前事件.
      */
-    public const BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
+    public const string BEFORE_SOFT_DELETING_EVENT = 'softDeleting';
 
     /**
      * 软删除后事件.
      */
-    public const AFTER_SOFT_DELETED_EVENT = 'softDeleted';
+    public const string AFTER_SOFT_DELETED_EVENT = 'softDeleted';
 
     /**
      * 数据分析前的软删除恢复前事件.
      */
-    public const BEFORE_SOFT_RESTORE_EVENT = 'softRestore';
+    public const string BEFORE_SOFT_RESTORE_EVENT = 'softRestore';
 
     /**
      * 数据分析后的软删除恢复前事件.
      */
-    public const BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
+    public const string BEFORE_SOFT_RESTORING_EVENT = 'softRestoring';
 
     /**
      * 软删除恢复后事件.
      */
-    public const AFTER_SOFT_RESTORED_EVENT = 'softRestored';
+    public const string AFTER_SOFT_RESTORED_EVENT = 'softRestored';
 
     /**
      * 枚举字段后缀.
      */
-    public const ENUM_SUFFIX = 'enum';
+    public const string ENUM_SUFFIX = 'enum';
 
     /**
      * 枚举分隔符号.
      */
-    public const ENUM_SEPARATE = ',';
+    public const string ENUM_SEPARATE = ',';
 
     /**
      * 枚举类.
      */
-    public const ENUM_CLASS = 'enum_class';
+    public const string ENUM_CLASS = 'enum_class';
 
     /**
      * 字段只读.
      *
      * - 保护核心字段不被修改
      */
-    public const READONLY = 'readonly';
+    public const string READONLY = 'readonly';
 
     /**
      * 构造器属性黑名单.
      */
-    public const CONSTRUCT_PROP_BLACK = 'construct_prop_black';
+    public const string CONSTRUCT_PROP_BLACK = 'construct_prop_black';
 
     /**
      * 构造器属性白名单.
      */
-    public const CONSTRUCT_PROP_WHITE = 'construct_prop_white';
+    public const string CONSTRUCT_PROP_WHITE = 'construct_prop_white';
 
     /**
      * 查询显示属性黑名单.
      */
-    public const SHOW_PROP_BLACK = 'show_prop_black';
+    public const string SHOW_PROP_BLACK = 'show_prop_black';
 
     /**
      * 查询显示属性白名单.
      */
-    public const SHOW_PROP_WHITE = 'show_prop_white';
+    public const string SHOW_PROP_WHITE = 'show_prop_white';
 
     /**
      * 查询显示属性是否允许 NULL.
@@ -170,132 +170,132 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      * - 系统自动过滤为 null 的值
      * - 如果字段存在设置，则会保留该字段设置的指定值
      */
-    public const SHOW_PROP_NULL = 'show_prop_null';
+    public const string SHOW_PROP_NULL = 'show_prop_null';
 
     /**
      * 创建属性黑名单.
      */
-    public const CREATE_PROP_BLACK = 'create_prop_black';
+    public const string CREATE_PROP_BLACK = 'create_prop_black';
 
     /**
      * 创建属性白名单.
      */
-    public const CREATE_PROP_WHITE = 'create_prop_white';
+    public const string CREATE_PROP_WHITE = 'create_prop_white';
 
     /**
      * 更新属性黑名单.
      */
-    public const UPDATE_PROP_BLACK = 'update_prop_black';
+    public const string UPDATE_PROP_BLACK = 'update_prop_black';
 
     /**
      * 更新属性白名单.
      */
-    public const UPDATE_PROP_WHITE = 'update_prop_white';
+    public const string UPDATE_PROP_WHITE = 'update_prop_white';
 
     /**
      * 创建填充属性.
      */
-    public const CREATE_FILL = 'create_fill';
+    public const string CREATE_FILL = 'create_fill';
 
     /**
      * 更新填充属性.
      */
-    public const UPDATE_FILL = 'update_fill';
+    public const string UPDATE_FILL = 'update_fill';
 
     /**
      * 一对一关联实体.
      */
-    public const HAS_ONE = 1;
+    public const int HAS_ONE = 1;
 
     /**
      * 从属关联实体.
      */
-    public const BELONGS_TO = 2;
+    public const int BELONGS_TO = 2;
 
     /**
      * 一对多关联实体.
      */
-    public const HAS_MANY = 3;
+    public const int HAS_MANY = 3;
 
     /**
      * 多对多关联实体.
      */
-    public const MANY_MANY = 4;
+    public const int MANY_MANY = 4;
 
     /**
      * 关联查询作用域.
      */
-    public const RELATION_SCOPE = 'relation_scope';
+    public const string RELATION_SCOPE = 'relation_scope';
 
     /**
      * 关联查询源键字段.
      */
-    public const SOURCE_KEY = 'source_key';
+    public const string SOURCE_KEY = 'source_key';
 
     /**
      * 关联目标键字段.
      */
-    public const TARGET_KEY = 'target_key';
+    public const string TARGET_KEY = 'target_key';
 
     /**
      * 关联查询中间实体源键字段.
      */
-    public const MIDDLE_SOURCE_KEY = 'middle_source_key';
+    public const string MIDDLE_SOURCE_KEY = 'middle_source_key';
 
     /**
      * 关联查询中间实体目标键字段.
      */
-    public const MIDDLE_TARGET_KEY = 'middle_target_key';
+    public const string MIDDLE_TARGET_KEY = 'middle_target_key';
 
     /**
      * 关联查询中间实体.
      */
-    public const MIDDLE_ENTITY = 'middle_entity';
+    public const string MIDDLE_ENTITY = 'middle_entity';
 
     /**
      * 不包含软删除的数据.
      */
-    public const WITHOUT_SOFT_DELETED = 1;
+    public const int WITHOUT_SOFT_DELETED = 1;
 
     /**
      * 包含软删除的数据.
      */
-    public const WITH_SOFT_DELETED = 2;
+    public const int WITH_SOFT_DELETED = 2;
 
     /**
      * 只包含软删除的数据.
      */
-    public const ONLY_SOFT_DELETED = 3;
+    public const int ONLY_SOFT_DELETED = 3;
 
     /**
      * 字段名字.
      */
-    public const COLUMN_NAME = 'column_name';
+    public const string COLUMN_NAME = 'column_name';
 
     /**
      * 字段备注.
      */
-    public const COLUMN_COMMENT = 'column_comment';
+    public const string COLUMN_COMMENT = 'column_comment';
 
     /**
      * 字段验证器.
      */
-    public const COLUMN_VALIDATOR = 'column_validator';
+    public const string COLUMN_VALIDATOR = 'column_validator';
 
     /**
      * 验证器默认场景.
      */
-    public const VALIDATOR_SCENES = 'validator_scenes';
+    public const string VALIDATOR_SCENES = 'validator_scenes';
 
     /**
      * 验证器错误消息.
      */
-    public const VALIDATOR_MESSAGES = 'validator_messages';
+    public const string VALIDATOR_MESSAGES = 'validator_messages';
 
     /**
      * 字段结构.
      */
-    public const COLUMN_STRUCT = 'column_struct';
+    public const string COLUMN_STRUCT = 'column_struct';
 
     /**
      * 虚拟字段.
@@ -303,14 +303,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      * - 虚拟字段仅用于存储多余的实体数据，比如连表查询后的数据
      * - 不会参与新增和更新
      */
-    public const VIRTUAL_COLUMN = 'virtual_column';
+    public const string VIRTUAL_COLUMN = 'virtual_column';
 
     /**
      * 共享字段.
      *
      * - 共享字段数据，存放一些自定义数据
      */
-    public const META = 'meta';
+    public const string META = 'meta';
 
     /**
      * 已修改的实体属性.

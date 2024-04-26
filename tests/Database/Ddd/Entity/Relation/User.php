@@ -11,11 +11,11 @@ use Leevel\Database\Ddd\Struct;
 
 class User extends Entity
 {
-    public const TABLE = 'user';
+    public const string TABLE = 'user';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
     ])]

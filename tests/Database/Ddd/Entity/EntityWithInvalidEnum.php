@@ -11,13 +11,13 @@ class EntityWithInvalidEnum extends Entity
 {
     use GetterSetter;
 
-    public const TABLE = 'entity_with_invalid_enum';
+    public const string TABLE = 'entity_with_invalid_enum';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
-    public const STRUCT = [
+    public const array STRUCT = [
         'id' => [
             self::READONLY => true,
         ],
@@ -25,7 +25,7 @@ class EntityWithInvalidEnum extends Entity
         'status' => [],
     ];
 
-    public const STATUS_ENUM = [
+    public const string STATUS_ENUM = [
         'disable' => ['f'],
         'enable' => ['t'],
     ];

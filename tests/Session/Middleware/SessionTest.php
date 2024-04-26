@@ -11,7 +11,7 @@ use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Session\Manager;
 use Leevel\Session\Middleware\Session as MiddlewareSession;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Tests\TestCase;
@@ -68,7 +68,7 @@ final class SessionTest extends TestCase
     protected function createRequest(string $url): Request
     {
         $request = $this->createMock(Request::class);
-        $request->cookies = new ParameterBag();
+        $request->cookies = new InputBag();
         $request->method('getUri')->willReturn($url);
         static::assertSame($url, $request->getUri());
 

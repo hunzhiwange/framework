@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class PostContent extends Entity
 {
-    public const TABLE = 'post_content';
+    public const string TABLE = 'post_content';
 
-    public const ID = null;
+    public const null ID = null;
 
-    public const AUTO = null;
+    public const null AUTO = null;
 
     #[Struct([
         self::READONLY => true,

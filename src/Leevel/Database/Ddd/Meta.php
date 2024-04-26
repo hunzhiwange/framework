@@ -154,7 +154,7 @@ class Meta
     /**
      * 延迟载入占位符.
      */
-    protected static function lazyloadPlaceholder(): bool
+    protected static function lazyloadPlaceholder(): true
     {
         return Lazyload::placeholder();
     }

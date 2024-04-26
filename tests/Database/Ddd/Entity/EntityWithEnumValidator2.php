@@ -10,11 +10,11 @@ use Leevel\Validate\IValidator;
 
 class EntityWithEnumValidator2 extends Entity
 {
-    public const TABLE = 'entity_with_enum';
+    public const string TABLE = 'entity_with_enum';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
         self::READONLY => true,

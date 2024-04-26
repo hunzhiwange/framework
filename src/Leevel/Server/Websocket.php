@@ -21,22 +21,22 @@ class Websocket extends Http
     /**
      * 新客户接入回调.
      */
-    public const OPEN = 'open';
+    public const string OPEN = 'open';
 
     /**
      * 收到客户端数据帧回调.
      */
-    public const MESSAGE = 'message';
+    public const string MESSAGE = 'message';
 
     /**
      * 客户端关闭回调.
      */
-    public const CLOSE = 'close';
+    public const string CLOSE = 'close';
 
     /**
      * 客户连接 pathInfo 前缀
      */
-    public const PATHINFO = 'websocket_pathinfo_';
+    public const string PATHINFO = 'websocket_pathinfo_';
 
     /**
      * 配置.

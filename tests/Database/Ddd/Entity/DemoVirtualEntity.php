@@ -9,13 +9,13 @@ use Leevel\Database\Ddd\Struct;
 
 class DemoVirtualEntity extends Entity
 {
-    public const VIRTUAL = true;
+    public const bool VIRTUAL = true;
 
-    public const TABLE = 'test';
+    public const string TABLE = 'test';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
         self::READONLY => true,

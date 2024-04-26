@@ -12,7 +12,7 @@ interface IConfig
     /**
      * 默认命名空间.
      */
-    public const DEFAUTL_NAMESPACE = 'app';
+    public const string DEFAUTL_NAMESPACE = 'app';
 
     /**
      * 是否存在配置.

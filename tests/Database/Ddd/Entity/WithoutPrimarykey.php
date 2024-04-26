@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class WithoutPrimarykey extends Entity
 {
-    public const TABLE = 'without_primarykey';
+    public const string TABLE = 'without_primarykey';
 
-    public const ID = 'goods_id';
+    public const string ID = 'goods_id';
 
-    public const AUTO = null;
+    public const ?string AUTO = null;
 
     #[Struct([
         self::READONLY => true,

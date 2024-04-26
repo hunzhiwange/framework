@@ -110,7 +110,7 @@ abstract class HttpException extends \RuntimeException
     /**
      * 异常是否需要上报.
      */
-    public function reportable(): bool
+    public function reportable(): false
     {
         return false;
     }

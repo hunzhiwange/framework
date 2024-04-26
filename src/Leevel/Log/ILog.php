@@ -16,14 +16,14 @@ interface ILog extends LoggerInterface
     /**
      * 关闭日志.
      */
-    public const OFF = 'off';
+    public const string OFF = 'off';
 
     /**
      * 日志优先级.
      *
      * - RFC 5424 level
      */
-    public const LEVEL_PRIORITY = [
+    public const array LEVEL_PRIORITY = [
         self::OFF => -1,
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT => 1,
@@ -38,12 +38,12 @@ interface ILog extends LoggerInterface
     /**
      * 日志事件.
      */
-    public const LOG_EVENT = 'log.log';
+    public const string LOG_EVENT = 'log.log';
 
     /**
      * 默认日志类别.
      */
-    public const DEFAULT_MESSAGE_CATEGORY = '*';
+    public const string DEFAULT_MESSAGE_CATEGORY = '*';
 
     /**
      * 取得 Monolog.

@@ -12,11 +12,11 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "leevel/support": "^1.1",
         "league/flysystem": "^3.12.3",
         "league/flysystem-ftp": "^3.10.3",
-        "symfony/filesystem": "^6.2"
+        "symfony/filesystem": "^7.0.6"
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",

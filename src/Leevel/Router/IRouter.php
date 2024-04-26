@@ -15,99 +15,99 @@ interface IRouter
     /**
      * 应用参数名.
      */
-    public const APP = ':app';
+    public const string APP = ':app';
 
     /**
      * 控制器前缀
      */
-    public const PREFIX = ':prefix';
+    public const string PREFIX = ':prefix';
 
     /**
      * 控制器参数名.
      */
-    public const CONTROLLER = ':controller';
+    public const string CONTROLLER = ':controller';
 
     /**
      * 方法参数名.
      */
-    public const ACTION = ':action';
+    public const string ACTION = ':action';
 
     /**
      * 绑定资源.
      */
-    public const BIND = ':bind';
+    public const string BIND = ':bind';
 
     /**
      * 解析参数名.
      */
-    public const ATTRIBUTES = ':attributes';
+    public const string ATTRIBUTES = ':attributes';
 
     /**
      * 解析变量名.
      */
-    public const VARS = ':vars';
+    public const string VARS = ':vars';
 
     /**
      * 解析中间件名.
      */
-    public const MIDDLEWARES = ':middlewares';
+    public const string MIDDLEWARES = ':middlewares';
 
     /**
      * restful show.
      */
-    public const RESTFUL_SHOW = 'show';
+    public const string RESTFUL_SHOW = 'show';
 
     /**
      * restful store.
      */
-    public const RESTFUL_STORE = 'store';
+    public const string RESTFUL_STORE = 'store';
 
     /**
      * restful update.
      */
-    public const RESTFUL_UPDATE = 'update';
+    public const string RESTFUL_UPDATE = 'update';
 
     /**
      * restful destroy.
      */
-    public const RESTFUL_DESTROY = 'destroy';
+    public const string RESTFUL_DESTROY = 'destroy';
 
     /**
      * restful index.
      */
-    public const RESTFUL_INDEX = 'index';
+    public const string RESTFUL_INDEX = 'index';
 
     /**
      * restful regex.
      *
      * @todo 支持自定义 restful regex
      */
-    public const RESTFUL_REGEX = '\d+';
+    public const string RESTFUL_REGEX = '\d+';
 
     /**
      * restful id.
      */
-    public const RESTFUL_ID = 'id';
+    public const string RESTFUL_ID = 'id';
 
     /**
      * 默认应用.
      */
-    public const DEFAULT_APP = 'app';
+    public const string DEFAULT_APP = 'app';
 
     /**
      * 默认首页控制器.
      */
-    public const DEFAULT_CONTROLLER = 'home';
+    public const string DEFAULT_CONTROLLER = 'home';
 
     /**
      * 默认替换参数[字符串].
      */
-    public const DEFAULT_REGEX = '\S+';
+    public const string DEFAULT_REGEX = '\S+';
 
     /**
      * 路由匹配项.
      */
-    public const MATCHED = [
+    public const array MATCHED = [
         self::APP,
         self::PREFIX,
         self::CONTROLLER,

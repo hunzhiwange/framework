@@ -16,22 +16,22 @@ class Test extends Entity
     /**
      * Database table.
      */
-    public const TABLE = 'test';
+    public const string TABLE = 'test';
 
     /**
      * Database table name.
      */
-    public const TABLE_NAME = 'test';
+    public const string TABLE_NAME = 'test';
 
     /**
      * Primary key.
      */
-    public const ID = 'id';
+    public const string ID = 'id';
 
     /**
      * Auto increment.
      */
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Str2uct([
         self::READONLY => true,

@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class UserRole extends Entity
 {
-    public const TABLE = 'user_role';
+    public const string TABLE = 'user_role';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
     ])]

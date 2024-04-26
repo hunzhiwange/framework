@@ -18,27 +18,27 @@ class Condition
     /**
      * And 逻辑运算符.
      */
-    public const LOGIC_AND = 'and';
+    public const string LOGIC_AND = 'and';
 
     /**
      * Or 逻辑运算符.
      */
-    public const LOGIC_OR = 'or';
+    public const string LOGIC_OR = 'or';
 
     /**
      * 原生查询左标识符.
      */
-    public const RAW_LEFT = '{';
+    public const string RAW_LEFT = '{';
 
     /**
      * 原生查询右标识符.
      */
-    public const RAW_RIGHT = '}';
+    public const string RAW_RIGHT = '}';
 
     /**
      * 子表达式默认别名.
      */
-    public const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
+    public const string DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
      * 查询条件参数.

@@ -9,13 +9,13 @@ use Leevel\Database\Ddd\Struct;
 
 class Guestbook extends Entity
 {
-    public const TABLE = 'guest_book';
+    public const string TABLE = 'guest_book';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
-    public const REPOSITORY = GuestbookRepository::class;
+    public const string REPOSITORY = GuestbookRepository::class;
 
     #[Struct([
         self::READONLY => true,

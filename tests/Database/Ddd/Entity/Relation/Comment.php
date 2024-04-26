@@ -9,11 +9,11 @@ use Leevel\Database\Ddd\Struct;
 
 class Comment extends Entity
 {
-    public const TABLE = 'comment';
+    public const string TABLE = 'comment';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
     #[Struct([
     ])]

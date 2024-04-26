@@ -15,7 +15,7 @@ abstract class BusinessException extends HttpException
     /**
      * 默认 0 表示不是很重要的业务日志.
      */
-    public const DEFAULT_LEVEL = 0;
+    public const int DEFAULT_LEVEL = 0;
 
     /**
      * 业务逻辑异常重要程度.

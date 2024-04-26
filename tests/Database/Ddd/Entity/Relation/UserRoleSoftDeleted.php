@@ -9,13 +9,13 @@ use Leevel\Database\Ddd\Struct;
 
 class UserRoleSoftDeleted extends Entity
 {
-    public const TABLE = 'user_role_soft_deleted';
+    public const string TABLE = 'user_role_soft_deleted';
 
-    public const ID = 'id';
+    public const string ID = 'id';
 
-    public const AUTO = 'id';
+    public const string AUTO = 'id';
 
-    public const DELETE_AT = 'delete_at';
+    public const string DELETE_AT = 'delete_at';
 
     #[Struct([
     ])]

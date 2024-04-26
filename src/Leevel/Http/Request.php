@@ -15,22 +15,22 @@ class Request extends BaseRequest implements IArray
     /**
      * 请求方法伪装.
      */
-    public const VAR_METHOD = '_method';
+    public const string VAR_METHOD = '_method';
 
     /**
      * AJAX 伪装.
      */
-    public const VAR_AJAX = '_ajax';
+    public const string VAR_AJAX = '_ajax';
 
     /**
      * PJAX 伪装.
      */
-    public const VAR_PJAX = '_pjax';
+    public const string VAR_PJAX = '_pjax';
 
     /**
      * 接受 JSON 伪装.
      */
-    public const VAR_ACCEPT_JSON = '_acceptjson';
+    public const string VAR_ACCEPT_JSON = '_acceptjson';
 
     /**
      * 从 Symfony 请求创建 Leevel 请求.

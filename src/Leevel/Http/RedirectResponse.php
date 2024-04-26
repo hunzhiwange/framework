@@ -17,7 +17,7 @@ class RedirectResponse extends SymfonyRedirectResponse
     /**
      * 错误键.
      */
-    public const ERRORS_KEY = ':errors_key';
+    public const string ERRORS_KEY = ':errors_key';
 
     /**
      * SESSION 仓储.

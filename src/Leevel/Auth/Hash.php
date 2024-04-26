@@ -12,7 +12,7 @@ class Hash implements IHash
     /**
      * 加密算法.
      */
-    public const ALGO = ':algo';
+    public const string ALGO = ':algo';
 
     /**
      * {@inheritDoc}

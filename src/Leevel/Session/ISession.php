@@ -14,27 +14,27 @@ interface ISession
     /**
      * 默认 Session 名字.
      */
-    public const SESSION_NAME = 'UID';
+    public const string SESSION_NAME = 'UID';
 
     /**
      * 闪存值键前缀.
      */
-    public const FLASH_DATA_KEY_PREFIX = 'flash.data.';
+    public const string FLASH_DATA_KEY_PREFIX = 'flash.data.';
 
     /**
      * 新值闪存键.
      */
-    public const FLASH_NEW_KEY = 'flash.new.key';
+    public const string FLASH_NEW_KEY = 'flash.new.key';
 
     /**
      * 旧值闪存键.
      */
-    public const FLASH_OLD_KEY = 'flash.old.key';
+    public const string FLASH_OLD_KEY = 'flash.old.key';
 
     /**
      * 前一个页面键.
      */
-    public const PREV_URL_KEY = 'prev.url.key';
+    public const string PREV_URL_KEY = 'prev.url.key';
 
     /**
      * 启动 Session.

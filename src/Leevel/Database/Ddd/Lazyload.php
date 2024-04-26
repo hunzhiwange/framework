@@ -16,7 +16,7 @@ class Lazyload
      *
      * - 仅仅用于占位，必要时用于唤醒数据库服务提供者.
      */
-    public static function placeholder(): bool
+    public static function placeholder(): true
     {
         Container::singletons()->make('database.lazyload', throw: false);
 

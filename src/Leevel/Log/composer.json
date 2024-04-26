@@ -12,10 +12,10 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.3",
         "leevel/support": "^1.1",
         "leevel/event": "^1.1",
-        "monolog/monolog": "^3.3.1"
+        "monolog/monolog": "^3.6.0"
     },
     "suggest": {
         "leevel/http": "Required to use log middleware (^1.1).",

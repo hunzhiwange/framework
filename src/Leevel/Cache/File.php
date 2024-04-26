@@ -14,12 +14,12 @@ class File extends Cache implements ICache
     /**
      * 缓存文件头部.
      */
-    public const HEADER = '<?php die(%s); ?>';
+    public const string HEADER = '<?php die(%s); ?>';
 
     /**
      * 缓存文件头部长度.
      */
-    public const HEADER_LENGTH = 41;
+    public const int HEADER_LENGTH = 41;
 
     /**
      * 配置.

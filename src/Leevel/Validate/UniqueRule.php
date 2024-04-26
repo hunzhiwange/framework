@@ -17,12 +17,12 @@ class UniqueRule
     /**
      * 占位符.
      */
-    public const PLACEHOLDER = '_';
+    public const string PLACEHOLDER = '_';
 
     /**
      * 隔离符.
      */
-    public const SEPARATE = ':';
+    public const string SEPARATE = ':';
 
     /**
      * 校验.

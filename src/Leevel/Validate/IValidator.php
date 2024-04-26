@@ -14,29 +14,29 @@ interface IValidator
     /**
      * 可选字段.
      */
-    public const OPTIONAL = 'configal';
+    public const string OPTIONAL = 'configal';
 
     /**
      * 可选字符串字段.
      *
      * - 忽略空字符串和NULL值.
      */
-    public const OPTIONAL_STRING = 'configal_string';
+    public const string OPTIONAL_STRING = 'configal_string';
 
     /**
      * 无论是否是可选字段都验证.
      */
-    public const MUST = 'must';
+    public const string MUST = 'must';
 
     /**
      * 失败后跳过.
      */
-    public const SKIP_SELF = 'self';
+    public const string SKIP_SELF = 'self';
 
     /**
      * 跳过其它验证.
      */
-    public const SKIP_OTHER = 'other';
+    public const string SKIP_OTHER = 'other';
 
     /**
      * 初始化验证器.

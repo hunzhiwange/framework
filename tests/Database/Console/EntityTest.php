@@ -278,7 +278,7 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString('const ID = null;', $content);
+        static::assertStringContainsString('public const null ID = null;', $content);
     }
 
     public function testWithTableWithoutCompositePrimaryKey(): void
@@ -299,7 +299,7 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString("const ID = ['id1', 'id2'];", $content);
+        static::assertStringContainsString("public const array ID = ['id1', 'id2'];", $content);
     }
 
     public function testWithComposerJson(): void
@@ -321,7 +321,7 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         static::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         static::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        static::assertStringContainsString("const DELETE_AT = 'delete_at';", $content);
+        static::assertStringContainsString("public const string DELETE_AT = 'delete_at';", $content);
     }
 
     public function testWithTableFieldAllowedNull(): void
