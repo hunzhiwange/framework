@@ -14,6 +14,7 @@ use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '应用',
@@ -813,12 +814,7 @@ EOT,
         static::assertSame(__DIR__.'/hello', $app->themesPath());
     }
 
-    /**
-     * @dataProvider envProvider
-     *
-     * @param mixed $value
-     * @param mixed $envValue
-     */
+    #[DataProvider('envProvider')]
     #[Api([
         'zh-CN:title' => 'env 获取应用的环境变量',
         'zh-CN:description' => <<<'EOT'

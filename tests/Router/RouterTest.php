@@ -17,6 +17,7 @@ use Tests\Router\Middlewares\Demo2;
 use Tests\Router\Middlewares\Demo3;
 use Tests\Router\Middlewares\DemoForGroup;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => 'Router',
@@ -302,9 +303,7 @@ EOT,
         static::assertSame('stringable test.', $result->getContent());
     }
 
-    /**
-     * @dataProvider getRestfulData
-     */
+    #[DataProvider('getRestfulData')]
     #[Api([
         'zh-CN:title' => 'RESTFUL 控制器响应',
         'zh-CN:description' => <<<'EOT'
@@ -393,9 +392,7 @@ EOT,
         static::assertSame('hello action for restful show', $result->getContent());
     }
 
-    /**
-     * @dataProvider getNodeNotFoundData
-     */
+    #[DataProvider('getNodeNotFoundData')]
     public function testNodeNotFound(string $method, string $action): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);
@@ -423,9 +420,7 @@ EOT,
         ];
     }
 
-    /**
-     * @dataProvider getNodeNotFoundDataWithParams
-     */
+    #[DataProvider('getNodeNotFoundDataWithParams')]
     public function testNodeNotFoundWithParams(string $method, string $action): void
     {
         $this->expectException(\Leevel\Router\RouterNotFoundException::class);

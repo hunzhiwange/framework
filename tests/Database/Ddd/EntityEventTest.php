@@ -10,6 +10,7 @@ use Leevel\Event\Dispatch;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEventEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '实体事件',
@@ -66,11 +67,7 @@ final class EntityEventTest extends TestCase
         });
     }
 
-    /**
-     * @dataProvider getSupportedEvent
-     *
-     * @param string $event
-     */
+    #[DataProvider('getSupportedEvent')]
     #[Api([
         'zh-CN:title' => '实体支持的事件',
         'zh-CN:description' => <<<'EOT'

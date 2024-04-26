@@ -8,6 +8,7 @@ use Leevel\Kernel\Exceptions\HttpException as ExceptionHttpException;
 use Tests\Kernel\Exception\BusinessException;
 use Tests\Kernel\Exception\HttpException;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ExceptionTest extends TestCase
 {
@@ -28,11 +29,7 @@ final class ExceptionTest extends TestCase
         static::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
-    /**
-     * @dataProvider getHttpExceptionData
-     *
-     * @param string $code
-     */
+    #[DataProvider('getHttpExceptionData')]
     public function testHttpException(string $exception, int $code, string $message): void
     {
         $exceptionName = 'Tests\\Kernel\\Exception\\'.$exception;

@@ -23,6 +23,7 @@ use Leevel\Session\File as SessionFile;
 use Leevel\Session\ISession;
 use Tests\Database;
 use Tests\Database\DatabaseTestCase as TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => 'Debug',
@@ -312,9 +313,7 @@ EOT,
         static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    /**
-     * @dataProvider getMessageLevelsData
-     */
+    #[DataProvider('getMessageLevelsData')]
     #[Api([
         'zh-CN:title' => '调试消息等级',
         'zh-CN:description' => <<<'EOT'

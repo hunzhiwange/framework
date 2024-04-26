@@ -24,6 +24,7 @@ use Tests\Kernel\Middlewares\Demo1;
 use Tests\Kernel\Middlewares\Demo2;
 use Tests\Kernel\Middlewares\Demo3;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '内核',
@@ -51,9 +52,7 @@ EOT,
 ])]
 final class KernelTest extends TestCase
 {
-    /**
-     * @dataProvider baseUseProvider
-     */
+    #[DataProvider('baseUseProvider')]
     #[Api([
         'zh-CN:title' => '基本使用',
         'zh-CN:description' => <<<'EOT'

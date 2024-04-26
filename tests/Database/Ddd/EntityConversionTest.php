@@ -10,6 +10,7 @@ use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '实体类型转换',
@@ -22,14 +23,7 @@ EOT,
 ])]
 final class EntityConversionTest extends TestCase
 {
-    /**
-     * @dataProvider getBaseUseData
-     *
-     * @param string $field
-     * @param mixed  $source
-     * @param mixed  $prop
-     * @param mixed  $conversion
-     */
+    #[DataProvider('getBaseUseData')]
     #[Api([
         'zh-CN:title' => '基本使用方法',
         'zh-CN:description' => <<<'EOT'

@@ -11,6 +11,7 @@ use Leevel\Log\ILog;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => 'Log',
@@ -105,9 +106,7 @@ final class LogTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider baseUseProvider
-     */
+    #[DataProvider('baseUseProvider')]
     #[Api([
         'zh-CN:title' => 'log 基本使用',
         'zh-CN:description' => <<<'EOT'

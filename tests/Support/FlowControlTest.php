@@ -7,6 +7,7 @@ namespace Tests\Support;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Support\FlowControl;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '流程控制',
@@ -75,9 +76,7 @@ EOT,
         static::assertSame('condition2', $value);
     }
 
-    /**
-     * @dataProvider getElseData
-     */
+    #[DataProvider('getElseData')]
     #[Api([
         'zh-CN:title' => 'else 条件语句例子',
         'zh-CN:description' => <<<'EOT'
