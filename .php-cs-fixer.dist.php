@@ -25,7 +25,6 @@ return (new PhpCsFixer\Config())
         'php_unit_test_class_requires_covers' => false,
         'strict_comparison' => false,
         'strict_param' => false,
-        'php_unit_internal_class' => [],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
