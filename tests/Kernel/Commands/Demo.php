@@ -6,11 +6,11 @@ namespace Tests\Kernel\Commands;
 
 use Leevel\Console\Command;
 
-final class Test extends Command
+final class Demo extends Command
 {
-    protected string $name = 'test';
+    protected string $name = 'demo';
 
-    protected string $description = 'This is a test command';
+    protected string $description = 'This is a demo command';
 
     protected string $help = <<<'EOF'
         The <info>%command.name%</info> command to show how to make a command:
