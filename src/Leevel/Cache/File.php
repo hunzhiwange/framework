@@ -185,6 +185,7 @@ class File extends Cache implements ICache
             throw new \Exception(sprintf('Get file size of file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
+        // @phpstan-ignore-next-line
         $readResult = fread($fp, static::HEADER_LENGTH);
         if (false === $readResult) {
             throw new \Exception(sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore

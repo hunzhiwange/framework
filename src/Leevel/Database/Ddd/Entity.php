@@ -1719,6 +1719,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             }
 
             $validatorRules[$field] ??= [];
+            // @phpstan-ignore-next-line
             $validatorRules[$field][] = ['in', $enumClass::values()];
             // 枚举为可选，可以利用数据库的默认值来填充
             $validatorRules[$field][] = IValidator::OPTIONAL;
@@ -2001,7 +2002,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         return static::$databaseConnectFramework[static::class] ??
             (\defined($constConnect = static::class.'::CONNECT') ?
-                \constant($constConnect) : null);
+                \constant($constConnect) : null); // @phpstan-ignore-line
     }
 
     /**
@@ -2009,6 +2010,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public static function entityConstant(string $const): mixed
     {
+        // @phpstan-ignore-next-line
         return \constant(static::class.'::'.$const);
     }
 

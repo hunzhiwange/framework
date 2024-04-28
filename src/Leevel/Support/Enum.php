@@ -55,7 +55,7 @@ trait Enum
     {
         if (!enum_exists(static::class)) {
             return \defined(static::class.'::'.$key) ?
-                \constant(static::class.'::'.$key) :
+                \constant(static::class.'::'.$key) : // @phpstan-ignore-line
                 throw new \OutOfBoundsException(
                     sprintf('Key `%s` is not part of %s', $key, static::class)
                 );

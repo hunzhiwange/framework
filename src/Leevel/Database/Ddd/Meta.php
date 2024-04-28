@@ -72,6 +72,7 @@ class Meta
         }
 
         if (!static::$databaseResolver
+            // @phpstan-ignore-next-line
             && static::lazyloadPlaceholder()
             // @phpstan-ignore-next-line
             && !static::$databaseResolver) {

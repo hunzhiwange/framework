@@ -46,6 +46,7 @@ trait Helper
                 ->getValue($classOrObject)
                 ;
         } else {
+            // @phpstan-ignore-next-line
             $reflectedClass = new \ReflectionClass($classOrObject);
             return $reflectedClass->getStaticPropertyValue($prop);
         }
@@ -62,6 +63,7 @@ trait Helper
                 ->setValue($classOrObject, $value)
             ;
         } else {
+            // @phpstan-ignore-next-line
             $reflectedClass = new \ReflectionClass($classOrObject);
             $reflectedClass->setStaticPropertyValue($prop, $value);
         }
