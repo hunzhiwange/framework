@@ -355,7 +355,7 @@ EOT,
         static::assertSame('hello for restful '.$action, $result->getContent());
     }
 
-    public static function getRestfulData()
+    public static function getRestfulData(): array
     {
         return [
             ['GET', Router::RESTFUL_SHOW],
@@ -410,7 +410,7 @@ EOT,
         $router->dispatch($request);
     }
 
-    public static function getNodeNotFoundData()
+    public static function getNodeNotFoundData(): array
     {
         return [
             ['GET', Router::RESTFUL_INDEX],
@@ -438,7 +438,7 @@ EOT,
         $router->dispatch($request);
     }
 
-    public static function getNodeNotFoundDataWithParams()
+    public static function getNodeNotFoundDataWithParams(): array
     {
         return [
             ['GET', Router::RESTFUL_SHOW],

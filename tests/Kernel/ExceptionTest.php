@@ -44,7 +44,7 @@ final class ExceptionTest extends TestCase
         static::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
-    public static function getHttpExceptionData()
+    public static function getHttpExceptionData(): array
     {
         return [
             ['BadRequestHttpException', 400, 'hello BadRequestHttpException'],

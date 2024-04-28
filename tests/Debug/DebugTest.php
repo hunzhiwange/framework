@@ -354,7 +354,7 @@ EOT,
         static::assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
     }
 
-    public static function getMessageLevelsData()
+    public static function getMessageLevelsData(): array
     {
         return [
             ['emergency'], ['alert'], ['critical'],

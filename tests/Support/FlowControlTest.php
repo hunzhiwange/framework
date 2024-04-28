@@ -109,7 +109,7 @@ EOT,
         static::assertSame($result, $value);
     }
 
-    public static function getElseData()
+    public static function getElseData(): array
     {
         return [
             [0, 'condition1'],

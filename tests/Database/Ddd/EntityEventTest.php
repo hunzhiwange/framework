@@ -87,7 +87,7 @@ EOT,
         static::assertTrue(\in_array($event, $supportEvent, true));
     }
 
-    public static function getSupportedEvent()
+    public static function getSupportedEvent(): array
     {
         return [
             [Entity::BEFORE_SAVING_EVENT],

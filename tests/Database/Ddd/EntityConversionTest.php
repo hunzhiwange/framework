@@ -56,7 +56,7 @@ EOT,
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
-    public function getBaseUseData()
+    public static function getBaseUseData(): array
     {
         return [
             // int
