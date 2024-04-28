@@ -11,6 +11,7 @@ use Leevel\Filesystem\Helper;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
+use PHPUnit\Framework\Attributes\Group;
 
 #[Api([
     'zh-CN:title' => '数据库连接',
@@ -865,9 +866,7 @@ EOT,
         $connect->query('SELECT * FROM db_not_found where id = 1;');
     }
 
-    /**
-     * @group ignoredGroup
-     */
+    #[Group('ignoredGroup')]
     #[Api([
         'zh-CN:title' => 'setSavepoints 设置是否启用部分事务回滚保存点',
     ])]
@@ -929,9 +928,7 @@ EOT,
         $connect->commit();
     }
 
-    /**
-     * @group ignoredGroup
-     */
+    #[Group('ignoredGroup')]
     #[Api([
         'zh-CN:title' => 'setSavepoints 设置是否启用部分事务提交保存点',
     ])]

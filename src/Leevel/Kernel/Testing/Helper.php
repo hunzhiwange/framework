@@ -40,10 +40,15 @@ trait Helper
      */
     protected function getTestProperty(object|string $classOrObject, string $prop): mixed
     {
-        return $this
-            ->parseTestProperty($classOrObject, $prop)
-            ->getValue(\is_object($classOrObject) ? $classOrObject : null)
-        ;
+        if (\is_object($classOrObject)) {
+            return $this
+                ->parseTestProperty($classOrObject, $prop)
+                ->getValue($classOrObject)
+                ;
+        } else {
+            $reflectedClass = new \ReflectionClass($classOrObject);
+            return $reflectedClass->getStaticPropertyValue($prop);
+        }
     }
 
     /**
@@ -51,17 +56,21 @@ trait Helper
      */
     protected function setTestProperty(object|string $classOrObject, string $prop, mixed $value): void
     {
-        $value = \is_object($classOrObject) ? [$classOrObject, $value] : [$value];
-        $this
-            ->parseTestProperty($classOrObject, $prop)
-            ->setValue(...$value)
-        ;
+        if (\is_object($classOrObject)) {
+            $this
+                ->parseTestProperty($classOrObject, $prop)
+                ->setValue($classOrObject, $value)
+            ;
+        } else {
+            $reflectedClass = new \ReflectionClass($classOrObject);
+            $reflectedClass->setStaticPropertyValue($prop, $value);
+        }
     }
 
     /**
      * 分析对象反射属性.
      */
-    protected function parseTestProperty(object|string $classOrObject, string $prop): \ReflectionProperty
+    protected function parseTestProperty(object $classOrObject, string $prop): \ReflectionProperty
     {
         /** @phpstan-ignore-next-line */
         $reflected = new \ReflectionClass($classOrObject);

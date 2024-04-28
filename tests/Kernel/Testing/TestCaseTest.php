@@ -12,7 +12,7 @@ final class TestCaseTest extends TestCase
 {
     public function test1(): void
     {
-        $t = new TestCase1();
+        $t = new TestCase1('');
         static::assertNull($this->getTestProperty($t, 'app'));
         $this->invokeTestMethod($t, 'setUp');
         $this->invokeTestMethod($t, 'setUp');

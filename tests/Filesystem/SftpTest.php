@@ -12,6 +12,7 @@ final class SftpTest extends TestCase
 {
     public function testBaseUse(): void
     {
+        $this->setInIsolation(true);
         $this->expectException(\League\Flysystem\UnableToWriteFile::class);
 
         set_error_handler(function ($type, $msg): void {});

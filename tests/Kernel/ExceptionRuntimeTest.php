@@ -68,6 +68,7 @@ final class ExceptionRuntimeTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
+        $this->setInIsolation(true);
         Container::singletons()->clear();
     }
 
