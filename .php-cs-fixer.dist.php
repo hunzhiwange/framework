@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+
 if (!file_exists(__DIR__.'/src')) {
     exit(0);
 }
 
 // https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.14.3/.php-cs-fixer.dist.php
-return (new PhpCsFixer\Config())
+return (new Config())
     ->setRules([
         '@PHP74Migration' => true,
         '@PHP74Migration:risky' => true,
@@ -25,10 +28,11 @@ return (new PhpCsFixer\Config())
         'php_unit_test_class_requires_covers' => false,
         'strict_comparison' => false,
         'strict_param' => false,
+        'php_unit_internal_class' => false,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
-        PhpCsFixer\Finder::create()
+        Finder::create()
             ->in(__DIR__.'/src')
             ->append([__FILE__])
             ->in(__DIR__.'/tests')
