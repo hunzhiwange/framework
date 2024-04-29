@@ -10,9 +10,9 @@ use Leevel\I18n\Gettext;
  * 消息属性.
  */
 #[\Attribute]
-class Msg
+readonly class Msg
 {
-    private readonly string $message;
+    private string $message;
 
     public function __construct(string $message = '', ...$moreArgs) // @phpstan-ignore-line
     {
