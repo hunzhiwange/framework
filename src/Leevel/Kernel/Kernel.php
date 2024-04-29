@@ -62,9 +62,6 @@ abstract class Kernel implements IKernel
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function handle(Request $request): Response
     {
         try {
@@ -97,26 +94,17 @@ abstract class Kernel implements IKernel
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function terminate(Request $request, Response $response): void
     {
         $this->routerTerminateMiddleware($request, $response);
         $this->terminateMiddleware($request, $response);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function bootstrap(): void
     {
         $this->app->bootstrap(array_merge($this->bootstraps, $this->extendBootstraps));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getApp(): IApp
     {
         return $this->app;
@@ -189,7 +177,7 @@ abstract class Kernel implements IKernel
     protected function throughMiddleware(Request $request, \Closure $then): Response
     {
         if (empty($this->resolvedMiddlewares['handle'])) {
-            return $then(function (): void {}, $request);
+            return $then(static function (): void {}, $request);
         }
 
         // @phpstan-ignore-next-line

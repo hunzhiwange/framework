@@ -13,17 +13,11 @@ namespace Leevel\Support;
  */
 class Stack extends LinkedList
 {
-    /**
-     * {@inheritDoc}
-     */
     public function push(mixed $value): void
     {
         parent::push($value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function pop(): mixed
     {
         return parent::pop();

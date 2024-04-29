@@ -25,10 +25,10 @@ final class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
-        static::assertInstanceOf(ISession::class, $response->getSession());
+        self::assertInstanceOf(ISession::class, $response->getSession());
 
         $response->with('foo', 'bar');
-        static::assertSame($response->getSession()->getFlash('foo'), 'bar');
+        self::assertSame($response->getSession()->getFlash('foo'), 'bar');
     }
 
     #[Api([
@@ -47,11 +47,11 @@ final class RedirectResponseTest extends TestCase
         $data = ['default' => $errorsDefault, 'custom' => $errorsCustom];
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError($data));
-        static::assertInstanceOf(ISession::class, $response->getSession());
+        self::assertInstanceOf(ISession::class, $response->getSession());
         $response->withErrors($errorsDefault);
         $response->withErrors($errorsCustom, 'custom');
 
-        static::assertSame($response->getSession()->getFlash('errors'), $data);
+        self::assertSame($response->getSession()->getFlash('errors'), $data);
     }
 
     public function mokeSessionForWithReturnValue($name)
@@ -70,7 +70,7 @@ final class RedirectResponseTest extends TestCase
     {
         $GLOBALS['MOCK_SESSION_VALUE'] = $returnValue;
 
-        /** @var \Leevel\Session\ISession $session */
+        /** @var ISession $session */
         $session = $this->createMock(ISession::class);
         $session
             ->method('getFlash')
@@ -82,7 +82,7 @@ final class RedirectResponseTest extends TestCase
 
     protected function mokeSessionForWithError(array $data): ISession
     {
-        /** @var \Leevel\Session\ISession $session */
+        /** @var ISession $session */
         $session = $this->createMock(ISession::class);
         $session
             ->method('getFlash')

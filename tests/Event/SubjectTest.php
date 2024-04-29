@@ -24,13 +24,13 @@ final class SubjectTest extends TestCase
         $subject->setNotifyArgs('hello');
         $subject->notify();
 
-        static::assertSame(['hello'], $_SERVER['runtime']);
+        self::assertSame(['hello'], $_SERVER['runtime']);
 
         $_SERVER['runtime'] = [];
 
         $subject->detach($observer1);
 
-        static::assertSame([], $_SERVER['runtime']);
+        self::assertSame([], $_SERVER['runtime']);
 
         unset($_SERVER['runtime']);
     }

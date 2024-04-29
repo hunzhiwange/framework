@@ -69,8 +69,8 @@ EOT,
         $dispatch->register('event1', Listener1::class);
         $dispatch->handle('event1');
 
-        static::assertSame($_SERVER['test'], 'hello');
-        static::assertSame($_SERVER['event_name'], 'event1');
+        self::assertSame($_SERVER['test'], 'hello');
+        self::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -99,7 +99,7 @@ EOT,
         $dispatch->register('event1', new Listener2('arg_foo'));
         $dispatch->handle('event1');
 
-        static::assertSame($_SERVER['test'], 'arg_foo');
+        self::assertSame($_SERVER['test'], 'arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -134,7 +134,7 @@ EOT,
         $dispatch->register($event = new Event1('event_arg_foo'), Listener3::class);
         $dispatch->handle($event);
 
-        static::assertSame($_SERVER['test'], 'event_arg_foo');
+        self::assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -149,7 +149,7 @@ EOT,
         $dispatch->register([$event], Listener3::class);
         $dispatch->handle($event);
 
-        static::assertSame($_SERVER['test'], 'event_arg_foo');
+        self::assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -181,7 +181,7 @@ EOT,
         $dispatch->register('foo', Listener5::class);
         $dispatch->handle('foo');
 
-        static::assertSame($_SERVER['test'], 'l5');
+        self::assertSame($_SERVER['test'], 'l5');
 
         $dispatch = new Dispatch(new Container());
 
@@ -190,14 +190,14 @@ EOT,
         $dispatch->register('foo', Listener5::class, 4);
         $dispatch->handle('foo');
 
-        static::assertSame($_SERVER['test'], 'l4');
+        self::assertSame($_SERVER['test'], 'l4');
         unset($_SERVER['test']);
     }
 
     public function testListenNotFound(): void
     {
         $dispatch = new Dispatch(new Container());
-        static::assertNull($dispatch->handle('notFound'));
+        self::assertNull($dispatch->handle('notFound'));
     }
 
     #[Api([
@@ -220,17 +220,17 @@ EOT,
         $dispatch->register('wildcards*event', WildcardsListener::class);
         $dispatch->handle('wildcards123456event');
 
-        static::assertSame($_SERVER['wildcard'], 'wildcard');
+        self::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->handle('wildcards7896event');
 
-        static::assertSame($_SERVER['wildcard'], 'wildcard');
+        self::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->handle('wildcards_foobar_event');
 
-        static::assertSame($_SERVER['wildcard'], 'wildcard');
+        self::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
     }
 
@@ -252,13 +252,13 @@ EOT,
         $dispatch->register('testevent', ForRemoveListener::class);
         $dispatch->handle('testevent');
 
-        static::assertSame($_SERVER['remove'], 'remove');
+        self::assertSame($_SERVER['remove'], 'remove');
         unset($_SERVER['remove']);
 
         $dispatch->delete('testevent');
         $dispatch->handle('testevent');
 
-        static::assertFalse(isset($_SERVER['remove']));
+        self::assertFalse(isset($_SERVER['remove']));
     }
 
     #[Api([
@@ -270,13 +270,13 @@ EOT,
         $dispatch->register('wildcards*event', WildcardsListener::class);
         $dispatch->handle('wildcards123456event');
 
-        static::assertSame($_SERVER['wildcard'], 'wildcard');
+        self::assertSame($_SERVER['wildcard'], 'wildcard');
         unset($_SERVER['wildcard']);
 
         $dispatch->delete('wildcards*event');
         $dispatch->handle('wildcards7896event');
 
-        static::assertFalse(isset($_SERVER['wildcard']));
+        self::assertFalse(isset($_SERVER['wildcard']));
     }
 
     #[Api([
@@ -286,13 +286,13 @@ EOT,
     {
         $dispatch = new Dispatch(new Container());
 
-        static::assertSame([], $dispatch->get('testevent'));
-        static::assertFalse($dispatch->has('testevent'));
+        self::assertSame([], $dispatch->get('testevent'));
+        self::assertFalse($dispatch->has('testevent'));
 
         $dispatch->register('testevent', Listener1::class);
 
-        static::assertSame([500 => [Listener1::class]], $dispatch->get('testevent'));
-        static::assertTrue($dispatch->has('testevent'));
+        self::assertSame([500 => [Listener1::class]], $dispatch->get('testevent'));
+        self::assertTrue($dispatch->has('testevent'));
     }
 
     #[Api([
@@ -353,7 +353,7 @@ EOT,
         $dispatch->register('testevent', ListenerNotExtends::class);
         $dispatch->handle('testevent');
 
-        static::assertSame($_SERVER['autochange'], 'autochange');
+        self::assertSame($_SERVER['autochange'], 'autochange');
         unset($_SERVER['autochange']);
     }
 
@@ -404,19 +404,17 @@ EOT,
     public function testListenerIsClosure(): void
     {
         $dispatch = new Dispatch(new Container());
-        $dispatch->register('testevent', function (): void {
+        $dispatch->register('testevent', static function (): void {
             $_SERVER['isclosure'] = 'isclosure';
         });
         $dispatch->handle('testevent');
 
-        static::assertSame($_SERVER['isclosure'], 'isclosure');
+        self::assertSame($_SERVER['isclosure'], 'isclosure');
         unset($_SERVER['isclosure']);
     }
 }
 
-abstract class Listener extends Observer
-{
-}
+abstract class Listener extends Observer {}
 
 class Listener1 extends Listener
 {
@@ -484,9 +482,7 @@ class ForRemoveListener extends Listener
 
 class ListenerWithoutRunOrHandleMethod extends Listener
 {
-    public function notFound($event): void
-    {
-    }
+    public function notFound($event): void {}
 }
 
 class ListenerNotExtends
@@ -497,9 +493,7 @@ class ListenerNotExtends
     }
 }
 
-class ListenerNotExtendsWithoutHandle
-{
-}
+class ListenerNotExtendsWithoutHandle {}
 
 class Event1
 {

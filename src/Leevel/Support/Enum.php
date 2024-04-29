@@ -15,7 +15,7 @@ trait Enum
     /**
      * 验证是否为有效的枚举值.
      */
-    public static function isValid(null|bool|float|int|string|self $value, string $group = Msg::class): bool
+    public static function isValid(null|bool|float|int|self|string $value, string $group = Msg::class): bool
     {
         try {
             static::convertEnumValue($value);
@@ -78,7 +78,7 @@ trait Enum
     /**
      * 获取给定值的键.
      */
-    public static function searchKey(null|bool|float|int|string|self $value, string $group = Msg::class): false|int|string
+    public static function searchKey(null|bool|float|int|self|string $value, string $group = Msg::class): false|int|string
     {
         try {
             static::convertEnumValue($value);
@@ -98,7 +98,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function description(null|bool|float|int|string|self $value, string $group = Msg::class): string
+    public static function description(null|bool|float|int|self|string $value, string $group = Msg::class): string
     {
         static::convertEnumValue($value);
         $normalizeValue = static::normalizeEnumValue($value, $group);
@@ -116,7 +116,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function value(string $description, string $group = Msg::class): null|bool|float|int|string|self
+    public static function value(string $description, string $group = Msg::class): null|bool|float|int|self|string
     {
         $data = static::descriptions($group);
 
@@ -196,7 +196,7 @@ trait Enum
      *
      * - 可用于将数据库中的值转换成标准类型
      */
-    protected static function normalizeEnumValue(null|bool|float|int|string|self $value, string $group): null|bool|float|int|string|self
+    protected static function normalizeEnumValue(null|bool|float|int|self|string $value, string $group): null|bool|float|int|self|string
     {
         return $value;
     }
@@ -206,7 +206,7 @@ trait Enum
      *
      * - 可用于将数字或者字符串转换为对应的枚举值
      */
-    protected static function convertEnumValue(null|bool|float|int|string|self &$value): void
+    protected static function convertEnumValue(null|bool|float|int|self|string &$value): void
     {
         // 枚举特殊处理一下值
         if (!enum_exists(static::class) || $value instanceof self) {

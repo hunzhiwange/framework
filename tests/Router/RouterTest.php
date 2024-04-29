@@ -10,6 +10,7 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Router\IRouter;
 use Leevel\Router\Router;
 use Leevel\Router\RouterNotFoundException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Router\Middlewares\Demo1;
@@ -17,7 +18,6 @@ use Tests\Router\Middlewares\Demo2;
 use Tests\Router\Middlewares\Demo3;
 use Tests\Router\Middlewares\DemoForGroup;
 use Tests\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => 'Router',
@@ -60,7 +60,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello my home', $result->getContent());
+        self::assertSame('hello my home', $result->getContent());
     }
 
     #[Api([
@@ -89,7 +89,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello action class', $result->getContent());
+        self::assertSame('hello action class', $result->getContent());
     }
 
     #[Api([
@@ -116,7 +116,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello action convert foo bar', $result->getContent());
+        self::assertSame('hello action convert foo bar', $result->getContent());
     }
 
     #[Api([
@@ -143,7 +143,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello controller convert', $result->getContent());
+        self::assertSame('hello controller convert', $result->getContent());
     }
 
     #[Api([
@@ -172,7 +172,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello sub world foo', $result->getContent());
+        self::assertSame('hello sub world foo', $result->getContent());
     }
 
     public function testSubControllerDir2(): void
@@ -187,7 +187,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello sub world foo bar', $result->getContent());
+        self::assertSame('hello sub world foo bar', $result->getContent());
     }
 
     #[Api([
@@ -204,7 +204,7 @@ EOT,
     ])]
     public function testConvertAll(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router Tests\\Router\\Controllers\\HeLloWor\\Bar\\Foo\\XYYAc\\ControllerXxYy::actionXxxYzs() was not found.'
         );
@@ -243,7 +243,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('{"foo":"bar"}', $result->getContent());
+        self::assertSame('{"foo":"bar"}', $result->getContent());
     }
 
     #[Api([
@@ -270,7 +270,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('123456', $result->getContent());
+        self::assertSame('123456', $result->getContent());
     }
 
     public function testResponseIsBool(): void
@@ -285,7 +285,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('1', $result->getContent());
+        self::assertSame('1', $result->getContent());
     }
 
     public function testResponseIsStringable(): void
@@ -300,7 +300,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('stringable test.', $result->getContent());
+        self::assertSame('stringable test.', $result->getContent());
     }
 
     #[DataProvider('getRestfulData')]
@@ -352,7 +352,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello for restful '.$action, $result->getContent());
+        self::assertSame('hello for restful '.$action, $result->getContent());
     }
 
     public static function getRestfulData(): array
@@ -389,13 +389,13 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello action for restful show', $result->getContent());
+        self::assertSame('hello action for restful show', $result->getContent());
     }
 
     #[DataProvider('getNodeNotFoundData')]
     public function testNodeNotFound(string $method, string $action): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
         );
@@ -423,7 +423,7 @@ EOT,
     #[DataProvider('getNodeNotFoundDataWithParams')]
     public function testNodeNotFoundWithParams(string $method, string $action): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
         );
@@ -481,7 +481,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello preRequestMatched', $result->getContent());
+        self::assertSame('hello preRequestMatched', $result->getContent());
     }
 
     #[Api([
@@ -592,7 +592,7 @@ EOT,
         $router->throughTerminateMiddleware($request, $result);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello throughMiddleware', $result->getContent());
+        self::assertSame('hello throughMiddleware', $result->getContent());
 
         $data = <<<'eot'
             [
@@ -605,7 +605,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -617,7 +617,7 @@ EOT,
 
     public function testParseDefaultBindControllerFoundButMethodNotFound(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router Tests\\Router\\Controllers\\Hello\\ControllerFoundMethodNot::foo() was not found.'
         );
@@ -634,7 +634,7 @@ EOT,
 
     public function testParseDefaultBindMethodClassFoundButEnterMethodNotFound(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router Tests\\Router\\Controllers\\Hello::MethodClassFoundButEnterMethodNot() was not found.'
         );
@@ -661,7 +661,7 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('CORS', $result->getContent());
+        self::assertSame('CORS', $result->getContent());
     }
 
     #[Api([
@@ -690,13 +690,13 @@ EOT,
         $result = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello api vi', $result->getContent());
+        self::assertSame('hello api vi', $result->getContent());
     }
 
     public function testRouterNotFoundExceptionReportable(): void
     {
         $e = new RouterNotFoundException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 
     public function test1(): void
@@ -712,7 +712,7 @@ EOT,
 
     public function test2(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\My\\Router\\Controllers\\Api\\V1\\Hello::index() was not found.'
         );
@@ -739,10 +739,10 @@ EOT,
         $this->assertInstanceof(Request::class, $request);
 
         $request->method('getPathInfo')->willReturn($pathInfo);
-        static::assertSame($pathInfo, $request->getPathInfo());
+        self::assertSame($pathInfo, $request->getPathInfo());
 
         $request->method('getMethod')->willReturn($method);
-        static::assertSame($method, $request->getMethod());
+        self::assertSame($method, $request->getMethod());
 
         $request->attributes = new ParameterBag($attributes);
 

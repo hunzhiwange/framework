@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 
 /**
  * 创建系统支持的软连接.
@@ -24,7 +25,7 @@ class Links extends Command
     /**
      * 响应命令.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function handle(): int
     {
@@ -39,7 +40,7 @@ class Links extends Command
     }
 
     /**
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callApis(): void
     {
@@ -48,7 +49,7 @@ class Links extends Command
     }
 
     /**
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callStatic(): void
     {
@@ -57,7 +58,7 @@ class Links extends Command
     }
 
     /**
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callAttachments(): void
     {

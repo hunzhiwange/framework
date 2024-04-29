@@ -25,10 +25,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'string', '');
-        static::assertSame($collection['h'], 'hello');
-        static::assertSame($collection['w'], 1);
-        static::assertTrue(isset($collection['h']));
-        static::assertTrue(isset($collection['w']));
+        self::assertSame($collection['h'], 'hello');
+        self::assertSame($collection['w'], 1);
+        self::assertTrue(isset($collection['h']));
+        self::assertTrue(isset($collection['w']));
     }
 
     #[Api([
@@ -42,10 +42,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'string', 'string');
-        static::assertSame($collection['h'], 'hello');
-        static::assertSame($collection['w'], 'world');
-        static::assertTrue(isset($collection['h']));
-        static::assertTrue(isset($collection['w']));
+        self::assertSame($collection['h'], 'hello');
+        self::assertSame($collection['w'], 'world');
+        self::assertTrue(isset($collection['h']));
+        self::assertTrue(isset($collection['w']));
     }
 
     #[Api([
@@ -59,10 +59,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'string', 'int');
-        static::assertSame($collection['h'], 1);
-        static::assertSame($collection['w'], 2);
-        static::assertTrue(isset($collection['h']));
-        static::assertTrue(isset($collection['w']));
+        self::assertSame($collection['h'], 1);
+        self::assertSame($collection['w'], 2);
+        self::assertTrue(isset($collection['h']));
+        self::assertTrue(isset($collection['w']));
     }
 
     #[Api([
@@ -76,10 +76,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'int', '');
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 1);
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 1);
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
     }
 
     #[Api([
@@ -93,10 +93,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'int', 'string');
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 'world');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 'world');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
     }
 
     #[Api([
@@ -110,10 +110,10 @@ final class MapTest extends TestCase
         ];
 
         $collection = new Map($data, 'int', 'int');
-        static::assertSame($collection[0], 1);
-        static::assertSame($collection[1], 2);
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
+        self::assertSame($collection[0], 1);
+        self::assertSame($collection[1], 2);
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
     }
 
     public function testError(): void

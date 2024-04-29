@@ -8,9 +8,9 @@ use Leevel\Database\Ddd\Entity;
 use Leevel\Di\Container;
 use Leevel\Event\Dispatch;
 use Leevel\Kernel\Utils\Api;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoEventEntity;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '实体事件',
@@ -33,27 +33,27 @@ final class EntityEventTest extends TestCase
     public function testBaseUse(): void
     {
         $dispatch = new Dispatch(new Container());
-        static::assertNull(Entity::eventDispatch());
+        self::assertNull(Entity::eventDispatch());
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
         $test = new DemoEventEntity(['name' => 'foo']);
-        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, function (): void {
+        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, static function (): void {
             $_SERVER['ENTITY.BEFORE_CREATING_EVENT'] = 'BEFORE_CREATING_EVENT';
         });
-        DemoEventEntity::event(Entity::AFTER_CREATED_EVENT, function (): void {
+        DemoEventEntity::event(Entity::AFTER_CREATED_EVENT, static function (): void {
             $_SERVER['ENTITY.AFTER_CREATED_EVENT'] = 'AFTER_CREATED_EVENT';
         });
 
-        static::assertFalse(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
-        static::assertFalse(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
+        self::assertFalse(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
+        self::assertFalse(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
 
         $test->create()->flush();
 
-        static::assertTrue(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
-        static::assertTrue(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
-        static::assertSame('BEFORE_CREATING_EVENT', $_SERVER['ENTITY.BEFORE_CREATING_EVENT']);
-        static::assertSame('AFTER_CREATED_EVENT', $_SERVER['ENTITY.AFTER_CREATED_EVENT']);
+        self::assertTrue(isset($_SERVER['ENTITY.BEFORE_CREATING_EVENT']));
+        self::assertTrue(isset($_SERVER['ENTITY.AFTER_CREATED_EVENT']));
+        self::assertSame('BEFORE_CREATING_EVENT', $_SERVER['ENTITY.BEFORE_CREATING_EVENT']);
+        self::assertSame('AFTER_CREATED_EVENT', $_SERVER['ENTITY.AFTER_CREATED_EVENT']);
 
         unset($_SERVER['ENTITY.BEFORE_CREATING_EVENT'], $_SERVER['ENTITY.AFTER_CREATED_EVENT']);
     }
@@ -63,8 +63,7 @@ final class EntityEventTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Event dispatch was not set.');
 
-        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, function (): void {
-        });
+        DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, static function (): void {});
     }
 
     #[DataProvider('getSupportedEvent')]
@@ -79,12 +78,12 @@ EOT,
     public function testSupportEvent($event): void
     {
         $dispatch = new Dispatch(new Container());
-        static::assertNull(Entity::eventDispatch());
+        self::assertNull(Entity::eventDispatch());
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
 
         $supportEvent = DemoEventEntity::supportEvent();
-        static::assertTrue(\in_array($event, $supportEvent, true));
+        self::assertTrue(\in_array($event, $supportEvent, true));
     }
 
     public static function getSupportedEvent(): array
@@ -114,11 +113,10 @@ EOT,
         $this->expectExceptionMessage('Event `not_support` do not support.');
 
         $dispatch = new Dispatch(new Container());
-        static::assertNull(Entity::eventDispatch());
+        self::assertNull(Entity::eventDispatch());
         Entity::withEventDispatch($dispatch);
         $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
-        DemoEventEntity::event('not_support', function (): void {
-        });
+        DemoEventEntity::event('not_support', static function (): void {});
     }
 
     protected function getDatabaseTable(): array

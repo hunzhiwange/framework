@@ -31,9 +31,6 @@ abstract class Cache implements ICache
         $this->config = array_merge($this->config, $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
         if (!\is_array($keys)) {
@@ -45,9 +42,6 @@ abstract class Cache implements ICache
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function remember(string $name, \Closure $dataGenerator, ?int $expire = null): mixed
     {
         if (false !== ($result = $this->get($name, false))) {
@@ -60,9 +54,6 @@ abstract class Cache implements ICache
         return $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setKeyRegex(string $keyRegex): void
     {
         $this->keyRegex = $keyRegex;

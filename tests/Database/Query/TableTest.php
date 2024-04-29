@@ -30,7 +30,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -56,7 +56,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -83,7 +83,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -110,7 +110,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -136,7 +136,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -163,7 +163,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -191,7 +191,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -234,7 +234,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -261,7 +261,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -288,7 +288,7 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -314,11 +314,11 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table(['b' => function ($select): void {
+                    ->table(['b' => static function ($select): void {
                         $select->table('test_query');
                     }])
                     ->findAll(),
@@ -342,11 +342,11 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table(function ($select): void {
+                    ->table(static function ($select): void {
                         $select->table('guest_book');
                     })
                     ->findAll(),
@@ -370,11 +370,11 @@ final class TableTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
-                    ->table(function ($select): void {
+                    ->table(static function ($select): void {
                         $select->table('test_query');
                     }, 'remark')
                     ->join('test_query_subsql', 'name,value', 'name', '=', Condition::raw('[test_query.name]'))

@@ -36,7 +36,7 @@ final class HashTest extends TestCase
     protected function setUp(): void
     {
         if (isset($_SERVER['SUDO_USER']) && 'vagrant' === $_SERVER['SUDO_USER']) {
-            static::markTestSkipped('Ignore hash error.');
+            self::markTestSkipped('Ignore hash error.');
         }
     }
 
@@ -47,7 +47,7 @@ final class HashTest extends TestCase
     {
         $hash = new Hash();
         $hashPassword = $hash->password('123456');
-        static::assertTrue($hash->verify('123456', $hashPassword));
+        self::assertTrue($hash->verify('123456', $hashPassword));
     }
 
     #[Api([
@@ -62,6 +62,6 @@ EOT,
     {
         $hash = new Hash();
         $hashPassword = $hash->password('123456', ['cost' => 12]);
-        static::assertTrue($hash->verify('123456', $hashPassword));
+        self::assertTrue($hash->verify('123456', $hashPassword));
     }
 }

@@ -24,7 +24,7 @@ class RunCommand
     /**
      * 运行一个命令.
      */
-    public function handle(string|Command $command, array $inputs): string
+    public function handle(Command|string $command, array $inputs): string
     {
         $this->normalizeCommand($command);
         $input = new ArrayInput($inputs);
@@ -37,7 +37,7 @@ class RunCommand
     /**
      * 格式化一个命令行.
      */
-    public function normalizeCommand(string|Command $command): ?SymfonyCommand
+    public function normalizeCommand(Command|string $command): ?SymfonyCommand
     {
         if (\is_string($command)) {
             return $this->application->normalizeCommand($command);

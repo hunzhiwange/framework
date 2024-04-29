@@ -4,6 +4,4 @@ declare(strict_types=1);
 
 namespace Tests\Di\Fixtures;
 
-interface ITest3
-{
-}
+interface ITest3 {}

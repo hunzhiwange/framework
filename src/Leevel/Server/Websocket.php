@@ -114,7 +114,7 @@ class Websocket extends Http
      *
      * - 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      */
-    public function onClose(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, string|false|Frame|CloseFrame $frame): void
+    public function onClose(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, CloseFrame|false|Frame|string $frame): void
     {
         if (!($pathInfo = $this->getClientPathInfo($swooleRequest->fd))) {
             return;
@@ -194,7 +194,7 @@ class Websocket extends Http
     /**
      * 关闭连接.
      */
-    protected function close(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, string|false|Frame|CloseFrame $frame): void
+    protected function close(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse, int $workerId, CloseFrame|false|Frame|string $frame): void
     {
         // @phpstan-ignore-next-line
         $this->onClose($swooleRequest, $swooleResponse, $workerId, $frame);

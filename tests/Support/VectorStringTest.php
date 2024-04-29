@@ -24,14 +24,14 @@ final class VectorStringTest extends TestCase
         ];
 
         $collection = new VectorString($data);
-        static::assertSame($collection[0], 'h');
-        static::assertSame($collection[1], 'l');
-        static::assertSame($collection[2], 'w');
-        static::assertSame($collection[3], 'd');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
+        self::assertSame($collection[0], 'h');
+        self::assertSame($collection[1], 'l');
+        self::assertSame($collection[2], 'w');
+        self::assertSame($collection[3], 'd');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
     }
 
     #[Api([
@@ -44,14 +44,14 @@ final class VectorStringTest extends TestCase
         ];
 
         $collection = VectorString::fromRequest($data);
-        static::assertSame($collection[0], 'h');
-        static::assertSame($collection[1], '1');
-        static::assertSame($collection[2], 'w');
-        static::assertSame($collection[3], 'd');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
+        self::assertSame($collection[0], 'h');
+        self::assertSame($collection[1], '1');
+        self::assertSame($collection[2], 'w');
+        self::assertSame($collection[3], 'd');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
     }
 
     #[Api([
@@ -62,14 +62,14 @@ final class VectorStringTest extends TestCase
         $data = 'h,1,w,d';
 
         $collection = VectorString::fromRequest($data);
-        static::assertSame($collection[0], 'h');
-        static::assertSame($collection[1], '1');
-        static::assertSame($collection[2], 'w');
-        static::assertSame($collection[3], 'd');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
+        self::assertSame($collection[0], 'h');
+        self::assertSame($collection[1], '1');
+        self::assertSame($collection[2], 'w');
+        self::assertSame($collection[3], 'd');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
     }
 
     public function testError(): void

@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\UnauthorizedHttpException as BaseUnauthorizedHttpException;
 
-class UnauthorizedHttpException extends BaseUnauthorizedHttpException
-{
-}
+class UnauthorizedHttpException extends BaseUnauthorizedHttpException {}

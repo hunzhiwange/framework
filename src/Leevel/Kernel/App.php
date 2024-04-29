@@ -8,6 +8,7 @@ use Composer\Autoload\ClassLoader;
 use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
 use Leevel\Event\Provider\Register as EventProvider;
+use Leevel\Http\Request;
 use Leevel\Log\Provider\Register as LogProvider;
 use Leevel\Router\Provider\Register as RouterProvider;
 
@@ -86,181 +87,118 @@ class App implements IApp
         $this->registerBaseProvider();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function version(): string
     {
         return static::VERSION;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isConsole(): bool
     {
         if (null === $this->container->make('request', throw: false)) {
             return \PHP_SAPI === 'cli';
         }
 
-        /** @var \Leevel\Http\Request $request */
+        /** @var Request $request */
         $request = $this->container->make('request');
 
         return $request->isConsole();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setPath(string $path): void
     {
         $this->path = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function path(string $path = ''): string
     {
         return $this->path.$this->normalizePath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setAppPath(string $path): void
     {
         $this->appPath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function appPath(string $path = ''): string
     {
         return ($this->appPath ?? $this->path).
             $this->normalizePath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setStoragePath(string $path): void
     {
         $this->storagePath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function storagePath(string $path = ''): string
     {
         return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
             $this->normalizePath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setThemesPath(string $path): void
     {
         $this->themesPath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function themesPath(string $path = ''): string
     {
         return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/themes').
             $this->normalizePath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setConfigPath(string $path): void
     {
         $this->configPath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function configPath(string $path = ''): string
     {
         return ($this->configPath ?? $this->path.\DIRECTORY_SEPARATOR.'config').
             $this->normalizePath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setI18nPath(string $path): void
     {
         $this->i18nPath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function i18nPath(?string $path = null): string
     {
         return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/i18n').
             $this->normalizePath($path ?: '');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setEnvPath(string $path): void
     {
         $this->envPath = $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function envPath(): string
     {
         return $this->envPath ?: ($this->path ?: '');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setEnvFile(string $file): void
     {
         $this->envFile = $file;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function envFile(): string
     {
         return $this->envFile ?: static::DEFAULT_ENV;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function fullEnvPath(): string
     {
         return $this->envPath().\DIRECTORY_SEPARATOR.$this->envFile();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setI18nCachedPath(string $i18nCachedPath): void
     {
         $this->i18nCachedPath = $this->realpath($i18nCachedPath);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function i18nCachedPath(string $i18n): string
     {
         $basePath = $this->i18nCachedPath ?: $this->storagePath().'/bootstrap/i18n';
@@ -268,25 +206,16 @@ class App implements IApp
         return $basePath.'/'.$i18n.'.php';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isCachedI18n(string $i18n): bool
     {
         return is_file($this->i18nCachedPath($i18n));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setConfigCachedPath(string $configCachedPath): void
     {
         $this->configCachedPath = $this->realpath($configCachedPath);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function configCachedPath(): string
     {
         $basePath = $this->configCachedPath ?: $this->storagePath().'/bootstrap';
@@ -295,41 +224,27 @@ class App implements IApp
         return $basePath.'/'.$cache.'.php';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isCachedConfig(): bool
     {
         return is_file($this->configCachedPath());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setRouterCachedPath(string $routerCachedPath): void
     {
         $this->routerCachedPath = $this->realpath($routerCachedPath);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function routerCachedPath(): string
     {
         return $this->routerCachedPath ?: $this->storagePath().'/bootstrap/router.php';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isCachedRouter(): bool
     {
         return is_file($this->routerCachedPath());
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \RuntimeException
      */
     public function namespacePath(string $namespace): string
@@ -346,9 +261,6 @@ class App implements IApp
         return $this->realpath($path);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isDebug(): bool
     {
         if (null === ($config = $this->container->make('config', throw: false))) {
@@ -359,17 +271,11 @@ class App implements IApp
         return AppEnvEnum::PRODUCTION->value !== $this->environment() && $config->get('debug');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isDevelopment(): bool
     {
         return AppEnvEnum::DEVELOPMENT->value === $this->environment();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function environment(): string
     {
         if (null === ($config = $this->container->make('config', throw: false))) {
@@ -380,9 +286,6 @@ class App implements IApp
         return $config->get('environment');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function env(string $name, mixed $defaults = null): mixed
     {
         if (false === $value = getenv($name)) {
@@ -415,9 +318,6 @@ class App implements IApp
         return $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function bootstrap(array $bootstraps): void
     {
         if ($this->container->isBootstrap()) {
@@ -430,9 +330,6 @@ class App implements IApp
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function registerAppProviders(): void
     {
         /** @var IConfig $config */
@@ -448,9 +345,6 @@ class App implements IApp
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function container(): IContainer
     {
         return $this->container;
@@ -459,7 +353,7 @@ class App implements IApp
     /**
      * @see 参考 \Composer\Autoload\ClassLoader::findFile
      */
-    protected function findNamespacePathByComposer(ClassLoader $composer, string $namespace): string|false
+    protected function findNamespacePathByComposer(ClassLoader $composer, string $namespace): false|string
     {
         // PSR-4 lookup
         $logicalPathPsr4 = strtr($namespace, '\\', \DIRECTORY_SEPARATOR);

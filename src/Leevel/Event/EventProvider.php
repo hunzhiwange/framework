@@ -32,12 +32,7 @@ abstract class EventProvider extends Provider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 
     /**
      * 取得监听器.

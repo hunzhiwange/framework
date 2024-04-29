@@ -46,7 +46,7 @@ final class ScanRouterTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $scanRouter->handle()

@@ -41,9 +41,6 @@ class Encryption implements IEncryption
         $this->rsaPublic = $rsaPublic;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function encrypt(string $value, int $expiry = 0): string
     {
         $iv = $this->createIv();
@@ -52,10 +49,7 @@ class Encryption implements IEncryption
         return $this->encryptData($value, $iv);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function decrypt(string $value): string|false
+    public function decrypt(string $value): false|string
     {
         if (false === ($value = $this->decryptData($value))) {
             return false;
@@ -231,7 +225,7 @@ class Encryption implements IEncryption
     /**
      * 校验数据正确性.
      */
-    protected function validateData(string $data, string $iv): string|false
+    protected function validateData(string $data, string $iv): false|string
     {
         if (false === ($data = $this->unpackData($data))) {
             return false;

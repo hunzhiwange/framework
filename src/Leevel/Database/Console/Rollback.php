@@ -16,9 +16,6 @@ class Rollback extends PhinxRollback
     use RuntimeEnvironment;
     use SelectDatabase;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function configure(): void
     {
         parent::configure();

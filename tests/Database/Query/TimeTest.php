@@ -680,7 +680,7 @@ final class TimeTest extends TestCase
         $date2 = $date + 1;
         $date3 = $date + 2;
 
-        static::assertTrue(
+        self::assertTrue(
             \in_array(
                 $this->varJsonSql(
                     $connect
@@ -989,7 +989,7 @@ final class TimeTest extends TestCase
         $time = mktime(0, 0, 0, $date['mon'], 5, $date['year']);
         $time2 = mktime(0, 0, 0, $date['mon'], 6, $date['year']);
 
-        static::assertSame(
+        self::assertSame(
             sprintf($sql, $time, $time2),
             $this->varJsonSql(
                 $connect

@@ -34,7 +34,7 @@ final class GettextGeneratorTest extends TestCase
             ['zh-CN', 'en-US'],
             __DIR__.'/cacheFile'
         );
-        static::assertSame($generatedLanguageFiles, [
+        self::assertSame($generatedLanguageFiles, [
             'base' => [
                 __DIR__.'/cacheFile/zh-CN/base.po',
                 __DIR__.'/cacheFile/en-US/base.po',
@@ -42,8 +42,8 @@ final class GettextGeneratorTest extends TestCase
         ]);
 
         $poContent = file_get_contents(__DIR__.'/cacheFile/zh-CN/base.po');
-        static::assertStringContainsString('msgid "hello %s"', $poContent);
-        static::assertStringContainsString('msgid "我的故事"', $poContent);
+        self::assertStringContainsString('msgid "hello %s"', $poContent);
+        self::assertStringContainsString('msgid "我的故事"', $poContent);
     }
 
     public function test3(): void
@@ -56,7 +56,7 @@ final class GettextGeneratorTest extends TestCase
             ['zh-CN', 'en-US'],
             __DIR__.'/cacheFile'
         );
-        static::assertSame($generatedLanguageFiles, [
+        self::assertSame($generatedLanguageFiles, [
             'base' => [
                 __DIR__.'/cacheFile/zh-CN/base.mo',
                 __DIR__.'/cacheFile/en-US/base.mo',

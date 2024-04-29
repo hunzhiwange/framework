@@ -40,19 +40,19 @@ final class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        static::assertFalse($sourceMessage === $encodeMessage);
+        self::assertFalse($sourceMessage === $encodeMessage);
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
 
-        static::assertSame(
+        self::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -71,19 +71,19 @@ final class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        static::assertFalse($sourceMessage === $encodeMessage);
+        self::assertFalse($sourceMessage === $encodeMessage);
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
 
-        static::assertSame(
+        self::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -107,7 +107,7 @@ final class EncryptionTest extends TestCase
 
         $data = base64_encode('123456');
 
-        static::assertFalse($encryption->decrypt($data));
+        self::assertFalse($encryption->decrypt($data));
     }
 
     public function testDecryptException(): void
@@ -125,7 +125,7 @@ final class EncryptionTest extends TestCase
 
         $data = base64_encode(base64_encode('123456')."\t".base64_encode($vi));
 
-        static::assertSame('', $encryption->decrypt($data));
+        self::assertSame('', $encryption->decrypt($data));
     }
 
     #[Api([
@@ -139,11 +139,11 @@ final class EncryptionTest extends TestCase
 
         $data = $encryption->encrypt('123456', 1);
 
-        static::assertSame('123456', $encryption->decrypt($data));
+        self::assertSame('123456', $encryption->decrypt($data));
 
         sleep(2);
 
-        static::assertFalse($encryption->decrypt($data));
+        self::assertFalse($encryption->decrypt($data));
     }
 
     #[Api([
@@ -164,9 +164,9 @@ final class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        static::assertFalse($sourceMessage === $encodeMessage);
+        self::assertFalse($sourceMessage === $encodeMessage);
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
@@ -213,9 +213,9 @@ final class EncryptionTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        static::assertFalse($sourceMessage === $encodeMessage);
+        self::assertFalse($sourceMessage === $encodeMessage);
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
@@ -227,7 +227,7 @@ final class EncryptionTest extends TestCase
 
         $result = $this->invokeTestMethod($encryption, 'unpackData', ['errordata']);
 
-        static::assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function testValidateDataForUnpackDataFailed(): void
@@ -236,7 +236,7 @@ final class EncryptionTest extends TestCase
 
         $result = $this->invokeTestMethod($encryption, 'validateData', ['errordata', '']);
 
-        static::assertSame($result, false);
+        self::assertSame($result, false);
     }
 
     public function testValidateDataForBase64DecodeFailed(): void
@@ -254,7 +254,7 @@ final class EncryptionTest extends TestCase
         $data = implode("\t", [$expiry, $value, $iv, $sign]);
 
         $result = $this->invokeTestMethod($encryption, 'validateData', [$data, 'testiv']);
-        static::assertSame($result, false);
+        self::assertSame($result, false);
     }
 
     public function testNormalizeSignFailed(): void

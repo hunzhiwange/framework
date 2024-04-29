@@ -41,7 +41,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -78,7 +78,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => Condition::raw('?')];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -102,7 +102,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => Condition::raw(':value')];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -168,7 +168,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => Condition::raw('?')];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -201,7 +201,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => Condition::raw(':value')];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -238,7 +238,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -278,7 +278,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -313,7 +313,7 @@ EOT,
 
         $data = ['name' => '小鸭子', 'test_query.value' => Condition::raw(':value')];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -340,7 +340,7 @@ EOT,
 
         $data = [];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -367,7 +367,7 @@ EOT,
 
         $data = [];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')

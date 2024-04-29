@@ -31,28 +31,28 @@ final class CacheTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('caches', function () use ($manager): Manager {
+        $container->singleton('caches', static function () use ($manager): Manager {
             return $manager;
         });
 
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('caches', function () use ($manager): Manager {
+        $container->singleton('caches', static function () use ($manager): Manager {
             return $manager;
         });
 
         Cache::set('manager-foo', 'bar');
-        static::assertSame('bar', Cache::get('manager-foo'));
+        self::assertSame('bar', Cache::get('manager-foo'));
         Cache::delete('manager-foo');
-        static::assertFalse(Cache::get('manager-foo'));
+        self::assertFalse(Cache::get('manager-foo'));
     }
 
     protected function createManager(Container $container): Manager

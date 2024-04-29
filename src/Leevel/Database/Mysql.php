@@ -9,9 +9,6 @@ namespace Leevel\Database;
  */
 class Mysql extends Database implements IDatabase
 {
-    /**
-     * {@inheritDoc}
-     */
     public function parseDsn(array $config): string
     {
         $dsn = [];
@@ -22,9 +19,6 @@ class Mysql extends Database implements IDatabase
         return implode('', $dsn);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTableNames(string $dbName, bool $master = false): array
     {
         $sql = 'SHOW TABLES FROM '.$dbName;
@@ -38,9 +32,6 @@ class Mysql extends Database implements IDatabase
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getTableColumns(string $tableName, bool $master = false): array
     {
         $result = [
@@ -70,9 +61,6 @@ class Mysql extends Database implements IDatabase
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getUniqueIndex(string $tableName, bool $master = false): array
     {
         $sql = 'SELECT
@@ -115,17 +103,11 @@ GROUP BY
         return $uniqueIndexes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function identifierColumn(string $name): string
     {
         return '*' !== $name ? "`{$name}`" : '*';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
     {
         if (null !== $limitOffset) {

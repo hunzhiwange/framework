@@ -15,7 +15,7 @@ class CustomHtmlspecialchars
             $data = (array) $data;
         }
 
-        $data = array_map(function ($data) {
+        $data = array_map(static function ($data) {
             if (\is_string($data)) {
                 $data = htmlspecialchars(trim($data));
             }

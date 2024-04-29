@@ -73,7 +73,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
 
-        static::assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
+        self::assertNull($this->invokeTestMethod($bootstrap, 'setErrorHandle', [0, 'foo.']));
     }
 
     #[Api([
@@ -90,23 +90,23 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isConsole')->willReturn(true);
-        static::assertTrue($request->isConsole());
+        self::assertTrue($request->isConsole());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
         $runtime = $this->createMock(IRuntime::class);
 
-        static::assertNull($runtime->renderForConsole(new ConsoleOutput(), new \Exception()));
+        self::assertNull($runtime->renderForConsole(new ConsoleOutput(), new \Exception()));
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, static function () use ($runtime) {
             return $runtime;
         });
 
         $config = $this->createMock(IConfig::class);
         $config->method('get')->willReturn('production');
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -119,11 +119,11 @@ final class RegisterExceptionRuntimeTest extends TestCase
 
         $e = new \Exception('foo.');
 
-        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]));
+        self::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$e]));
 
         $error = new \Error('hello world.');
 
-        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        self::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
         $this->restoreSystemEnvironment();
     }
 
@@ -142,8 +142,8 @@ final class RegisterExceptionRuntimeTest extends TestCase
         restore_error_handler();
 
         $this->setTestProperty($bootstrap, 'app', $app);
-        static::assertNull($this->invokeTestMethod($bootstrap, 'registerShutdownFunction'));
-        static::assertSame($GLOBALS['testRegisterShutdownFunction'], 'hello error');
+        self::assertNull($this->invokeTestMethod($bootstrap, 'registerShutdownFunction'));
+        self::assertSame($GLOBALS['testRegisterShutdownFunction'], 'hello error');
         unset($GLOBALS['testRegisterShutdownFunction']);
     }
 
@@ -158,9 +158,9 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isConsole')->willReturn(false);
-        static::assertFalse($request->isConsole());
+        self::assertFalse($request->isConsole());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -170,15 +170,15 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $runtime = $this->createMock(IRuntime::class);
 
         $runtime->method('render')->willReturn($response);
-        static::assertSame($response, $runtime->render($request, $e));
+        self::assertSame($response, $runtime->render($request, $e));
 
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, static function () use ($runtime) {
             return $runtime;
         });
 
         $config = $this->createMock(IConfig::class);
         $config->method('get')->willReturn('production');
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
         $bootstrap->handle($app);
@@ -192,7 +192,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
 
         $error = new \Error('hello world.');
 
-        static::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
+        self::assertNull($this->invokeTestMethod($bootstrap, 'setExceptionHandler', [$error]));
         $this->restoreSystemEnvironment();
     }
 
@@ -208,7 +208,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
         $e = $this->invokeTestMethod($bootstrap, 'formatErrorException', [$error]);
 
         $this->assertInstanceof(\ErrorException::class, $e);
-        static::assertSame('foo.', $e->getMessage());
+        self::assertSame('foo.', $e->getMessage());
     }
 
     protected function backupSystemEnvironment(): void
@@ -228,16 +228,12 @@ final class RegisterExceptionRuntimeTest extends TestCase
 
 class App4 extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class RegisterExceptionRuntime1 extends RegisterExceptionRuntime
 {
-    public function registerShutdownFunction(): void
-    {
-    }
+    public function registerShutdownFunction(): void {}
 }
 
 class RegisterExceptionRuntime2 extends RegisterExceptionRuntime

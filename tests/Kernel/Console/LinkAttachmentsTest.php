@@ -46,11 +46,11 @@ final class LinkAttachmentsTest extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/attachments` directory to `%s/assert_new/attachments` succeed.', __DIR__, __DIR__)),
             $result
         );
-        static::assertTrue(is_file(__DIR__.'/assert_new/attachments'));
+        self::assertTrue(is_file(__DIR__.'/assert_new/attachments'));
     }
 
     protected function initContainerService(IContainer $container): void
@@ -73,7 +73,5 @@ class AppForLinkAttachments extends Apps
         return __DIR__.'/assert/attachments';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

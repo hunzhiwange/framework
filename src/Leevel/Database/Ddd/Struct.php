@@ -11,6 +11,5 @@ namespace Leevel\Database\Ddd;
 class Struct
 {
     public function __construct(...$args) // @phpstan-ignore-line
-    {
-    }
+    {}
 }

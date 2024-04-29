@@ -6,8 +6,8 @@ namespace Tests\Support;
 
 use Leevel\Kernel\Utils\Api;
 use Leevel\Support\FlowControl;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '流程控制',
@@ -39,7 +39,7 @@ EOT,
     {
         $test = new FlowTest1();
 
-        static::assertSame('', $test->value());
+        self::assertSame('', $test->value());
 
         $condition1 = 1;
 
@@ -52,7 +52,7 @@ EOT,
             ->value()
         ;
 
-        static::assertSame('condition1', $value);
+        self::assertSame('condition1', $value);
     }
 
     #[Api([
@@ -73,7 +73,7 @@ EOT,
             ->value()
         ;
 
-        static::assertSame('condition2', $value);
+        self::assertSame('condition2', $value);
     }
 
     #[DataProvider('getElseData')]
@@ -106,7 +106,7 @@ EOT,
             ->value()
         ;
 
-        static::assertSame($result, $value);
+        self::assertSame($result, $value);
     }
 
     public static function getElseData(): array
@@ -140,7 +140,7 @@ EOT,
             ->value()
         ;
 
-        static::assertSame('condition2', $value);
+        self::assertSame('condition2', $value);
     }
 
     #[Api([
@@ -192,7 +192,7 @@ EOT,
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $value
@@ -246,7 +246,7 @@ eot;
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $value
@@ -304,7 +304,7 @@ eot;
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $value
@@ -354,7 +354,7 @@ eot;
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $value
@@ -404,7 +404,7 @@ eot;
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $value
@@ -419,9 +419,7 @@ class FlowTest1
 
     protected $value = [];
 
-    public function __call(string $method, array $args): void
-    {
-    }
+    public function __call(string $method, array $args): void {}
 
     public function value()
     {

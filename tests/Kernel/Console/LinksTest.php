@@ -35,11 +35,11 @@ final class LinksTest extends TestCase
         );
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to create symbolic links.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Links created succeed.'),
             $result
         );
@@ -55,9 +55,7 @@ final class LinksTest extends TestCase
 
 class AppForLinks extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class DemoLinkApis extends Command

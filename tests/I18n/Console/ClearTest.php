@@ -53,13 +53,13 @@ final class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache succeed at %s.',
@@ -69,10 +69,10 @@ final class ClearTest extends TestCase
                 $result
             );
 
-            static::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+            self::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n cache succeed.'),
             $result
         );
@@ -89,13 +89,13 @@ final class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to clear i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache files %s clear succeed.',
@@ -105,13 +105,13 @@ final class ClearTest extends TestCase
                 $result
             );
 
-            static::assertStringNotContainsString(
+            self::assertStringNotContainsString(
                 sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n),
                 $result
             );
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n cache files clear succeed.'),
             $result
         );
@@ -133,13 +133,13 @@ final class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to clear i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache files %s clear succeed.',
@@ -149,7 +149,7 @@ final class ClearTest extends TestCase
                 $result
             );
 
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n)
                 ),
@@ -157,7 +157,7 @@ final class ClearTest extends TestCase
             );
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n cache files clear succeed.'),
             $result
         );
@@ -171,7 +171,7 @@ final class ClearTest extends TestCase
         $app->setCacheFile($cacheFile);
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertSame(
+            self::assertSame(
                 str_replace('[i18n]', $i18n, $cacheFile),
                 $app->i18nCachedPath($i18n)
             );
@@ -191,7 +191,7 @@ final class ClearTest extends TestCase
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -218,7 +218,5 @@ class App2 extends Apps
         return __DIR__.'/i18n';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

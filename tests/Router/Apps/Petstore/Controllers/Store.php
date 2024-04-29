@@ -12,30 +12,22 @@ class Store
     #[Route(
         path: '/store',
     )]
-    private function getInventory(): void
-    {
-    }
+    private function getInventory(): void {}
 
     #[Route(
         path: '/store/order',
         method: Request::METHOD_POST,
     )]
-    private function placeOrder(): void
-    {
-    }
+    private function placeOrder(): void {}
 
     #[Route(
         path: '/store/order/{orderId}',
     )]
-    private function getOrderById(): void
-    {
-    }
+    private function getOrderById(): void {}
 
     #[Route(
         path: '/store/order/{orderId}',
         method: Request::METHOD_DELETE,
     )]
-    private function deleteOrder(): void
-    {
-    }
+    private function deleteOrder(): void {}
 }

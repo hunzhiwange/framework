@@ -27,9 +27,6 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
         $this->session = $session;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect(): array
     {
         $data = [];
@@ -40,17 +37,11 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
         return $data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'session';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets(): array
     {
         return [

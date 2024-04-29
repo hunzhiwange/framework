@@ -255,7 +255,7 @@ abstract class Manager
      */
     protected function filterNullOfConfig(array $configs): array
     {
-        return array_filter($configs, fn ($value): bool => null !== $value);
+        return array_filter($configs, static fn ($value): bool => null !== $value);
     }
 
     /**

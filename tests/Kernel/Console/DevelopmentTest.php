@@ -40,11 +40,11 @@ final class DevelopmentTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to clears caches.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Caches cleared succeed.'),
             $result
         );
@@ -60,9 +60,7 @@ final class DevelopmentTest extends TestCase
 
 class AppForDevelopment extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class DemoI18nClear extends Command

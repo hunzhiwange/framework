@@ -47,9 +47,6 @@ class Render implements IRender
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function render(array $config = []): string
     {
         if ($config) {

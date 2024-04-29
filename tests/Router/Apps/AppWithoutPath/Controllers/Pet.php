@@ -10,7 +10,5 @@ class Pet
 {
     #[Route(
     )]
-    public function demo(): void
-    {
-    }
+    public function demo(): void {}
 }

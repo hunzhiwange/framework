@@ -37,17 +37,17 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache router.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache succeed at %s.', $cacheFile)),
             $result
         );
 
-        static::assertSame($routerData, (array) (include $cacheFile));
+        self::assertSame($routerData, (array) (include $cacheFile));
 
         unlink($cacheFile);
     }
@@ -74,17 +74,17 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache router.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Router cache succeed at %s.', $cacheFile)),
             $result
         );
 
-        static::assertSame($routerData, (array) (include $cacheFile));
+        self::assertSame($routerData, (array) (include $cacheFile));
 
         unlink($cacheFile);
         rmdir(\dirname($cacheFile));
@@ -96,7 +96,7 @@ final class CacheTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('routerCachedPath')->willReturn($cacheFile);
-        static::assertSame($cacheFile, $app->routerCachedPath());
+        self::assertSame($cacheFile, $app->routerCachedPath());
 
         $container->singleton(IApp::class, $app);
 
@@ -106,7 +106,7 @@ final class CacheTest extends TestCase
         $this->assertInstanceof(RouterProvider::class, $router);
 
         $router->method('getRouters')->willReturn($routerData);
-        static::assertSame($routerData, $router->getRouters());
+        self::assertSame($routerData, $router->getRouters());
 
         $container->singleton(RouterProvider::class, $router);
     }

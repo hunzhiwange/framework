@@ -127,7 +127,7 @@ class Cache extends Command
         $paths = $config['extra']['leevel-console']['view-cache']['paths'] ?? [];
         $path = $this->app->path();
 
-        return array_map(function (string $value) use ($path): string {
+        return array_map(static function (string $value) use ($path): string {
             if (!is_file($value)) {
                 $value = $path.'/'.$value;
             }

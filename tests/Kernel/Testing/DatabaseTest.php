@@ -31,13 +31,13 @@ final class DatabaseTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createDatabaseManager($container);
-        $container->singleton('databases', function () use ($manager): Manager {
+        $container->singleton('databases', static function () use ($manager): Manager {
             return $manager;
         });
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -49,23 +49,23 @@ final class DatabaseTest extends TestCase
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
 
-        static::assertNull($this->truncateDatabase(['guest_book']));
+        self::assertNull($this->truncateDatabase(['guest_book']));
 
         $result = $manager->table('guest_book', 'name,content')
             ->where('id', 1)
             ->findOne()
         ;
 
-        static::assertTrue(!isset($result->name));
-        static::assertTrue(!isset($result->content));
+        self::assertTrue(!isset($result->name));
+        self::assertTrue(!isset($result->content));
     }
 
     public function testTruncateDatabaseWithEmptyTables(): void
     {
-        static::assertNull($this->truncateDatabase([]));
+        self::assertNull($this->truncateDatabase([]));
     }
 
     protected function createContainer(): Container

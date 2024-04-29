@@ -45,7 +45,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -67,7 +67,7 @@ EOT,
             [{"value":1,"data":"hello","children":[{"value":2,"data":"world"}]}]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $tree->toJson(),
         );
@@ -105,7 +105,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -145,7 +145,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -187,7 +187,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -198,7 +198,7 @@ EOT,
             [{"value":1,"data":"hello","children":[{"value":2,"data":"world","children":[{"value":8,"data":"subbar"}]}]}]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $tree->toJson()
         );
@@ -257,7 +257,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -279,7 +279,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getChildrenTree(3)
@@ -300,7 +300,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getChild(0)
@@ -322,7 +322,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getChildren(3)
@@ -337,11 +337,11 @@ EOT,
     {
         $tree = $this->providerTree();
 
-        static::assertTrue(
+        self::assertTrue(
             $tree->hasChild(3)
         );
 
-        static::assertFalse(
+        self::assertFalse(
             $tree->hasChild(6)
         );
     }
@@ -354,25 +354,25 @@ EOT,
         $tree = $this->providerTree();
 
         // hasChildren 存在严格和不严格校验
-        static::assertFalse(
+        self::assertFalse(
             $tree->hasChildren(3, [5, 100000])
         );
 
-        static::assertTrue(
+        self::assertTrue(
             $tree->hasChildren(3, [5, 100000], false)
         );
 
         // 第二个元素为空
-        static::assertFalse(
+        self::assertFalse(
             $tree->hasChildren(3, [], false)
         );
 
-        static::assertFalse(
+        self::assertFalse(
             $tree->hasChildren(1, [], true)
         );
 
         // 非严格模式不存在
-        static::assertFalse(
+        self::assertFalse(
             $tree->hasChildren(100000, [2, 3], false)
         );
     }
@@ -390,7 +390,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getParent(3)
@@ -403,7 +403,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getParent(5)
@@ -417,7 +417,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getParent(5, true)
@@ -433,7 +433,7 @@ EOT,
         $tree = $this->providerTree();
 
         // 不存对应的节点查询父节点
-        static::assertSame(
+        self::assertSame(
             [],
             $tree->getParent(400000000)
         );
@@ -453,7 +453,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getParents(5)
@@ -468,7 +468,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->getParents(5, true)
@@ -483,27 +483,27 @@ EOT,
     {
         $tree = $this->providerTree();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $tree->getLevel(3)
         );
 
-        static::assertSame(
+        self::assertSame(
             3,
             $tree->getLevel(6)
         );
 
-        static::assertSame(
+        self::assertSame(
             0,
             $tree->getLevel(0)
         );
 
-        static::assertSame(
+        self::assertSame(
             0,
             $tree->getLevel(1)
         );
 
-        static::assertSame(
+        self::assertSame(
             0,
             $tree->getLevel(100000)
         );
@@ -534,14 +534,14 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             'world',
             $tree->getData(2)
         );
@@ -563,14 +563,14 @@ EOT,
 
         $tree->setData(2, 'world => foo');
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             'world => foo',
             $tree->getData(2)
         );
@@ -601,7 +601,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()
@@ -623,7 +623,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->normalize(null, [
@@ -650,10 +650,10 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
-                $tree->normalize(function (array $item): array {
+                $tree->normalize(static function (array $item): array {
                     $item['label'] = $item['data'];
 
                     return $item;
@@ -685,7 +685,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->normalize(null, [], 3)
@@ -702,7 +702,7 @@ EOT,
             [1, 0, 'hello'],
             [2, 1, 'world'],
         ]);
-        $tree->setCallback(function (array $item): array {
+        $tree->setCallback(static function (array $item): array {
             $item['label'] = $item['data'];
 
             return $item;
@@ -725,7 +725,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson($tree->toArray())
         );
@@ -762,7 +762,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $nodes,
             $this->varJson(
                 $tree->toArray()

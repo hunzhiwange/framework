@@ -32,9 +32,6 @@ class LinkedList extends \SplDoublyLinkedList
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function pop(): mixed
     {
         if ($this->isEmpty()) {
@@ -44,36 +41,24 @@ class LinkedList extends \SplDoublyLinkedList
         return parent::pop();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function add(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::add($index, $newval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->validate($newval);
         parent::offsetSet($index, $newval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function push(mixed $value): void
     {
         $this->validate($value);
         parent::push($value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function unshift(mixed $value): void
     {
         $this->validate($value);

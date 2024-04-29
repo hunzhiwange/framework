@@ -39,9 +39,6 @@ class Manager extends Managers
      */
     protected array $pools = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ICache
     {
         // 协程环境每次从创建驱动中获取连接
@@ -52,9 +49,6 @@ class Manager extends Managers
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reconnect(?string $connect = null, ...$arguments): ICache
     {
         return parent::reconnect($connect, ...$arguments);
@@ -120,7 +114,7 @@ class Manager extends Managers
         $connection = $pool->get();
 
         // 协程关闭前归还当前连接到缓存连接池
-        Coroutine::defer(fn () => $connection->release());
+        Coroutine::defer(static fn () => $connection->release());
 
         return $connection;
     }

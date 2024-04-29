@@ -16,7 +16,7 @@ class UnHtmlspecialchars
         }
 
         $htmlSpecialchars = array_flip(get_html_translation_table(HTML_SPECIALCHARS));
-        $data = array_map(function ($data) use ($htmlSpecialchars) {
+        $data = array_map(static function ($data) use ($htmlSpecialchars) {
             return strtr($data, $htmlSpecialchars);
         }, $data);
 

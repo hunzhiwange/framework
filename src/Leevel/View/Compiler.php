@@ -538,6 +538,7 @@ class Compiler
                     $name = $name.' ?: '.$args[1];
 
                     break;
+
                     // 通用模板函数
                 default:
                     if (isset($args[1])) {

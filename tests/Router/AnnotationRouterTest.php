@@ -53,12 +53,12 @@ final class AnnotationRouterTest extends TestCase
 
         $annotationRouter->addScandir($scandir);
         $annotationRouter->setControllerDir('');
-        static::assertSame($annotationRouter->getControllerDir(), '');
+        self::assertSame($annotationRouter->getControllerDir(), '');
         $result = $annotationRouter->handle();
 
         $data = file_get_contents($scandir.'/router.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -86,7 +86,7 @@ final class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -114,7 +114,7 @@ final class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -138,7 +138,7 @@ final class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router_without_base_paths_and_groups.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -166,7 +166,7 @@ final class AnnotationRouterTest extends TestCase
 
         $data = file_get_contents($scandir.'/router.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $result
@@ -223,7 +223,7 @@ final class AnnotationRouterTest extends TestCase
     {
         $annotation = new Annotation();
         $result = $this->invokeTestMethod($annotation, 'matchSucceed', [[]]);
-        static::assertSame([], $result);
+        self::assertSame([], $result);
     }
 
     public function test2(): void

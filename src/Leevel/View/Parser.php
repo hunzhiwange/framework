@@ -627,12 +627,14 @@ class Parser
                         $new = null;
 
                         break;
+
                         // 新增的和上次处于平级关系直接加入上级的 children 容器中
                         // child 在前 new 在后面
                     case 'behind':
                         $result[] = $child;
 
                         break;
+
                         // new 处于 child 内部
                         // new 在 child 内部
                     case 'in':
@@ -641,6 +643,7 @@ class Parser
                         $new = null;
 
                         break;
+
                         // child 处于 new 内部
                         // child 在 new 内部
                     case 'out':

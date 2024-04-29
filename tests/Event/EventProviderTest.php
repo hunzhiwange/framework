@@ -20,7 +20,7 @@ final class EventProviderTest extends TestCase
 
         $dispatch = new Dispatch($container);
 
-        static::assertNull($provider->register());
+        self::assertNull($provider->register());
 
         $provider->bootstrap($dispatch);
 
@@ -28,7 +28,7 @@ final class EventProviderTest extends TestCase
 
         $dispatch->handle(new TestEvent('hello blog'));
 
-        static::assertSame(['test3', 'test2', 'hello blog', 'test1'], $_SERVER['runtime']);
+        self::assertSame(['test3', 'test2', 'hello blog', 'test1'], $_SERVER['runtime']);
 
         unset($_SERVER['runtime']);
     }
@@ -61,15 +61,11 @@ class TestEvent
     }
 }
 
-abstract class TestListener extends Observer
-{
-}
+abstract class TestListener extends Observer {}
 
 class TestListener1 extends TestListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle($event): void
     {
@@ -80,9 +76,7 @@ class TestListener1 extends TestListener
 
 class TestListener2 extends TestListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(): void
     {
@@ -92,9 +86,7 @@ class TestListener2 extends TestListener
 
 class TestListener3 extends TestListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(): void
     {

@@ -18,7 +18,7 @@ final class RegisterTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
     }
 
@@ -31,13 +31,13 @@ final class RegisterTest extends TestCase
         // caches
         $manager = $container->make('caches');
         $filePath = __DIR__.'/cache/hello.php';
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
         $manager->set('hello', 'world');
-        static::assertFileExists($filePath);
-        static::assertSame('world', $manager->get('hello'));
+        self::assertFileExists($filePath);
+        self::assertSame('world', $manager->get('hello'));
         $manager->delete('hello');
-        static::assertFileDoesNotExist($filePath);
-        static::assertFalse($manager->get('hello'));
+        self::assertFileDoesNotExist($filePath);
+        self::assertFalse($manager->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -50,13 +50,13 @@ final class RegisterTest extends TestCase
         // cache
         $filePath = __DIR__.'/cache/hello.php';
         $file = $container->make('cache');
-        static::assertInstanceOf(File::class, $file);
-        static::assertFileDoesNotExist($filePath);
+        self::assertInstanceOf(File::class, $file);
+        self::assertFileDoesNotExist($filePath);
         $file->set('hello', 'world');
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
         $file->delete('hello');
-        static::assertFileDoesNotExist($filePath);
-        static::assertFalse($file->get('hello'));
+        self::assertFileDoesNotExist($filePath);
+        self::assertFalse($file->get('hello'));
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -66,7 +66,7 @@ final class RegisterTest extends TestCase
         $test->register();
         $container->alias($test->providers());
 
-        static::assertInstanceOf(Redis::class, $container->make('caches')->connect('redis'));
+        self::assertInstanceOf(Redis::class, $container->make('caches')->connect('redis'));
     }
 
     protected function createContainer(): Container

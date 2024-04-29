@@ -13,7 +13,6 @@ use Tests\Database\Ddd\Entity\CompositeId;
 use Tests\Database\Ddd\Entity\Guestbook;
 use Tests\Database\Ddd\Entity\GuestbookRepository;
 use Tests\Database\Ddd\Entity\Relation\Post;
-use Throwable;
 
 #[Api([
     'zh-CN:title' => '事务工作单元',
@@ -60,17 +59,17 @@ EOT,
             'summary' => 'post summary',
         ]);
 
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $work->persist($post);
 
         $work->flush();
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -91,7 +90,7 @@ EOT,
             'summary' => 'post summary',
         ]);
 
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post2 = new Post([
             'title' => 'hello world',
@@ -99,14 +98,14 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post2->id);
+        self::assertNull($post2->id);
 
         $work->persist($post);
         $work->persist($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -119,24 +118,24 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     public function testPersistBefore(): void
@@ -151,7 +150,7 @@ EOT,
             'summary' => 'post summary',
         ]);
 
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post2 = new Post([
             'title' => 'hello world',
@@ -159,15 +158,15 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post2->id);
+        self::assertNull($post2->id);
 
         $work->persist($post);
         $work->persistBefore($post2);
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -180,24 +179,24 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertSame(2, $post->id);
-        static::assertSame(2, $post['id']);
-        static::assertSame(2, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(2, $post->id);
+        self::assertSame(2, $post['id']);
+        self::assertSame(2, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(1, $post2->id);
-        static::assertSame(1, $post2['id']);
-        static::assertSame(1, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(1, $post2->id);
+        self::assertSame(1, $post2['id']);
+        self::assertSame(1, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     public function testPersistAfter(): void
@@ -212,7 +211,7 @@ EOT,
             'summary' => 'post summary',
         ]);
 
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post2 = new Post([
             'title' => 'hello world',
@@ -220,15 +219,15 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post2->id);
+        self::assertNull($post2->id);
 
         $work->persistAfter($post2);
         $work->persist($post);
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -241,24 +240,24 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     #[Api([
@@ -285,25 +284,25 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post->id);
-        static::assertNull($post2->id);
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertNull($post->id);
+        self::assertNull($post2->id);
+        self::assertFalse($work->created($post));
+        self::assertFalse($work->created($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->create($post);
         $work->create($post2);
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -316,29 +315,29 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     public function testCreateBefore(): void
@@ -359,25 +358,25 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post->id);
-        static::assertNull($post2->id);
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertNull($post->id);
+        self::assertNull($post2->id);
+        self::assertFalse($work->created($post));
+        self::assertFalse($work->created($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->create($post);
         $work->createBefore($post2);
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -390,29 +389,29 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(2, $post->id);
-        static::assertSame(2, $post['id']);
-        static::assertSame(2, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(2, $post->id);
+        self::assertSame(2, $post['id']);
+        self::assertSame(2, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(1, $post2->id);
-        static::assertSame(1, $post2['id']);
-        static::assertSame(1, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(1, $post2->id);
+        self::assertSame(1, $post2['id']);
+        self::assertSame(1, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     public function testCreateAfter(): void
@@ -433,25 +432,25 @@ EOT,
             'summary' => 'foo bar',
         ]);
 
-        static::assertNull($post->id);
-        static::assertNull($post2->id);
-        static::assertFalse($work->created($post));
-        static::assertFalse($work->created($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertNull($post->id);
+        self::assertNull($post2->id);
+        self::assertFalse($work->created($post));
+        self::assertFalse($work->created($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->createAfter($post2);
         $work->create($post);
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -464,29 +463,29 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->created($post));
-        static::assertTrue($work->created($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->created($post));
+        self::assertTrue($work->created($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
     }
 
     #[Api([
@@ -503,7 +502,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -515,7 +514,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -536,24 +535,24 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->updated($post));
+        self::assertFalse($work->updated($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $post->title = 'new post title';
         $post->summary = 'new post summary';
@@ -564,15 +563,15 @@ EOT,
         $work->update($post);
         $work->update($post2);
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -585,31 +584,31 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('new post title', $post->title);
-        static::assertSame('new post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('new post title', $post->title);
+        self::assertSame('new post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('new post2 title', $post2->title);
-        static::assertSame('new post2 summary', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('new post2 title', $post2->title);
+        self::assertSame('new post2 summary', $post2->summary);
     }
 
     public function testUpdateBefore(): void
@@ -620,7 +619,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -632,7 +631,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -653,24 +652,24 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->updated($post));
+        self::assertFalse($work->updated($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $post->title = 'new post title';
         $post->summary = 'new post summary';
@@ -681,15 +680,15 @@ EOT,
         $work->update($post2);
         $work->updateBefore($post);
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -702,31 +701,31 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('new post title', $post->title);
-        static::assertSame('new post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('new post title', $post->title);
+        self::assertSame('new post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('new post2 title', $post2->title);
-        static::assertSame('new post2 summary', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('new post2 title', $post2->title);
+        self::assertSame('new post2 summary', $post2->summary);
     }
 
     public function testUpdateAfter(): void
@@ -737,7 +736,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -749,7 +748,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -770,24 +769,24 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->updated($post));
-        static::assertFalse($work->updated($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->updated($post));
+        self::assertFalse($work->updated($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $post->title = 'new post title';
         $post->summary = 'new post summary';
@@ -798,15 +797,15 @@ EOT,
         $work->updateAfter($post2);
         $work->update($post);
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -819,31 +818,31 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->updated($post));
-        static::assertTrue($work->updated($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->updated($post));
+        self::assertTrue($work->updated($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('new post title', $post->title);
-        static::assertSame('new post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('new post title', $post->title);
+        self::assertSame('new post summary', $post->summary);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('new post2 title', $post2->title);
-        static::assertSame('new post2 summary', $post2->summary);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('new post2 title', $post2->title);
+        self::assertSame('new post2 summary', $post2->summary);
     }
 
     #[Api([
@@ -860,7 +859,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -872,7 +871,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -893,38 +892,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->delete($post);
         $work->delete($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -935,51 +934,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertSame(1, $postAfter->id);
-        static::assertSame(1, $postAfter['id']);
-        static::assertSame(1, $postAfter->getId());
-        static::assertSame(1, $postAfter->userId);
-        static::assertSame('post summary', $postAfter->summary);
-        static::assertSame('hello world', $postAfter->title);
+        self::assertSame(1, $postAfter->id);
+        self::assertSame(1, $postAfter['id']);
+        self::assertSame(1, $postAfter->getId());
+        self::assertSame(1, $postAfter->userId);
+        self::assertSame('post summary', $postAfter->summary);
+        self::assertSame('hello world', $postAfter->title);
 
-        static::assertSame(2, $post2After->id);
-        static::assertSame(2, $post2After['id']);
-        static::assertSame(2, $post2After->getId());
-        static::assertSame(2, $post2After->userId);
-        static::assertSame('foo bar', $post2After->summary);
-        static::assertSame('hello world', $post2After->title);
+        self::assertSame(2, $post2After->id);
+        self::assertSame(2, $post2After['id']);
+        self::assertSame(2, $post2After->getId());
+        self::assertSame(2, $post2After->userId);
+        self::assertSame('foo bar', $post2After->summary);
+        self::assertSame('hello world', $post2After->title);
     }
 
     public function testDeleteBefore(): void
@@ -990,7 +989,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1002,7 +1001,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -1022,38 +1021,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->delete($post);
         $work->deleteBefore($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -1064,51 +1063,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertSame(1, $postAfter->id);
-        static::assertSame(1, $postAfter['id']);
-        static::assertSame(1, $postAfter->getId());
-        static::assertSame(1, $postAfter->userId);
-        static::assertSame('post summary', $postAfter->summary);
-        static::assertSame('hello world', $postAfter->title);
+        self::assertSame(1, $postAfter->id);
+        self::assertSame(1, $postAfter['id']);
+        self::assertSame(1, $postAfter->getId());
+        self::assertSame(1, $postAfter->userId);
+        self::assertSame('post summary', $postAfter->summary);
+        self::assertSame('hello world', $postAfter->title);
 
-        static::assertSame(2, $post2After->id);
-        static::assertSame(2, $post2After['id']);
-        static::assertSame(2, $post2After->getId());
-        static::assertSame(2, $post2After->userId);
-        static::assertSame('foo bar', $post2After->summary);
-        static::assertSame('hello world', $post2After->title);
+        self::assertSame(2, $post2After->id);
+        self::assertSame(2, $post2After['id']);
+        self::assertSame(2, $post2After->getId());
+        self::assertSame(2, $post2After->userId);
+        self::assertSame('foo bar', $post2After->summary);
+        self::assertSame('hello world', $post2After->title);
     }
 
     public function testDeleteAfter(): void
@@ -1119,7 +1118,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1131,7 +1130,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -1151,38 +1150,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->deleteAfter($post);
         $work->delete($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -1193,51 +1192,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertSame(1, $postAfter->id);
-        static::assertSame(1, $postAfter['id']);
-        static::assertSame(1, $postAfter->getId());
-        static::assertSame(1, $postAfter->userId);
-        static::assertSame('post summary', $postAfter->summary);
-        static::assertSame('hello world', $postAfter->title);
+        self::assertSame(1, $postAfter->id);
+        self::assertSame(1, $postAfter['id']);
+        self::assertSame(1, $postAfter->getId());
+        self::assertSame(1, $postAfter->userId);
+        self::assertSame('post summary', $postAfter->summary);
+        self::assertSame('hello world', $postAfter->title);
 
-        static::assertSame(2, $post2After->id);
-        static::assertSame(2, $post2After['id']);
-        static::assertSame(2, $post2After->getId());
-        static::assertSame(2, $post2After->userId);
-        static::assertSame('foo bar', $post2After->summary);
-        static::assertSame('hello world', $post2After->title);
+        self::assertSame(2, $post2After->id);
+        self::assertSame(2, $post2After['id']);
+        self::assertSame(2, $post2After->getId());
+        self::assertSame(2, $post2After->userId);
+        self::assertSame('foo bar', $post2After->summary);
+        self::assertSame('hello world', $post2After->title);
     }
 
     public function testForceDelete(): void
@@ -1248,7 +1247,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1260,7 +1259,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -1281,38 +1280,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->forceDelete($post);
         $work->forceDelete($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -1323,51 +1322,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
     }
 
     public function testForceDeleteBefore(): void
@@ -1378,7 +1377,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1390,7 +1389,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -1411,38 +1410,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->forceDelete($post);
         $work->forceDeleteBefore($post2);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -1453,51 +1452,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
     }
 
     public function testForceDeleteAfter(): void
@@ -1508,7 +1507,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1520,7 +1519,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -1541,38 +1540,38 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
         $this->assertInstanceof(Post::class, $post2);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
-        static::assertSame(2, $post2->id);
-        static::assertSame(2, $post2['id']);
-        static::assertSame(2, $post2->getId());
-        static::assertSame(2, $post2->userId);
-        static::assertSame('foo bar', $post2->summary);
-        static::assertSame('hello world', $post2->title);
+        self::assertSame(2, $post2->id);
+        self::assertSame(2, $post2['id']);
+        self::assertSame(2, $post2->getId());
+        self::assertSame(2, $post2->userId);
+        self::assertSame('foo bar', $post2->summary);
+        self::assertSame('hello world', $post2->title);
 
-        static::assertFalse($work->deleted($post));
-        static::assertFalse($work->deleted($post2));
-        static::assertFalse($work->registered($post));
-        static::assertFalse($work->registered($post2));
+        self::assertFalse($work->deleted($post));
+        self::assertFalse($work->deleted($post2));
+        self::assertFalse($work->registered($post));
+        self::assertFalse($work->registered($post2));
 
         $work->forceDeleteAfter($post2);
         $work->forceDelete($post);
-        $work->on($post2, function (): void {
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $work->flush();
 
@@ -1583,51 +1582,51 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->deleted($post));
-        static::assertTrue($work->deleted($post2));
-        static::assertTrue($work->registered($post));
-        static::assertTrue($work->registered($post2));
+        self::assertTrue($work->deleted($post));
+        self::assertTrue($work->deleted($post2));
+        self::assertTrue($work->registered($post));
+        self::assertTrue($work->registered($post2));
 
         $postAfter = Post::select()->findEntity(1);
         $post2After = Post::select()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
 
         $postAfter = Post::withSoftDeleted()->findEntity(1);
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
-        static::assertNull($postAfter->id);
-        static::assertNull($postAfter['id']);
-        static::assertNull($postAfter->getId());
-        static::assertNull($postAfter->userId);
-        static::assertNull($postAfter->title);
-        static::assertNull($postAfter->summary);
+        self::assertNull($postAfter->id);
+        self::assertNull($postAfter['id']);
+        self::assertNull($postAfter->getId());
+        self::assertNull($postAfter->userId);
+        self::assertNull($postAfter->title);
+        self::assertNull($postAfter->summary);
 
-        static::assertNull($post2After->id);
-        static::assertNull($post2After['id']);
-        static::assertNull($post2After->getId());
-        static::assertNull($post2After->userId);
-        static::assertNull($post2After->title);
-        static::assertNull($post2After->summary);
+        self::assertNull($post2After->id);
+        self::assertNull($post2After['id']);
+        self::assertNull($post2After->getId());
+        self::assertNull($post2After->userId);
+        self::assertNull($post2After->title);
+        self::assertNull($post2After->summary);
     }
 
     #[Api([
@@ -1644,7 +1643,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1662,16 +1661,16 @@ EOT,
             'summary' => 'old',
         ], true);
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('old', $post->getSummary());
-        static::assertSame('old', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('old', $post->getSummary());
+        self::assertSame('old', $post->getTitle());
 
         $work->persist($post);
         $work->refresh($post);
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('post summary', $post->getSummary());
-        static::assertSame('hello world', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('post summary', $post->getSummary());
+        self::assertSame('hello world', $post->getTitle());
         $post->title = 'new title';
 
         $work->flush();
@@ -1681,12 +1680,12 @@ EOT,
         $this->assertInstanceof(Entity::class, $post);
         $this->assertInstanceof(Post::class, $post);
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame('new title', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('new title', $post->title);
     }
 
     public function testRefreshButUpdateNoDataAndDoNothing(): void
@@ -1696,7 +1695,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1714,18 +1713,18 @@ EOT,
             'summary' => 'old',
         ], true);
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('old', $post->getSummary());
-        static::assertSame('old', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('old', $post->getSummary());
+        self::assertSame('old', $post->getTitle());
 
         $work->persist($post);
         $work->refresh($post);
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('post summary', $post->getSummary());
-        static::assertSame('hello world', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('post summary', $post->getSummary());
+        self::assertSame('hello world', $post->getTitle());
 
-        static::assertNull($work->flush());
+        self::assertNull($work->flush());
     }
 
     #[Api([
@@ -1742,7 +1741,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1763,13 +1762,13 @@ EOT,
             $post->title = 'new title';
             $work->flush();
             $work->commit();
-        } catch (Throwable) {
+        } catch (\Throwable) {
             $work->close();
             $work->rollBack();
         }
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('new title', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('new title', $post->getTitle());
     }
 
     #[Api([
@@ -1780,7 +1779,7 @@ EOT,
     ])]
     public function testFlushButRollBack(): void
     {
-        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectException(DuplicateKeyException::class);
         $this->expectExceptionMessage(
             // MySQL8:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'post.PRIMARY'
             // MySQL5.7:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate '1' for key 'PRIMARY'
@@ -1813,7 +1812,7 @@ EOT,
     {
         $e = new DuplicateKeyException();
         $e->setUniqueIndex('hello');
-        static::assertSame('hello', $e->getUniqueIndex());
+        self::assertSame('hello', $e->getUniqueIndex());
     }
 
     #[Api([
@@ -1830,7 +1829,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1842,7 +1841,7 @@ EOT,
                 ])
         );
 
-        $work->transaction(function (UnitOfWork $w): void {
+        $work->transaction(static function (UnitOfWork $w): void {
             $post = Post::select()->findEntity(1);
             $w->update($post);
 
@@ -1851,8 +1850,8 @@ EOT,
 
         $newPost = Post::select()->findEntity(1);
 
-        static::assertSame(1, $newPost->getId());
-        static::assertSame('new title', $newPost->getTitle());
+        self::assertSame(1, $newPost->getId());
+        self::assertSame('new title', $newPost->getTitle());
     }
 
     #[Api([
@@ -1863,7 +1862,7 @@ EOT,
     ])]
     public function testTransactionAndRollBack(): void
     {
-        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectException(DuplicateKeyException::class);
         $this->expectExceptionMessage(
             // MySQL8:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'post.PRIMARY'
             // MySQL5.7:SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '1' for key 'PRIMARY'
@@ -1876,7 +1875,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        $work->transaction(function ($w): void {
+        $work->transaction(static function ($w): void {
             $post = new Post([
                 'id' => 1,
                 'title' => 'old',
@@ -1895,7 +1894,7 @@ EOT,
             $w->create($post2);
         });
 
-        static::assertSame(0, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->findCount());
     }
 
     #[Api([
@@ -1912,7 +1911,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1933,13 +1932,13 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $post->getId());
-        static::assertSame('new title', $post->getTitle());
+        self::assertSame(1, $post->getId());
+        self::assertSame('new title', $post->getTitle());
 
         $newPost = Post::select()->findEntity(1);
 
-        static::assertSame(1, $newPost->getId());
-        static::assertSame('new title', $newPost->getTitle());
+        self::assertSame(1, $newPost->getId());
+        self::assertSame('new title', $newPost->getTitle());
 
         $work->setEntity($post);
     }
@@ -1948,7 +1947,7 @@ EOT,
     {
         $work = UnitOfWork::make(new Post());
 
-        static::assertNull($work->flush());
+        self::assertNull($work->flush());
     }
 
     #[Api([
@@ -1975,7 +1974,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $connect->table('post')->findCount());
+        self::assertSame(1, $connect->table('post')->findCount());
     }
 
     #[Api([
@@ -1990,7 +1989,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2003,17 +2002,17 @@ EOT,
         );
 
         $post = Post::select()->findEntity(1);
-        static::assertSame(1, $post->getId());
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('post summary', $post->getSummary());
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(1, $post->getId());
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('post summary', $post->getSummary());
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->delete($post);
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
         $work->persist($post);
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->flush();
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
-        static::assertSame(1, $connect->table('post')->findCount());
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(1, $connect->table('post')->findCount());
     }
 
     public function testPersistStageForceRemovedEntity(): void
@@ -2022,7 +2021,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2035,17 +2034,17 @@ EOT,
         );
 
         $post = Post::select()->findEntity(1);
-        static::assertSame(1, $post->getId());
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('post summary', $post->getSummary());
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(1, $post->getId());
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('post summary', $post->getSummary());
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->forceDelete($post);
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
         $work->persist($post);
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->flush();
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
-        static::assertSame(1, $connect->table('post')->findCount());
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(1, $connect->table('post')->findCount());
     }
 
     #[Api([
@@ -2234,7 +2233,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(0, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->findCount());
     }
 
     public function testDeleteCreatedWithoutPrimaryKeyData(): void
@@ -2260,7 +2259,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2283,10 +2282,10 @@ EOT,
 
         $postNew = Post::select()->findEntity(1);
 
-        static::assertSame(1, $connect->table('post')->findCount());
-        static::assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
-        static::assertNull($postNew->id);
-        static::assertNull($postNew->title);
+        self::assertSame(1, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
+        self::assertNull($postNew->id);
+        self::assertNull($postNew->title);
     }
 
     #[Api([
@@ -2298,7 +2297,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2321,10 +2320,10 @@ EOT,
 
         $postNew = Post::select()->findEntity(1);
 
-        static::assertSame(1, $connect->table('post')->findCount());
-        static::assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
-        static::assertNull($postNew->id);
-        static::assertNull($postNew->title);
+        self::assertSame(1, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->where('delete_at', 0)->findCount());
+        self::assertNull($postNew->id);
+        self::assertNull($postNew->title);
     }
 
     public function testRefreshButNotIsStageManaged(): void
@@ -2392,7 +2391,7 @@ EOT,
 
         $work->remove($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2405,9 +2404,9 @@ EOT,
         $this->assertInstanceof(UnitOfWork::class, $work);
 
         $work->create($post = new Post(['id' => 5]));
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
         $work->remove($post);
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2420,9 +2419,9 @@ EOT,
         $this->assertInstanceof(UnitOfWork::class, $work);
 
         $work->update($post = new Post(['id' => 5], true));
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
         $work->remove($post);
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2436,7 +2435,7 @@ EOT,
 
         $work->removeBefore($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2450,7 +2449,7 @@ EOT,
 
         $work->removeAfter($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2464,7 +2463,7 @@ EOT,
 
         $work->forceRemove($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2478,7 +2477,7 @@ EOT,
 
         $work->forceRemoveBefore($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2492,7 +2491,7 @@ EOT,
 
         $work->forceRemoveAfter($post = new Post());
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2507,7 +2506,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->remove($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2522,7 +2521,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->removeBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2537,7 +2536,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->removeAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2552,7 +2551,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemove($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2567,7 +2566,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemoveBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2582,7 +2581,7 @@ EOT,
         $work->delete($post = new Post(['id' => 5]));
         $work->forceRemoveAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2596,15 +2595,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->remove($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2618,15 +2617,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2640,15 +2639,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2662,20 +2661,20 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemove($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
         $sql = '';
-        static::assertSame(
+        self::assertSame(
             $sql,
             $post->select()->getLastSql(),
         );
@@ -2692,20 +2691,20 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
         $sql = '';
-        static::assertSame(
+        self::assertSame(
             $sql,
             $post->select()->getLastSql(),
         );
@@ -2722,20 +2721,20 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post);
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->flush();
 
         $sql = '';
-        static::assertSame(
+        self::assertSame(
             $sql,
             $post->select()->getLastSql(),
         );
@@ -2752,15 +2751,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->remove($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2774,15 +2773,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2796,15 +2795,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->removeAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2818,15 +2817,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemove($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2840,15 +2839,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveBefore($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2862,15 +2861,15 @@ EOT,
 
         $post = new Post();
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
 
         $work->persist($post, 'replace');
 
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
 
         $work->forceRemoveAfter($post);
 
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
     }
 
     #[Api([
@@ -2892,7 +2891,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(0, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->findCount());
     }
 
     #[Api([
@@ -2914,7 +2913,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(0, $connect->table('post')->findCount());
+        self::assertSame(0, $connect->table('post')->findCount());
     }
 
     #[Api([
@@ -2926,7 +2925,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2951,10 +2950,10 @@ EOT,
 
         $updatedPost = Post::select()->findEntity(1);
 
-        static::assertSame(1, $updatedPost->id);
-        static::assertSame('old', $updatedPost->title);
-        static::assertSame(1, $updatedPost->userId);
-        static::assertSame('old', $updatedPost->summary);
+        self::assertSame(1, $updatedPost->id);
+        self::assertSame('old', $updatedPost->title);
+        self::assertSame(1, $updatedPost->userId);
+        self::assertSame('old', $updatedPost->summary);
     }
 
     #[Api([
@@ -3011,7 +3010,7 @@ EOT,
         $work->persist($post);
         $work->persist($guestBook);
 
-        $work->on($post, function ($p) use ($guestBook): void {
+        $work->on($post, static function ($p) use ($guestBook): void {
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
@@ -3019,7 +3018,7 @@ EOT,
 
         $newGuestbook = Guestbook::select()->findEntity(1);
 
-        static::assertSame('guest_book content was post id is 1', $newGuestbook->content);
+        self::assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -3040,7 +3039,7 @@ EOT,
         $work->replace($post);
         $work->replace($guestBook);
 
-        $work->on($post, function ($p) use ($guestBook): void {
+        $work->on($post, static function ($p) use ($guestBook): void {
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
@@ -3048,7 +3047,7 @@ EOT,
 
         $newGuestbook = Guestbook::select()->findEntity(1);
 
-        static::assertSame('guest_book content was post id is 1', $newGuestbook->content);
+        self::assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -3062,7 +3061,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -3074,7 +3073,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -3090,7 +3089,7 @@ EOT,
         $work->update($post);
         $work->update($guestBook);
 
-        $work->on($post, function ($p) use ($guestBook): void {
+        $work->on($post, static function ($p) use ($guestBook): void {
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
@@ -3100,7 +3099,7 @@ EOT,
 
         $newGuestbook = Guestbook::select()->findEntity(1);
 
-        static::assertSame('guest_book content was post id is 1', $newGuestbook->content);
+        self::assertSame('guest_book content was post id is 1', $newGuestbook->content);
 
         $work->clear();
     }
@@ -3110,7 +3109,7 @@ EOT,
         $work = UnitOfWork::make();
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -3122,7 +3121,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -3138,11 +3137,11 @@ EOT,
         $work->update($post);
         $work->update($guestBook);
 
-        $work->on($post, function ($p) use ($guestBook): void {
+        $work->on($post, static function ($p) use ($guestBook): void {
             $guestBook->content = 'guest_book content was post id is '.$p->id;
         });
 
-        static::assertNull($work->flush($post));
+        self::assertNull($work->flush($post));
     }
 
     #[Api([
@@ -3154,7 +3153,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -3169,14 +3168,14 @@ EOT,
         $post = Post::select()->findEntity(1);
         $work->persist($post)->remove($post);
 
-        $work->on($post, function ($p): void {
+        $work->on($post, static function ($p): void {
             // post has already removed,do nothing
         });
 
         $work->flush($post);
 
         $newPost = Post::select()->findEntity(1);
-        static::assertSame(1, $newPost->id);
+        self::assertSame(1, $newPost->id);
         $work->clear();
     }
 
@@ -3198,16 +3197,16 @@ EOT,
             'user_id' => 2,
         ]);
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        self::assertFalse($work->replaced($post));
+        self::assertFalse($work->replaced($post2));
         $work->replace($post);
         $work->replace($post2);
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
-        $work->on($post2, function (): void {
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -3220,25 +3219,25 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(1, $createPost->id);
-        static::assertSame('new', $createPost->title);
+        self::assertSame(1, $createPost->id);
+        self::assertSame('new', $createPost->title);
 
         $createPost = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(2, $createPost->id);
-        static::assertSame('new2', $createPost->title);
+        self::assertSame(2, $createPost->id);
+        self::assertSame('new2', $createPost->title);
     }
 
     #[Api([
@@ -3259,16 +3258,16 @@ EOT,
             'user_id' => 2,
         ]);
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        self::assertFalse($work->replaced($post));
+        self::assertFalse($work->replaced($post2));
         $work->replace($post);
         $work->replaceBefore($post2);
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
-        $work->on($post2, function (): void {
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -3281,25 +3280,25 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(1, $createPost->id);
-        static::assertSame('new', $createPost->title);
+        self::assertSame(1, $createPost->id);
+        self::assertSame('new', $createPost->title);
 
         $createPost = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(2, $createPost->id);
-        static::assertSame('new2', $createPost->title);
+        self::assertSame(2, $createPost->id);
+        self::assertSame('new2', $createPost->title);
     }
 
     #[Api([
@@ -3320,16 +3319,16 @@ EOT,
             'user_id' => 2,
         ]);
 
-        static::assertFalse($work->replaced($post));
-        static::assertFalse($work->replaced($post2));
+        self::assertFalse($work->replaced($post));
+        self::assertFalse($work->replaced($post2));
         $work->replaceAfter($post);
         $work->replace($post2);
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
-        $work->on($post2, function (): void {
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
+        $work->on($post2, static function (): void {
             $GLOBALS['unitofwork'][] = 1;
         });
-        $work->on($post, function (): void {
+        $work->on($post, static function (): void {
             $GLOBALS['unitofwork'][] = 2;
         });
 
@@ -3342,25 +3341,25 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['unitofwork']
             )
         );
 
-        static::assertTrue($work->replaced($post));
-        static::assertTrue($work->replaced($post2));
+        self::assertTrue($work->replaced($post));
+        self::assertTrue($work->replaced($post2));
 
         $createPost = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(1, $createPost->id);
-        static::assertSame('new', $createPost->title);
+        self::assertSame(1, $createPost->id);
+        self::assertSame('new', $createPost->title);
 
         $createPost = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $createPost);
-        static::assertSame(2, $createPost->id);
-        static::assertSame('new2', $createPost->title);
+        self::assertSame(2, $createPost->id);
+        self::assertSame('new2', $createPost->title);
     }
 
     #[Api([
@@ -3372,7 +3371,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -3397,10 +3396,10 @@ EOT,
 
         $updatedPost = Post::select()->findEntity(1);
 
-        static::assertSame(1, $updatedPost->id);
-        static::assertSame('new', $updatedPost->title);
-        static::assertSame(1, $updatedPost->userId);
-        static::assertSame('new', $updatedPost->summary);
+        self::assertSame(1, $updatedPost->id);
+        self::assertSame('new', $updatedPost->title);
+        self::assertSame(1, $updatedPost->userId);
+        self::assertSame('new', $updatedPost->summary);
     }
 
     #[Api([
@@ -3519,11 +3518,11 @@ EOT,
         $work = UnitOfWork::make();
         $connect = $this->createDatabaseConnect();
         $post = new Post(['id' => 1, 'title' => 'foo']);
-        static::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->persist($post);
-        static::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_MANAGED, $work->getEntityState($post));
         $work->flush();
-        static::assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
+        self::assertSame(UnitOfWork::STATE_DETACHED, $work->getEntityState($post));
     }
 
     #[Api([
@@ -3545,7 +3544,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $connect->table('composite_id')->findCount());
+        self::assertSame(1, $connect->table('composite_id')->findCount());
     }
 
     #[Api([
@@ -3567,7 +3566,7 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $connect->table('composite_id')->findCount());
+        self::assertSame(1, $connect->table('composite_id')->findCount());
     }
 
     #[Api([
@@ -3589,8 +3588,8 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $connect->table('composite_id')->findCount());
-        static::assertSame(0, $work->getFlushResult($compositeId));
+        self::assertSame(1, $connect->table('composite_id')->findCount());
+        self::assertSame(0, $work->getFlushResult($compositeId));
     }
 
     #[Api([
@@ -3607,7 +3606,7 @@ EOT,
             'id2' => 2,
             'name' => 'old',
         ]);
-        $compositeCall = function () use ($compositeId): mixed {
+        $compositeCall = static function () use ($compositeId): mixed {
             return $compositeId->save()->flush();
         };
 
@@ -3615,8 +3614,8 @@ EOT,
 
         $work->flush();
 
-        static::assertSame(1, $connect->table('composite_id')->findCount());
-        static::assertSame(0, $work->getFlushResult($compositeCall));
+        self::assertSame(1, $connect->table('composite_id')->findCount());
+        self::assertSame(0, $work->getFlushResult($compositeCall));
     }
 
     protected function getDatabaseTable(): array

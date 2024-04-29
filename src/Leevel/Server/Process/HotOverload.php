@@ -71,9 +71,6 @@ class HotOverload extends Process
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function handle(IServer $server): void
     {
         // @phpstan-ignore-next-line
@@ -151,7 +148,7 @@ class HotOverload extends Process
                 continue;
             }
 
-            TraverseDirectory::handle($dir, true, function (\DirectoryIterator $file) use (&$files): void {
+            TraverseDirectory::handle($dir, true, static function (\DirectoryIterator $file) use (&$files): void {
                 if ($file->isFile() && \in_array($file->getExtension(), ['php'], true)) {
                     $files[] = $file->getPath().'/'.$file->getFilename();
                 }

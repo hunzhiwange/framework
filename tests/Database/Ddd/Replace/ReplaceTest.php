@@ -48,10 +48,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -63,21 +63,21 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
             )
         );
 
-        static::assertSame(1, $entity->flush());
+        self::assertSame(1, $entity->flush());
         $sql = 'SQL: [89] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:named_param_id,:named_param_name) | Params:  2 | Key: Name: [15] :named_param_id | paramno=0 | name=[15] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [17] :named_param_name | paramno=1 | name=[17] ":named_param_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
         $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
+        self::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
     }
 
     #[Api([
@@ -89,10 +89,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -104,21 +104,21 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
             )
         );
 
-        static::assertSame(1, $entity->flush());
+        self::assertSame(1, $entity->flush());
         $sql = 'SQL: [89] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:named_param_id,:named_param_name) | Params:  2 | Key: Name: [15] :named_param_id | paramno=0 | name=[15] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [17] :named_param_name | paramno=1 | name=[17] ":named_param_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
         $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
+        self::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
     }
 
     #[Api([
@@ -133,10 +133,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
         $entity->condition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
@@ -148,21 +148,21 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
             )
         );
 
-        static::assertSame(1, $entity->flush());
+        self::assertSame(1, $entity->flush());
         $sql = 'SQL: [89] INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (:named_param_id,:named_param_name) | Params:  2 | Key: Name: [15] :named_param_id | paramno=0 | name=[15] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [17] :named_param_name | paramno=1 | name=[17] ":named_param_name" | is_param=1 | param_type=2 (INSERT INTO `test` (`test`.`id`,`test`.`name`) VALUES (1,\'foo\'))';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
         $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
+        self::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
     }
 
     #[Api([
@@ -171,7 +171,7 @@ EOT,
     public function testReplaceBaseUseUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test')
@@ -185,10 +185,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -200,21 +200,21 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
             )
         );
 
-        static::assertSame(1, $entity->flush());
+        self::assertSame(1, $entity->flush());
         $sql = 'SQL: [88] UPDATE `test` SET `test`.`name` = :named_param_name WHERE `test`.`id` = :test_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [8] :test_id | paramno=1 | name=[8] ":test_id" | is_param=1 | param_type=1 (UPDATE `test` SET `test`.`name` = \'foo\' WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
         $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
+        self::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
     }
 
     #[Api([
@@ -226,7 +226,7 @@ EOT,
     public function testReplaceBaseUseUpdateWithCondition(): void
     {
         $connect = $this->createDatabaseConnect();
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test')
@@ -240,10 +240,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame(1, $entity->id);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame(1, $entity->id);
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
         $entity->condition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
@@ -255,21 +255,21 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
             )
         );
 
-        static::assertSame(0, $entity->flush());
+        self::assertSame(0, $entity->flush());
         $sql = 'SQL: [119] UPDATE `test` SET `test`.`name` = :named_param_name WHERE `test`.`name` = :test_name AND `test`.`id` = :test_id LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [10] :test_name | paramno=1 | name=[10] ":test_name" | is_param=1 | param_type=2 | Key: Name: [8] :test_id | paramno=2 | name=[8] ":test_id" | is_param=1 | param_type=1 (UPDATE `test` SET `test`.`name` = \'foo\' WHERE `test`.`name` = \'hello\' AND `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
         $entity->refresh();
         $sql = 'SQL: [64] SELECT `test`.* FROM `test` WHERE `test`.`id` = :test_id LIMIT 1 | Params:  1 | Key: Name: [8] :test_id | paramno=0 | name=[8] ":test_id" | is_param=1 | param_type=1 (SELECT `test`.* FROM `test` WHERE `test`.`id` = 1 LIMIT 1)';
-        static::assertSame($sql, $entity->select()->getLastSql());
-        static::assertSame(1, $entity->id);
-        static::assertSame('old', $entity->name);
+        self::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame(1, $entity->id);
+        self::assertSame('old', $entity->name);
     }
 
     #[Api([
@@ -281,7 +281,7 @@ EOT,
     public function testReplaceWithCompositeIdButNoDataToBeUpdate(): void
     {
         $connect = $this->createDatabaseConnect();
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('composite_id')
@@ -303,7 +303,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -313,7 +313,7 @@ EOT,
         $entity->flush();
 
         $sql = '[FAILED] SQL: [113] INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (:named_param_id1,:named_param_id2) | Params:  2 | Key: Name: [16] :named_param_id1 | paramno=0 | name=[16] ":named_param_id1" | is_param=1 | param_type=1 | Key: Name: [16] :named_param_id2 | paramno=1 | name=[16] ":named_param_id2" | is_param=1 | param_type=1 (INSERT INTO `composite_id` (`composite_id`.`id1`,`composite_id`.`id2`) VALUES (2,3))';
-        static::assertSame($sql, $entity->select()->getLastSql());
+        self::assertSame($sql, $entity->select()->getLastSql());
     }
 
     protected function getDatabaseTable(): array

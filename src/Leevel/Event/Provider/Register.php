@@ -14,22 +14,16 @@ use Leevel\Event\IDispatch;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->container
             ->singleton(
                 'event',
-                fn (IContainer $container): Dispatch => new Dispatch($container),
+                static fn (IContainer $container): Dispatch => new Dispatch($container),
             )
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [

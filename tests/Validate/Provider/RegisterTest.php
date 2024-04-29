@@ -18,7 +18,7 @@ final class RegisterTest extends TestCase
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
     }
@@ -67,13 +67,13 @@ final class RegisterTest extends TestCase
             }
             eot;
 
-        static::assertTrue($validator->success());
-        static::assertFalse($validator->fail());
-        static::assertSame([], $validator->error());
-        static::assertSame([], $validator->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validator->getData());
+        self::assertTrue($validator->success());
+        self::assertFalse($validator->fail());
+        self::assertSame([], $validator->error());
+        self::assertSame([], $validator->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validator->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validator->getRule()

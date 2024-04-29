@@ -16,18 +16,18 @@ final class SessionTest extends TestCase
     {
         $session = new Session($this->createSession(), ['token' => 'token']);
 
-        static::assertFalse($session->isLogin());
-        static::assertSame([], $session->getLogin());
+        self::assertFalse($session->isLogin());
+        self::assertSame([], $session->getLogin());
 
-        static::assertSame('token', $session->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $session->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($session->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->getLogin());
+        self::assertTrue($session->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->getLogin());
 
-        static::assertNull($session->logout());
+        self::assertNull($session->logout());
 
-        static::assertFalse($session->isLogin());
-        static::assertSame([], $session->getLogin());
+        self::assertFalse($session->isLogin());
+        self::assertSame([], $session->getLogin());
     }
 
     public function testTokenNameWasNotSet(): void
@@ -45,7 +45,7 @@ final class SessionTest extends TestCase
     public function testAuthExceptionReportable(): void
     {
         $e = new AuthException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 
     protected function createSession(): File

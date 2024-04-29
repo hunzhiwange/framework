@@ -10,9 +10,9 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Router\Router;
+use Leevel\Router\RouterNotFoundException;
 use Leevel\Router\RouterProvider;
 use Leevel\Router\ScanRouter;
-use Leevel\Router\Url;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Router\Middlewares\Demo1;
 use Tests\Router\Middlewares\Demo2;
@@ -60,7 +60,7 @@ final class RouterAnnotationTest extends TestCase
 
         $this->assertInstanceof(Response::class, $result);
 
-        static::assertSame('hello plus base use', $result->getContent());
+        self::assertSame('hello plus base use', $result->getContent());
     }
 
     #[Api([
@@ -91,12 +91,12 @@ EOT,
 
         $provider = new RouterProviderAnnotation($container);
 
-        static::assertNull($provider->register());
-        static::assertNull($provider->bootstrap());
+        self::assertNull($provider->register());
+        self::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppForAnnotation/data.json');
 
-        static::assertEquals(
+        self::assertEquals(
             $data,
             $this->varJson(
                 [
@@ -155,7 +155,7 @@ EOT,
 
         $this->assertInstanceof(Response::class, $response);
 
-        static::assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
+        self::assertSame('hello plus for petLeevel, attributes petId is hello', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -164,7 +164,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -183,7 +183,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -222,7 +222,7 @@ EOT,
         $response = $router->dispatch($request);
 
         $this->assertInstanceof(Response::class, $response);
-        static::assertSame('petLeevelNotInGroup', $response->getContent());
+        self::assertSame('petLeevelNotInGroup', $response->getContent());
     }
 
     #[Api([
@@ -270,7 +270,7 @@ EOT,
 
         $this->assertInstanceof(Response::class, $response);
 
-        static::assertSame('hello plus for basePath normalize', $response->getContent());
+        self::assertSame('hello plus for basePath normalize', $response->getContent());
 
         $data = <<<'eot'
             [
@@ -279,7 +279,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -296,7 +296,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -309,7 +309,7 @@ EOT,
 
     public function testMatchedButMethodNotFound(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\Api\\V1\\PetLeevel::hello() was not found.'
         );
@@ -338,7 +338,7 @@ EOT,
 
     public function testFirstLetterNotMatched(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\NotFirstLetter::index() was not found.'
         );
@@ -387,12 +387,12 @@ EOT,
         $provider->bootstrap();
 
         $result = $router->dispatch($request);
-        static::assertSame('hello plus for newPrefix, attributes petId is hello', $result->getContent());
+        self::assertSame('hello plus for newPrefix, attributes petId is hello', $result->getContent());
     }
 
     public function testFirstLetterMatchedButGroupNotMatched(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\NNotFound::index() was not found.'
         );
@@ -421,7 +421,7 @@ EOT,
 
     public function testGroupNotMatched(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\PFirstLetterNotGroupNotMatched::index() was not found.'
         );
@@ -450,7 +450,7 @@ EOT,
 
     public function testRegexNotMatched(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\PetRegexNotMatched::index() was not found.'
         );
@@ -479,7 +479,7 @@ EOT,
 
     public function testRegexNotMatched2(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router App\\Router\\Controllers\\Api\\V1::petRegexNotMatched() was not found.'
         );
@@ -550,12 +550,12 @@ EOT,
 
         $result = $router->dispatch($request);
 
-        static::assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
+        self::assertSame('withExtendVar and attributes are {"args1":"hello","args2":"world"}', $result->getContent());
     }
 
     public function testBindNotSet(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderFoo was not found.'
         );
@@ -587,7 +587,7 @@ EOT,
 
     public function testBindNotSet2(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderBar was not found.'
         );
@@ -672,7 +672,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -691,7 +691,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -699,7 +699,7 @@ EOT,
             )
         );
 
-        static::assertSame('Middleware matched', $result->getContent());
+        self::assertSame('Middleware matched', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -760,7 +760,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -780,7 +780,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -788,7 +788,7 @@ EOT,
             )
         );
 
-        static::assertSame('Middleware matched 2', $result->getContent());
+        self::assertSame('Middleware matched 2', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -832,7 +832,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -853,7 +853,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -861,7 +861,7 @@ EOT,
             )
         );
 
-        static::assertSame('Middleware matched 3', $result->getContent());
+        self::assertSame('Middleware matched 3', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
@@ -920,7 +920,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares']
@@ -937,7 +937,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $GLOBALS['demo_middlewares'],
@@ -945,14 +945,14 @@ EOT,
             )
         );
 
-        static::assertSame('Middleware matched 4', $result->getContent());
+        self::assertSame('Middleware matched 4', $result->getContent());
 
         unset($GLOBALS['demo_middlewares']);
     }
 
     public function testBindNotFound(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound@notFound was not found.'
         );
@@ -984,7 +984,7 @@ EOT,
 
     public function testBindNotFound2(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound was not found.'
         );
@@ -1016,7 +1016,7 @@ EOT,
 
     public function testBindMethodNotFound(): void
     {
-        $this->expectException(\Leevel\Router\RouterNotFoundException::class);
+        $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
             'The router \\Tests\\Router\\Controllers\\Annotation\\BindMethodNotFound was not found.'
         );
@@ -1063,8 +1063,8 @@ EOT,
         $request->setPathInfo($pathInfo);
         $request->setMethod($method);
 
-        static::assertSame($pathInfo, $request->getPathInfo());
-        static::assertSame($method, $request->getMethod());
+        self::assertSame($pathInfo, $request->getPathInfo());
+        self::assertSame($method, $request->getMethod());
 
         return $request;
     }

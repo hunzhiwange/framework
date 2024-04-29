@@ -38,28 +38,19 @@ class Subject implements \SplSubject
         $this->container = $container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function attach(\SplObserver $observer): void
     {
         $this->observers->attach($observer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function detach(\SplObserver $observer): void
     {
         $this->observers->detach($observer);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function notify(): void
     {
-        /** @var \Leevel\Event\Observer $observer */
+        /** @var Observer $observer */
         foreach ($this->observers as $observer) {
             $observer->update($this);
         }

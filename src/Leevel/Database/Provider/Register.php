@@ -18,9 +18,6 @@ use Leevel\Event\IDispatch;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->databases();
@@ -37,9 +34,6 @@ class Register extends Provider
         $this->meta();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -49,9 +43,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -65,7 +56,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'databases',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -78,7 +69,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'database',
-                fn (IContainer $container): IDatabase => $container['databases']->connect(),
+                static fn (IContainer $container): IDatabase => $container['databases']->connect(),
             )
         ;
     }

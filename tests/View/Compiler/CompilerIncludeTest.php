@@ -42,7 +42,7 @@ EOT,
             <?php echo $this->display('assets/themes/header', [], '.html'); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -60,7 +60,7 @@ EOT,
             <?php echo $this->display('hello', [], '.tpl'); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -80,7 +80,7 @@ EOT,
             <?php echo $this->display($headTpl); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -98,7 +98,7 @@ EOT,
             <?php echo $this->display('test'); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -119,7 +119,7 @@ EOT,
             <?php echo $this->display('public/header'); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -151,7 +151,7 @@ EOT,
             <?php echo $this->display($hello); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function test1(): void
@@ -181,6 +181,6 @@ EOT,
             <?php echo $this->display(''); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

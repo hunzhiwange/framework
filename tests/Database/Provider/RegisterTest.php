@@ -25,7 +25,7 @@ final class RegisterTest extends TestCase
         // databases
         $manager = $container->make('databases');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -36,8 +36,8 @@ final class RegisterTest extends TestCase
             ->where('id', 1)
             ->findOne()
         ;
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
         $manager->close();
 
         // database
@@ -48,8 +48,8 @@ final class RegisterTest extends TestCase
             ->where('id', 1)
             ->findOne()
         ;
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
         $mysql->close();
 
         // meta
@@ -67,7 +67,7 @@ final class RegisterTest extends TestCase
         $test->bootstrap($this->createMock(IDispatch::class));
         $manager = $container->make('Leevel\\Database\\Manager');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -78,8 +78,8 @@ final class RegisterTest extends TestCase
             ->where('id', 1)
             ->findOne()
         ;
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
         $manager->close();
     }
 
@@ -144,7 +144,7 @@ final class RegisterTest extends TestCase
 
         $container->singleton('config', $config);
         $eventDispatch = $this->createMock(IDispatch::class);
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
         $cacheManager = $this->createCacheManager($container, $config, 'file');
         $container->singleton('caches', $cacheManager);

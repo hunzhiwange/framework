@@ -16,9 +16,6 @@ class Migrate extends PhinxMigrate
     use RuntimeEnvironment;
     use SelectDatabase;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function configure(): void
     {
         parent::configure();

@@ -31,22 +31,22 @@ final class AuthTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('auths', function () use ($manager): Manager {
+        $container->singleton('auths', static function () use ($manager): Manager {
             return $manager;
         });
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('auths', function () use ($manager): Manager {
+        $container->singleton('auths', static function () use ($manager): Manager {
             return $manager;
         });
-        static::assertFalse(Auth::isLogin());
-        static::assertSame([], Auth::getLogin());
+        self::assertFalse(Auth::isLogin());
+        self::assertSame([], Auth::getLogin());
     }
 
     protected function createManager(Container $container): Manager

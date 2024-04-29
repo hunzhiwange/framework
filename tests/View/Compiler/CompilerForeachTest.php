@@ -38,7 +38,7 @@ final class CompilerForeachTest extends TestCase
             <?php endforeach; endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -64,6 +64,6 @@ EOT,
             <?php endforeach; endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

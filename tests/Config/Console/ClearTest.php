@@ -32,12 +32,12 @@ final class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache files %s clear succeed.', $cacheFile)),
             $result
         );
 
-        static::assertStringNotContainsString(
+        self::assertStringNotContainsString(
             $this->normalizeContent(sprintf('Config cache files %s have been cleaned up.', $cacheFile)),
             $result
         );
@@ -59,12 +59,12 @@ final class ClearTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache files %s clear succeed.', $cacheFile)),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache files %s have been cleaned up.', $cacheFile)),
             $result
         );
@@ -76,7 +76,7 @@ final class ClearTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('configCachedPath')->willReturn($cacheFile);
-        static::assertSame($cacheFile, $app->configCachedPath());
+        self::assertSame($cacheFile, $app->configCachedPath());
 
         $container->singleton(IApp::class, $app);
     }

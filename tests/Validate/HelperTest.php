@@ -22,9 +22,9 @@ final class HelperTest extends TestCase
     ])]
     public function testBaseUse(): void
     {
-        static::assertTrue(Helper::required(5));
-        static::assertTrue(Helper::required(0));
-        static::assertFalse(Helper::required(''));
+        self::assertTrue(Helper::required(5));
+        self::assertTrue(Helper::required(0));
+        self::assertFalse(Helper::required(''));
     }
 
     public function testHelperNotFound(): void
@@ -34,6 +34,6 @@ final class HelperTest extends TestCase
             'Class "Leevel\\Validate\\Helper\\NotFound" not found'
         );
 
-        static::assertFalse(Helper::notFound());
+        self::assertFalse(Helper::notFound());
     }
 }

@@ -111,7 +111,7 @@ class UniqueRule
             $entity = $param[0];
         }
 
-        /** @var \Leevel\Database\Ddd\Entity $entity */
+        /** @var Entity $entity */
         if (!$entity instanceof Entity) {
             throw new \InvalidArgumentException(sprintf('Validate entity `%s` must be an entity.', $entity::class));
         }
@@ -170,7 +170,7 @@ class UniqueRule
     /**
      * 编码查询条件值.
      */
-    protected static function encodeConditionValue(string|int|float $value): string
+    protected static function encodeConditionValue(float|int|string $value): string
     {
         return StringEncode::handle($value, false);
     }

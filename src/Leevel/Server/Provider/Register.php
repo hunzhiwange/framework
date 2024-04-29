@@ -17,9 +17,6 @@ use Swoole\Coroutine\Context;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->servers();
@@ -30,9 +27,6 @@ class Register extends Provider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -41,17 +35,11 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function contextKeys(): array
     {
         return [
@@ -67,7 +55,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'servers',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -80,8 +68,8 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'server',
-                // @phpstan-ignore-next-line
-                fn (IContainer $container): IServer => $container['servers']->connect(),
+                /** @phpstan-ignore-next-line */
+                static fn (IContainer $container): IServer => $container['servers']->connect(),
             )
         ;
     }
@@ -89,6 +77,6 @@ class Register extends Provider
     protected function setContextResolver(): void
     {
         // @phpstan-ignore-next-line
-        $this->container->setContextResolver(fn (): Context => Coroutine::getContext());
+        $this->container->setContextResolver(static fn (): Context => Coroutine::getContext());
     }
 }

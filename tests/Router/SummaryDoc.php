@@ -68,9 +68,7 @@ QueryPHP 框架提供 `MVC 自动路由` 并能够智能解析 Restful 请求和
 所以我们不需要定义一个 router.php 来注册我们的路由，并且能够优化并缓存起来加速解析。
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => '路由匹配过程',
@@ -79,9 +77,7 @@ QueryPHP 会优先进行`MVC 自动路由`匹配，也包含 `Restful` 路由匹
 匹配失败则会抛出一个路由无法找到的异常。
 EOT,
     ])]
-    public function doc2(): void
-    {
-    }
+    public function doc2(): void {}
 
     #[Api([
         'zh-CN:title' => '自动 MVC 路由',
@@ -161,9 +157,7 @@ Restful 风格路由如果匹配成功，如果这个时候没有方法，系统
 ```
 EOT,
     ])]
-    public function doc4(): void
-    {
-    }
+    public function doc4(): void {}
 
     #[Api([
         'zh-CN:title' => 'PHP 8 注解路由',
@@ -231,9 +225,7 @@ middlewares: "api",
 ```
 EOT,
     ])]
-    public function doc6(): void
-    {
-    }
+    public function doc6(): void {}
 
     #[Api([
         'zh-CN:title' => '结束语',
@@ -241,7 +233,5 @@ EOT,
 路由基本介绍完了，主要由两种风格的路由构成。
 EOT,
     ])]
-    public function doc7(): void
-    {
-    }
+    public function doc7(): void {}
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Config;
 
+use Dotenv\Exception\InvalidFileException;
+use Dotenv\Exception\InvalidPathException;
 use Leevel\Config\Load;
 use Leevel\Kernel\IApp;
 use Tests\TestCase;
@@ -18,13 +20,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         $configs = ($load = new Load($appPath.'/config'))->loadData($app);
 
@@ -33,14 +35,14 @@ final class LoadTest extends TestCase
 
         $data = file_get_contents(__DIR__.'/app1/config.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $configs
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $configCaches
@@ -71,13 +73,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         (new Load($appPath.'/config'))->loadData($app);
     }
@@ -96,13 +98,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         (new Load($appPath.'/config'))->loadData($app);
     }
@@ -111,7 +113,7 @@ final class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $this->expectException(\Dotenv\Exception\InvalidPathException::class);
+        $this->expectException(InvalidPathException::class);
         $this->expectExceptionMessage(
             sprintf('Unable to read any of the environment file(s) at [%s].', $appPath.'/.env.notexist')
         );
@@ -120,13 +122,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env.notexist');
-        static::assertSame('.env.notexist', $app->envFile());
+        self::assertSame('.env.notexist', $app->envFile());
 
         (new Load($appPath.'/config'))->loadData($app);
     }
@@ -135,7 +137,7 @@ final class LoadTest extends TestCase
     {
         $appPath = __DIR__.'/app1';
 
-        $this->expectException(\Dotenv\Exception\InvalidFileException::class);
+        $this->expectException(InvalidFileException::class);
         $this->expectExceptionMessage(
             'Failed to parse dotenv file. Encountered unexpected whitespace at [with spaces].'
         );
@@ -145,13 +147,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env.wrong');
-        static::assertSame('.env.wrong', $app->envFile());
+        self::assertSame('.env.wrong', $app->envFile());
 
         (new Load($appPath.'/config'))->loadData($app);
     }
@@ -164,19 +166,19 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         $configs = (new Load($appPath.'/config'))->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app5/config.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($data),
             $this->varJson(
                 $configs
@@ -192,13 +194,13 @@ final class LoadTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn($appPath);
-        static::assertSame($appPath, $app->path());
+        self::assertSame($appPath, $app->path());
 
         $app->method('envPath')->willReturn($appPath);
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         (new Load($appPath.'/config'))->loadData($app);
     }

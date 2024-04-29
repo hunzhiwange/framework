@@ -186,7 +186,5 @@ class User extends Entity
     }
 
     /** @phpstan-ignore-next-line */
-    private function relationScopeFoundButPrivate(ManyMany $relation): void
-    {
-    }
+    private function relationScopeFoundButPrivate(ManyMany $relation): void {}
 }

@@ -229,17 +229,11 @@ class Tree implements IJson, IArray
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toJson(?int $config = null): string
     {
         return ConvertJson::handle($this->toArray(), $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         return $this->normalize($this->callback, $this->formatKey, $this->topId);

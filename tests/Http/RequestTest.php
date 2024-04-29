@@ -61,8 +61,8 @@ final class RequestTest extends TestCase
         $request = Request::createFromSymfonyRequest($symfonyRequest);
 
         $this->assertInstanceof(Request::class, $request);
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
-        static::assertSame('content', $request->getContent());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        self::assertSame('content', $request->getContent());
     }
 
     public function testCreateFromSymfonyRequestWithSelfRequest(): void
@@ -71,8 +71,8 @@ final class RequestTest extends TestCase
         $request = Request::createFromSymfonyRequest($selfRequest);
 
         $this->assertInstanceof(Request::class, $request);
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
-        static::assertSame('content', $request->getContent());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->query->all());
+        self::assertSame('content', $request->getContent());
     }
 
     #[Api([
@@ -85,10 +85,10 @@ EOT,
     public function testAll(): void
     {
         $request = new Request(['query' => '1'], ['request' => '2'], ['attributes' => '3']);
-        static::assertSame(['request' => '2', 'query' => '1', 'attributes' => '3'], $request->all());
+        self::assertSame(['request' => '2', 'query' => '1', 'attributes' => '3'], $request->all());
 
         $request = new Request(['foo' => '1'], ['foo' => '2'], ['foo' => '3']);
-        static::assertSame(['foo' => '2'], $request->all());
+        self::assertSame(['foo' => '2'], $request->all());
     }
 
     #[Api([
@@ -97,9 +97,9 @@ EOT,
     public function testExists(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        static::assertTrue($request->exists(['foo']));
-        static::assertTrue($request->exists(['foo', 'hello']));
-        static::assertFalse($request->exists(['notFound']));
+        self::assertTrue($request->exists(['foo']));
+        self::assertTrue($request->exists(['foo', 'hello']));
+        self::assertFalse($request->exists(['notFound']));
     }
 
     #[Api([
@@ -108,9 +108,9 @@ EOT,
     public function testOnly(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        static::assertSame(['foo' => 'bar'], $request->only(['foo']));
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->only(['foo', 'hello']));
-        static::assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
+        self::assertSame(['foo' => 'bar'], $request->only(['foo']));
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->only(['foo', 'hello']));
+        self::assertSame(['foo' => 'bar', 'not' => null], $request->only(['foo', 'not']));
     }
 
     #[Api([
@@ -119,9 +119,9 @@ EOT,
     public function testExcept(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        static::assertSame(['hello' => 'world'], $request->except(['foo']));
-        static::assertSame([], $request->except(['foo', 'hello']));
-        static::assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
+        self::assertSame(['hello' => 'world'], $request->except(['foo']));
+        self::assertSame([], $request->except(['foo', 'hello']));
+        self::assertSame(['hello' => 'world'], $request->except(['foo', 'not']));
     }
 
     #[Api([
@@ -130,7 +130,7 @@ EOT,
     public function testIsConsole(): void
     {
         $request = new Request();
-        static::assertTrue($request->isConsole());
+        self::assertTrue($request->isConsole());
     }
 
     #[Api([
@@ -139,7 +139,7 @@ EOT,
     public function testIsCgi(): void
     {
         $request = new Request();
-        static::assertFalse($request->isCgi());
+        self::assertFalse($request->isCgi());
     }
 
     #[Api([
@@ -149,9 +149,9 @@ EOT,
     {
         $request = new Request();
 
-        static::assertFalse($request->isPjax());
+        self::assertFalse($request->isPjax());
         $request->request->set(Request::VAR_PJAX, true);
-        static::assertTrue($request->isPjax());
+        self::assertTrue($request->isPjax());
     }
 
     #[Api([
@@ -161,39 +161,39 @@ EOT,
     {
         $request = new Request();
 
-        static::assertFalse($request->isRealAcceptJson());
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
         $request->headers->set('accept', 'application/json, text/plain, */*');
-        static::assertTrue($request->isRealAcceptJson());
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isRealAcceptJson());
+        self::assertTrue($request->isAcceptJson());
         $request->headers->remove('accept');
 
-        static::assertFalse($request->isRealAcceptJson());
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
         // (isAjax && !isPjax) && isAcceptAny
         $request->request->set(Request::VAR_AJAX, 1);
-        static::assertFalse($request->isRealAcceptJson());
-        static::assertTrue($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
+        self::assertTrue($request->isAcceptJson());
         $request->request->remove(Request::VAR_AJAX);
 
         // 伪装
         $request->query->set(Request::VAR_ACCEPT_JSON, '1');
-        static::assertTrue($request->isAcceptJson());
-        static::assertFalse($request->isRealAcceptJson());
+        self::assertTrue($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
     }
 
     public function testIsRealAcceptJsonIsFalse(): void
     {
         $request = new Request();
 
-        static::assertFalse($request->isRealAcceptJson());
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
         $request->headers->set('accept', 'application/pdf, text/plain, */*');
-        static::assertFalse($request->isRealAcceptJson());
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isRealAcceptJson());
+        self::assertFalse($request->isAcceptJson());
     }
 
     #[Api([
@@ -203,13 +203,13 @@ EOT,
     {
         $request = new Request();
 
-        static::assertTrue($request->isAcceptAny());
+        self::assertTrue($request->isAcceptAny());
 
         $request->headers->set('accept', 'application/json');
-        static::assertFalse($request->isAcceptAny());
+        self::assertFalse($request->isAcceptAny());
 
         $request->headers->set('accept', '*/*');
-        static::assertTrue($request->isAcceptAny());
+        self::assertTrue($request->isAcceptAny());
     }
 
     #[Api([
@@ -218,7 +218,7 @@ EOT,
     public function testGetEnter(): void
     {
         $request = new Request();
-        static::assertSame('', $request->getEnter());
+        self::assertSame('', $request->getEnter());
     }
 
     public function testGetEnterReturnsCorrectDirectoryInNonConsoleEnvironment(): void
@@ -229,7 +229,7 @@ EOT,
             ->onlyMethods(['isConsole', 'getScriptName'])
             ->getMock()
         ;
-        $mock->expects(static::once())
+        $mock->expects(self::once())
             ->method('isConsole')
             ->willReturn(false)
         ;
@@ -241,7 +241,7 @@ EOT,
 
         // 断言 getEnter() 方法返回的目录路径是否与预期相符
         $expectedDirectory = '/path/to';
-        static::assertEquals($expectedDirectory, $mock->getEnter());
+        self::assertEquals($expectedDirectory, $mock->getEnter());
     }
 
     public function testGetEnterReturnsEmptyStringInConsoleEnvironment(): void
@@ -252,13 +252,13 @@ EOT,
             ->onlyMethods(['isConsole'])
             ->getMock()
         ;
-        $mock->expects(static::once())
+        $mock->expects(self::once())
             ->method('isConsole')
             ->willReturn(true)
         ;
 
         // 断言 getEnter() 方法返回的是否为空字符串
-        static::assertEquals('', $mock->getEnter());
+        self::assertEquals('', $mock->getEnter());
     }
 
     #[Api([
@@ -267,9 +267,9 @@ EOT,
     public function testSetPathInfo(): void
     {
         $request = new Request();
-        static::assertSame('/', $request->getPathInfo());
+        self::assertSame('/', $request->getPathInfo());
         $request->setPathInfo('/foo/bar');
-        static::assertSame('/foo/bar', $request->getPathInfo());
+        self::assertSame('/foo/bar', $request->getPathInfo());
     }
 
     #[Api([
@@ -281,6 +281,6 @@ EOT,
     public function testToArray(): void
     {
         $request = new Request(['foo' => 'bar', 'hello' => 'world']);
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $request->toArray());
     }
 }

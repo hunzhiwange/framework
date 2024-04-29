@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\NotFoundHttpException as BaseNotFoundHttpException;
 
-class NotFoundHttpException extends BaseNotFoundHttpException
-{
-}
+class NotFoundHttpException extends BaseNotFoundHttpException {}

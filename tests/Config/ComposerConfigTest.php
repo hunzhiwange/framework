@@ -64,14 +64,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $configs
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $composerConfig->loadData()
@@ -114,14 +114,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $configs
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $composerConfig->loadData()
@@ -153,7 +153,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $configs
@@ -185,7 +185,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $configs

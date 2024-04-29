@@ -29,27 +29,27 @@ final class MigrateCreateTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config file'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('phinx.php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('The migration class name "hello world" is invalid. Please use CamelCase format.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('migrate:create'),
             $result
         );

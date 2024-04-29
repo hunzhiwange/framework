@@ -29,8 +29,8 @@ final class ActionTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
-        static::assertStringContainsString('class Hello', file_get_contents($file));
+        self::assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
+        self::assertStringContainsString('class Hello', file_get_contents($file));
         unlink($file);
         rmdir(\dirname($file));
     }
@@ -51,9 +51,9 @@ final class ActionTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('action <hello-world_Yes> created successfully.'), $result);
-        static::assertStringContainsString('class HelloWorldYes', $content = file_get_contents($file));
-        static::assertStringContainsString('function handle', $content);
+        self::assertStringContainsString($this->normalizeContent('action <hello-world_Yes> created successfully.'), $result);
+        self::assertStringContainsString('class HelloWorldYes', $content = file_get_contents($file));
+        self::assertStringContainsString('function handle', $content);
         unlink($file);
         rmdir(\dirname($file));
     }
@@ -75,8 +75,8 @@ final class ActionTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
-        static::assertStringContainsString('action_stub', file_get_contents($file));
+        self::assertStringContainsString($this->normalizeContent('action <hello> created successfully.'), $result);
+        self::assertStringContainsString('action_stub', file_get_contents($file));
         unlink($file);
         rmdir(\dirname($file));
     }
@@ -93,10 +93,8 @@ final class ActionTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('Action stub file `/notFound` was not found.'), $result);
+        self::assertStringContainsString($this->normalizeContent('Action stub file `/notFound` was not found.'), $result);
     }
 
-    protected function initContainerService(IContainer $container): void
-    {
-    }
+    protected function initContainerService(IContainer $container): void {}
 }

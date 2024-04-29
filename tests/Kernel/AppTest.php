@@ -13,8 +13,8 @@ use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '应用',
@@ -54,8 +54,8 @@ final class AppTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath, $app->path());
-        static::assertSame($appPath.'/foobar', $app->path('foobar'));
+        self::assertSame($appPath, $app->path());
+        self::assertSame($appPath.'/foobar', $app->path('foobar'));
     }
 
     #[Api([
@@ -65,7 +65,7 @@ final class AppTest extends TestCase
     {
         $app = $this->createApp();
 
-        static::assertSame(App::VERSION, $app->version());
+        self::assertSame(App::VERSION, $app->version());
     }
 
     #[Api([
@@ -75,7 +75,7 @@ final class AppTest extends TestCase
     {
         $app = $this->createApp();
 
-        static::assertTrue($app->isConsole());
+        self::assertTrue($app->isConsole());
     }
 
     public function testIsConsole2(): void
@@ -85,13 +85,13 @@ final class AppTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('isConsole')->willReturn(true);
-        static::assertTrue($request->isConsole());
+        self::assertTrue($request->isConsole());
 
-        $app->container()->singleton('request', function () use ($request) {
+        $app->container()->singleton('request', static function () use ($request) {
             return $request;
         });
 
-        static::assertTrue($app->isConsole());
+        self::assertTrue($app->isConsole());
     }
 
     public function testIsConsole3(): void
@@ -101,12 +101,12 @@ final class AppTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request->method('isConsole')->willReturn(false);
-        static::assertFalse($request->isConsole());
-        $container->singleton('request', function () use ($request) {
+        self::assertFalse($request->isConsole());
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
-        static::assertFalse($app->isConsole());
+        self::assertFalse($app->isConsole());
     }
 
     #[Api([
@@ -118,7 +118,7 @@ final class AppTest extends TestCase
 
         $app->setPath(__DIR__.'/foo');
 
-        static::assertSame(__DIR__.'/foo', $app->path());
+        self::assertSame(__DIR__.'/foo', $app->path());
     }
 
     #[Api([
@@ -131,16 +131,16 @@ final class AppTest extends TestCase
         $container = $app->container();
 
         $request = $this->createMock(Request::class);
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
-        static::assertSame($appPath, $app->appPath());
-        static::assertSame($appPath, $app->appPath(''));
-        static::assertSame($appPath.'/foo', $app->appPath('foo'));
-        static::assertSame($appPath.'/bar', $app->appPath('bar'));
-        static::assertSame($appPath.'/foo/foo/bar', $app->appPath('foo/foo/bar'));
-        static::assertSame($appPath.'/bar/foo/bar', $app->appPath('bar/foo/bar'));
+        self::assertSame($appPath, $app->appPath());
+        self::assertSame($appPath, $app->appPath(''));
+        self::assertSame($appPath.'/foo', $app->appPath('foo'));
+        self::assertSame($appPath.'/bar', $app->appPath('bar'));
+        self::assertSame($appPath.'/foo/foo/bar', $app->appPath('foo/foo/bar'));
+        self::assertSame($appPath.'/bar/foo/bar', $app->appPath('bar/foo/bar'));
     }
 
     public function testAppPath2(): void
@@ -150,11 +150,11 @@ final class AppTest extends TestCase
         $container = $app->container();
 
         $request = $this->createMock(Request::class);
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
-        static::assertSame($appPath, $app->appPath());
+        self::assertSame($appPath, $app->appPath());
     }
 
     #[Api([
@@ -167,13 +167,13 @@ final class AppTest extends TestCase
         $container = $app->container();
 
         $request = $this->createMock(Request::class);
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
-        static::assertSame($appPath, $app->appPath());
+        self::assertSame($appPath, $app->appPath());
         $app->setAppPath(__DIR__.'/app/foo');
-        static::assertSame($appPath.'/foo', $app->appPath());
+        self::assertSame($appPath.'/foo', $app->appPath());
     }
 
     #[Api([
@@ -184,8 +184,8 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/storage', $app->storagePath());
-        static::assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
+        self::assertSame($appPath.'/storage', $app->storagePath());
+        self::assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
     }
 
     #[Api([
@@ -196,13 +196,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/storage', $app->storagePath());
-        static::assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
+        self::assertSame($appPath.'/storage', $app->storagePath());
+        self::assertSame($appPath.'/storage/foobar', $app->storagePath('foobar'));
 
         $app->setStoragePath(__DIR__.'/app/storageFoo');
 
-        static::assertSame($appPath.'/storageFoo', $app->storagePath());
-        static::assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
+        self::assertSame($appPath.'/storageFoo', $app->storagePath());
+        self::assertSame($appPath.'/storageFoo/foobar', $app->storagePath('foobar'));
     }
 
     #[Api([
@@ -213,8 +213,8 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/config', $app->configPath());
-        static::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
+        self::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
     }
 
     #[Api([
@@ -225,13 +225,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/config', $app->configPath());
-        static::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
+        self::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/config/foobar', $app->configPath('foobar'));
 
         $app->setConfigPath(__DIR__.'/app/configFoo');
 
-        static::assertSame($appPath.'/configFoo', $app->configPath());
-        static::assertSame($appPath.'/configFoo/foobar', $app->configPath('foobar'));
+        self::assertSame($appPath.'/configFoo', $app->configPath());
+        self::assertSame($appPath.'/configFoo/foobar', $app->configPath('foobar'));
     }
 
     #[Api([
@@ -242,8 +242,8 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
-        static::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
+        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
     }
 
     #[Api([
@@ -254,13 +254,13 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/assets/i18n', $app->i18nPath());
-        static::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
+        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
 
         $app->setI18nPath(__DIR__.'/app/i18nFoo');
 
-        static::assertSame($appPath.'/i18nFoo', $app->i18nPath());
-        static::assertSame($appPath.'/i18nFoo/foobar', $app->i18nPath('foobar'));
+        self::assertSame($appPath.'/i18nFoo', $app->i18nPath());
+        self::assertSame($appPath.'/i18nFoo/foobar', $app->i18nPath('foobar'));
     }
 
     #[Api([
@@ -271,7 +271,7 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
     }
 
     #[Api([
@@ -282,11 +282,11 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath, $app->envPath());
+        self::assertSame($appPath, $app->envPath());
 
         $app->setEnvPath(__DIR__.'/appFoo');
 
-        static::assertSame(__DIR__.'/appFoo', $app->envPath());
+        self::assertSame(__DIR__.'/appFoo', $app->envPath());
     }
 
     #[Api([
@@ -296,7 +296,7 @@ final class AppTest extends TestCase
     {
         $app = $this->createApp();
 
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
     }
 
     #[Api([
@@ -306,11 +306,11 @@ final class AppTest extends TestCase
     {
         $app = $this->createApp();
 
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         $app->setEnvFile('.envfoo');
 
-        static::assertSame('.envfoo', $app->envFile());
+        self::assertSame('.envfoo', $app->envFile());
     }
 
     #[Api([
@@ -321,15 +321,15 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/.env', $app->fullEnvPath());
+        self::assertSame($appPath.'/.env', $app->fullEnvPath());
 
         $app->setEnvPath(__DIR__.'/appFoo');
 
-        static::assertSame(__DIR__.'/appFoo/.env', $app->fullEnvPath());
+        self::assertSame(__DIR__.'/appFoo/.env', $app->fullEnvPath());
 
         $app->setEnvFile('.envfoo');
 
-        static::assertSame(__DIR__.'/appFoo/.envfoo', $app->fullEnvPath());
+        self::assertSame(__DIR__.'/appFoo/.envfoo', $app->fullEnvPath());
     }
 
     #[Api([
@@ -338,9 +338,9 @@ final class AppTest extends TestCase
     public function testSetI18nCachePath(): void
     {
         $app = $this->createApp();
-        static::assertSame(__DIR__.'/app/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        self::assertSame(__DIR__.'/app/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
         $app->setI18nCachedPath(__DIR__.'/hello');
-        static::assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        self::assertSame(__DIR__.'/hello/zh-CN.php', $app->i18nCachedPath('zh-CN'));
     }
 
     #[Api([
@@ -351,9 +351,9 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertSame($appPath.'/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
-        static::assertSame($appPath.'/storage/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
-        static::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
+        self::assertSame($appPath.'/storage/bootstrap/i18n/zh-CN.php', $app->i18nCachedPath('zh-CN'));
+        self::assertSame($appPath.'/storage/bootstrap/i18n/zh-TW.php', $app->i18nCachedPath('zh-TW'));
+        self::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
     }
 
     #[Api([
@@ -364,11 +364,11 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        static::assertFalse($app->isCachedI18n('zh-CN'));
+        self::assertFalse($app->isCachedI18n('zh-CN'));
 
         mkdir($appPath.'/storage/bootstrap/i18n', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/i18n/zh-CN.php', 'foo');
-        static::assertTrue($app->isCachedI18n('zh-CN'));
+        self::assertTrue($app->isCachedI18n('zh-CN'));
 
         Helper::deleteDirectory($appPath);
     }
@@ -379,9 +379,9 @@ final class AppTest extends TestCase
     public function testSetConfigCachePath(): void
     {
         $app = $this->createApp();
-        static::assertSame(__DIR__.'/app/storage/bootstrap/config.php', $app->configCachedPath());
+        self::assertSame(__DIR__.'/app/storage/bootstrap/config.php', $app->configCachedPath());
         $app->setConfigCachedPath(__DIR__.'/hello');
-        static::assertSame(__DIR__.'/hello/config.php', $app->configCachedPath());
+        self::assertSame(__DIR__.'/hello/config.php', $app->configCachedPath());
     }
 
     #[Api([
@@ -391,7 +391,7 @@ final class AppTest extends TestCase
     {
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
-        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
+        self::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
     }
 
     #[Api([
@@ -402,10 +402,10 @@ final class AppTest extends TestCase
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
 
-        static::assertFalse($app->isCachedConfig());
+        self::assertFalse($app->isCachedConfig());
         mkdir($appPath.'/storage/bootstrap', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/config.php', 'foo');
-        static::assertTrue($app->isCachedConfig());
+        self::assertTrue($app->isCachedConfig());
 
         Helper::deleteDirectory($appPath);
     }
@@ -418,7 +418,7 @@ final class AppTest extends TestCase
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
 
-        static::assertSame($appPath.'/storage/bootstrap/router.php', $app->routerCachedPath());
+        self::assertSame($appPath.'/storage/bootstrap/router.php', $app->routerCachedPath());
     }
 
     #[Api([
@@ -429,13 +429,13 @@ final class AppTest extends TestCase
         $appPath = __DIR__.'/app';
         $app = $this->createApp();
 
-        static::assertFalse($app->isCachedRouter());
+        self::assertFalse($app->isCachedRouter());
 
         mkdir($appPath.'/storage/bootstrap', 0o777, true);
 
         file_put_contents($routerPath = $appPath.'/storage/bootstrap/router.php', 'foo');
 
-        static::assertTrue($app->isCachedRouter());
+        self::assertTrue($app->isCachedRouter());
 
         Helper::deleteDirectory($appPath);
     }
@@ -447,7 +447,7 @@ final class AppTest extends TestCase
     {
         $appPath = \dirname(__DIR__, 2);
         $app = $this->createApp($appPath);
-        static::assertSame(
+        self::assertSame(
             \dirname(__DIR__, 2).'/src/Leevel/Kernel/Console',
             realpath($app->namespacePath('Leevel\\Kernel\\Console'))
         );
@@ -486,7 +486,7 @@ final class AppTest extends TestCase
             'Foo\\Bar' => $appPath.'/tests/Kernel/assert',
         ]);
         $app = $this->createApp($appPath);
-        static::assertSame(
+        self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar\\Hello'))
         );
@@ -513,7 +513,7 @@ final class AppTest extends TestCase
             'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
         ]);
         $app = $this->createApp($appPath);
-        static::assertSame(
+        self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo_Bar_Hello'))
         );
@@ -528,7 +528,7 @@ final class AppTest extends TestCase
             'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
         ]);
         $app = $this->createApp($appPath);
-        static::assertSame(
+        self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar_Hello'))
         );
@@ -543,7 +543,7 @@ final class AppTest extends TestCase
             'Foo_Bar_Hello' => $appPath.'/tests/Kernel/assert',
         ]);
         $app = $this->createApp($appPath);
-        static::assertSame(
+        self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
             realpath($app->namespacePath('Foo\\Bar_Hello'))
         );
@@ -562,7 +562,7 @@ final class AppTest extends TestCase
 
         $config
             ->method('get')
-            ->willReturnCallback(function (string $k) {
+            ->willReturnCallback(static function (string $k) {
                 $map = [
                     'debug' => true,
                     'environment' => 'development',
@@ -572,14 +572,14 @@ final class AppTest extends TestCase
             })
         ;
 
-        static::assertSame('development', $config->get('environment'));
-        static::assertTrue($config->get('debug'));
+        self::assertSame('development', $config->get('environment'));
+        self::assertTrue($config->get('debug'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertTrue($app->isDebug());
+        self::assertTrue($app->isDebug());
     }
 
     public function testIsDebug2(): void
@@ -591,7 +591,7 @@ final class AppTest extends TestCase
 
         $config
             ->method('get')
-            ->willReturnCallback(function (string $k) {
+            ->willReturnCallback(static function (string $k) {
                 $map = [
                     'debug' => false,
                     'environment' => 'development',
@@ -601,20 +601,20 @@ final class AppTest extends TestCase
             })
         ;
 
-        static::assertSame('development', $config->get('environment'));
-        static::assertFalse($config->get('debug'));
+        self::assertSame('development', $config->get('environment'));
+        self::assertFalse($config->get('debug'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertFalse($app->isDebug());
+        self::assertFalse($app->isDebug());
     }
 
     public function testIsDebug3(): void
     {
         $app = $this->createApp();
-        static::assertTrue($app->isDebug());
+        self::assertTrue($app->isDebug());
     }
 
     #[Api([
@@ -628,13 +628,13 @@ final class AppTest extends TestCase
         $config = $this->createMock(Request::class);
 
         $config->method('get')->willReturn('development');
-        static::assertSame('development', $config->get('development'));
+        self::assertSame('development', $config->get('development'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertTrue($app->isDevelopment());
+        self::assertTrue($app->isDevelopment());
     }
 
     public function testIsDevelopment2(): void
@@ -645,13 +645,13 @@ final class AppTest extends TestCase
         $config = $this->createMock(Request::class);
 
         $config->method('get')->willReturn('foo');
-        static::assertSame('foo', $config->get('development'));
+        self::assertSame('foo', $config->get('development'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertFalse($app->isDevelopment());
+        self::assertFalse($app->isDevelopment());
     }
 
     #[Api([
@@ -665,19 +665,19 @@ final class AppTest extends TestCase
         $config = $this->createMock(Request::class);
 
         $config->method('get')->willReturn('foo');
-        static::assertSame('foo', $config->get('development'));
+        self::assertSame('foo', $config->get('development'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertSame('foo', $app->environment());
+        self::assertSame('foo', $app->environment());
     }
 
     public function testEnvironment2(): void
     {
         $app = $this->createApp();
-        static::assertSame('development', $app->environment());
+        self::assertSame('development', $app->environment());
     }
 
     #[Api([
@@ -710,8 +710,8 @@ EOT,
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
-        static::assertSame(1, $_SERVER['bootstrapTest1']);
-        static::assertSame(1, $_SERVER['bootstrapTest2']);
+        self::assertSame(1, $_SERVER['bootstrapTest1']);
+        self::assertSame(1, $_SERVER['bootstrapTest2']);
 
         unset($_SERVER['bootstrapTest1'], $_SERVER['bootstrapTest2']);
     }
@@ -723,21 +723,21 @@ EOT,
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
-        static::assertFalse($container->isBootstrap());
+        self::assertFalse($container->isBootstrap());
 
-        static::assertSame(1, $_SERVER['bootstrapTest1']);
-        static::assertSame(1, $_SERVER['bootstrapTest2']);
+        self::assertSame(1, $_SERVER['bootstrapTest1']);
+        self::assertSame(1, $_SERVER['bootstrapTest2']);
 
         unset($_SERVER['bootstrapTest1'], $_SERVER['bootstrapTest2']);
 
         $container->registerProviders([], [], []);
 
-        static::assertTrue($container->isBootstrap());
+        self::assertTrue($container->isBootstrap());
 
         $app->bootstrap([BootstrapTest1::class, BootstrapTest2::class]);
 
-        static::assertArrayNotHasKey('bootstrapTest1', $_SERVER);
-        static::assertArrayNotHasKey('bootstrapTest2', $_SERVER);
+        self::assertArrayNotHasKey('bootstrapTest1', $_SERVER);
+        self::assertArrayNotHasKey('bootstrapTest2', $_SERVER);
     }
 
     #[Api([
@@ -770,21 +770,21 @@ EOT,
         $container = $app->container();
 
         $config = new ConfigTest();
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
         $app->registerAppProviders();
 
         // for deferredAlias
-        static::assertArrayNotHasKey('providerDeferTest1', $_SERVER);
-        static::assertSame('bar', $container->make('foo'));
-        static::assertSame('bar', $container->make(ProviderDeferTest1::class));
-        static::assertSame(1, $_SERVER['providerDeferTest1']);
+        self::assertArrayNotHasKey('providerDeferTest1', $_SERVER);
+        self::assertSame('bar', $container->make('foo'));
+        self::assertSame('bar', $container->make(ProviderDeferTest1::class));
+        self::assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
-        static::assertSame(1, $_SERVER['testRegisterProvidersRegister']);
-        static::assertArrayHasKey('testRegisterProvidersBootstrap', $_SERVER);
+        self::assertSame(1, $_SERVER['testRegisterProvidersRegister']);
+        self::assertArrayHasKey('testRegisterProvidersBootstrap', $_SERVER);
 
         unset(
             $_SERVER['providerDeferTest1'],
@@ -792,15 +792,15 @@ EOT,
         );
 
         // bootstrap
-        static::assertTrue($container->isBootstrap());
-        static::assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
+        self::assertTrue($container->isBootstrap());
+        self::assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
         unset($_SERVER['testRegisterProvidersBootstrap']);
-        static::assertTrue($container->isBootstrap());
+        self::assertTrue($container->isBootstrap());
 
         // again but already bootstrap
         $app->registerAppProviders();
-        static::assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
-        static::assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
+        self::assertArrayNotHasKey('testRegisterProvidersBootstrap', $_SERVER);
+        self::assertArrayNotHasKey('testRegisterProvidersRegister', $_SERVER);
     }
 
     #[Api([
@@ -809,9 +809,9 @@ EOT,
     public function testSetThemesPath(): void
     {
         $app = $this->createApp();
-        static::assertSame(__DIR__.'/app/assets/themes', $app->themesPath());
+        self::assertSame(__DIR__.'/app/assets/themes', $app->themesPath());
         $app->setThemesPath(__DIR__.'/hello');
-        static::assertSame(__DIR__.'/hello', $app->themesPath());
+        self::assertSame(__DIR__.'/hello', $app->themesPath());
     }
 
     #[DataProvider('envProvider')]
@@ -830,7 +830,7 @@ EOT,
         $app = $this->createApp();
         $name = 'test_env_'.$name;
         putenv($name.'='.$value);
-        static::assertSame($envValue, $app->env($name));
+        self::assertSame($envValue, $app->env($name));
     }
 
     public static function envProvider(): array
@@ -856,8 +856,8 @@ EOT,
     public function testEnvFalse(): void
     {
         $app = $this->createApp();
-        static::assertSame('default message', $app->env('not_found_env', 'default message'));
-        static::assertNull($app->env('not_found_env'));
+        self::assertSame('default message', $app->env('not_found_env', 'default message'));
+        self::assertNull($app->env('not_found_env'));
     }
 
     protected function createApp(?string $appPath = null): App
@@ -879,16 +879,12 @@ EOT,
 
 class App extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(IContainer $container)
-    {
-    }
+    public function __construct(IContainer $container) {}
 
     public function bootstrap(): void
     {
@@ -907,7 +903,7 @@ class ProviderDeferTest1 extends Provider
     {
         $_SERVER['providerDeferTest1'] = 1;
 
-        $this->container->singleton('foo', function (IContainer $container) {
+        $this->container->singleton('foo', static function (IContainer $container) {
             return 'bar';
         });
     }

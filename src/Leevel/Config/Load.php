@@ -141,7 +141,7 @@ class Load
         if ($files) {
             $files = array_values(array_filter(
                 $files,
-                fn (string $item): bool => '.php' === substr($item, -4)
+                static fn (string $item): bool => '.php' === substr($item, -4)
             ));
         }
 

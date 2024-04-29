@@ -24,6 +24,6 @@ class InCondition
             return $data;
         }
 
-        return array_map(fn ($v) => $filter($v), $data);
+        return array_map(static fn ($v) => $filter($v), $data);
     }
 }

@@ -158,7 +158,7 @@ class Pipeline
         if (\is_string($params)) {
             $params = explode(',', $params);
         }
-        $params = array_map(fn (string $item) => StringDecode::handle($item), $params);
+        $params = array_map(static fn (string $item) => StringDecode::handle($item), $params);
 
         return [$name, $params];
     }

@@ -29,13 +29,8 @@ abstract class Runtime implements IRuntime
     /**
      * 构造函数.
      */
-    public function __construct(protected IApp $app)
-    {
-    }
+    public function __construct(protected IApp $app) {}
 
-    /**
-     * {@inheritDoc}
-     */
     public function report(\Throwable $e): void
     {
         if (!$this->reportable($e)) {
@@ -51,9 +46,6 @@ abstract class Runtime implements IRuntime
         $this->reportToLog($e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reportable(\Throwable $e): bool
     {
         if (method_exists($e, 'reportable') && false === $e->reportable()) {
@@ -63,9 +55,6 @@ abstract class Runtime implements IRuntime
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function render(Request $request, \Throwable $e): Response
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
@@ -96,9 +85,6 @@ abstract class Runtime implements IRuntime
         return $this->makeHttpResponse($e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function renderForConsole(OutputInterface $output, \Throwable $e): void
     {
         $handler = (new CollisionProvider())
@@ -171,8 +157,7 @@ abstract class Runtime implements IRuntime
         }
 
         if (!$this->isHttpException($e)) {
-            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {
-            };
+            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {};
         }
 
         return $this->rendorWithHttpExceptionView($e);
@@ -327,8 +312,7 @@ abstract class Runtime implements IRuntime
         if ($e instanceof EntityNotFoundException
             || $e instanceof RouterNotFoundException
             || $e instanceof DataNotFoundException) {
-            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {
-            };
+            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {};
         }
 
         return $e;

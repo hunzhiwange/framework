@@ -70,12 +70,12 @@ EOT,
 
         $provider = new RouterProvider1($container);
 
-        static::assertNull($provider->register());
-        static::assertNull($provider->bootstrap());
+        self::assertNull($provider->register());
+        self::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 [
@@ -109,8 +109,8 @@ EOT,
 
         $provider = new RouterProvider1($container);
 
-        static::assertNull($provider->register());
-        static::assertNull($provider->bootstrap());
+        self::assertNull($provider->register());
+        self::assertNull($provider->bootstrap());
 
         $data = file_get_contents(__DIR__.'/Apps/AppScanRouter/data.json');
         $this->varJson(
@@ -120,7 +120,7 @@ EOT,
                 'routers' => $router->getRouters(),
             ]
         );
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 [

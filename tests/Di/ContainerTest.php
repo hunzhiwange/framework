@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Di;
 
 use Leevel\Di\Container;
+use Leevel\Di\ContainerInvalidArgumentException;
+use Leevel\Di\ServiceNotFoundException;
 use Leevel\Kernel\Utils\Api;
 use Tests\Di\Fixtures\ITest2;
 use Tests\Di\Fixtures\ITest3;
@@ -56,11 +58,11 @@ EOT,
     {
         $container = new Container();
 
-        $container->bind('foo', function () {
+        $container->bind('foo', static function () {
             return 'bar';
         });
 
-        static::assertSame('bar', $container->make('foo'));
+        self::assertSame('bar', $container->make('foo'));
     }
 
     #[Api([
@@ -70,12 +72,12 @@ EOT,
     {
         $container = new Container();
         $singleton = new \stdClass();
-        $container->singleton('singleton', function () use ($singleton) {
+        $container->singleton('singleton', static function () use ($singleton) {
             return $singleton;
         });
 
-        static::assertSame($singleton, $container->make('singleton'));
-        static::assertSame($singleton, $container->make('singleton'));
+        self::assertSame($singleton, $container->make('singleton'));
+        self::assertSame($singleton, $container->make('singleton'));
     }
 
     #[Api([
@@ -96,7 +98,7 @@ EOT,
     {
         $container = new Container();
 
-        static::assertInstanceOf(Test1::class, $container->make(Test1::class));
+        self::assertInstanceOf(Test1::class, $container->make(Test1::class));
     }
 
     #[Api([
@@ -110,7 +112,7 @@ EOT,
         $container = new Container();
         $container->singleton(Test1::class);
 
-        static::assertSame($container->make(Test1::class), $container->make(Test1::class));
+        self::assertSame($container->make(Test1::class), $container->make(Test1::class));
     }
 
     #[Api([
@@ -138,8 +140,8 @@ EOT,
         $container = new Container();
         $container->bind(ITest2::class, Test2::class);
 
-        static::assertInstanceOf(ITest2::class, $container->make(ITest2::class));
-        static::assertInstanceOf(ITest2::class, $container->make(Test2::class));
+        self::assertInstanceOf(ITest2::class, $container->make(ITest2::class));
+        self::assertInstanceOf(ITest2::class, $container->make(Test2::class));
     }
 
     #[Api([
@@ -163,8 +165,8 @@ EOT,
         $container = new Container();
         $container->bind(ITest2::class, Test2::class);
 
-        static::assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
-        static::assertInstanceOf(Test2::class, $test2);
+        self::assertInstanceOf(ITest2::class, $test2 = $container->make(Test3::class)->arg1);
+        self::assertInstanceOf(Test2::class, $test2);
     }
 
     public function testInterface3(): void
@@ -173,8 +175,8 @@ EOT,
         $container->bind(ITest2::class, Test2::class);
         $test4 = $container->make(Test4::class);
 
-        static::assertInstanceOf(ITest3::class, $test4->arg1);
-        static::assertInstanceOf(ITest2::class, $test4->arg1->arg1);
+        self::assertInstanceOf(ITest3::class, $test4->arg1);
+        self::assertInstanceOf(ITest2::class, $test4->arg1->arg1);
     }
 
     #[Api([
@@ -183,11 +185,11 @@ EOT,
     public function testContainerAsFirstArgs(): void
     {
         $container = new Container();
-        $container->bind('test', function ($container) {
+        $container->bind('test', static function ($container) {
             return $container;
         });
 
-        static::assertSame($container, $container->make('test'));
+        self::assertSame($container, $container->make('test'));
     }
 
     #[Api([
@@ -196,14 +198,14 @@ EOT,
     public function testArrayAccess(): void
     {
         $container = new Container();
-        $container['foo'] = function () {
+        $container['foo'] = static function () {
             return 'bar';
         };
 
-        static::assertTrue(isset($container['foo']));
-        static::assertSame('bar', $container['foo']);
+        self::assertTrue(isset($container['foo']));
+        self::assertSame('bar', $container['foo']);
         unset($container['foo']);
-        static::assertFalse(isset($container['foo']));
+        self::assertFalse(isset($container['foo']));
     }
 
     #[Api([
@@ -218,13 +220,13 @@ EOT,
         $container->alias(['foo' => ['foo5', 'foo6']]);
         $container->alias(['foo' => 'foo7']);
 
-        static::assertNull($container->make('foo', throw: false));
-        static::assertNull($container->make('foo2', throw: false));
-        static::assertNull($container->make('foo3', throw: false));
-        static::assertNull($container->make('foo4', throw: false));
-        static::assertNull($container->make('foo5', throw: false));
-        static::assertNull($container->make('foo6', throw: false));
-        static::assertNull($container->make('foo7', throw: false));
+        self::assertNull($container->make('foo', throw: false));
+        self::assertNull($container->make('foo2', throw: false));
+        self::assertNull($container->make('foo3', throw: false));
+        self::assertNull($container->make('foo4', throw: false));
+        self::assertNull($container->make('foo5', throw: false));
+        self::assertNull($container->make('foo6', throw: false));
+        self::assertNull($container->make('foo7', throw: false));
     }
 
     #[Api([
@@ -233,14 +235,14 @@ EOT,
     public function testMakeWithArgs(): void
     {
         $container = new Container();
-        $container['foo'] = function ($container, $arg1, $arg2) {
+        $container['foo'] = static function ($container, $arg1, $arg2) {
             return [
                 $arg1,
                 $arg2,
             ];
         };
 
-        static::assertSame([1, 2], $container->make('foo', [1, 2, 3]));
+        self::assertSame([1, 2], $container->make('foo', [1, 2, 3]));
     }
 
     #[Api([
@@ -249,11 +251,11 @@ EOT,
     public function testGet(): void
     {
         $container = new Container();
-        $container['foo'] = function ($container) {
+        $container['foo'] = static function ($container) {
             return [1, 2];
         };
 
-        static::assertSame([1, 2], $container->make('foo'));
+        self::assertSame([1, 2], $container->make('foo'));
     }
 
     #[Api([
@@ -262,11 +264,11 @@ EOT,
     public function testOverridden(): void
     {
         $container = new Container();
-        $container['foo'] = fn () => 'bar';
-        static::assertSame('bar', $container['foo']);
+        $container['foo'] = static fn () => 'bar';
+        self::assertSame('bar', $container['foo']);
 
-        $container['foo'] = fn () => 'bar2';
-        static::assertSame('bar2', $container['foo']);
+        $container['foo'] = static fn () => 'bar2';
+        self::assertSame('bar2', $container['foo']);
     }
 
     #[Api([
@@ -278,7 +280,7 @@ EOT,
         $instance = new \stdClass();
         $container->instance('foo', $instance);
 
-        static::assertSame($instance, $container->make('foo'));
+        self::assertSame($instance, $container->make('foo'));
     }
 
     #[Api([
@@ -306,8 +308,8 @@ EOT,
         $container->bind('foo', Test5::class);
         $test5 = $container->make('foo');
 
-        static::assertInstanceOf(ITest3::class, $test5);
-        static::assertSame('hello default', $test5->arg2);
+        self::assertInstanceOf(ITest3::class, $test5);
+        self::assertSame('hello default', $test5->arg2);
     }
 
     #[Api([
@@ -324,7 +326,7 @@ EOT,
     ])]
     public function testArgsRequiredContainerInvalidArgumentException(): void
     {
-        $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
         $this->expectExceptionMessage(
             'There are 3 required args,but 0 given.'
         );
@@ -338,7 +340,7 @@ EOT,
     ])]
     public function testInterfaceContainerInvalidArgumentException(): void
     {
-        $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
+        $this->expectException(ContainerInvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Interface Tests\\Di\\Fixtures\\ITest2 cannot be normalize because not bound.'
         );
@@ -368,39 +370,39 @@ EOT,
     public function testCall(): void
     {
         $container = new Container();
-        $result = $container->call(function (Test7 $arg1, array $arg2 = []) {
+        $result = $container->call(static function (Test7 $arg1, array $arg2 = []) {
             return \func_get_args();
         });
 
-        static::assertInstanceOf(Test7::class, $result[0]);
-        static::assertSame([], $result[1]);
+        self::assertInstanceOf(Test7::class, $result[0]);
+        self::assertSame([], $result[1]);
 
-        $result = $container->call(function (Test7 $arg1, array $arg2 = [], $arg3 = null) {
+        $result = $container->call(static function (Test7 $arg1, array $arg2 = [], $arg3 = null) {
             return \func_get_args();
         }, ['arg3' => 'hello']);
 
-        static::assertInstanceOf(Test7::class, $result[0]);
-        static::assertSame([], $result[1]);
-        static::assertSame('hello', $result[2]);
+        self::assertInstanceOf(Test7::class, $result[0]);
+        self::assertSame([], $result[1]);
+        self::assertSame('hello', $result[2]);
 
         $test7 = new Test7();
-        $result = $container->call(function (Test7 $arg1, $arg2 = 'hello') {
+        $result = $container->call(static function (Test7 $arg1, $arg2 = 'hello') {
             return \func_get_args();
         }, [Test7::class => $test7, 'arg2' => 'hello world']);
 
-        static::assertSame($test7, $result[0]);
-        static::assertSame('hello world', $result[1]);
+        self::assertSame($test7, $result[0]);
+        self::assertSame('hello world', $result[1]);
 
         $test8 = new Test8();
-        $result = $container->call(function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
+        $result = $container->call(static function ($arg1, $arg2, $arg3, ?ITest8 $arg4 = null, ?Test8 $arg5 = null) {
             return \func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
 
-        static::assertSame('foo', $result[0]);
-        static::assertNull($result[1]);
-        static::assertSame('world2', $result[2]);
-        static::assertNull($result[3]);
-        static::assertSame($result[4], $test8);
+        self::assertSame('foo', $result[0]);
+        self::assertNull($result[1]);
+        self::assertSame('world2', $result[2]);
+        self::assertNull($result[3]);
+        self::assertSame($result[4], $test8);
     }
 
     public function testCallNotFoundClass(): void
@@ -422,29 +424,29 @@ EOT,
         $container = new Container();
 
         $result = $container->call([Test8::class, 'func1'], ['foo', 'bar']);
-        static::assertSame(['foo', 'bar'], $result);
+        self::assertSame(['foo', 'bar'], $result);
 
         $result = $container->call(Test8::class.'@func1', ['foo', 'bar']);
-        static::assertSame(['foo', 'bar'], $result);
+        self::assertSame(['foo', 'bar'], $result);
 
         $result = $container->call([Test8::class], ['foo', 'bar']);
-        static::assertSame(['call handle'], $result);
+        self::assertSame(['call handle'], $result);
 
         $result = $container->call(Test8::class.'@', ['foo', 'bar']);
-        static::assertSame(['call handle'], $result);
+        self::assertSame(['call handle'], $result);
 
         $result = $container->call(Test8::class.'@func2');
-        static::assertSame('hello', $result[0]);
+        self::assertSame('hello', $result[0]);
 
         $result = $container->call(Test8::class.'@func2', ['world', 'foo', 'bar']);
-        static::assertSame('world', $result[0]);
-        static::assertSame('foo', $result[1]);
-        static::assertSame('bar', $result[2]);
+        self::assertSame('world', $result[0]);
+        self::assertSame('foo', $result[1]);
+        self::assertSame('bar', $result[2]);
 
         $result = $container->call(Test8::class.'@func2', ['world', 'arg1' => 'foo', 'bar']);
-        static::assertSame('foo', $result[0]);
-        static::assertSame('world', $result[1]);
-        static::assertSame('bar', $result[2]);
+        self::assertSame('foo', $result[0]);
+        self::assertSame('world', $result[1]);
+        self::assertSame('bar', $result[2]);
     }
 
     #[Api([
@@ -456,7 +458,7 @@ EOT,
         $test8 = new Test8();
         $result = $container->call([$test8, 'func1'], ['foo', 'bar']);
 
-        static::assertSame(['foo', 'bar'], $result);
+        self::assertSame(['foo', 'bar'], $result);
     }
 
     #[Api([
@@ -467,7 +469,7 @@ EOT,
         $container = new Container();
 
         $result = $container->call(Test8::class.'::staticFunc3', ['hello', 'world']);
-        static::assertSame(['hello', 'world'], $result);
+        self::assertSame(['hello', 'world'], $result);
     }
 
     public function testCallInvalidClass(): void
@@ -490,10 +492,10 @@ EOT,
 
         $test8 = new Test8();
         $container->instance(Test8::class, $test8);
-        static::assertTrue($container->exists(Test8::class));
+        self::assertTrue($container->exists(Test8::class));
 
         $container->remove(Test8::class);
-        static::assertFalse($container->exists(Test8::class));
+        self::assertFalse($container->exists(Test8::class));
     }
 
     #[Api([
@@ -505,12 +507,12 @@ EOT,
 
         $test8 = new Test8();
         $container->instance(Test8::class, $test8);
-        static::assertTrue($container->exists(Test8::class));
-        static::assertTrue($container->has(Test8::class));
+        self::assertTrue($container->exists(Test8::class));
+        self::assertTrue($container->has(Test8::class));
 
         $container->remove(Test8::class);
-        static::assertFalse($container->exists(Test8::class));
-        static::assertFalse($container->has(Test8::class));
+        self::assertFalse($container->exists(Test8::class));
+        self::assertFalse($container->has(Test8::class));
     }
 
     #[Api([
@@ -524,15 +526,15 @@ EOT,
         $container->alias('foo', 'foo2');
         $container->alias('foo', 'foo3');
 
-        static::assertTrue(isset($container['foo']));
-        static::assertTrue(isset($container['foo2']));
-        static::assertTrue(isset($container['foo3']));
+        self::assertTrue(isset($container['foo']));
+        self::assertTrue(isset($container['foo2']));
+        self::assertTrue(isset($container['foo3']));
 
         unset($container['foo']);
 
-        static::assertFalse(isset($container['foo']));
-        static::assertFalse(isset($container['foo2']));
-        static::assertFalse(isset($container['foo3']));
+        self::assertFalse(isset($container['foo']));
+        self::assertFalse(isset($container['foo2']));
+        self::assertFalse(isset($container['foo3']));
     }
 
     #[Api([
@@ -555,7 +557,7 @@ EOT,
         );
 
         $container = new Container();
-        static::assertSame('world9', $container->make(Test9::class)->hello());
+        self::assertSame('world9', $container->make(Test9::class)->hello());
     }
 
     public function testErrorCallTypes(): void
@@ -567,7 +569,7 @@ EOT,
 
     public function testServiceNotFound(): void
     {
-        $this->expectException(\Leevel\Di\ServiceNotFoundException::class);
+        $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(
             'Service hello was not found.'
         );
@@ -595,7 +597,7 @@ EOT,
         $container = new Container();
 
         $container->bind('foo', false);
-        static::assertFalse($container->make('foo'));
+        self::assertFalse($container->make('foo'));
     }
 
     #[Api([
@@ -606,8 +608,8 @@ EOT,
         $container = new Container();
         $container->bind(['foo' => 'bar'], false);
 
-        static::assertFalse($container->make('foo'));
-        static::assertFalse($container->make('bar'));
+        self::assertFalse($container->make('foo'));
+        self::assertFalse($container->make('bar'));
     }
 
     #[Api([
@@ -624,7 +626,7 @@ EOT,
     ])]
     public function testParseReflectionException(): void
     {
-        $this->expectException(\Leevel\Di\ServiceNotFoundException::class);
+        $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(
             'Service Tests\\Di\\Fixtures\\TestNotFound was not found.'
         );
@@ -642,8 +644,8 @@ EOT,
         $instance = new \stdClass();
         $container->instance(['foo' => 'bar'], $instance);
 
-        static::assertSame($instance, $container->make('foo'));
-        static::assertSame($instance, $container->make('bar'));
+        self::assertSame($instance, $container->make('foo'));
+        self::assertSame($instance, $container->make('bar'));
     }
 
     #[Api([
@@ -660,10 +662,10 @@ EOT,
     {
         $container = new Container();
         $container->instance('foo');
-        static::assertSame('foo', $container->make('foo'));
+        self::assertSame('foo', $container->make('foo'));
 
         $container->instance('Leevel\\Foo\\Middleware\\Bar');
-        static::assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
+        self::assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
     }
 
     #[Api([
@@ -697,7 +699,7 @@ EOT,
         $args = [new Test21('hello'), new Test22('world')];
         $result = $container->call([$obj, 'handle'], $args);
 
-        static::assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
+        self::assertSame(['test21' => 'hello', 'test22' => 'world'], $result);
     }
 
     #[Api([
@@ -731,7 +733,7 @@ EOT,
         $args = [new Test24('hello'), new Test25('world'), 'more'];
         $result = $container->call([$obj, 'handle'], $args);
 
-        static::assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
+        self::assertSame(['test24' => 'hello', 'test25' => 'world', 'three' => 'more'], $result);
     }
 
     public function testClassArgsClassAsStringContainer(): void
@@ -762,7 +764,7 @@ EOT,
     {
         $container = new Container();
         $test = $container->make(Test28::class);
-        static::assertSame('world', $test->hello());
+        self::assertSame('world', $test->hello());
     }
 
     #[Api([
@@ -773,7 +775,7 @@ EOT,
         $container = new Container();
         $container->instance('foo', 'bar');
 
-        static::assertSame('bar', $container->foo);
+        self::assertSame('bar', $container->foo);
     }
 
     #[Api([
@@ -782,11 +784,11 @@ EOT,
     public function testMagicSet(): void
     {
         $container = new Container();
-        $container->foo = function (): string {
+        $container->foo = static function (): string {
             return 'bar';
         };
 
-        static::assertSame('bar', $container->foo);
+        self::assertSame('bar', $container->foo);
     }
 
     public function testMagicCallException(): void
@@ -808,11 +810,11 @@ EOT,
         $container = new Container();
         $container->instance('foo', 'bar');
 
-        static::assertSame('bar', $container->make('foo'));
-        static::assertNull($container->make('notfound', throw: false));
+        self::assertSame('bar', $container->make('foo'));
+        self::assertNull($container->make('notfound', throw: false));
 
         $container->clear();
-        static::assertNull($container->make('foo', throw: false));
+        self::assertNull($container->make('foo', throw: false));
     }
 
     #[Api([
@@ -846,7 +848,7 @@ EOT,
         $container = new Container();
         $container->makeProvider(ProviderTest1::class);
 
-        static::assertSame(1, $_SERVER['testMakeProvider']);
+        self::assertSame(1, $_SERVER['testMakeProvider']);
         unset($_SERVER['testMakeProvider']);
     }
 
@@ -867,11 +869,11 @@ EOT,
         $container = new Container();
         $container->callProviderBootstrap(new ProviderTest1($container));
 
-        static::assertSame(1, $_SERVER['testMakeProvider']);
+        self::assertSame(1, $_SERVER['testMakeProvider']);
         unset($_SERVER['testMakeProvider']);
 
         $container->callProviderBootstrap(new ProviderTest2($container));
-        static::assertSame(1, $_SERVER['testCallProviderBootstrap']);
+        self::assertSame(1, $_SERVER['testCallProviderBootstrap']);
         unset($_SERVER['testCallProviderBootstrap']);
     }
 
@@ -882,9 +884,9 @@ EOT,
     {
         $container = new Container();
 
-        static::assertFalse($container->isBootstrap());
+        self::assertFalse($container->isBootstrap());
         $container->registerProviders([], [], []);
-        static::assertTrue($container->isBootstrap());
+        self::assertTrue($container->isBootstrap());
 
         // do nothing
         $container->registerProviders([], [], []);
@@ -916,12 +918,12 @@ EOT,
 
         $container = new Container();
 
-        static::assertFalse($container->isBootstrap());
+        self::assertFalse($container->isBootstrap());
         $container->registerProviders([], $deferredProviders, $deferredAlias);
-        static::assertTrue($container->isBootstrap());
-        static::assertNull($container->make('bar', throw: false));
-        static::assertNull($container->make('test_deferred', throw: false));
-        static::assertSame(1, $_SERVER['testDeferredProvider']);
+        self::assertTrue($container->isBootstrap());
+        self::assertNull($container->make('bar', throw: false));
+        self::assertNull($container->make('test_deferred', throw: false));
+        self::assertSame(1, $_SERVER['testDeferredProvider']);
 
         unset($_SERVER['testDeferredProvider']);
     }
@@ -953,7 +955,7 @@ EOT,
     public function testCallWithReflectionUnionTypeBug(): void
     {
         $container = new Container();
-        $container->call(function (string $event, string|array $level, string $message, array $context): void {
+        $container->call(function (string $event, array|string $level, string $message, array $context): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -966,7 +968,7 @@ EOT,
     {
         $hello = 'info';
         $container = new Container();
-        $container->call(function (string $event, string|array &$level, string $message, array $context): void {
+        $container->call(function (string $event, array|string &$level, string $message, array $context): void {
             $this->assertSame('log.log', $event);
             $this->assertSame('info', $level);
             $this->assertSame('test_log', $message);
@@ -976,14 +978,14 @@ EOT,
         }, ['log.log', $hello, 'test_log', ['exends' => 'bar'],
         ]);
 
-        static::assertSame('info', $hello);
+        self::assertSame('info', $hello);
     }
 
     public function test1(): void
     {
         $container = new Container();
         $container->instance('foo', 'bar');
-        static::assertSame('bar', $container->make('foo'));
-        static::assertSame('bar', $container->get('foo'));
+        self::assertSame('bar', $container->make('foo'));
+        self::assertSame('bar', $container->get('foo'));
     }
 }

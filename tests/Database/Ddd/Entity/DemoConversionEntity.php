@@ -315,7 +315,5 @@ class DemoConversionEntity extends Entity
         return new Collection([new DemoEntity($data)]);
     }
 
-    public function setInvalidSetter($value): void
-    {
-    }
+    public function setInvalidSetter($value): void {}
 }

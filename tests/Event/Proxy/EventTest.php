@@ -28,7 +28,7 @@ final class EventTest extends TestCase
     {
         $container = $this->createContainer();
         $dispatch = $this->createDispatch($container);
-        $container->singleton('event', function () use ($dispatch): Dispatch {
+        $container->singleton('event', static function () use ($dispatch): Dispatch {
             return $dispatch;
         });
 
@@ -43,8 +43,8 @@ final class EventTest extends TestCase
         $dispatch->register('event1', Listener1::class);
         $dispatch->handle('event1');
 
-        static::assertSame($_SERVER['test'], 'hello');
-        static::assertSame($_SERVER['event_name'], 'event1');
+        self::assertSame($_SERVER['test'], 'hello');
+        self::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -53,7 +53,7 @@ final class EventTest extends TestCase
     {
         $container = $this->createContainer();
         $dispatch = $this->createDispatch($container);
-        $container->singleton('event', function () use ($dispatch): Dispatch {
+        $container->singleton('event', static function () use ($dispatch): Dispatch {
             return $dispatch;
         });
 
@@ -68,8 +68,8 @@ final class EventTest extends TestCase
         Event::register('event1', Listener1::class);
         Event::handle('event1');
 
-        static::assertSame($_SERVER['test'], 'hello');
-        static::assertSame($_SERVER['event_name'], 'event1');
+        self::assertSame($_SERVER['test'], 'hello');
+        self::assertSame($_SERVER['event_name'], 'event1');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -88,9 +88,7 @@ final class EventTest extends TestCase
     }
 }
 
-abstract class Listener extends Observer
-{
-}
+abstract class Listener extends Observer {}
 
 class Listener1 extends Listener
 {

@@ -25,9 +25,6 @@ class Set extends Vector
         parent::__construct($data, $valueType);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         parent::offsetSet($index, $newval);

@@ -28,27 +28,27 @@ final class MigrateSeedRunTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config file'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('phinx.php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using adapter mysql'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('All Done. Took'),
             $result
         );

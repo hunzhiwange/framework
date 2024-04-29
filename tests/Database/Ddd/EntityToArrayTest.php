@@ -55,7 +55,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -83,7 +83,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -96,7 +96,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -113,7 +113,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -131,7 +131,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -162,7 +162,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -178,7 +178,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -196,7 +196,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -213,7 +213,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -238,7 +238,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -251,7 +251,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -296,7 +296,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -338,7 +338,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -385,7 +385,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -415,11 +415,11 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
-                    ->each(function ($value, $k) {
+                    ->each(static function ($value, $k) {
                         if ('user' === $k) {
                             $value = $value->only(['name']);
                         }
@@ -461,7 +461,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()
@@ -510,7 +510,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray()

@@ -15,18 +15,12 @@ use Leevel\Filesystem\Manager;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->filesystems();
         $this->filesystem();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -35,9 +29,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -51,7 +42,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'filesystems',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -64,7 +55,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'filesystem',
-                fn (IContainer $container): Filesystem => $container['filesystems']->connect(),
+                static fn (IContainer $container): Filesystem => $container['filesystems']->connect(),
             )
         ;
     }

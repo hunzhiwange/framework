@@ -39,8 +39,8 @@ final class FileTest extends TestCase
         $data = $this->getLogData();
         $file->info(...$data);
         $file->info(...$data);
-        $filePath = __DIR__.'/development.info/'.ILOG::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        static::assertTrue(is_file($filePath));
+        $filePath = __DIR__.'/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
+        self::assertTrue(is_file($filePath));
     }
 
     public function testFileNotSetException(): void

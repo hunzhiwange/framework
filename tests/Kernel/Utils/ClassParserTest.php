@@ -13,6 +13,6 @@ final class ClassParserTest extends TestCase
     {
         $classParser = new ClassParser();
         $className = $classParser->handle(__DIR__.'/ClassParserTest.php');
-        static::assertSame($className, self::class);
+        self::assertSame($className, self::class);
     }
 }

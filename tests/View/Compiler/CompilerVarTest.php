@@ -37,7 +37,7 @@ EOT,
             <?php echo $name; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -56,7 +56,7 @@ EOT,
             我的梦想是写好”<?php echo $value['name']; ?>“，我相信”<?php echo $value['description']; ?>“。
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -78,7 +78,7 @@ EOT,
             我的梦想是写好”<?php echo $demo->name; ?>“，我相信”<?php echo $demo->description; ?>“。
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -97,7 +97,7 @@ EOT,
             我的梦想是写好”<?php echo $demo->name->child->child->child; ?>“，我相信”<?php echo $demo->description; ?>“。
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -121,7 +121,7 @@ EOT,
             <?php echo $value-$value2; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -148,7 +148,7 @@ EOT,
             <?php echo $value3%$list['key']; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -167,7 +167,7 @@ EOT,
             <?php echo $value3.'start - '.$value.$value2.'- end'; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -205,7 +205,7 @@ EOT,
             <?php echo function2(arg1,arg2,function1($varName)); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 模板中如果不加 ** 的格式为
         $source = <<<'eot'
@@ -216,7 +216,7 @@ EOT,
             <?php echo function2(function1($varName), arg1,arg2); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -235,7 +235,7 @@ EOT,
             <?php echo substr(strtoupper($content), 0,3); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -254,7 +254,7 @@ EOT,
             <?php echo date("Y-m-d",$date); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -276,7 +276,7 @@ EOT,
             <?php echo function1($var); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -300,7 +300,7 @@ EOT,
             <?php echo \Leevel\Support\Str::formatDate($currentTime); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -319,7 +319,7 @@ EOT,
             <?php function1($var); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 1
         $source = <<<'eot'
@@ -330,7 +330,7 @@ EOT,
             <?php echo('Hello world!'); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -355,7 +355,7 @@ EOT,
             <?php echo $demo->test(); ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -394,6 +394,6 @@ EOT,
             <?php echo $name ?: "Hello，我最爱的雪碧！"; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\BadRequestHttpException as BaseBadRequestHttpException;
 
-class BadRequestHttpException extends BaseBadRequestHttpException
-{
-}
+class BadRequestHttpException extends BaseBadRequestHttpException {}

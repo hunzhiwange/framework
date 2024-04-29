@@ -12,6 +12,4 @@ use Leevel\Kernel\Utils\Api;
     'zh-TW:title' => '概述',
     'path' => 'architecture/index',
 ])]
-class ArchitectureSummaryDoc
-{
-}
+class ArchitectureSummaryDoc {}

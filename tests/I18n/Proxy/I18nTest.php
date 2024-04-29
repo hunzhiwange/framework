@@ -26,16 +26,16 @@ final class I18nTest extends TestCase
     public function testBaseUse(): void
     {
         $container = $this->createContainer();
-        $container->singleton('i18n', function (): I18n {
+        $container->singleton('i18n', static function (): I18n {
             return new I18n('zh-CN');
         });
 
-        static::assertSame('zh-CN', ProxyI18n::getI18n());
-        static::assertSame([
+        self::assertSame('zh-CN', ProxyI18n::getI18n());
+        self::assertSame([
             'zh-CN' => [],
         ], ProxyI18n::all());
-        static::assertSame('中国语言', ProxyI18n::gettext('中国语言'));
-        static::assertSame('中国人语言', ProxyI18n::gettext('中国%s语言', '人'));
+        self::assertSame('中国语言', ProxyI18n::gettext('中国语言'));
+        self::assertSame('中国人语言', ProxyI18n::gettext('中国%s语言', '人'));
     }
 
     protected function createContainer(): Container

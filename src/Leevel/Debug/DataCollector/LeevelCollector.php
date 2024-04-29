@@ -26,9 +26,6 @@ class LeevelCollector extends DataCollector implements Renderable
         $this->app = $app;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function collect(): array
     {
         $app = $this->app;
@@ -39,17 +36,11 @@ class LeevelCollector extends DataCollector implements Renderable
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'leevel';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets(): array
     {
         return [

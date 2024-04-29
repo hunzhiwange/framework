@@ -12,21 +12,15 @@ class Web
     #[Route(
         path: '/web/v1/petLeevelForWeb/{petId:[A-Za-z]+}/',
     )]
-    private function petLeevelForWeb(): void
-    {
-    }
+    private function petLeevelForWeb(): void {}
 
     #[IgnoreRoute(
         path: '/web/v2/petLeevelV2Web/',
     )]
-    private function petLeevelV2ForWeb(): void
-    {
-    }
+    private function petLeevelV2ForWeb(): void {}
 
     #[IgnoreRoute(
         path: '/web/v1/petLeevelIgnoreForWeb/',
     )]
-    private function petLeevelIgnoreForWeb(): void
-    {
-    }
+    private function petLeevelIgnoreForWeb(): void {}
 }

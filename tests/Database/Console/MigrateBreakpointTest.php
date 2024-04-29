@@ -42,32 +42,32 @@ final class MigrateBreakpointTest extends TestCase
         $result = $this->normalizeContent($result);
         $resultRemove = $this->normalizeContent($resultRemove);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config file'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('phinx.php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('using config parser php'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Breakpoint set for 20191005015700 RoleSoftDeleted'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('warning no environment specified, defaulting to: development'),
             $resultRemove
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Breakpoint cleared for 20191005015700 RoleSoftDeleted'),
             $resultRemove
         );

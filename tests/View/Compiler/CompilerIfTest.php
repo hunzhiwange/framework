@@ -39,7 +39,7 @@ final class CompilerIfTest extends TestCase
             <?php endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -66,7 +66,7 @@ EOT,
             <?php endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -96,6 +96,6 @@ EOT,
             <?php endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

@@ -25,16 +25,16 @@ final class HelperTest extends TestCase
         $strings = "O'Reilly?";
         $out = "O\\'Reilly?";
 
-        static::assertSame($out, Helper::customAddslashes($strings));
+        self::assertSame($out, Helper::customAddslashes($strings));
 
-        static::assertSame($strings, Helper::customStripslashes($out));
+        self::assertSame($strings, Helper::customStripslashes($out));
 
         $arrays = ["O'Reilly?" => "O'Reilly?"];
         $outs = ["O\\'Reilly?" => "O\\'Reilly?"];
 
-        static::assertSame($outs, Helper::customAddslashes($arrays));
+        self::assertSame($outs, Helper::customAddslashes($arrays));
 
-        static::assertSame($arrays, Helper::customStripslashes($outs));
+        self::assertSame($arrays, Helper::customStripslashes($outs));
     }
 
     #[Api([
@@ -45,7 +45,7 @@ final class HelperTest extends TestCase
         $strings = 'You should eat fruits, vegetables, and fiber every day.';
         $out = 'You should eat fruits, vegetables, and fiber every .';
 
-        static::assertSame($out, Helper::deepReplace(['not found', 'day'], $strings));
+        self::assertSame($out, Helper::deepReplace(['not found', 'day'], $strings));
     }
 
     #[Api([
@@ -56,7 +56,7 @@ final class HelperTest extends TestCase
         $strings = '<script>hello world.';
         $out = '&lt;script>hello world.';
 
-        static::assertSame($out, Helper::filterScript($strings));
+        self::assertSame($out, Helper::filterScript($strings));
     }
 
     #[Api([
@@ -67,7 +67,7 @@ final class HelperTest extends TestCase
         $strings = '0x63hello 0x6f world.';
         $out = '0hello 0 world.';
 
-        static::assertSame($out, Helper::cleanHex($strings));
+        self::assertSame($out, Helper::cleanHex($strings));
     }
 
     #[Api([
@@ -77,11 +77,11 @@ final class HelperTest extends TestCase
     {
         $strings = 'This is some <b>bold</b> text.';
         $out = 'This is some &lt;b&gt;bold&lt;/b&gt; text.';
-        static::assertSame($out, Helper::strFilter($strings));
+        self::assertSame($out, Helper::strFilter($strings));
 
         $strings = ['This is some <b>bold</b> text.'];
         $out = ['This is some &lt;b&gt;bold&lt;/b&gt; text.'];
-        static::assertSame($out, Helper::strFilter($strings));
+        self::assertSame($out, Helper::strFilter($strings));
     }
 
     #[Api([
@@ -91,11 +91,11 @@ final class HelperTest extends TestCase
     {
         $strings = "foo bar<script>.<span onclick='alert(5);'>yes</span>.";
         $out = 'foo bar&lt;script&gt;.<span >yes</span>.';
-        static::assertSame($out, Helper::htmlFilter($strings));
+        self::assertSame($out, Helper::htmlFilter($strings));
 
         $strings = ["foo bar<script>.<span onclick='alert(5);'>yes</span>."];
         $out = ['foo bar&lt;script&gt;.<span >yes</span>.'];
-        static::assertSame($out, Helper::htmlFilter($strings));
+        self::assertSame($out, Helper::htmlFilter($strings));
     }
 
     #[Api([
@@ -107,7 +107,7 @@ final class HelperTest extends TestCase
         $out = 'i a <br />
  here';
 
-        static::assertSame($out, Helper::htmlView($strings));
+        self::assertSame($out, Helper::htmlView($strings));
     }
 
     #[Api([
@@ -120,12 +120,12 @@ final class HelperTest extends TestCase
             '<script>window</script> here';
         $out = 'i a  here';
 
-        static::assertSame($out, Helper::cleanJs($strings));
+        self::assertSame($out, Helper::cleanJs($strings));
 
         $strings = 'i a <span javascript:></span> here';
         $out = 'i a <span ></span> here';
 
-        static::assertSame($out, Helper::cleanJs($strings));
+        self::assertSame($out, Helper::cleanJs($strings));
     }
 
     #[Api([
@@ -136,7 +136,7 @@ final class HelperTest extends TestCase
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'iahere';
 
-        static::assertSame($out, Helper::text($strings));
+        self::assertSame($out, Helper::text($strings));
     }
 
     public function testText2(): void
@@ -144,7 +144,7 @@ final class HelperTest extends TestCase
         $strings = "i a <script></script> \n\r<body> <span onmouse='alert(5);'> here";
         $out = 'i a  here';
 
-        static::assertSame($out, Helper::text($strings, false));
+        self::assertSame($out, Helper::text($strings, false));
     }
 
     #[Api([
@@ -155,7 +155,7 @@ final class HelperTest extends TestCase
         $strings = "i a <script></script> <body> <span onmouse='alert(5);'> here";
         $out = 'i a    here';
 
-        static::assertSame($out, Helper::strip($strings));
+        self::assertSame($out, Helper::strip($strings));
     }
 
     #[Api([
@@ -166,12 +166,12 @@ final class HelperTest extends TestCase
         $strings = 'i a < here';
         $out = 'i a &lt; here';
 
-        static::assertSame($out, Helper::customHtmlspecialchars($strings));
+        self::assertSame($out, Helper::customHtmlspecialchars($strings));
 
         $strings = ['i a < here', 'i a > here'];
         $out = ['i a &lt; here', 'i a &gt; here'];
 
-        static::assertSame($out, Helper::customHtmlspecialchars($strings));
+        self::assertSame($out, Helper::customHtmlspecialchars($strings));
     }
 
     #[Api([
@@ -182,12 +182,12 @@ final class HelperTest extends TestCase
         $strings = 'i a &lt; here';
         $out = 'i a < here';
 
-        static::assertSame($out, Helper::unHtmlspecialchars($strings));
+        self::assertSame($out, Helper::unHtmlspecialchars($strings));
 
         $strings = ['i a &lt; here', 'i a &gt; here'];
         $out = ['i a < here', 'i a > here'];
 
-        static::assertSame($out, Helper::unHtmlspecialchars($strings));
+        self::assertSame($out, Helper::unHtmlspecialchars($strings));
     }
 
     public function testNotFound(): void
@@ -195,6 +195,6 @@ final class HelperTest extends TestCase
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Encryption\\Helper\\NotFound" not found');
 
-        static::assertTrue(Helper::notFound());
+        self::assertTrue(Helper::notFound());
     }
 }

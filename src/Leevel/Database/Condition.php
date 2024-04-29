@@ -178,7 +178,7 @@ class Condition
     /**
      * 实现魔术方法 __call.
      *
-     * @throws \Leevel\Database\ConditionErrorException
+     * @throws ConditionErrorException
      */
     public function __call(string $method, array $args): mixed
     {
@@ -196,7 +196,7 @@ class Condition
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool|array $replace = false): array
+    public function insert(array|string $data, array $bind = [], array|bool $replace = false): array
     {
         $tableName = $this->getTable();
 
@@ -241,7 +241,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false): array
+    public function insertAll(array $data, array $bind = [], array|bool $replace = false): array
     {
         $tableName = $this->getTable();
 
@@ -471,7 +471,7 @@ class Condition
     /**
      * 添加一个要查询的表及其要查询的字段.
      */
-    public function table(array|\Closure|Condition|Select|string $table, array|string $cols = '*'): self
+    public function table(array|\Closure|self|Select|string $table, array|string $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -565,7 +565,7 @@ class Condition
             return $this;
         }
 
-        $this->configs['middlewaresConfigs'] = $this->throughMiddleware($handleMiddlewares, $this->configs['middlewaresConfigs'] ?? [], function (\Closure $next, self $condition, array $middlewaresConfigs): array {
+        $this->configs['middlewaresConfigs'] = $this->throughMiddleware($handleMiddlewares, $this->configs['middlewaresConfigs'] ?? [], static function (\Closure $next, self $condition, array $middlewaresConfigs): array {
             return $middlewaresConfigs;
         });
 
@@ -893,7 +893,7 @@ class Condition
     /**
      * join 查询.
      */
-    public function join(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function join(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -905,7 +905,7 @@ class Condition
     /**
      * innerJoin 查询.
      */
-    public function innerJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function innerJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -917,7 +917,7 @@ class Condition
     /**
      * leftJoin 查询.
      */
-    public function leftJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function leftJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -929,7 +929,7 @@ class Condition
     /**
      * rightJoin 查询.
      */
-    public function rightJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function rightJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -943,7 +943,7 @@ class Condition
      *
      * @throws \RuntimeException
      */
-    public function fullJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function fullJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -960,7 +960,7 @@ class Condition
     /**
      * crossJoin 查询.
      */
-    public function crossJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function crossJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -972,7 +972,7 @@ class Condition
     /**
      * naturalJoin 查询.
      */
-    public function naturalJoin(array|\Closure|Condition|Select|string $table, array|string $cols, ...$cond): self
+    public function naturalJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -986,7 +986,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    public function union(Select|Condition|array|callable|string $selects, string $type = 'UNION'): self
+    public function union(array|callable|self|Select|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1010,7 +1010,7 @@ class Condition
     /**
      * 添加一个 UNION ALL 查询.
      */
-    public function unionAll(Select|Condition|array|callable|string $selects): self
+    public function unionAll(array|callable|self|Select|string $selects): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -2289,7 +2289,7 @@ class Condition
     /**
      * 组装条件.
      */
-    protected function addConditions(string|array $fieldOrCond, mixed $operator = null, mixed $value = null): self
+    protected function addConditions(array|string $fieldOrCond, mixed $operator = null, mixed $value = null): self
     {
         // 整理多个参数到二维数组
         if (!\is_array($fieldOrCond)) {
@@ -2324,7 +2324,7 @@ class Condition
         return $keys !== array_keys($keys);
     }
 
-    protected function addConditionsEach(array|string|Select|Condition|\Closure|int|float $cond, ?string $key = null): void
+    protected function addConditionsEach(array|\Closure|self|float|int|Select|string $cond, ?string $key = null): void
     {
         match ($key) {
             ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
@@ -2371,7 +2371,7 @@ class Condition
     /**
      * @throws \InvalidArgumentException
      */
-    protected function addConditionsExists(string $key, string|Select|Condition|\Closure $cond): void
+    protected function addConditionsExists(string $key, \Closure|self|Select|string $cond): void
     {
         // having 不支持 [not] exists
         if ('having' === $this->getTypeAndLogic()[0]) {
@@ -2398,7 +2398,7 @@ class Condition
         $this->setConditionItem($cond, ':string');
     }
 
-    protected function addConditionsNormal(array|string|int|float $cond, ?string $key = null): void
+    protected function addConditionsNormal(array|float|int|string $cond, ?string $key = null): void
     {
         // 处理字符串 "null"
         if (\is_scalar($cond)) {
@@ -2515,7 +2515,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function addJoin(string $joinType, array|\Closure|Condition|Select|string $names, array|string $cols, mixed $cond = null): self
+    protected function addJoin(string $joinType, array|\Closure|self|Select|string $names, array|string $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (\count($this->configs['union'])) {
@@ -2613,7 +2613,7 @@ class Condition
                 array_shift($args);
             }
 
-            $this->conditionSubExpression(function (self $condition) use ($args, &$cond): void {
+            $this->conditionSubExpression(static function (self $condition) use ($args, &$cond): void {
                 $condition->where(...$args);
                 $cond = $condition->parseWhere(true);
             }, $alias);
@@ -2950,7 +2950,7 @@ class Condition
 
     protected function parseTerminateMiddlewares(array $terminateMiddlewares, array $sql): array
     {
-        return $this->throughMiddlewareTerminate($terminateMiddlewares, $sql, function (\Closure $next, self $condition, array $middlewaresConfigs, array $makeSql): array {
+        return $this->throughMiddlewareTerminate($terminateMiddlewares, $sql, static function (\Closure $next, self $condition, array $middlewaresConfigs, array $makeSql): array {
             return $makeSql;
         });
     }

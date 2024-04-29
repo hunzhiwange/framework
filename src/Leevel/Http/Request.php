@@ -248,9 +248,6 @@ class Request extends BaseRequest implements IArray
         $this->pathInfo = $pathInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         return $this->all();

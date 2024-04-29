@@ -13,6 +13,6 @@ final class InspectorTest extends TestCase
     {
         $e = new \Exception('hello world');
         $inspector = new Inspector($e);
-        static::assertIsArray($this->invokeTestMethod($inspector, 'getTrace', [$e]));
+        self::assertIsArray($this->invokeTestMethod($inspector, 'getTrace', [$e]));
     }
 }

@@ -17,5 +17,5 @@ interface IEncryption
     /**
      * 解密.
      */
-    public function decrypt(string $value): string|false;
+    public function decrypt(string $value): false|string;
 }

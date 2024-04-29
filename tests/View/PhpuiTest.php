@@ -17,7 +17,7 @@ final class PhpuiTest extends TestCase
 
         $phpui->setVar('foo', 'bar');
         $result = $phpui->display('phpui_test');
-        static::assertSame('hello phpui,bar.', $result);
+        self::assertSame('hello phpui,bar.', $result);
     }
 
     public function testDisplayReturn(): void
@@ -30,7 +30,7 @@ final class PhpuiTest extends TestCase
 
         $result = $phpui->display('phpui_test');
 
-        static::assertSame('hello phpui,bar.', $result);
+        self::assertSame('hello phpui,bar.', $result);
     }
 
     public function testDisplayWithVar(): void
@@ -41,7 +41,7 @@ final class PhpuiTest extends TestCase
 
         $result = $phpui->display('phpui_test', ['foo' => 'bar']);
 
-        static::assertSame('hello phpui,bar.', $result);
+        self::assertSame('hello phpui,bar.', $result);
     }
 
     public function testParseFileForFullPath(): void
@@ -52,7 +52,7 @@ final class PhpuiTest extends TestCase
 
         $result = $phpui->display(__DIR__.'/assert/phpui_test_pullpath.php', ['foo' => 'bar']);
 
-        static::assertSame('hello phpui for fullpath,bar.', $result);
+        self::assertSame('hello phpui for fullpath,bar.', $result);
     }
 
     public function testParseFileThemeNotSet(): void
@@ -89,7 +89,7 @@ final class PhpuiTest extends TestCase
 
         $result = $phpui->display('sub/phpui_test_sub', ['foo' => 'bar']);
 
-        static::assertSame('hello phpui for sub,bar.', $result);
+        self::assertSame('hello phpui for sub,bar.', $result);
     }
 
     public function testParseFilePathTemplateFileMustBeSet(): void

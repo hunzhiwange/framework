@@ -63,7 +63,7 @@ class LoadI18n
         $path = $app->path();
 
         // @phpstan-ignore-next-line
-        return array_map(function (string $item) use ($path) {
+        return array_map(static function (string $item) use ($path) {
             if (!is_file($item)) {
                 $item = $path.'/'.$item;
             }

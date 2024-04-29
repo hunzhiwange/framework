@@ -70,17 +70,11 @@ abstract class RouterProvider extends Provider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->container->singleton(self::class, $this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [

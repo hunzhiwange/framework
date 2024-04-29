@@ -12,9 +12,7 @@ class MiddlewareParser
     /**
      * 构造函数.
      */
-    public function __construct(protected IRouter $router)
-    {
-    }
+    public function __construct(protected IRouter $router) {}
 
     /**
      * 解析中间件
@@ -63,7 +61,7 @@ class MiddlewareParser
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {
-        $middlewares = array_map(function ($item) use ($method) {
+        $middlewares = array_map(static function ($item) use ($method) {
             if (!str_contains($item, ':')) {
                 $realClass = $item;
             } else {

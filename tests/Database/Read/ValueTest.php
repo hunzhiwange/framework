@@ -27,7 +27,7 @@ final class ValueTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test')

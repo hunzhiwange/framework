@@ -31,16 +31,14 @@ final class RegisterTest extends TestCase
 
         $dispatch->handle('test_event');
 
-        static::assertSame($_SERVER['test'], 'hello');
-        static::assertSame($_SERVER['event_name'], 'test_event');
+        self::assertSame($_SERVER['test'], 'hello');
+        self::assertSame($_SERVER['event_name'], 'test_event');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
 }
 
-abstract class Listener extends Observer
-{
-}
+abstract class Listener extends Observer {}
 
 class Listener1 extends Listener
 {

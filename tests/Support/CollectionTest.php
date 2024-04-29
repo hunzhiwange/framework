@@ -34,36 +34,36 @@ EOT,
         foreach ($collection as $key => $val) {
             switch ($key) {
                 case 0:
-                    static::assertSame($val, 'hello');
+                    self::assertSame($val, 'hello');
 
                     break;
 
                 case 1:
-                    static::assertSame($val, 'world');
+                    self::assertSame($val, 'world');
 
                     break;
 
                 case 2:
-                    static::assertSame($val, 'foo');
+                    self::assertSame($val, 'foo');
 
                     break;
 
                 case 3:
-                    static::assertSame($val, 'bar');
+                    self::assertSame($val, 'bar');
 
                     break;
             }
         }
 
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 'world');
-        static::assertSame($collection[2], 'foo');
-        static::assertSame($collection[3], 'bar');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
-        static::assertFalse(isset($collection[4]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 'world');
+        self::assertSame($collection[2], 'foo');
+        self::assertSame($collection[3], 'bar');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
+        self::assertFalse(isset($collection[4]));
     }
 
     #[Api([
@@ -81,9 +81,9 @@ EOT,
             'hello3' => 'world3',
         ]);
 
-        static::assertSame($collection['hello'], 'world');
-        static::assertSame($collection['hello2'], 'world2');
-        static::assertSame($collection['hello3'], 'world3');
+        self::assertSame($collection['hello'], 'world');
+        self::assertSame($collection['hello2'], 'world2');
+        self::assertSame($collection['hello3'], 'world3');
     }
 
     #[Api([
@@ -103,36 +103,36 @@ EOT,
         foreach ($collection as $key => $val) {
             switch ($key) {
                 case 0:
-                    static::assertSame($val, 'hello');
+                    self::assertSame($val, 'hello');
 
                     break;
 
                 case 1:
-                    static::assertSame($val, 'world');
+                    self::assertSame($val, 'world');
 
                     break;
 
                 case 2:
-                    static::assertSame($val, 'foo');
+                    self::assertSame($val, 'foo');
 
                     break;
 
                 case 3:
-                    static::assertSame($val, 'bar');
+                    self::assertSame($val, 'bar');
 
                     break;
             }
         }
 
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 'world');
-        static::assertSame($collection[2], 'foo');
-        static::assertSame($collection[3], 'bar');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
-        static::assertFalse(isset($collection[4]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 'world');
+        self::assertSame($collection[2], 'foo');
+        self::assertSame($collection[3], 'bar');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
+        self::assertFalse(isset($collection[4]));
     }
 
     #[Api([
@@ -149,28 +149,28 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertSame('hello', $collection->current());
-        static::assertSame(0, $collection->key());
+        self::assertSame('hello', $collection->current());
+        self::assertSame(0, $collection->key());
 
-        static::assertNull($collection->next());
+        self::assertNull($collection->next());
 
-        static::assertSame('world', $collection->current());
-        static::assertSame(1, $collection->key());
+        self::assertSame('world', $collection->current());
+        self::assertSame(1, $collection->key());
 
-        static::assertNull($collection->next());
-        static::assertNull($collection->next());
+        self::assertNull($collection->next());
+        self::assertNull($collection->next());
 
-        static::assertSame('bar', $collection->current());
-        static::assertSame(3, $collection->key());
+        self::assertSame('bar', $collection->current());
+        self::assertSame(3, $collection->key());
 
         $collection->next();
 
-        static::assertFalse($collection->current());
-        static::assertNull($collection->key());
+        self::assertFalse($collection->current());
+        self::assertNull($collection->key());
 
         $collection->rewind();
-        static::assertSame(0, $collection->key());
-        static::assertSame('hello', $collection->current());
+        self::assertSame(0, $collection->key());
+        self::assertSame('hello', $collection->current());
     }
 
     #[Api([
@@ -187,7 +187,7 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertCount(4, $collection);
+        self::assertCount(4, $collection);
     }
 
     public function testArrayAccess(): void
@@ -198,19 +198,19 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         $collection[1] = 'world';
         $data[1] = 'world';
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         $collection[2] = 'foo';
         $data[2] = 'foo';
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         unset($collection[1]);
 
-        static::assertSame($collection->toArray(), [
+        self::assertSame($collection->toArray(), [
             0 => 'hello',
             2 => 'foo',
         ]);
@@ -224,19 +224,19 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         $collection->hello = 'world new';
         $data['hello'] = 'world new';
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         $collection->foo = 'foo';
         $data['foo'] = 'foo';
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
 
         $collection->foo = null;
 
-        static::assertSame($collection->toArray(), [
+        self::assertSame($collection->toArray(), [
             'hello' => 'world new',
             'foo' => null,
         ]);
@@ -253,7 +253,7 @@ EOT,
 
         $collection = new Collection(new Collection($data));
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -279,7 +279,7 @@ EOT,
 
         $collection = new Collection(new TestArray());
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -305,7 +305,7 @@ EOT,
 
         $collection = new Collection(new TestJson());
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -331,7 +331,7 @@ EOT,
 
         $collection = new Collection(new TestJsonSerializable());
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -345,7 +345,7 @@ EOT,
 
         $collection = new Collection('hello');
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -369,7 +369,7 @@ EOT,
 
         $collection = new Collection($std);
 
-        static::assertSame($collection->toArray(), $data);
+        self::assertSame($collection->toArray(), $data);
     }
 
     #[Api([
@@ -386,8 +386,8 @@ EOT,
         ];
 
         $collection = new Collection($data, ['string']);
-        static::assertSame($collection->toArray(), $data);
-        static::assertSame(['string'], $collection->getValueTypes());
+        self::assertSame($collection->toArray(), $data);
+        self::assertSame(['string'], $collection->getValueTypes());
     }
 
     #[Api([
@@ -401,8 +401,8 @@ EOT,
         ];
 
         $collection = new Collection($data, ['string'], ['string']);
-        static::assertSame($collection->toArray(), $data);
-        static::assertSame(['string'], $collection->getKeyTypes());
+        self::assertSame($collection->toArray(), $data);
+        self::assertSame(['string'], $collection->getKeyTypes());
     }
 
     #[Api([
@@ -484,7 +484,7 @@ EOT,
             ++$i;
         });
 
-        static::assertSame($i, 0);
+        self::assertSame($i, 0);
     }
 
     #[Api([
@@ -504,7 +504,7 @@ EOT,
 
         $data = '["hello","world"]';
 
-        static::assertSame($data, $collection->toJson());
+        self::assertSame($data, $collection->toJson());
     }
 
     #[Api([
@@ -528,7 +528,7 @@ EOT,
 
         $data = '["我","成都"]';
 
-        static::assertSame($data, $collection->toJson());
+        self::assertSame($data, $collection->toJson());
     }
 
     public function testToJsonWithCnEncode(): void
@@ -542,7 +542,7 @@ EOT,
 
         $data = '["\u6211","\u6210\u90fd"]';
 
-        static::assertSame($data, $collection->toJson(JSON_HEX_TAG));
+        self::assertSame($data, $collection->toJson(JSON_HEX_TAG));
     }
 
     #[Api([
@@ -591,7 +591,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $collection->jsonSerialize()
@@ -614,13 +614,13 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertSame($collection->hello, 'world');
-        static::assertSame($collection->foo, 'bar');
+        self::assertSame($collection->hello, 'world');
+        self::assertSame($collection->foo, 'bar');
         $collection->hello = 'new world';
         $collection->foo = 'new bar';
-        static::assertSame($collection->hello, 'new world');
-        static::assertSame($collection->foo, 'new bar');
-        static::assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
+        self::assertSame($collection->hello, 'new world');
+        self::assertSame($collection->foo, 'new bar');
+        self::assertSame((string) $collection, '{"hello":"new world","foo":"new bar"}');
     }
 
     public function testGetSetString2(): void
@@ -631,7 +631,7 @@ EOT,
         ];
 
         $collection = new Collection($data);
-        static::assertSame((string) $collection, '{"我":"成都","们":"中国"}');
+        self::assertSame((string) $collection, '{"我":"成都","们":"中国"}');
     }
 
     public function testValid(): void
@@ -642,13 +642,13 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertTrue($collection->valid());
+        self::assertTrue($collection->valid());
         $collection->next();
-        static::assertTrue($collection->valid());
+        self::assertTrue($collection->valid());
         $collection->next();
-        static::assertFalse($collection->valid());
+        self::assertFalse($collection->valid());
         $collection->rewind();
-        static::assertTrue($collection->valid());
+        self::assertTrue($collection->valid());
     }
 
     #[Api([
@@ -663,16 +663,16 @@ EOT,
 
         $collection = new Collection($data);
 
-        static::assertSame($collection->hello, 'world');
-        static::assertSame($collection->foo, 'bar');
+        self::assertSame($collection->hello, 'world');
+        self::assertSame($collection->foo, 'bar');
         $collection->hello = 'new world';
         $collection->foo = 'new bar';
-        static::assertSame($collection->hello, 'new world');
-        static::assertSame($collection->foo, 'new bar');
-        static::assertTrue(isset($collection->hello));
-        static::assertFalse(isset($collection->hello2));
+        self::assertSame($collection->hello, 'new world');
+        self::assertSame($collection->foo, 'new bar');
+        self::assertTrue(isset($collection->hello));
+        self::assertFalse(isset($collection->hello2));
         $collection->hello = null;
-        static::assertFalse(isset($collection->hello));
+        self::assertFalse(isset($collection->hello));
     }
 
     #[Api([
@@ -686,11 +686,11 @@ EOT,
         ];
 
         $collection = new Collection($data);
-        static::assertFalse($collection->isEmpty());
+        self::assertFalse($collection->isEmpty());
 
         $data = [];
         $collection = new Collection($data);
-        static::assertTrue($collection->isEmpty());
+        self::assertTrue($collection->isEmpty());
     }
 
     public function test2(): void
@@ -701,7 +701,7 @@ EOT,
         ];
         $collection = new Collection($data, ['string'], ['int']);
         $result = $this->invokeTestMethod($collection, 'checkType', ['hello', true, 'not_found']);
-        static::assertNull($result);
+        self::assertNull($result);
     }
 
     public function test3(): void
@@ -712,6 +712,6 @@ EOT,
         ];
         $collection = new Collection($data, ['string'], ['int']);
         $result = $this->invokeTestMethod($collection, 'checkType', ['hello', true, 1]);
-        static::assertNull($result);
+        self::assertNull($result);
     }
 }

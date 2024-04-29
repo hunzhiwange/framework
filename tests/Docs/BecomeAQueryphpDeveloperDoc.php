@@ -855,9 +855,7 @@ $yarn run dev # or npx vuepress dev docs
 ```
 EOT,
     ])]
-    public function doc9(): void
-    {
-    }
+    public function doc9(): void {}
 
     #[Api([
         'zh-CN:title' => '结尾',
@@ -868,7 +866,5 @@ EOT,
 值得注意的是，我们通常在 `dev` 分支开发，开发完毕后 `merge` 到 `master` 分支完成开发。
 EOT,
     ])]
-    public function doc10(): void
-    {
-    }
+    public function doc10(): void {}
 }

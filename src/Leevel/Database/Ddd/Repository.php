@@ -173,9 +173,7 @@ class Repository
     /**
      * 构造函数.
      */
-    public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null)
-    {
-    }
+    public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null) {}
 
     /**
      * 实现魔术方法 __call.
@@ -196,7 +194,7 @@ class Repository
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false): int|string
+    public function insertAll(array $data, array $bind = [], array|bool $replace = false): int|string
     {
         if ($this->dispatch) {
             $this->dispatch->handle(
@@ -216,7 +214,7 @@ class Repository
     /**
      * 取得所有记录.
      */
-    public function findAll(?\Closure $condition = null): EntityCollection|Collection|array
+    public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
         $select = $this->condition($condition);
 
@@ -324,7 +322,7 @@ class Repository
     /**
      * 判断指定数组数据值是否存在.
      *
-     * @throws \Leevel\Database\Ddd\DataNotFoundException
+     * @throws DataNotFoundException
      */
     public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*'): void
     {

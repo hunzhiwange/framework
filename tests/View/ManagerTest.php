@@ -85,7 +85,7 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager();
         $manager->setVar('foo', 'bar');
         $result = $manager->display('html_test');
-        static::assertSame('hello html,bar.', $result);
+        self::assertSame('hello html,bar.', $result);
     }
 
     #[Api([
@@ -96,8 +96,8 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('hello', 'world');
-        static::assertSame('world', $manager->getVar('hello'));
-        static::assertSame('world', $manager->connect('phpui')->getVar('hello'));
+        self::assertSame('world', $manager->getVar('hello'));
+        self::assertSame('world', $manager->connect('phpui')->getVar('hello'));
     }
 
     #[Api([
@@ -108,8 +108,8 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $manager->setVar('hello', 'world');
-        static::assertSame('world', $manager->getVar('hello'));
-        static::assertNull($manager->getVar('hello2'));
+        self::assertSame('world', $manager->getVar('hello'));
+        self::assertNull($manager->getVar('hello2'));
     }
 
     #[Api([
@@ -120,7 +120,7 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $manager->setVar('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->getVar());
+        self::assertSame(['hello' => 'world'], $manager->getVar());
     }
 
     #[Api([
@@ -131,12 +131,12 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('hello', 'world');
-        static::assertSame('world', $manager->getVar('hello'));
-        static::assertSame('world', $manager->connect('phpui')->getVar('hello'));
+        self::assertSame('world', $manager->getVar('hello'));
+        self::assertSame('world', $manager->connect('phpui')->getVar('hello'));
 
         $manager->deleteVar(['hello']);
-        static::assertNull($manager->getVar('hello'));
-        static::assertNull($manager->connect('phpui')->getVar('hello'));
+        self::assertNull($manager->getVar('hello'));
+        self::assertNull($manager->connect('phpui')->getVar('hello'));
     }
 
     #[Api([
@@ -147,12 +147,12 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager();
 
         $manager->setVar('foo', 'bar');
-        static::assertSame('bar', $manager->getVar('foo'));
-        static::assertSame('bar', $manager->connect('html')->getVar('foo'));
+        self::assertSame('bar', $manager->getVar('foo'));
+        self::assertSame('bar', $manager->connect('html')->getVar('foo'));
 
         $manager->clearVar();
-        static::assertNull($manager->getVar('foo'));
-        static::assertNull($manager->connect('html')->getVar('foo'));
+        self::assertNull($manager->getVar('foo'));
+        self::assertNull($manager->connect('html')->getVar('foo'));
     }
 
     #[Api([
@@ -163,7 +163,7 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('foo', 'bar');
-        static::assertSame(
+        self::assertSame(
             'Hi here! bar',
             $manager->display(__DIR__.'/assert/hello.php')
         );
@@ -174,14 +174,14 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager('phpui');
 
         $manager->setVar('foo', 'bar');
-        static::assertSame(
+        self::assertSame(
             'Hi here! bar',
             $manager->display(__DIR__.'/assert/hello.php')
         );
 
         $connect = $manager->reconnect('phpui');
         $connect->setVar('foo', 'bar');
-        static::assertSame(
+        self::assertSame(
             'Hi here! bar',
             $connect->display(__DIR__.'/assert/hello.php')
         );
@@ -197,8 +197,8 @@ final class ManagerTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        static::assertSame(__DIR__.'/assert', $app->themesPath());
-        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        self::assertSame(__DIR__.'/assert', $app->themesPath());
+        self::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $config = new Config([
             'view' => [
@@ -244,6 +244,4 @@ class ExtendApp extends App
     }
 }
 
-class ExtendRequest
-{
-}
+class ExtendRequest {}

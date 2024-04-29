@@ -64,7 +64,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => '呱呱呱4'],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -125,7 +125,7 @@ EOT,
             'hello3' => ['name' => '小鸭子4', 'value' => '呱呱呱4'],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -186,7 +186,7 @@ EOT,
             'hello3' => ['name' => '小鸭子4', 'value' => '呱呱呱4'],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -244,7 +244,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -290,7 +290,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw(':world')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -349,7 +349,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -408,7 +408,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -482,7 +482,7 @@ EOT,
             [],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -514,7 +514,7 @@ EOT,
             [],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -571,7 +571,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -633,7 +633,7 @@ EOT,
             ['name' => '小鸭子4', 'value' => Condition::raw('?')],
         ];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect

@@ -13,6 +13,4 @@ use Leevel\Kernel\Utils\Api;
 这里将为大家讲解 QueryPHP 的基本开发问题，后续待完善。
 EOT,
 ])]
-class GuideDoc
-{
-}
+class GuideDoc {}

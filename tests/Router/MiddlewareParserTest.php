@@ -15,7 +15,7 @@ final class MiddlewareParserTest extends TestCase
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        static::assertSame([], $middlewareParser->handle([]));
+        self::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -29,7 +29,7 @@ final class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['group1'])
@@ -41,7 +41,7 @@ final class MiddlewareParserTest extends TestCase
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        static::assertSame([], $middlewareParser->handle([]));
+        self::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -56,7 +56,7 @@ final class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['group1', 'demo3:20,foo'])
@@ -68,7 +68,7 @@ final class MiddlewareParserTest extends TestCase
     {
         $middlewareParser = $this->createMiddlewareParser();
 
-        static::assertSame([], $middlewareParser->handle([]));
+        self::assertSame([], $middlewareParser->handle([]));
 
         $data = <<<'eot'
             {
@@ -81,7 +81,7 @@ final class MiddlewareParserTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $middlewareParser->handle(['demo1', 'demo3:20,foo'])
@@ -98,7 +98,7 @@ final class MiddlewareParserTest extends TestCase
 
         $middlewareParser = $this->createMiddlewareParser();
 
-        static::assertSame([], $middlewareParser->handle([]));
+        self::assertSame([], $middlewareParser->handle([]));
 
         $middlewareParser->handle([[]]);
     }

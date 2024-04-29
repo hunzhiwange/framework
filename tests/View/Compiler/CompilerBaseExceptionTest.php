@@ -69,7 +69,7 @@ final class CompilerBaseExceptionTest extends TestCase
             ],
         ]);
 
-        static::assertSame([], $result);
+        self::assertSame([], $result);
     }
 
     public function testEscapeCharacter(): void
@@ -80,7 +80,7 @@ final class CompilerBaseExceptionTest extends TestCase
             '""',
         ]);
 
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test1(): void
@@ -91,7 +91,7 @@ final class CompilerBaseExceptionTest extends TestCase
                 'children' => [],
             ],
         ]);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test3(): void
@@ -100,6 +100,6 @@ final class CompilerBaseExceptionTest extends TestCase
         $result = $this->invokeTestMethod($compilers, 'getNodeBody', [
             [],
         ]);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 }

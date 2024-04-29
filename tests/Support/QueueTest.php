@@ -34,23 +34,23 @@ EOT,
     public function testBaseUse(): void
     {
         $queue = new Queue();
-        static::assertSame(0, $queue->count());
+        self::assertSame(0, $queue->count());
 
         // 入对 5
         $queue->enqueue(5);
-        static::assertSame(1, $queue->count());
+        self::assertSame(1, $queue->count());
 
         // 入对 6
         $queue->enqueue(6);
-        static::assertSame(2, $queue->count());
+        self::assertSame(2, $queue->count());
 
         // 出对，先进先出
-        static::assertSame(5, $queue->dequeue());
-        static::assertSame(1, $queue->count());
+        self::assertSame(5, $queue->dequeue());
+        self::assertSame(1, $queue->count());
 
         // 出对，先进先出
-        static::assertSame(6, $queue->dequeue());
-        static::assertSame(0, $queue->count());
+        self::assertSame(6, $queue->dequeue());
+        self::assertSame(0, $queue->count());
     }
 
     #[Api([

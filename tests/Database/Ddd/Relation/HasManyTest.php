@@ -53,11 +53,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -82,19 +82,19 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->user_id);
-        static::assertSame(1, $post->userId);
-        static::assertSame(1, $post['user_id']);
-        static::assertSame(1, $post->getUserId());
-        static::assertSame('hello world', $post->title);
-        static::assertSame('hello world', $post['title']);
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('Say hello to the world.', $post->summary);
-        static::assertSame('Say hello to the world.', $post['summary']);
-        static::assertSame('Say hello to the world.', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->user_id);
+        self::assertSame(1, $post->userId);
+        self::assertSame(1, $post['user_id']);
+        self::assertSame(1, $post->getUserId());
+        self::assertSame('hello world', $post->title);
+        self::assertSame('hello world', $post['title']);
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('Say hello to the world.', $post->summary);
+        self::assertSame('Say hello to the world.', $post['summary']);
+        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
@@ -105,22 +105,22 @@ EOT,
         foreach ($comment as $k => $v) {
             $id = (int) ($n + 5);
 
-            static::assertInstanceOf(Comment::class, $v);
-            static::assertSame($n, $k);
-            static::assertSame($id, (int) $v->id);
-            static::assertSame($id, (int) $v['id']);
-            static::assertSame($id, (int) $v->getId());
-            static::assertSame('niu'.$id, $v['title']);
-            static::assertSame('niu'.$id, $v->title);
-            static::assertSame('niu'.$id, $v->getTitle());
-            static::assertSame('Comment data.'.$id, $v['content']);
-            static::assertSame('Comment data.'.$id, $v->content);
-            static::assertSame('Comment data.'.$id, $v->getContent());
+            self::assertInstanceOf(Comment::class, $v);
+            self::assertSame($n, $k);
+            self::assertSame($id, (int) $v->id);
+            self::assertSame($id, (int) $v['id']);
+            self::assertSame($id, (int) $v->getId());
+            self::assertSame('niu'.$id, $v['title']);
+            self::assertSame('niu'.$id, $v->title);
+            self::assertSame('niu'.$id, $v->getTitle());
+            self::assertSame('Comment data.'.$id, $v['content']);
+            self::assertSame('Comment data.'.$id, $v->content);
+            self::assertSame('Comment data.'.$id, $v->getContent());
 
             ++$n;
         }
 
-        static::assertCount(6, $comment);
+        self::assertCount(6, $comment);
     }
 
     #[Api([
@@ -131,11 +131,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -147,7 +147,7 @@ EOT,
                 ]),
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -184,7 +184,7 @@ EOT,
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
         $min = 5;
 
@@ -192,11 +192,11 @@ EOT,
             $comments = $value->comment;
 
             $this->assertInstanceof(Collection::class, $comments);
-            static::assertSame(0 === $k ? 6 : 10, \count($comments));
+            self::assertSame(0 === $k ? 6 : 10, \count($comments));
 
             foreach ($comments as $comment) {
                 $this->assertInstanceof(Comment::class, $comment);
-                static::assertSame($min, $comment->id);
+                self::assertSame($min, $comment->id);
                 ++$min;
             }
         }
@@ -210,11 +210,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -226,7 +226,7 @@ EOT,
                 ]),
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -260,17 +260,17 @@ EOT,
             ;
         }
 
-        $posts = Post::eager(['comment' => function ($select): void {
+        $posts = Post::eager(['comment' => static function ($select): void {
             $select->where('id', '>', 99999);
         }])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
         foreach ($posts as $k => $value) {
             $comments = $value->comment;
             $this->assertInstanceof(Collection::class, $comments);
-            static::assertCount(0, $comments);
+            self::assertCount(0, $comments);
         }
     }
 
@@ -281,7 +281,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -307,8 +307,8 @@ EOT,
         $commentRelation = Post::make()->relation('comment');
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
-        static::assertSame('id', $commentRelation->getSourceKey());
-        static::assertSame('post_id', $commentRelation->getTargetKey());
+        self::assertSame('id', $commentRelation->getSourceKey());
+        self::assertSame('post_id', $commentRelation->getTargetKey());
         $this->assertInstanceof(Post::class, $commentRelation->getSourceEntity());
         $this->assertInstanceof(Comment::class, $commentRelation->getTargetEntity());
         $this->assertInstanceof(Select::class, $commentRelation->getSelect());
@@ -319,11 +319,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
         $comment = $post->comment;
 
         $this->assertInstanceof(Collection::class, $comment);
-        static::assertCount(0, $comment);
+        self::assertCount(0, $comment);
     }
 
     #[Api([
@@ -334,11 +334,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -363,24 +363,24 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->user_id);
-        static::assertSame(1, $post->userId);
-        static::assertSame(1, $post['user_id']);
-        static::assertSame(1, $post->getUserId());
-        static::assertSame('hello world', $post->title);
-        static::assertSame('hello world', $post['title']);
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('Say hello to the world.', $post->summary);
-        static::assertSame('Say hello to the world.', $post['summary']);
-        static::assertSame('Say hello to the world.', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->user_id);
+        self::assertSame(1, $post->userId);
+        self::assertSame(1, $post['user_id']);
+        self::assertSame(1, $post->getUserId());
+        self::assertSame('hello world', $post->title);
+        self::assertSame('hello world', $post['title']);
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('Say hello to the world.', $post->summary);
+        self::assertSame('Say hello to the world.', $post['summary']);
+        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
         $this->assertInstanceof(Collection::class, $comment);
-        static::assertCount(0, $comment);
+        self::assertCount(0, $comment);
     }
 
     public function testEagerRelationWasNotFound(): void
@@ -388,11 +388,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -404,7 +404,7 @@ EOT,
                 ]),
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -441,13 +441,13 @@ EOT,
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
         foreach ($posts as $value) {
             $comments = $value->comment;
 
             $this->assertInstanceof(Collection::class, $comments);
-            static::assertCount(0, $comments);
+            self::assertCount(0, $comments);
         }
     }
 
@@ -456,7 +456,7 @@ EOT,
         $posts = Post::eager(['comment'])->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
     }
 
     public function testValidateRelationKeyNotDefinedSourceKey(): void
@@ -468,7 +468,7 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post->commentNotDefinedSourceKey;
     }
@@ -482,7 +482,7 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post->commentNotDefinedTargetKey;
     }
@@ -496,7 +496,7 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post->hasMany(Comment::class, 'post_id', 'not_found_source_key');
     }
@@ -510,7 +510,7 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $post->hasMany(Comment::class, 'not_found_target_key', 'id');
     }

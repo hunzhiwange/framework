@@ -45,7 +45,7 @@ EOT,
         ;
         $union2 = 'SELECT id,value FROM test_query WHERE id > 3';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -73,7 +73,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql2,
             $this->varJsonSql(
                 $connect
@@ -110,7 +110,7 @@ EOT,
             ->databaseCondition()
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -136,7 +136,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql2,
             $this->varJsonSql(
                 $connect
@@ -166,7 +166,7 @@ EOT,
 
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -195,7 +195,7 @@ EOT,
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -228,7 +228,7 @@ EOT,
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -261,7 +261,7 @@ EOT,
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -294,7 +294,7 @@ EOT,
         $union1 = 'SELECT id,value FROM test_query WHERE id > 1';
         $union2 = 'SELECT id,value FROM test_query WHERE id > 2';
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect

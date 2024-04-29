@@ -6,7 +6,6 @@ namespace Leevel\Server\Pool;
 
 use Leevel\Support\Str\Camelize;
 use Swoole\Coroutine\Channel;
-use Throwable;
 
 /**
  * 连接池.
@@ -100,7 +99,7 @@ abstract class Pool
     /**
      * 获取连接.
      *
-     * @throws \Leevel\Server\Pool\PoolException
+     * @throws PoolException
      */
     public function get(?float $timeout = null): IConnection
     {
@@ -184,7 +183,7 @@ abstract class Pool
     /**
      * 从通道中读取连接.
      *
-     * @throws \Leevel\Server\Pool\PoolException
+     * @throws PoolException
      */
     protected function getPoolConnection(float $timeout): IConnection
     {
@@ -295,7 +294,7 @@ abstract class Pool
         try {
             unset($this->connectionStatus[$this->getConnectionId($connection)]);
             $connection->close();
-        } catch (Throwable) {
+        } catch (\Throwable) {
         }
     }
 }

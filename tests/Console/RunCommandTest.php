@@ -54,25 +54,25 @@ EOT,
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString($this->normalizeContent('call other command test.'), $result);
-        static::assertStringContainsString($this->normalizeContent('load1 test1'), $result);
+        self::assertStringContainsString($this->normalizeContent('call other command test.'), $result);
+        self::assertStringContainsString($this->normalizeContent('load1 test1'), $result);
 
         // argument and config
-        static::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
-        static::assertStringContainsString($this->normalizeContent('config is {"env":null,"help":false'), $result);
+        self::assertStringContainsString($this->normalizeContent('argument is {"command":"call:other"}'), $result);
+        self::assertStringContainsString($this->normalizeContent('config is {"env":null,"help":false'), $result);
 
         // table
-        static::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
-        static::assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
-        static::assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
+        self::assertStringContainsString($this->normalizeContent('| Item  | Value |'), $result);
+        self::assertStringContainsString($this->normalizeContent('| hello | world |'), $result);
+        self::assertStringContainsString($this->normalizeContent('| foo   | bar   |'), $result);
 
         // time
-        static::assertStringContainsString($this->normalizeContent(']test time'), $result);
+        self::assertStringContainsString($this->normalizeContent(']test time'), $result);
 
         // question
-        static::assertStringContainsString($this->normalizeContent('a question'), $result);
+        self::assertStringContainsString($this->normalizeContent('a question'), $result);
 
         // error
-        static::assertStringContainsString($this->normalizeContent('a error message'), $result);
+        self::assertStringContainsString($this->normalizeContent('a error message'), $result);
     }
 }

@@ -32,12 +32,12 @@ final class ViewTest extends TestCase
         $this->assertInstanceof(Manager::class, $manager);
 
         $container = $this->createContainer();
-        $container->singleton('views', function () use ($manager): Manager {
+        $container->singleton('views', static function () use ($manager): Manager {
             return $manager;
         });
 
         $manager->setVar('hello', 'world');
-        static::assertSame('world', $manager->getVar('hello'));
+        self::assertSame('world', $manager->getVar('hello'));
     }
 
     public function testProxy(): void
@@ -46,13 +46,13 @@ final class ViewTest extends TestCase
         $this->assertInstanceof(Manager::class, $manager);
 
         $container = $this->createContainer();
-        $container->singleton('views', function () use ($manager): Manager {
+        $container->singleton('views', static function () use ($manager): Manager {
             return $manager;
         });
 
         ProxyView::setVar('hello', 'world');
-        static::assertSame('world', ProxyView::getVar('hello'));
-        static::assertSame('world', $manager->getVar('hello'));
+        self::assertSame('world', ProxyView::getVar('hello'));
+        self::assertSame('world', $manager->getVar('hello'));
     }
 
     protected function createContainer(): Container
@@ -73,8 +73,8 @@ final class ViewTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        static::assertSame(__DIR__.'/assert', $app->themesPath());
-        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        self::assertSame(__DIR__.'/assert', $app->themesPath());
+        self::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $config = new Config([
             'view' => [
@@ -120,6 +120,4 @@ class ExtendApp extends App
     }
 }
 
-class ExtendRequest
-{
-}
+class ExtendRequest {}

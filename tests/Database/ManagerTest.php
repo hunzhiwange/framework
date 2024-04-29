@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Leevel\Database\ConnectionException;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -37,7 +38,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -49,8 +50,8 @@ EOT,
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     public function test1(): void
@@ -60,7 +61,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -72,8 +73,8 @@ EOT,
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     #[Api([
@@ -152,7 +153,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson($configNew)
         );
@@ -251,7 +252,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson($configNew)
         );
@@ -298,7 +299,7 @@ EOT,
 
     public function testPDOQueryPropertyAttrErrmodeCannotBeSet(): void
     {
-        $this->expectException(\Leevel\Database\ConnectionException::class);
+        $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage(
             'PDO query property \\PDO::ATTR_ERRMODE cannot be set,it is always \\PDO::ERRMODE_EXCEPTION.'
         );
@@ -307,7 +308,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')

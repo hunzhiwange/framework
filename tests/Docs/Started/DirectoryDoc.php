@@ -58,9 +58,7 @@ class DirectoryDoc
 :::
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => '多应用',
@@ -82,7 +80,5 @@ http://127.0.0.1:9527/app:admin/api/show Admin 应用 API 控制器 show 方法
 :::
 EOT,
     ])]
-    public function doc2(): void
-    {
-    }
+    public function doc2(): void {}
 }

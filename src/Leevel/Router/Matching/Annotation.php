@@ -17,9 +17,6 @@ class Annotation extends BaseMatching implements IMatching
      */
     protected array $matchedVars = [];
 
-    /**
-     * {@inheritDoc}
-     */
     public function match(IRouter $router, Request $request): array
     {
         $this->setRouterAndRequest($router, $request);

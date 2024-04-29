@@ -12,14 +12,10 @@ class HomeIgnore
     #[Route(
         path: '/',
     )]
-    private function Home1(): void
-    {
-    }
+    private function Home1(): void {}
 
     #[IgnoreRoute(
         path: '',
     )]
-    private function home2(): void
-    {
-    }
+    private function home2(): void {}
 }

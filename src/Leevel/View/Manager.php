@@ -28,25 +28,16 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers
 {
-    /**
-     * {@inheritDoc}
-     */
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IView
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reconnect(?string $connect = null, ...$arguments): IView
     {
         return parent::reconnect($connect);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function normalizeConnectConfig(string $connect): array
     {
         return array_merge(
@@ -72,7 +63,7 @@ class Manager extends Managers
 
         /** @var Html $html */
         $html = new $driverClass($this->normalizeConnectConfig($connect));
-        $html->setParseResolver(function (): Parser {
+        $html->setParseResolver(static function (): Parser {
             return (new Parser(new Compiler()))
                 ->registerCompilers()
                 ->registerParsers()

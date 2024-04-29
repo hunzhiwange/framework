@@ -55,17 +55,11 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers
 {
-    /**
-     * {@inheritDoc}
-     */
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ISession
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reconnect(?string $connect = null, ...$arguments): ISession
     {
         return parent::reconnect($connect, ...$arguments);

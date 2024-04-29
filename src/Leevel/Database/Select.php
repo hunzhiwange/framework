@@ -195,7 +195,7 @@ class Select
                 }
 
                 if (!$isKeep) {
-                    $keys = array_map(function ($item) {
+                    $keys = array_map(static function ($item) {
                         return UnCamelize::handle($item);
                     }, $keys);
                 }
@@ -204,7 +204,8 @@ class Select
 
                 return $this
                     ->where(array_combine($keys, $args))
-                    ->{$method}();
+                    ->{$method}()
+                ;
             }
 
             if (!ctype_digit($method)) {
@@ -262,7 +263,7 @@ class Select
      */
     public function asArray(?\Closure $asArray = null): self
     {
-        $this->queryParams['as_some'] = fn (array $value): array => $asArray ? $asArray($value) : $value;
+        $this->queryParams['as_some'] = static fn (array $value): array => $asArray ? $asArray($value) : $value;
         $this->queryParams['as_args'] = [];
         $this->queryParams['as_collection_value_types'] = ['array'];
 
@@ -283,7 +284,7 @@ class Select
     /**
      * 原生 SQL 查询数据.
      */
-    public function select(null|callable|Select|string $data = null, array $bind = []): mixed
+    public function select(null|callable|self|string $data = null, array $bind = []): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
@@ -307,7 +308,7 @@ class Select
     /**
      * 插入数据 insert (支持原生 SQL).
      */
-    public function insert(array|string $data, array $bind = [], bool|array $replace = false): int|string
+    public function insert(array|string $data, array $bind = [], array|bool $replace = false): int|string
     {
         // @phpstan-ignore-next-line
         return $this
@@ -322,7 +323,7 @@ class Select
     /**
      * 批量插入数据 insertAll.
      */
-    public function insertAll(array $data, array $bind = [], bool|array $replace = false): int|string
+    public function insertAll(array $data, array $bind = [], array|bool $replace = false): int|string
     {
         // @phpstan-ignore-next-line
         return $this
@@ -442,7 +443,7 @@ class Select
     /**
      * 以集合返回所有记录.
      */
-    public function findCollection(): EntityCollection|Collection
+    public function findCollection(): Collection|EntityCollection
     {
         $this->condition->all();
 
@@ -453,7 +454,7 @@ class Select
     /**
      * 返回所有记录.
      */
-    public function findAll(): EntityCollection|Collection|array
+    public function findAll(): array|Collection|EntityCollection
     {
         $this->condition->all();
 
@@ -463,7 +464,7 @@ class Select
     /**
      * 返回最后几条记录.
      */
-    public function find(?int $num = null): EntityCollection|Collection|array
+    public function find(?int $num = null): array|Collection|EntityCollection
     {
         if (null !== $num) {
             $this->condition->top($num);
@@ -563,7 +564,7 @@ class Select
      */
     public function each(int $count, \Closure $each): void
     {
-        $this->chunk($count, function ($result, $page) use ($each) {
+        $this->chunk($count, static function ($result, $page) use ($each) {
             foreach ($result as $key => $value) {
                 if (false === $each($value, $key, $page)) {
                     return false;
@@ -689,7 +690,7 @@ class Select
     /**
      * 查询多条记录获得结果.
      */
-    protected function queryAll(): EntityCollection|Collection|array
+    protected function queryAll(): array|Collection|EntityCollection
     {
         $data = $this->queryBaseData();
         if (null === $this->queryParams['as_some']) {
@@ -734,7 +735,7 @@ class Select
     /**
      * 多条记录以默认返回结果.
      */
-    protected function queryDefaultAll(array $data): EntityCollection|Collection|array
+    protected function queryDefaultAll(array $data): array|Collection|EntityCollection
     {
         return $this->queryParams['as_collection'] ? $this->queryResultAsCollection($data) : $data;
     }
@@ -754,7 +755,7 @@ class Select
     /**
      * 多条记录以某种包装返回结果.
      */
-    protected function querySomeAll(array $data): EntityCollection|Collection|array
+    protected function querySomeAll(array $data): array|Collection|EntityCollection
     {
         /** @var \Closure $asSome */
         $asSome = $this->queryParams['as_some'];
@@ -815,7 +816,7 @@ class Select
      *
      * @throws \InvalidArgumentException
      */
-    protected function queryResultAsCollection(array $data): EntityCollection|Collection
+    protected function queryResultAsCollection(array $data): Collection|EntityCollection
     {
         // 处理一下特殊实体集合问题
         if (isset($this->queryParams['as_collection_value_types'][0])) {

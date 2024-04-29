@@ -38,40 +38,40 @@ final class DebugTest extends TestCase
     {
         $container = $this->createContainer();
         $debug = $this->createDebug($container);
-        $container->singleton('debug', function () use ($debug): Debug {
+        $container->singleton('debug', static function () use ($debug): Debug {
             return $debug;
         });
 
-        static::assertFalse($debug->isBootstrap());
+        self::assertFalse($debug->isBootstrap());
         $debug->bootstrap();
-        static::assertTrue($debug->isBootstrap());
+        self::assertTrue($debug->isBootstrap());
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
         $debug->handle($request, $response);
         $content = $response->getContent();
-        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
-        static::assertStringContainsString('"php":{"version":', $content);
-        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        self::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        self::assertStringContainsString('"php":{"version":', $content);
+        self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $debug = $this->createDebug($container);
-        $container->singleton('debug', function () use ($debug): Debug {
+        $container->singleton('debug', static function () use ($debug): Debug {
             return $debug;
         });
 
-        static::assertFalse(ProxyDebug::isBootstrap());
+        self::assertFalse(ProxyDebug::isBootstrap());
         ProxyDebug::bootstrap();
-        static::assertTrue(ProxyDebug::isBootstrap());
+        self::assertTrue(ProxyDebug::isBootstrap());
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
         ProxyDebug::handle($request, $response);
         $content = $response->getContent();
-        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
-        static::assertStringContainsString('"php":{"version":', $content);
-        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        self::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        self::assertStringContainsString('"php":{"version":', $content);
+        self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     protected function createDebug(Container $container): Debug
@@ -93,7 +93,7 @@ final class DebugTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);
 
@@ -153,7 +153,5 @@ final class DebugTest extends TestCase
 
 class App extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

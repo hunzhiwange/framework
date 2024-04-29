@@ -12,6 +12,4 @@ use Leevel\Kernel\Utils\Api;
     'zh-TW:title' => '概述',
     'path' => 'started/index',
 ])]
-class SummaryDoc
-{
-}
+class SummaryDoc {}

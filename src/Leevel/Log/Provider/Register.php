@@ -15,18 +15,12 @@ use Leevel\Log\Manager;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->logs();
         $this->log();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -43,7 +37,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'logs',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -56,7 +50,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'log',
-                fn (IContainer $container): ILog => $container['logs']->connect(),
+                static fn (IContainer $container): ILog => $container['logs']->connect(),
             )
         ;
     }

@@ -106,10 +106,10 @@ class Load
 
         $files = array_values(array_filter(
             $files,
-            fn (string $item): bool => '.po' === substr($item, -3)
+            static fn (string $item): bool => '.po' === substr($item, -3)
         ));
 
-        return array_map(function (string $file) use ($dir) {
+        return array_map(static function (string $file) use ($dir) {
             return $dir.'/'.$file;
         }, $files);
     }

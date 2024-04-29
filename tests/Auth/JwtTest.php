@@ -14,21 +14,21 @@ final class JwtTest extends TestCase
     {
         $token = new Jwt(['auth_key' => 'hello', 'token' => 'hello']);
 
-        static::assertFalse($token->isLogin());
-        static::assertSame([], $token->getLogin());
+        self::assertFalse($token->isLogin());
+        self::assertSame([], $token->getLogin());
 
         $tokenResult = $token->login(['foo' => 'bar', 'hello' => 'world'], 10);
         $token->setTokenName($tokenResult);
 
-        static::assertTrue($token->isLogin());
+        self::assertTrue($token->isLogin());
         $login = Except::handle($token->getLogin(), ['jwt_extend']);
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $login);
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $login);
 
-        static::assertNull($token->logout());
+        self::assertNull($token->logout());
         // JWT 无法注销，只能重新弄一个
         $token->setTokenName($tokenResult.'notfound');
-        static::assertFalse($token->isLogin());
-        static::assertSame([], $token->getLogin());
+        self::assertFalse($token->isLogin());
+        self::assertSame([], $token->getLogin());
     }
 
     public function testTokenNameWasNotSet(): void

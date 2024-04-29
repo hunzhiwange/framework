@@ -62,9 +62,6 @@ abstract class Session implements ISession
         $this->setName($this->config['name']);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function start(?string $sessionId = null): void
     {
         if ($this->isStart()) {
@@ -77,8 +74,6 @@ abstract class Session implements ISession
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \RuntimeException
      */
     public function save(): void
@@ -92,34 +87,22 @@ abstract class Session implements ISession
         $this->started = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setExpire(?int $expire = null): void
     {
         $this->expire = $expire;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function all(): array
     {
         return $this->data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function set(string $name, mixed $value): void
     {
         $name = $this->getNormalizeName($name);
         $this->data[$name] = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function put(array|string $keys, mixed $value = null): void
     {
         if (!\is_array($keys)) {
@@ -131,9 +114,6 @@ abstract class Session implements ISession
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $name, mixed $defaults = null): mixed
     {
         $name = $this->getNormalizeName($name);
@@ -141,9 +121,6 @@ abstract class Session implements ISession
         return $this->data[$name] ?? $defaults;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function delete(string $name): void
     {
         $name = $this->getNormalizeName($name);
@@ -152,9 +129,6 @@ abstract class Session implements ISession
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name): bool
     {
         $name = $this->getNormalizeName($name);
@@ -162,17 +136,11 @@ abstract class Session implements ISession
         return isset($this->data[$name]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clear(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function flash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
@@ -180,9 +148,6 @@ abstract class Session implements ISession
         $this->popOldFlash([$key]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function flashs(array $flash): void
     {
         foreach ($flash as $key => $value) {
@@ -190,18 +155,12 @@ abstract class Session implements ISession
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function nowFlash(string $key, mixed $value): void
     {
         $this->set($this->flashDataKey($key), $value);
         $this->mergeOldFlash([$key]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function nowFlashs(array $flash): void
     {
         foreach ($flash as $key => $value) {
@@ -209,9 +168,6 @@ abstract class Session implements ISession
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function rebuildFlash(): void
     {
         $this->mergeNewFlash(
@@ -220,26 +176,17 @@ abstract class Session implements ISession
         $this->set(ISession::FLASH_OLD_KEY, []);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function keepFlash(array $keys): void
     {
         $this->mergeNewFlash($keys);
         $this->popOldFlash($keys);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getFlash(string $key, mixed $defaults = null): mixed
     {
         return $this->get($this->flashDataKey($key), $defaults);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function deleteFlash(array $keys): void
     {
         foreach ($keys as $item) {
@@ -249,17 +196,11 @@ abstract class Session implements ISession
         $this->popNewFlash($keys);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clearFlash(): void
     {
         $this->deleteFlash($this->get(ISession::FLASH_NEW_KEY, []));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function unregisterFlash(): void
     {
         $data = $this->get(ISession::FLASH_NEW_KEY, []);
@@ -271,26 +212,17 @@ abstract class Session implements ISession
         $this->set(ISession::FLASH_OLD_KEY, $data);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function prevUrl(): ?string
     {
         // @phpstan-ignore-next-line
         return $this->get(ISession::PREV_URL_KEY);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setPrevUrl(string $url): void
     {
         $this->set(ISession::PREV_URL_KEY, $url);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function destroySession(): void
     {
         $this->clear();
@@ -299,73 +231,46 @@ abstract class Session implements ISession
         $this->started = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isStart(): bool
     {
         return $this->started;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setName(?string $name = null): void
     {
         $this->name = $name ?: ISession::SESSION_NAME;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setId(?string $id = null): void
     {
         $this->id = $id ?: $this->generateSessionId();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function regenerateId(): string
     {
         return $this->id = $this->generateSessionId();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function open(string $savePath, string $sessionName): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function close(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function read(string $sessionId): string
     {
         $cacheData = $this->cache->get($this->getSessionName($sessionId), []);
@@ -373,9 +278,6 @@ abstract class Session implements ISession
         return serialize($cacheData ?: []);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function write(string $sessionId, string $sessionData): bool
     {
         $this->cache->set(
@@ -387,9 +289,6 @@ abstract class Session implements ISession
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function destroy(string $sessionId): bool
     {
         $this->cache->delete(
@@ -399,9 +298,6 @@ abstract class Session implements ISession
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function gc(int $maxLifetime): int
     {
         return 0;

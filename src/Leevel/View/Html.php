@@ -28,9 +28,6 @@ class Html extends View implements IView
         'cache_path' => '',
     ];
 
-    /**
-     * {@inheritDoc}
-     */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         $this->setVar($vars);

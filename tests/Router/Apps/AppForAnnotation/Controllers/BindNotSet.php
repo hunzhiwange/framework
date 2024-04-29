@@ -12,15 +12,11 @@ class BindNotSet
         path: '/bindNotSet/test',
         bind: null,
     )]
-    private function routePlaceholderFoo(): void
-    {
-    }
+    private function routePlaceholderFoo(): void {}
 
     #[Route(
         path: '/bindNotSet/test2',
         bind: '',
     )]
-    private function routePlaceholderBar(): void
-    {
-    }
+    private function routePlaceholderBar(): void {}
 }

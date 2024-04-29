@@ -16,6 +16,8 @@ EOT,
 ])]
 class Demo4
 {
+    public function __doc2(): void {}
+
     #[Api([
         'zh-CN:title' => 'title1',
         'zh-CN:description' => <<<'EOT'
@@ -23,15 +25,7 @@ hello
 world
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
-    public function __doc2(): void
-    {
-    }
-
-    protected function doc3(): void
-    {
-    }
+    protected function doc3(): void {}
 }

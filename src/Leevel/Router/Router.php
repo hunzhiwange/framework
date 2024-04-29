@@ -6,6 +6,7 @@ namespace Leevel\Router;
 
 use Leevel\Di\IContainer;
 use Leevel\Http\Request;
+use Leevel\Router\Matching\IMatching;
 use Leevel\Support\Arr\ConvertJson;
 use Leevel\Support\Arr\ShouldJson;
 use Leevel\Support\Pipeline;
@@ -79,33 +80,21 @@ class Router implements IRouter
         $this->container->addContextKeys('app_name');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setWithDefaultAppNamespace(bool $withDefaultAppNamespace): void
     {
         $this->withDefaultAppNamespace = $withDefaultAppNamespace;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function dispatch(Request $request): Response
     {
         return $this->runRoute($request, $this->matchRouter($request));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setPreRequestMatched(Request $request, array $matchedData): void
     {
         $this->preRequestMatched[$this->getRequestObjectId($request)] = $matchedData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function throughTerminateMiddleware(Request $request, Response $response): void
     {
         $middlewares = $this->matchedMiddlewares($request)['terminate'] ?? [];
@@ -121,105 +110,66 @@ class Router implements IRouter
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setControllerDir(string $controllerDir): void
     {
         $this->controllerDir = str_replace('/', '\\', $controllerDir);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getControllerDir(): string
     {
         return $this->controllerDir;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setRouters(array $routers): void
     {
         $this->routers = $routers;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRouters(): array
     {
         return $this->routers;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setBasePaths(array $basePaths): void
     {
         $this->basePaths = $basePaths;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getBasePaths(): array
     {
         return $this->basePaths;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getGroups(): array
     {
         return $this->groups;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMiddlewareGroups(array $middlewareGroups): void
     {
         $this->middlewareGroups = $middlewareGroups;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMiddlewareGroups(): array
     {
         return $this->middlewareGroups;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setMiddlewareAlias(array $middlewareAlias): void
     {
         $this->middlewareAlias = $middlewareAlias;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMiddlewareAlias(): array
     {
         return $this->middlewareAlias;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function mergeMiddlewares(array $middlewares, array $newMiddlewares): array
     {
         $handle = array_unique(array_merge(
@@ -253,7 +203,7 @@ class Router implements IRouter
         if ($this->isOptionsRequest($request)) {
             $this->resolveMatchedData($request, $basePathsMatchedData, []);
 
-            return fn (): Response => new Response('CORS');
+            return static fn (): Response => new Response('CORS');
         }
 
         $this->resolveMatchedData(
@@ -337,7 +287,7 @@ class Router implements IRouter
     {
         $matching = __NAMESPACE__.'\\Matching\\'.$matching;
 
-        /** @var \Leevel\Router\Matching\IMatching $matching */
+        /** @var IMatching $matching */
         $matching = new $matching();
 
         return $matching->match($this, $request);
@@ -419,7 +369,7 @@ class Router implements IRouter
     /**
      * 路由未找到异常.
      *
-     * @throws \Leevel\Router\RouterNotFoundException
+     * @throws RouterNotFoundException
      */
     protected function routerNotFound(Request $request): void
     {

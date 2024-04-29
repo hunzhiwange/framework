@@ -314,7 +314,7 @@ class Assert
     /**
      * 实现魔术方法 __call.
      *
-     * @throws \Leevel\Validate\AssertException
+     * @throws AssertException
      */
     public function __call(string $method, array $args): self
     {
@@ -337,7 +337,7 @@ class Assert
     /**
      * 实现魔术方法 __callStatic.
      *
-     * @throws \Leevel\Validate\AssertException
+     * @throws AssertException
      */
     public static function __callStatic(string $method, array $args): void
     {
@@ -378,7 +378,7 @@ class Assert
     /**
      * 释放并抛出验证.
      *
-     * @throws \Leevel\Validate\AssertException
+     * @throws AssertException
      */
     public function flush(?\Closure $format = null): bool
     {

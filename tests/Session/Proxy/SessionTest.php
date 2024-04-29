@@ -31,64 +31,64 @@ final class SessionTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('sessions', function () use ($manager): Manager {
+        $container->singleton('sessions', static function () use ($manager): Manager {
             return $manager;
         });
 
-        static::assertFalse($manager->isStart());
-        static::assertSame('', $manager->getId());
-        static::assertSame('UID', $manager->getName());
+        self::assertFalse($manager->isStart());
+        self::assertSame('', $manager->getId());
+        self::assertSame('UID', $manager->getName());
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->all());
-        static::assertTrue($manager->has('hello'));
-        static::assertSame('world', $manager->get('hello'));
+        self::assertSame(['hello' => 'world'], $manager->all());
+        self::assertTrue($manager->has('hello'));
+        self::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        static::assertSame([], $manager->all());
-        static::assertFalse($manager->has('hello'));
-        static::assertNull($manager->get('hello'));
+        self::assertSame([], $manager->all());
+        self::assertFalse($manager->has('hello'));
+        self::assertNull($manager->get('hello'));
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('sessions', function () use ($manager): Manager {
+        $container->singleton('sessions', static function () use ($manager): Manager {
             return $manager;
         });
 
-        static::assertFalse(Session::isStart());
-        static::assertSame('', Session::getId());
-        static::assertSame('UID', Session::getName());
+        self::assertFalse(Session::isStart());
+        self::assertSame('', Session::getId());
+        self::assertSame('UID', Session::getName());
 
         Session::start();
-        static::assertTrue(Session::isStart());
+        self::assertTrue(Session::isStart());
 
         Session::set('hello', 'world');
-        static::assertSame(['hello' => 'world'], Session::all());
-        static::assertTrue(Session::has('hello'));
-        static::assertSame('world', Session::get('hello'));
+        self::assertSame(['hello' => 'world'], Session::all());
+        self::assertTrue(Session::has('hello'));
+        self::assertSame('world', Session::get('hello'));
 
         Session::delete('hello');
-        static::assertSame([], Session::all());
-        static::assertFalse(Session::has('hello'));
-        static::assertNull(Session::get('hello'));
+        self::assertSame([], Session::all());
+        self::assertFalse(Session::has('hello'));
+        self::assertNull(Session::get('hello'));
 
         Session::start();
-        static::assertTrue(Session::isStart());
+        self::assertTrue(Session::isStart());
     }
 
     protected function createManager(Container $container): Manager
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         $manager = new Manager($container);

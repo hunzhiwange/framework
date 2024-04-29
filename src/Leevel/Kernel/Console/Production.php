@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Kernel\Console;
 
 use Leevel\Console\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -25,7 +26,7 @@ class Production extends Command
     /**
      * 响应命令.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function handle(): int
     {
@@ -44,7 +45,7 @@ class Production extends Command
     /**
      * 执行路由缓存.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callRouter(): void
     {
@@ -55,7 +56,7 @@ class Production extends Command
     /**
      * 执行配置缓存.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callConfig(): void
     {
@@ -66,7 +67,7 @@ class Production extends Command
     /**
      * 执行语言缓存.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callI18n(): void
     {
@@ -77,7 +78,7 @@ class Production extends Command
     /**
      * 执行视图缓存.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callView(): void
     {
@@ -88,7 +89,7 @@ class Production extends Command
     /**
      * 执行自动载入缓存.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function callAutoload(): void
     {

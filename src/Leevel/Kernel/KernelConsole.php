@@ -61,9 +61,6 @@ abstract class KernelConsole implements IKernelConsole
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
         $this->registerBaseService();
@@ -74,24 +71,13 @@ abstract class KernelConsole implements IKernelConsole
         return $this->getConsoleApplication()->run($input, $output);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function terminate(int $status, ?InputInterface $input = null): void
-    {
-    }
+    public function terminate(int $status, ?InputInterface $input = null): void {}
 
-    /**
-     * {@inheritDoc}
-     */
     public function bootstrap(): void
     {
         $this->app->bootstrap(array_merge($this->bootstraps, $this->extendBootstraps));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getApp(): IApp
     {
         return $this->app;

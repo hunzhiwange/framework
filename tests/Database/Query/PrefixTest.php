@@ -33,7 +33,7 @@ final class PrefixTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -65,7 +65,7 @@ final class PrefixTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -92,7 +92,7 @@ final class PrefixTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -121,7 +121,7 @@ final class PrefixTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect

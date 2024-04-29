@@ -7,6 +7,7 @@ namespace Leevel\Kernel\Console;
 use Leevel\Config\IConfig;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -27,7 +28,7 @@ class DocFramework extends Command
     /**
      * 响应命令.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function handle(IApp $app, IConfig $config): int
     {

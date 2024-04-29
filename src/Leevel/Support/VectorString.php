@@ -22,7 +22,7 @@ final class VectorString extends Vector
     /**
      * 从 HTTP 请求创建 VecString 数组.
      */
-    public static function fromRequest(string|array $data): self
+    public static function fromRequest(array|string $data): self
     {
         if (\is_string($data)) {
             $data = explode(',', $data);
@@ -30,7 +30,7 @@ final class VectorString extends Vector
 
         array_walk(
             $data,
-            fn (int|float|string & $value, int $key) => $value = (string) $value,
+            static fn (float|int|string &$value, int $key) => $value = (string) $value,
         );
 
         return new self($data);

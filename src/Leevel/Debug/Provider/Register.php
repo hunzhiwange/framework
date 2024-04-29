@@ -14,18 +14,12 @@ use Leevel\Di\Provider;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->debug();
         $this->middleware();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -34,9 +28,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -50,8 +41,8 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'debug',
-                // @phpstan-ignore-next-line
-                fn (IContainer $container): Debug => new Debug($container, $container->make('config')->get('debug\\')),
+                /** @phpstan-ignore-next-line */
+                static fn (IContainer $container): Debug => new Debug($container, $container->make('config')->get('debug\\')),
             )
         ;
     }

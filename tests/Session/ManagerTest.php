@@ -10,7 +10,6 @@ use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Session\Manager;
-use RedisException;
 use Tests\TestCase;
 
 final class ManagerTest extends TestCase
@@ -19,50 +18,50 @@ final class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
 
-        static::assertFalse($manager->isStart());
-        static::assertSame('', $manager->getId());
-        static::assertSame('UID', $manager->getName());
+        self::assertFalse($manager->isStart());
+        self::assertSame('', $manager->getId());
+        self::assertSame('UID', $manager->getName());
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->all());
-        static::assertTrue($manager->has('hello'));
-        static::assertSame('world', $manager->get('hello'));
+        self::assertSame(['hello' => 'world'], $manager->all());
+        self::assertTrue($manager->has('hello'));
+        self::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        static::assertSame([], $manager->all());
-        static::assertFalse($manager->has('hello'));
-        static::assertNull($manager->get('hello'));
+        self::assertSame([], $manager->all());
+        self::assertFalse($manager->has('hello'));
+        self::assertNull($manager->get('hello'));
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
     }
 
     public function testConnectFile(): void
     {
         $manager = $this->createManager('file');
 
-        static::assertFalse($manager->isStart());
-        static::assertSame('', $manager->getId());
-        static::assertSame('UID', $manager->getName());
+        self::assertFalse($manager->isStart());
+        self::assertSame('', $manager->getId());
+        self::assertSame('UID', $manager->getName());
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->all());
-        static::assertTrue($manager->has('hello'));
-        static::assertSame('world', $manager->get('hello'));
+        self::assertSame(['hello' => 'world'], $manager->all());
+        self::assertTrue($manager->has('hello'));
+        self::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        static::assertSame([], $manager->all());
-        static::assertFalse($manager->has('hello'));
-        static::assertNull($manager->get('hello'));
+        self::assertSame([], $manager->all());
+        self::assertFalse($manager->has('hello'));
+        self::assertNull($manager->get('hello'));
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
     }
 
     public function test1(): void
@@ -70,25 +69,25 @@ final class ManagerTest extends TestCase
         $manager = $this->createManager('file');
         $connect = $manager->reconnect();
 
-        static::assertFalse($connect->isStart());
-        static::assertSame('', $connect->getId());
-        static::assertSame('UID', $connect->getName());
+        self::assertFalse($connect->isStart());
+        self::assertSame('', $connect->getId());
+        self::assertSame('UID', $connect->getName());
 
         $connect->start();
-        static::assertTrue($connect->isStart());
+        self::assertTrue($connect->isStart());
 
         $connect->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $connect->all());
-        static::assertTrue($connect->has('hello'));
-        static::assertSame('world', $connect->get('hello'));
+        self::assertSame(['hello' => 'world'], $connect->all());
+        self::assertTrue($connect->has('hello'));
+        self::assertSame('world', $connect->get('hello'));
 
         $connect->delete('hello');
-        static::assertSame([], $connect->all());
-        static::assertFalse($connect->has('hello'));
-        static::assertNull($connect->get('hello'));
+        self::assertSame([], $connect->all());
+        self::assertFalse($connect->has('hello'));
+        self::assertNull($connect->get('hello'));
 
         $connect->start();
-        static::assertTrue($connect->isStart());
+        self::assertTrue($connect->isStart());
     }
 
     public function testConnectRedis(): void
@@ -97,37 +96,37 @@ final class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
 
-        static::assertFalse($manager->isStart());
-        static::assertSame('', $manager->getId());
-        static::assertSame('UID', $manager->getName());
+        self::assertFalse($manager->isStart());
+        self::assertSame('', $manager->getId());
+        self::assertSame('UID', $manager->getName());
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->all());
-        static::assertTrue($manager->has('hello'));
-        static::assertSame('world', $manager->get('hello'));
+        self::assertSame(['hello' => 'world'], $manager->all());
+        self::assertTrue($manager->has('hello'));
+        self::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        static::assertSame([], $manager->all());
-        static::assertFalse($manager->has('hello'));
-        static::assertNull($manager->get('hello'));
+        self::assertSame([], $manager->all());
+        self::assertFalse($manager->has('hello'));
+        self::assertNull($manager->get('hello'));
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
     }
 
     protected function checkRedis(): void
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->makeRedis();
-        } catch (RedisException) {
-            static::markTestSkipped('Redis read error on connection and ignore.');
+        } catch (\RedisException) {
+            self::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
@@ -150,7 +149,7 @@ final class ManagerTest extends TestCase
     protected function createManager(string $connect = 'test'): Manager
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         $container = new Container();

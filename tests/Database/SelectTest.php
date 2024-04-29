@@ -48,7 +48,7 @@ final class SelectTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -72,7 +72,7 @@ final class SelectTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -102,7 +102,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -111,7 +111,7 @@ EOT,
 
         $result = $connect
             ->table('guest_book')
-            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->where('id', 1)
             ->setColumns('name,content')
             ->findOne()
@@ -124,7 +124,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 (array) $result
@@ -133,8 +133,8 @@ EOT,
 
         $this->assertInstanceof(AsSomeDemo::class, $result);
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     public function testAsCollectionAsDefault(): void
@@ -143,7 +143,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -165,7 +165,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 json_decode(json_encode($result), true)
@@ -173,8 +173,8 @@ EOT,
         );
 
         $this->assertInstanceof(\stdClass::class, $result);
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     public function testAsCollectionAsDefaultAndNotFound(): void
@@ -183,7 +183,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -202,14 +202,14 @@ EOT,
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        static::assertIsArray($result);
+        self::assertIsArray($result);
     }
 
     #[Api([
@@ -264,7 +264,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -272,14 +272,14 @@ EOT,
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        static::assertCount(6, $result);
+        self::assertCount(6, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(\stdClass::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
             ++$n;
         }
     }
@@ -300,7 +300,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection()
-            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;
@@ -334,7 +334,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -342,15 +342,15 @@ EOT,
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        static::assertCount(6, $result);
+        self::assertCount(6, $result);
 
         $n = 0;
 
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(AsSomeDemo::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -372,7 +372,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection()
-            ->asSome(fn (...$args): Guestbook => new Guestbook(...$args))
+            ->asSome(static fn (...$args): Guestbook => new Guestbook(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;
@@ -406,7 +406,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -414,15 +414,15 @@ EOT,
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        static::assertCount(6, $result);
+        self::assertCount(6, $result);
 
         $n = 0;
 
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(Guestbook::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -444,7 +444,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection(true, [AsSomeDemo::class])
-            ->asSome(fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;
@@ -478,7 +478,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result->toArray()
@@ -486,15 +486,15 @@ EOT,
         );
 
         $this->assertInstanceof(Collection::class, $result);
-        static::assertCount(6, $result);
+        self::assertCount(6, $result);
 
         $n = 0;
 
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(AsSomeDemo::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -613,7 +613,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -635,16 +635,16 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        static::assertIsArray($result);
-        static::assertSame('tom', $result['name']);
-        static::assertSame('I love movie.', $result['content']);
+        self::assertIsArray($result);
+        self::assertSame('tom', $result['name']);
+        self::assertSame('I love movie.', $result['content']);
     }
 
     #[Api([
@@ -656,7 +656,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -665,7 +665,7 @@ EOT,
 
         $result = $connect
             ->table('guest_book')
-            ->asArray(function (array $value): array {
+            ->asArray(static function (array $value): array {
                 $value['hello'] = 'world';
 
                 return $value;
@@ -683,16 +683,16 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
             )
         );
 
-        static::assertIsArray($result);
-        static::assertSame('tom', $result['name']);
-        static::assertSame('I love movie.', $result['content']);
+        self::assertIsArray($result);
+        self::assertSame('tom', $result['name']);
+        self::assertSame('I love movie.', $result['content']);
     }
 
     #[Api([
@@ -704,7 +704,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -723,8 +723,8 @@ EOT,
             ->value('content')
         ;
 
-        static::assertSame('tom', $name);
-        static::assertSame('I love movie.', $content);
+        self::assertSame('tom', $name);
+        self::assertSame('I love movie.', $content);
     }
 
     #[Api([
@@ -736,7 +736,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -755,7 +755,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -772,7 +772,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -791,7 +791,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -808,7 +808,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -827,7 +827,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -841,7 +841,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -860,7 +860,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -989,7 +989,7 @@ EOT,
             })
         ;
 
-        static::assertSame(7, $n);
+        self::assertSame(7, $n);
     }
 
     #[Api([
@@ -1032,7 +1032,7 @@ EOT,
             })
         ;
 
-        static::assertSame(3, $n);
+        self::assertSame(3, $n);
     }
 
     #[Api([
@@ -1061,14 +1061,14 @@ EOT,
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        static::assertCount(10, $result);
+        self::assertCount(10, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(\stdClass::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -1077,22 +1077,22 @@ EOT,
             <div class="pagination"> <span class="pagination-total">共 26 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->render()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->toHtml()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->__toString()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             (string) $page
         );
@@ -1109,14 +1109,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1127,7 +1127,7 @@ EOT,
             {"per_page":10,"current_page":1,"total_page":3,"total_record":26,"total_macro":false,"from":0,"to":10}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1156,7 +1156,7 @@ EOT,
         $page = $connect
             ->table('guest_book')
             ->where('id', '>', 23)
-            ->where(function ($select): void {
+            ->where(static function ($select): void {
                 $select->orWhere('content', 'like', '%l%')
                     ->orWhere('content', 'like', '%o%')
                     ->orWhere('content', 'like', '%m%')
@@ -1168,14 +1168,14 @@ EOT,
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        static::assertCount(3, $result);
+        self::assertCount(3, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(\stdClass::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -1184,22 +1184,22 @@ EOT,
             <div class="pagination"> <span class="pagination-total">共 3 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next disabled">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->render()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->toHtml()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->__toString()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             (string) $page
         );
@@ -1216,14 +1216,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1234,7 +1234,7 @@ EOT,
             {"per_page":10,"current_page":1,"total_page":1,"total_record":3,"total_macro":false,"from":0,"to":3}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1268,14 +1268,14 @@ EOT,
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        static::assertCount(10, $result);
+        self::assertCount(10, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(\stdClass::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -1284,22 +1284,22 @@ EOT,
             <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li><li class="number"><a href="?page=5">5</a></li><li class="number"><a href="?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->render()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->toHtml()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->__toString()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             (string) $page
         );
@@ -1316,14 +1316,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1334,7 +1334,7 @@ EOT,
             {"per_page":10,"current_page":1,"total_page":100000000,"total_record":999999999,"total_macro":true,"from":0,"to":null}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1368,14 +1368,14 @@ EOT,
 
         $this->assertInstanceof(BasePage::class, $page);
         $this->assertInstanceof(Page::class, $page);
-        static::assertCount(15, $result);
+        self::assertCount(15, $result);
 
         $n = 0;
         foreach ($result as $key => $value) {
-            static::assertSame($key, $n);
+            self::assertSame($key, $n);
             $this->assertInstanceof(\stdClass::class, $value);
-            static::assertSame('tom', $value->name);
-            static::assertSame('I love movie.', $value->content);
+            self::assertSame('tom', $value->name);
+            self::assertSame('I love movie.', $value->content);
 
             ++$n;
         }
@@ -1384,22 +1384,22 @@ EOT,
             <div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->render()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->toHtml()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $page->__toString()
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             (string) $page
         );
@@ -1416,14 +1416,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->toArray()['page']
             )
         );
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $page->jsonSerialize()['page']
@@ -1434,7 +1434,7 @@ EOT,
             {"per_page":15,"current_page":1,"total_page":null,"total_record":null,"total_macro":false,"from":0,"to":null}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             json_encode($page->toArray()['page'])
         );
@@ -1457,7 +1457,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1481,7 +1481,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1505,7 +1505,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJson(
                 [
@@ -1530,7 +1530,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJson(
                 [
@@ -1555,7 +1555,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson($connect->getRealLastSql())
         );
@@ -1563,7 +1563,7 @@ EOT,
 
     public function testRunNativeSqlTypeInvalid(): void
     {
-        static::markTestSkipped('Skip query only allowed select.');
+        self::markTestSkipped('Skip query only allowed select.');
 
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
@@ -1573,7 +1573,7 @@ EOT,
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->select('DELETE FROM test WHERE id = 1');
-        static::assertSame([], $result);
+        self::assertSame([], $result);
     }
 
     public function testFindByFooAndBarArgsWasNotMatched(): void
@@ -1626,10 +1626,10 @@ EOT,
             ->where('id', 2)
             ->findOne()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertSame(2, $result->id);
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertSame(2, $result->id);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1645,14 +1645,14 @@ EOT,
             ->findOne()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertSame(2, $resultWithCache->id);
-        static::assertSame('tom', $resultWithCache->name);
-        static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertFalse($resultWithCache === $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertSame(2, $resultWithCache->id);
+        self::assertSame('tom', $resultWithCache->name);
+        self::assertSame('I love movie.', $resultWithCache->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     #[Api([
@@ -1679,10 +1679,10 @@ EOT,
             ->where('id', 2)
             ->findOne()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertSame(2, $result->id);
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertSame(2, $result->id);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey', 3600)
@@ -1698,15 +1698,15 @@ EOT,
             ->findOne()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertStringContainsString('[3600,', file_get_contents($cacheFile));
-        static::assertSame(2, $resultWithCache->id);
-        static::assertSame('tom', $resultWithCache->name);
-        static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertFalse($resultWithCache === $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        self::assertSame(2, $resultWithCache->id);
+        self::assertSame('tom', $resultWithCache->name);
+        self::assertSame('I love movie.', $resultWithCache->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     #[Api([
@@ -1733,10 +1733,10 @@ EOT,
             ->where('id', 2)
             ->findOne()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertSame(2, $result->id);
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertSame(2, $result->id);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
 
         $fileCache = $manager
             ->container()
@@ -1759,15 +1759,15 @@ EOT,
             ->findOne()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertStringContainsString('[3600,', file_get_contents($cacheFile));
-        static::assertSame(2, $resultWithCache->id);
-        static::assertSame('tom', $resultWithCache->name);
-        static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertFalse($resultWithCache === $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertStringContainsString('[3600,', file_get_contents($cacheFile));
+        self::assertSame(2, $resultWithCache->id);
+        self::assertSame('tom', $resultWithCache->name);
+        self::assertSame('I love movie.', $resultWithCache->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertFalse($resultWithCache === $resultWithoutCache);
     }
 
     #[Api([
@@ -1793,11 +1793,11 @@ EOT,
             ->table('guest_book')
             ->findAll()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertCount(6, $result);
-        static::assertSame(1, $result[0]->id);
-        static::assertSame('tom', $result[0]->name);
-        static::assertSame('I love movie.', $result[0]->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertCount(6, $result);
+        self::assertSame(1, $result[0]->id);
+        self::assertSame('tom', $result[0]->name);
+        self::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1811,14 +1811,14 @@ EOT,
             ->findAll()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertCount(6, $resultWithCache);
-        static::assertSame(1, $resultWithCache[0]->id);
-        static::assertSame('tom', $resultWithCache[0]->name);
-        static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertCount(6, $resultWithCache);
+        self::assertSame(1, $resultWithCache[0]->id);
+        self::assertSame('tom', $resultWithCache[0]->name);
+        self::assertSame('I love movie.', $resultWithCache[0]->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -1845,10 +1845,10 @@ EOT,
             ->where('id', 2)
             ->findOne()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertSame(2, $result->id);
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertSame(2, $result->id);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1864,13 +1864,13 @@ EOT,
             ->findOne()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertSame(2, $resultWithCache->id);
-        static::assertSame('tom', $resultWithCache->name);
-        static::assertSame('I love movie.', $resultWithCache->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertSame(2, $resultWithCache->id);
+        self::assertSame('tom', $resultWithCache->name);
+        self::assertSame('I love movie.', $resultWithCache->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -1896,8 +1896,8 @@ EOT,
             ->table('guest_book')
             ->findCount()
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertSame(6, $result);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertSame(6, $result);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1911,11 +1911,11 @@ EOT,
             ->findCount()
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertSame(6, $resultWithCache);
-        static::assertSame($result, $resultWithCache);
-        static::assertTrue($result === $resultWithCache);
-        static::assertSame($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertSame(6, $resultWithCache);
+        self::assertSame($result, $resultWithCache);
+        self::assertTrue($result === $resultWithCache);
+        self::assertSame($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -1941,11 +1941,11 @@ EOT,
             ->table('guest_book')
             ->select('SELECT * FROM guest_book')
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertCount(6, $result);
-        static::assertSame(1, $result[0]->id);
-        static::assertSame('tom', $result[0]->name);
-        static::assertSame('I love movie.', $result[0]->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertCount(6, $result);
+        self::assertSame(1, $result[0]->id);
+        self::assertSame('tom', $result[0]->name);
+        self::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -1957,14 +1957,14 @@ EOT,
             ->select('SELECT * FROM guest_book')
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertCount(6, $resultWithCache);
-        static::assertSame(1, $resultWithCache[0]->id);
-        static::assertSame('tom', $resultWithCache[0]->name);
-        static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertCount(6, $resultWithCache);
+        self::assertSame(1, $resultWithCache[0]->id);
+        self::assertSame('tom', $resultWithCache[0]->name);
+        self::assertSame('I love movie.', $resultWithCache[0]->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -1995,7 +1995,7 @@ EOT,
             ->table('guest_book')
             ->page(1)
         ;
-        static::assertFileDoesNotExist($cacheFile);
+        self::assertFileDoesNotExist($cacheFile);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
@@ -2009,9 +2009,9 @@ EOT,
             ->page(1)
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -2046,11 +2046,11 @@ EOT,
             ->table('guest_book')
             ->query('SELECT * FROM guest_book')
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertCount(6, $result);
-        static::assertSame(1, $result[0]->id);
-        static::assertSame('tom', $result[0]->name);
-        static::assertSame('I love movie.', $result[0]->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertCount(6, $result);
+        self::assertSame(1, $result[0]->id);
+        self::assertSame('tom', $result[0]->name);
+        self::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
@@ -2060,14 +2060,14 @@ EOT,
             ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertCount(6, $resultWithCache);
-        static::assertSame(1, $resultWithCache[0]->id);
-        static::assertSame('tom', $resultWithCache[0]->name);
-        static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertCount(6, $resultWithCache);
+        self::assertSame(1, $resultWithCache[0]->id);
+        self::assertSame('tom', $resultWithCache[0]->name);
+        self::assertSame('I love movie.', $resultWithCache[0]->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     #[Api([
@@ -2102,7 +2102,7 @@ EOT,
             ->procedure('CALL test_procedure(0)')
         ;
 
-        static::assertFileDoesNotExist($cacheFile);
+        self::assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [
@@ -2121,7 +2121,7 @@ EOT,
                 []
             ]
             eot;
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -2131,21 +2131,21 @@ EOT,
         $resultWithoutCache = $manager
             ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
         ;
-        static::assertFileExists($cacheFile);
+        self::assertFileExists($cacheFile);
         // cached data
         $resultWithCache = $manager
             ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
         ;
-        static::assertFileExists($cacheFile);
-        static::assertSame(
+        self::assertFileExists($cacheFile);
+        self::assertSame(
             $data,
             $this->varJson(
                 $resultWithCache
             )
         );
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheButCacheWasNotSet(): void
@@ -2189,7 +2189,7 @@ EOT,
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
     }

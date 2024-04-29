@@ -26,13 +26,13 @@ class Normalize
         }
 
         $inputs = array_map(
-            fn (mixed $value) => \is_string($value) ? trim($value) : $value,
+            static fn (mixed $value) => \is_string($value) ? trim($value) : $value,
             $inputs,
         );
 
         return array_filter(
             $inputs,
-            fn (mixed $value) => \is_string($value) ? \strlen($value) > 0 : true,
+            static fn (mixed $value) => \is_string($value) ? \strlen($value) > 0 : true,
         );
     }
 }

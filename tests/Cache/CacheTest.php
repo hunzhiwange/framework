@@ -124,12 +124,12 @@ EOT,
         ]);
 
         $cache->set('hello', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertSame('world', $cache->get('hello'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame('world', $cache->get('hello'));
 
         $cache->delete('hello');
-        static::assertFalse(is_file($filePath));
-        static::assertFalse($cache->get('hello'));
+        self::assertFalse(is_file($filePath));
+        self::assertFalse($cache->get('hello'));
     }
 
     #[Api([
@@ -155,17 +155,17 @@ EOT,
         $cache->put('hello', 'world');
         $cache->put(['hello2' => 'world', 'foo' => 'bar']);
 
-        static::assertSame('world', $cache->get('hello'));
-        static::assertSame('world', $cache->get('hello2'));
-        static::assertSame('bar', $cache->get('foo'));
+        self::assertSame('world', $cache->get('hello'));
+        self::assertSame('world', $cache->get('hello2'));
+        self::assertSame('bar', $cache->get('foo'));
 
         $cache->delete('hello');
         $cache->delete('hello2');
         $cache->delete('foo');
 
-        static::assertFalse($cache->get('hello'));
-        static::assertFalse($cache->get('hello2'));
-        static::assertFalse($cache->get('foo'));
+        self::assertFalse($cache->get('hello'));
+        self::assertFalse($cache->get('hello2'));
+        self::assertFalse($cache->get('foo'));
     }
 
     #[Api([
@@ -202,19 +202,19 @@ EOT,
         $cache->put('hello', 'world', 33);
         $cache->put(['hello2' => 'world', 'foo' => 'bar'], 22);
 
-        static::assertSame('world', $cache->get('hello'));
-        static::assertSame('world', $cache->get('hello2'));
-        static::assertSame('bar', $cache->get('foo'));
-        static::assertTrue(is_file($filePath));
-        static::assertStringContainsString('[33,', file_get_contents($filePath));
+        self::assertSame('world', $cache->get('hello'));
+        self::assertSame('world', $cache->get('hello2'));
+        self::assertSame('bar', $cache->get('foo'));
+        self::assertTrue(is_file($filePath));
+        self::assertStringContainsString('[33,', file_get_contents($filePath));
 
         $cache->delete('hello');
         $cache->delete('hello2');
         $cache->delete('foo');
 
-        static::assertFalse($cache->get('hello'));
-        static::assertFalse($cache->get('hello2'));
-        static::assertFalse($cache->get('foo'));
+        self::assertFalse($cache->get('hello'));
+        self::assertFalse($cache->get('hello2'));
+        self::assertFalse($cache->get('foo'));
     }
 
     #[Api([
@@ -240,17 +240,17 @@ EOT,
         ]);
         $filePath = __DIR__.'/cache/hello.php';
 
-        static::assertFalse(is_file($filePath));
-        static::assertSame(['hello' => 'world'], $cache->remember('hello', function (string $key) {
+        self::assertFalse(is_file($filePath));
+        self::assertSame(['hello' => 'world'], $cache->remember('hello', static function (string $key) {
             return [$key => 'world'];
         }));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(['hello' => 'world'], $cache->get('hello'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(['hello' => 'world'], $cache->get('hello'));
 
         $cache->delete('hello');
 
-        static::assertFalse($cache->get('hello'));
-        static::assertFalse(is_file($filePath));
+        self::assertFalse($cache->get('hello'));
+        self::assertFalse(is_file($filePath));
     }
 
     #[Api([
@@ -267,21 +267,21 @@ EOT,
             unlink($filePath);
         }
 
-        static::assertFalse(is_file($filePath));
-        static::assertSame('123456', $cache->remember('hello', function (string $key) {
+        self::assertFalse(is_file($filePath));
+        self::assertSame('123456', $cache->remember('hello', static function (string $key) {
             return '123456';
         }, 33));
 
-        static::assertTrue(is_file($filePath));
-        static::assertSame('123456', $cache->remember('hello', function (string $key) {
+        self::assertTrue(is_file($filePath));
+        self::assertSame('123456', $cache->remember('hello', static function (string $key) {
             return '123456';
         }, 4));
-        static::assertSame('123456', $cache->get('hello'));
+        self::assertSame('123456', $cache->get('hello'));
 
         $cache->delete('hello');
 
-        static::assertFalse($cache->get('hello'));
-        static::assertFalse(is_file($filePath));
+        self::assertFalse($cache->get('hello'));
+        self::assertFalse(is_file($filePath));
     }
 
     #[Api([
@@ -294,10 +294,10 @@ EOT,
         ]);
         $filePath = __DIR__.'/cache/has.php';
 
-        static::assertFalse($cache->has('has'));
+        self::assertFalse($cache->has('has'));
         $cache->set('has', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertTrue($cache->has('has'));
+        self::assertTrue(is_file($filePath));
+        self::assertTrue($cache->has('has'));
     }
 
     #[Api([
@@ -310,9 +310,9 @@ EOT,
         ]);
         $filePath = __DIR__.'/cache/increase.php';
 
-        static::assertSame(1, $cache->increase('increase'));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(101, $cache->increase('increase', 100));
+        self::assertSame(1, $cache->increase('increase'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(101, $cache->increase('increase', 100));
     }
 
     #[Api([
@@ -325,9 +325,9 @@ EOT,
         ]);
         $filePath = __DIR__.'/cache/decrease.php';
 
-        static::assertSame(-1, $cache->decrease('decrease'));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(-101, $cache->decrease('decrease', 100));
+        self::assertSame(-1, $cache->decrease('decrease'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(-101, $cache->decrease('decrease', 100));
     }
 
     #[Api([
@@ -347,15 +347,15 @@ EOT,
         ]);
         $filePath = __DIR__.'/cache/ttl.php';
 
-        static::assertFalse($cache->has('ttl'));
-        static::assertSame(-2, $cache->ttl('ttl'));
+        self::assertFalse($cache->has('ttl'));
+        self::assertSame(-2, $cache->ttl('ttl'));
         $cache->set('ttl', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertSame(86400, $cache->ttl('ttl'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(86400, $cache->ttl('ttl'));
         $cache->set('ttl', 'world', 1);
-        static::assertSame(1, $cache->ttl('ttl'));
+        self::assertSame(1, $cache->ttl('ttl'));
         $cache->set('ttl', 'world', 0);
-        static::assertSame(-1, $cache->ttl('ttl'));
+        self::assertSame(-1, $cache->ttl('ttl'));
     }
 
     #[Api([
@@ -388,6 +388,6 @@ EOT,
         ]);
         $cache->setKeyRegex('/^[a-z+]+$/');
         $cache->set('hello+world', 1);
-        static::assertSame(1, $cache->get('hello+world'));
+        self::assertSame(1, $cache->get('hello+world'));
     }
 }

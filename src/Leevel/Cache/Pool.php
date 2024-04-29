@@ -32,9 +32,6 @@ class Pool extends BasePool
         parent::__construct($option);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(?float $timeout = null): ICache
     {
         // @phpstan-ignore-next-line

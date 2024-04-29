@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Condition;
+use Leevel\Database\Ddd\EntityCollection;
+use Leevel\Database\Ddd\EntityIdentifyConditionException;
 use Leevel\Database\Ddd\Meta;
 use Leevel\Database\Ddd\Select;
+use Leevel\Database\DuplicateKeyException;
 use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
@@ -65,7 +68,7 @@ final class EntityTest extends TestCase
         $entity->title = '5';
         $entity->title = '5';
 
-        static::assertSame('5', $entity->title);
+        self::assertSame('5', $entity->title);
     }
 
     public function testSetPropButIsRelation(): void
@@ -119,9 +122,9 @@ final class EntityTest extends TestCase
             'summary' => 'bar',
         ]);
 
-        static::assertSame('foo', $entity->title);
-        static::assertSame('bar', $entity->summary);
-        static::assertSame(['title', 'summary'], $entity->changed());
+        self::assertSame('foo', $entity->title);
+        self::assertSame('bar', $entity->summary);
+        self::assertSame(['title', 'summary'], $entity->changed());
     }
 
     #[Api([
@@ -145,8 +148,8 @@ EOT,
             'status' => 1,
         ]);
 
-        static::assertSame('foo', $entity->title);
-        static::assertSame(1, $entity->status);
+        self::assertSame('foo', $entity->title);
+        self::assertSame(1, $entity->status);
 
         $data = <<<'eot'
             {
@@ -154,7 +157,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity
@@ -171,7 +174,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray(),
@@ -179,8 +182,8 @@ EOT,
             )
         );
 
-        static::assertSame('启用', StatusEnum::description('1'));
-        static::assertSame('禁用', StatusEnum::description('0'));
+        self::assertSame('启用', StatusEnum::description('1'));
+        self::assertSame('禁用', StatusEnum::description('0'));
 
         $data = <<<'eot'
             {
@@ -195,7 +198,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 StatusEnum::descriptions(),
@@ -233,7 +236,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->toArray(),
@@ -261,7 +264,7 @@ EOT,
             'content' => 'content',
         ]);
         $result = $entity->save()->flush();
-        static::assertSame(1, $result);
+        self::assertSame(1, $result);
     }
 
     public function testEntityWithEnumItemNotFound2(): void
@@ -289,7 +292,7 @@ EOT,
         [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
         $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
         $result = $validator->fail();
-        static::assertTrue($result);
+        self::assertTrue($result);
 
         $data = <<<'eot'
 {
@@ -299,7 +302,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validator->error()
@@ -316,7 +319,7 @@ eot;
         [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
         $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
         $result = $validator->fail();
-        static::assertTrue($result);
+        self::assertTrue($result);
 
         $data = <<<'eot'
 {
@@ -326,7 +329,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validator->error()
@@ -367,7 +370,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -378,7 +381,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -389,7 +392,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -436,7 +439,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -447,7 +450,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -497,7 +500,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -508,7 +511,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -558,7 +561,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -569,7 +572,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -600,7 +603,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -611,7 +614,7 @@ eot;
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -642,7 +645,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorRules
@@ -658,7 +661,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validatorMessages
@@ -680,9 +683,9 @@ eot;
     public function testHasChanged(): void
     {
         $entity = new Post();
-        static::assertFalse($entity->hasChanged('title'));
+        self::assertFalse($entity->hasChanged('title'));
         $entity->title = 'change';
-        static::assertTrue($entity->hasChanged('title'));
+        self::assertTrue($entity->hasChanged('title'));
     }
 
     #[Api([
@@ -695,7 +698,7 @@ eot;
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed()
@@ -711,7 +714,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -727,7 +730,7 @@ eot;
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed()
@@ -744,7 +747,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -763,7 +766,7 @@ eot;
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed()
@@ -779,7 +782,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -795,7 +798,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -814,7 +817,7 @@ eot;
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed()
@@ -830,7 +833,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -844,7 +847,7 @@ eot;
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->changed(),
@@ -856,7 +859,7 @@ eot;
     public function testPrimaryKeyHasNullInArrayIsEmpty(): void
     {
         $entity = new EntityWithoutPrimaryKeyNullInArray();
-        static::assertSame(['name'], $entity->primaryKey());
+        self::assertSame(['name'], $entity->primaryKey());
     }
 
     public function testSinglePrimaryKeyNotFound(): void
@@ -867,15 +870,15 @@ eot;
         );
 
         $entity = new EntityWithoutAnyField();
-        static::assertNull($entity->primaryKey());
+        self::assertNull($entity->primaryKey());
         $entity->singlePrimaryKey();
     }
 
     public function testSinglePrimaryKeyNotFoundAndAllIsKeyAndFoundOne(): void
     {
         $entity = new EntityWithoutPrimaryKey();
-        static::assertSame(['name'], $entity->primaryKey());
-        static::assertSame('name', $entity->singlePrimaryKey());
+        self::assertSame(['name'], $entity->primaryKey());
+        self::assertSame('name', $entity->singlePrimaryKey());
     }
 
     public function testSinglePrimaryKeyNotFoundAndFoundMoreThanOne(): void
@@ -886,7 +889,7 @@ eot;
         );
 
         $entity = new WithoutPrimarykeyAndAllAreKey();
-        static::assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
+        self::assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
         $entity->singlePrimaryKey();
     }
 
@@ -907,18 +910,18 @@ eot;
     public function testIdCondition(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertSame(['id' => 5], $entity->idCondition());
+        self::assertSame(['id' => 5], $entity->idCondition());
     }
 
     public function testIdConditionHasNoPrimaryKeyData(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );
 
         $entity = new Post();
-        static::assertNull($entity->idCondition());
+        self::assertNull($entity->idCondition());
     }
 
     #[Api([
@@ -927,8 +930,8 @@ eot;
     public function testArrayAccessOffsetExists(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
-        static::assertTrue(isset($entity['title']));
-        static::assertFalse(isset($entity['user_id']));
+        self::assertTrue(isset($entity['title']));
+        self::assertFalse(isset($entity['user_id']));
     }
 
     #[Api([
@@ -937,11 +940,11 @@ eot;
     public function testArrayAccessOffsetSet(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertFalse(isset($entity['title']));
-        static::assertNull($entity->title);
+        self::assertFalse(isset($entity['title']));
+        self::assertNull($entity->title);
         $entity['title'] = 'world';
-        static::assertTrue(isset($entity['title']));
-        static::assertSame('world', $entity->title);
+        self::assertTrue(isset($entity['title']));
+        self::assertSame('world', $entity->title);
     }
 
     #[Api([
@@ -950,9 +953,9 @@ eot;
     public function testArrayAccessOffsetGet(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity['title']);
+        self::assertNull($entity['title']);
         $entity['title'] = 'world';
-        static::assertSame('world', $entity['title']);
+        self::assertSame('world', $entity['title']);
     }
 
     #[Api([
@@ -961,11 +964,11 @@ eot;
     public function testArrayAccessOffsetUnset(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity['title']);
+        self::assertNull($entity['title']);
         $entity['title'] = 'world';
-        static::assertSame('world', $entity['title']);
+        self::assertSame('world', $entity['title']);
         unset($entity['title']);
-        static::assertNull($entity['title']);
+        self::assertNull($entity['title']);
     }
 
     #[Api([
@@ -974,8 +977,8 @@ eot;
     public function testMagicIsset(): void
     {
         $entity = new Post(['id' => 5, 'title' => 'hello']);
-        static::assertTrue(isset($entity->title));
-        static::assertFalse(isset($entity->userId));
+        self::assertTrue(isset($entity->title));
+        self::assertFalse(isset($entity->userId));
     }
 
     #[Api([
@@ -984,11 +987,11 @@ eot;
     public function testMagicSet(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertFalse(isset($entity->title));
-        static::assertNull($entity->title);
+        self::assertFalse(isset($entity->title));
+        self::assertNull($entity->title);
         $entity->title = 'world';
-        static::assertTrue(isset($entity->title));
-        static::assertSame('world', $entity->title);
+        self::assertTrue(isset($entity->title));
+        self::assertSame('world', $entity->title);
     }
 
     #[Api([
@@ -997,9 +1000,9 @@ eot;
     public function testMagicGet(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity->title);
+        self::assertNull($entity->title);
         $entity->title = 'world';
-        static::assertSame('world', $entity->title);
+        self::assertSame('world', $entity->title);
     }
 
     #[Api([
@@ -1008,11 +1011,11 @@ eot;
     public function testMagicUnset(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity->title);
+        self::assertNull($entity->title);
         $entity->title = 'world';
-        static::assertSame('world', $entity->title);
+        self::assertSame('world', $entity->title);
         $entity->title = null;
-        static::assertNull($entity->title);
+        self::assertNull($entity->title);
     }
 
     #[Api([
@@ -1021,12 +1024,12 @@ eot;
     public function testCallSetter(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity->title);
-        static::assertNull($entity->userId);
+        self::assertNull($entity->title);
+        self::assertNull($entity->userId);
         $entity->setTitle('hello');
         $entity->setUserId(5);
-        static::assertSame('hello', $entity->title);
-        static::assertSame(5, $entity->userId);
+        self::assertSame('hello', $entity->title);
+        self::assertSame(5, $entity->userId);
     }
 
     #[Api([
@@ -1035,12 +1038,12 @@ eot;
     public function testCallGetter(): void
     {
         $entity = new Post(['id' => 5]);
-        static::assertNull($entity->getTitle());
-        static::assertNull($entity->getUserId());
+        self::assertNull($entity->getTitle());
+        self::assertNull($entity->getUserId());
         $entity->setTitle('hello');
         $entity->setUserId(5);
-        static::assertSame('hello', $entity->getTitle());
-        static::assertSame(5, $entity->getUserId());
+        self::assertSame('hello', $entity->getTitle());
+        self::assertSame(5, $entity->getUserId());
     }
 
     public function testCallTryLoadRelation(): void
@@ -1082,7 +1085,7 @@ eot;
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1095,9 +1098,9 @@ eot;
         );
 
         $post = Post::find()->where('id', 1)->findOne();
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -1107,7 +1110,7 @@ eot;
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1119,13 +1122,13 @@ eot;
                 ])
         );
 
-        $post = Post::connectSandbox('password_right', function () {
+        $post = Post::connectSandbox('password_right', static function () {
             return Post::find()->where('id', 1)->findOne();
         });
 
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     public function testConnectSandboxAndPasswordIsError(): void
@@ -1136,7 +1139,7 @@ eot;
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1148,7 +1151,7 @@ eot;
                 ])
         );
 
-        Post::connectSandbox('password_not_right', function () {
+        Post::connectSandbox('password_not_right', static function () {
             return Post::find()->where('id', 1)->findOne();
         });
     }
@@ -1159,13 +1162,13 @@ eot;
     public function testNewed(): void
     {
         $entity = new Post();
-        static::assertTrue($entity->newed());
+        self::assertTrue($entity->newed());
 
         $entity = new Post(['id' => 5]);
-        static::assertTrue($entity->newed());
+        self::assertTrue($entity->newed());
 
         $entity = new Post(['id' => 5], true);
-        static::assertFalse($entity->newed());
+        self::assertFalse($entity->newed());
     }
 
     #[Api([
@@ -1174,19 +1177,19 @@ eot;
     public function testWithNewed(): void
     {
         $entity = new Post();
-        static::assertTrue($entity->newed());
+        self::assertTrue($entity->newed());
         $entity->withNewed(false);
-        static::assertFalse($entity->newed());
+        self::assertFalse($entity->newed());
 
         $entity = new Post(['id' => 5]);
-        static::assertTrue($entity->newed());
+        self::assertTrue($entity->newed());
         $entity->withNewed(false);
-        static::assertFalse($entity->newed());
+        self::assertFalse($entity->newed());
 
         $entity = new Post(['id' => 5], true);
-        static::assertFalse($entity->newed());
+        self::assertFalse($entity->newed());
         $entity->withNewed(true);
-        static::assertTrue($entity->newed());
+        self::assertTrue($entity->newed());
     }
 
     #[Api([
@@ -1195,16 +1198,16 @@ eot;
     public function testOriginal(): void
     {
         $entity = new Post();
-        static::assertSame([], $entity->original());
+        self::assertSame([], $entity->original());
 
         $entity = new Post($data = [
             'title' => 'hello',
             'summary' => 'world',
             'foo' => 'bar',
         ], false, true);
-        static::assertSame($data, $entity->original());
-        static::assertSame('hello', $entity->title);
-        static::assertSame('world', $entity->summary);
+        self::assertSame($data, $entity->original());
+        self::assertSame('hello', $entity->title);
+        self::assertSame('world', $entity->summary);
     }
 
     #[Api([
@@ -1213,10 +1216,10 @@ eot;
     public function testId(): void
     {
         $entity = new Post();
-        static::assertFalse($entity->id());
+        self::assertFalse($entity->id());
 
         $entity = new Post(['id' => 5]);
-        static::assertSame(['id' => 5], $entity->id());
+        self::assertSame(['id' => 5], $entity->id());
     }
 
     #[Api([
@@ -1234,16 +1237,16 @@ EOT,
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
-        static::assertFalse($entity->id(false));
-        static::assertFalse($entity->id());
+        self::assertFalse($entity->id(false));
+        self::assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5]);
-        static::assertFalse($entity->id(false));
-        static::assertFalse($entity->id());
+        self::assertFalse($entity->id(false));
+        self::assertFalse($entity->id());
 
         $entity = new CompositeId(['id1' => 5, 'id2' => 8]);
-        static::assertSame(['id1' => 5, 'id2' => 8], $entity->id(false));
-        static::assertSame(['id1' => 5, 'id2' => 8], $entity->id());
+        self::assertSame(['id1' => 5, 'id2' => 8], $entity->id(false));
+        self::assertSame(['id1' => 5, 'id2' => 8], $entity->id());
     }
 
     #[Api([
@@ -1254,18 +1257,18 @@ EOT,
         $post1 = new Post();
         $post1->create()->flush();
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->id);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertSame(1, $post1->id);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
 
         $post1->refresh();
-        static::assertSame(1, $post1->id);
-        static::assertSame(0, $post1->userId);
-        static::assertSame('', $post1->title);
-        static::assertSame('', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->id);
+        self::assertSame(0, $post1->userId);
+        self::assertSame('', $post1->title);
+        self::assertSame('', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
     }
 
     #[Api([
@@ -1276,33 +1279,33 @@ EOT,
         $entity = new CompositeId(['id1' => 1, 'id2' => 3]);
         $entity->create()->flush();
         $this->assertInstanceof(CompositeId::class, $entity);
-        static::assertSame(1, $entity->id1);
-        static::assertSame(3, $entity->id2);
-        static::assertNull($entity->name);
+        self::assertSame(1, $entity->id1);
+        self::assertSame(3, $entity->id2);
+        self::assertNull($entity->name);
 
         $entity->refresh();
-        static::assertSame(1, $entity->id1);
-        static::assertSame(3, $entity->id2);
-        static::assertSame('', $entity->name);
+        self::assertSame(1, $entity->id1);
+        self::assertSame(3, $entity->id2);
+        self::assertSame('', $entity->name);
     }
 
     public function testRefreshButNoPrimaryKeyData(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );
 
         $entity = new Post();
         $this->assertInstanceof(Post::class, $entity);
-        static::assertNull($entity->id);
+        self::assertNull($entity->id);
 
         $entity->refresh();
     }
 
     public function testRefreshWithCompositeIdButNoPrimaryKeyData(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\CompositeId has no identify condition data.'
         );
@@ -1310,16 +1313,16 @@ EOT,
         $entity = new CompositeId();
         $entity->create()->flush();
         $this->assertInstanceof(CompositeId::class, $entity);
-        static::assertNull($entity->id1);
-        static::assertNull($entity->id2);
-        static::assertNull($entity->name);
+        self::assertNull($entity->id1);
+        self::assertNull($entity->id2);
+        self::assertNull($entity->name);
 
         $entity->refresh();
     }
 
     public function testRefreshWithoutPrimaryKey(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no identify condition data.'
         );
@@ -1342,15 +1345,15 @@ EOT,
     public function testFlushWithoutDataAndDoNothing(): void
     {
         $post1 = new Post();
-        static::assertNull($post1->flush());
+        self::assertNull($post1->flush());
     }
 
     public function testFlushTwiceWithoutDataAndDoNothing(): void
     {
         $post1 = new Post();
         $post1->create();
-        static::assertSame(1, $post1->flush());
-        static::assertNull($post1->flush());
+        self::assertSame(1, $post1->flush());
+        self::assertNull($post1->flush());
     }
 
     public function testReplaceAndThrowException(): void
@@ -1362,7 +1365,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1388,33 +1391,33 @@ EOT,
     public function testIgnoreUndefinedProp(): void
     {
         $entity = new Post(['undefined_prop' => 5], true, true);
-        static::assertSame([], $entity->toArray());
+        self::assertSame([], $entity->toArray());
     }
 
     public function test4(): void
     {
         $entity = new Post(['title' => 'foo']);
-        $newEntity = $entity->each(function (mixed $value, string $field): mixed {
+        $newEntity = $entity->each(static function (mixed $value, string $field): mixed {
             if ('title' === $field) {
                 return 'bar';
             }
 
             return $value;
         });
-        static::assertSame(['title' => 'bar'], $newEntity->toArray());
+        self::assertSame(['title' => 'bar'], $newEntity->toArray());
     }
 
     public function test5(): void
     {
         $entity = new DemoToArrayShowPropNullRelationEntity(['address' => 'foo', 'hello' => 'new']);
-        $newEntity = $entity->each(function (mixed $value, string $field): mixed {
+        $newEntity = $entity->each(static function (mixed $value, string $field): mixed {
             if ('address' === $field) {
                 return 'bar';
             }
 
             return $value;
         });
-        static::assertSame([
+        self::assertSame([
             'address' => 'bar',
             'foo_bar' => null,
             'hello' => 'new',
@@ -1434,7 +1437,7 @@ EOT,
     public function test6(): void
     {
         $entity = new PostNew2(['title' => 'foo']);
-        static::assertSame([
+        self::assertSame([
             'title_format_raw' => 'foo',
             'title' => 'foo_new',
         ], $entity->toArray());
@@ -1443,7 +1446,7 @@ EOT,
     public function test7(): void
     {
         $entity = new PostNew2(['user_id' => 1]);
-        static::assertSame([
+        self::assertSame([
             'user_id_format_raw' => 1,
             'user_id' => 1,
         ], $entity->toArray());
@@ -1452,7 +1455,7 @@ EOT,
     public function test8(): void
     {
         $entity = new PostNew2(['summary' => 'title']);
-        static::assertSame([
+        self::assertSame([
             'summary_format_raw' => 'title',
             'summary' => 'title',
         ], $entity->toArray());
@@ -1471,7 +1474,7 @@ EOT,
     public function test9(): void
     {
         $entity = new PostNew3();
-        static::assertSame([
+        self::assertSame([
             'title' => 'hello world',
         ], $entity->toArray());
     }
@@ -1491,7 +1494,7 @@ EOT,
         $entity = new PostNew4([
             'user_id' => '1.3',
         ]);
-        static::assertSame([
+        self::assertSame([
             'user_id' => 1.3,
         ], $entity->toArray());
     }
@@ -1511,7 +1514,7 @@ EOT,
         $entity = new PostNew8([
             'user_id' => '1.3',
         ]);
-        static::assertSame([
+        self::assertSame([
             'user_id' => 6.3,
         ], $entity->toArray());
     }
@@ -1519,7 +1522,7 @@ EOT,
     public function test11(): void
     {
         $entity = new PostNew5();
-        static::assertSame([], $entity->toArray());
+        self::assertSame([], $entity->toArray());
     }
 
     #[Api([
@@ -1537,7 +1540,7 @@ EOT,
         $entity = new PostNew6([
             'title' => 'hello',
         ]);
-        static::assertSame([
+        self::assertSame([
             'title' => 'hello_new',
         ], $entity->toArray());
     }
@@ -1560,7 +1563,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_version')
@@ -1572,10 +1575,10 @@ EOT,
         $testVersion = DemoVersion::select()->findEntity(1);
 
         $this->assertInstanceof(DemoVersion::class, $testVersion);
-        static::assertSame(1, $testVersion->id);
-        static::assertSame('xiaoniuge', $testVersion->name);
-        static::assertSame('0.0000', $testVersion->availableNumber);
-        static::assertSame('0.0000', $testVersion->realNumber);
+        self::assertSame(1, $testVersion->id);
+        self::assertSame('xiaoniuge', $testVersion->name);
+        self::assertSame('0.0000', $testVersion->availableNumber);
+        self::assertSame('0.0000', $testVersion->realNumber);
 
         $condition = [
             'available_number' => $testVersion->availableNumber,
@@ -1584,18 +1587,18 @@ EOT,
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        static::assertSame(
+        self::assertSame(
             1,
             $testVersion
                 ->condition($condition)
                 ->update()
                 ->flush()
         );
-        static::assertSame('SQL: [493] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  5 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=2 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=4 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame('SQL: [493] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  5 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=2 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=4 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
-        static::assertSame(1, $testVersion->update()->flush());
-        static::assertSame('SQL: [227] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->update()->flush());
+        self::assertSame('SQL: [227] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     #[Api([
@@ -1608,7 +1611,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_version')
@@ -1622,11 +1625,11 @@ EOT,
         ;
 
         $this->assertInstanceof(DemoVersion::class, $testVersion);
-        static::assertSame(1, $testVersion->id);
-        static::assertNull($testVersion->version);
-        static::assertSame('xiaoniuge', $testVersion->name);
-        static::assertSame('0.0000', $testVersion->availableNumber);
-        static::assertSame('0.0000', $testVersion->realNumber);
+        self::assertSame(1, $testVersion->id);
+        self::assertNull($testVersion->version);
+        self::assertSame('xiaoniuge', $testVersion->name);
+        self::assertSame('0.0000', $testVersion->availableNumber);
+        self::assertSame('0.0000', $testVersion->realNumber);
 
         $condition = [
             'available_number' => $testVersion->availableNumber,
@@ -1635,18 +1638,18 @@ EOT,
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        static::assertSame(
+        self::assertSame(
             1,
             $testVersion
                 ->condition($condition)
                 ->update()
                 ->flush()
         );
-        static::assertSame('SQL: [386] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=2 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame('SQL: [386] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`real_number` = :test_version_real_number AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [25] :test_version_real_number | paramno=2 | name=[25] ":test_version_real_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`available_number` = \'0.0000\' AND `test_version`.`real_number` = \'0.0000\' AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
-        static::assertSame(1, $testVersion->update()->flush());
-        static::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->update()->flush());
+        self::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     #[Api([
@@ -1656,7 +1659,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_version')
@@ -1668,23 +1671,23 @@ EOT,
         $testVersion = DemoVersion::select()->findEntity(1);
 
         $this->assertInstanceof(DemoVersion::class, $testVersion);
-        static::assertSame(1, $testVersion->id);
-        static::assertSame('xiaoniuge', $testVersion->name);
-        static::assertSame('0.0000', $testVersion->availableNumber);
-        static::assertSame('0.0000', $testVersion->realNumber);
+        self::assertSame(1, $testVersion->id);
+        self::assertSame('xiaoniuge', $testVersion->name);
+        self::assertSame('0.0000', $testVersion->availableNumber);
+        self::assertSame('0.0000', $testVersion->realNumber);
 
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        static::assertSame(1, $testVersion->version(true)->update()->flush());
-        static::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->version(true)->update()->flush());
+        self::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->refresh();
         $condition = ['available_number' => $testVersion->availableNumber];
         $testVersion->name = 'hello';
         $testVersion->availableNumber = Condition::raw('[available_number]+8');
-        static::assertSame(1, $testVersion->condition($condition)->update()->flush());
-        static::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=2 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->condition($condition)->update()->flush());
+        self::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=2 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     #[Api([
@@ -1694,7 +1697,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_version')
@@ -1706,20 +1709,20 @@ EOT,
         $testVersion = DemoVersion::select()->findEntity(1);
 
         $this->assertInstanceof(DemoVersion::class, $testVersion);
-        static::assertSame(1, $testVersion->id);
-        static::assertSame('xiaoniuge', $testVersion->name);
-        static::assertSame('0.0000', $testVersion->availableNumber);
-        static::assertSame('0.0000', $testVersion->realNumber);
+        self::assertSame(1, $testVersion->id);
+        self::assertSame('xiaoniuge', $testVersion->name);
+        self::assertSame('0.0000', $testVersion->availableNumber);
+        self::assertSame('0.0000', $testVersion->realNumber);
 
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        static::assertSame(1, $testVersion->version(false)->update()->flush());
-        static::assertSame('SQL: [254] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->version(false)->update()->flush());
+        self::assertSame('SQL: [254] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
-        static::assertSame(1, $testVersion->update()->flush());
-        static::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->update()->flush());
+        self::assertSame('SQL: [120] UPDATE `test_version` SET `test_version`.`name` = :named_param_name WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'hello\' WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     #[Api([
@@ -1729,7 +1732,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_version')
@@ -1741,23 +1744,23 @@ EOT,
         $testVersion = DemoVersion::select()->findEntity(1);
 
         $this->assertInstanceof(DemoVersion::class, $testVersion);
-        static::assertSame(1, $testVersion->id);
-        static::assertSame('xiaoniuge', $testVersion->name);
-        static::assertSame('0.0000', $testVersion->availableNumber);
-        static::assertSame('0.0000', $testVersion->realNumber);
+        self::assertSame(1, $testVersion->id);
+        self::assertSame('xiaoniuge', $testVersion->name);
+        self::assertSame('0.0000', $testVersion->availableNumber);
+        self::assertSame('0.0000', $testVersion->realNumber);
 
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        static::assertSame(1, $testVersion->version(true)->update()->flush());
-        static::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(1, $testVersion->version(true)->update()->flush());
+        self::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->refresh();
         $condition = ['available_number' => $testVersion->availableNumber, DemoVersion::VERSION => 9999];
         $testVersion->name = 'hello';
         $testVersion->availableNumber = Condition::raw('[available_number]+8');
-        static::assertSame(0, $testVersion->condition($condition)->update()->flush());
-        static::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 9999 AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
+        self::assertSame(0, $testVersion->condition($condition)->update()->flush());
+        self::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 9999 AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
     #[Api([
@@ -1786,7 +1789,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('without_primarykey')
@@ -1797,15 +1800,15 @@ EOT,
         );
 
         $withoutPrimarykey = WithoutPrimarykey::select()->findEntity(1);
-        static::assertSame(['goods_id'], WithoutPrimarykey::primaryKey());
+        self::assertSame(['goods_id'], WithoutPrimarykey::primaryKey());
 
         $this->assertInstanceof(WithoutPrimarykey::class, $withoutPrimarykey);
-        static::assertSame(1, $withoutPrimarykey->goodsId);
-        static::assertSame('hello', $withoutPrimarykey->description);
+        self::assertSame(1, $withoutPrimarykey->goodsId);
+        self::assertSame('hello', $withoutPrimarykey->description);
 
         $withoutPrimarykey->description = 'world';
-        static::assertSame(1, $withoutPrimarykey->update()->flush());
-        static::assertSame('SQL: [170] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :named_param_description WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id LIMIT 1 | Params:  2 | Key: Name: [24] :named_param_description | paramno=0 | name=[24] ":named_param_description" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'world\' WHERE `without_primarykey`.`goods_id` = 1 LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+        self::assertSame(1, $withoutPrimarykey->update()->flush());
+        self::assertSame('SQL: [170] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :named_param_description WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id LIMIT 1 | Params:  2 | Key: Name: [24] :named_param_description | paramno=0 | name=[24] ":named_param_description" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'world\' WHERE `without_primarykey`.`goods_id` = 1 LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
     }
 
     #[Api([
@@ -1834,7 +1837,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('without_primarykey')
@@ -1846,27 +1849,27 @@ EOT,
         );
 
         $withoutPrimarykey = WithoutPrimarykeyAndAllAreKey::select()->findOne();
-        static::assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());
+        self::assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());
 
         $this->assertInstanceof(WithoutPrimarykeyAndAllAreKey::class, $withoutPrimarykey);
-        static::assertSame(1, $withoutPrimarykey->goodsId);
-        static::assertSame('hello', $withoutPrimarykey->description);
-        static::assertSame('world', $withoutPrimarykey->name);
+        self::assertSame(1, $withoutPrimarykey->goodsId);
+        self::assertSame('hello', $withoutPrimarykey->description);
+        self::assertSame('world', $withoutPrimarykey->name);
 
         $withoutPrimarykey->description = 'my';
         $withoutPrimarykey->name = 'php';
-        static::assertSame(1, $withoutPrimarykey->update()->flush());
-        static::assertSame('SQL: [350] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :named_param_description,`without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  5 | Key: Name: [24] :named_param_description | paramno=0 | name=[24] ":named_param_description" | is_param=1 | param_type=2 | Key: Name: [17] :named_param_name | paramno=1 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=2 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=3 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=4 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'my\',`without_primarykey`.`name` = \'php\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'hello\' AND `without_primarykey`.`name` = \'world\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+        self::assertSame(1, $withoutPrimarykey->update()->flush());
+        self::assertSame('SQL: [350] UPDATE `without_primarykey` SET `without_primarykey`.`description` = :named_param_description,`without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  5 | Key: Name: [24] :named_param_description | paramno=0 | name=[24] ":named_param_description" | is_param=1 | param_type=2 | Key: Name: [17] :named_param_name | paramno=1 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=2 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=3 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=4 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`description` = \'my\',`without_primarykey`.`name` = \'php\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'hello\' AND `without_primarykey`.`name` = \'world\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
 
         $withoutPrimarykey->name = 'new name';
-        static::assertSame(1, $withoutPrimarykey->update()->flush());
-        static::assertSame('SQL: [288] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new name\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'php\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+        self::assertSame(1, $withoutPrimarykey->update()->flush());
+        self::assertSame('SQL: [288] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new name\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'php\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
 
         $withoutPrimarykey->name = 'new and new';
         $withoutPrimarykey->update();
         $withoutPrimarykey->name = 'new and new2';
-        static::assertSame(1, $withoutPrimarykey->update()->flush());
-        static::assertSame('SQL: [288] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
+        self::assertSame(1, $withoutPrimarykey->update()->flush());
+        self::assertSame('SQL: [288] UPDATE `without_primarykey` SET `without_primarykey`.`name` = :named_param_name WHERE `without_primarykey`.`goods_id` = :without_primarykey_goods_id AND `without_primarykey`.`description` = :without_primarykey_description AND `without_primarykey`.`name` = :without_primarykey_name LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [28] :without_primarykey_goods_id | paramno=1 | name=[28] ":without_primarykey_goods_id" | is_param=1 | param_type=1 | Key: Name: [31] :without_primarykey_description | paramno=2 | name=[31] ":without_primarykey_description" | is_param=1 | param_type=2 | Key: Name: [24] :without_primarykey_name | paramno=3 | name=[24] ":without_primarykey_name" | is_param=1 | param_type=2 (UPDATE `without_primarykey` SET `without_primarykey`.`name` = \'new and new2\' WHERE `without_primarykey`.`goods_id` = 1 AND `without_primarykey`.`description` = \'my\' AND `without_primarykey`.`name` = \'new name\' LIMIT 1)', $withoutPrimarykey->select()->getLastSql());
     }
 
     #[Api([
@@ -1879,7 +1882,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -1892,21 +1895,21 @@ EOT,
         );
 
         $post = Post::find()->where('id', 1)->findOne();
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
 
         $postClone = clone $post;
-        static::assertNull($postClone->id);
-        static::assertSame('hello world', $postClone->title);
-        static::assertSame(1, $postClone->userId);
-        static::assertSame('post summary', $postClone->summary);
+        self::assertNull($postClone->id);
+        self::assertSame('hello world', $postClone->title);
+        self::assertSame(1, $postClone->userId);
+        self::assertSame('post summary', $postClone->summary);
 
         $post->title = 'world';
-        static::assertSame('hello world', $postClone->title);
+        self::assertSame('hello world', $postClone->title);
         $postClone->title = 'goods';
-        static::assertSame('world', $post->title);
+        self::assertSame('world', $post->title);
     }
 
     #[Api([
@@ -1921,11 +1924,11 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        static::assertTrue($post->newed());
-        static::assertNull($post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertTrue($post->newed());
+        self::assertNull($post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     public function testEntityMakeNotNewed(): void
@@ -1938,11 +1941,11 @@ EOT,
             'delete_at' => 0,
         ], true);
 
-        static::assertFalse($post->newed());
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertFalse($post->newed());
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -1957,11 +1960,11 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        static::assertTrue($post->newed());
-        static::assertNull($post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertTrue($post->newed());
+        self::assertNull($post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -1977,11 +1980,11 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        static::assertFalse($post->newed());
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame(1, $post->userId);
-        static::assertSame('post summary', $post->summary);
+        self::assertFalse($post->newed());
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->userId);
+        self::assertSame('post summary', $post->summary);
     }
 
     public function testEntityWithEnumButClassNotFound(): void
@@ -2001,7 +2004,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2013,12 +2016,12 @@ EOT,
                 ])
         );
 
-        Post::addGlobalScope('hello', function (Select $select): void {
+        Post::addGlobalScope('hello', static function (Select $select): void {
             $select->where('id', 5);
         });
         Post::select()->findAll();
         $sql = Post::select()->getLastSql();
-        static::assertSame($sql, 'SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` = :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 5)');
+        self::assertSame($sql, 'SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` = :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 5)');
     }
 
     #[Api([
@@ -2028,7 +2031,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2040,12 +2043,12 @@ EOT,
                 ])
         );
 
-        Post::addGlobalScope('hello', function (Select $select): void {
+        Post::addGlobalScope('hello', static function (Select $select): void {
             $select->where('id', 5);
         });
         Post::withoutGlobalScope(['hello'])->findAll();
         $sql = Post::select()->getLastSql();
-        static::assertSame($sql, 'SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)');
+        self::assertSame($sql, 'SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)');
     }
 
     #[Api([
@@ -2055,7 +2058,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2068,9 +2071,9 @@ EOT,
         );
 
         $post = Post::findEntity(1);
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -2080,7 +2083,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2093,11 +2096,11 @@ EOT,
         );
 
         $collection = Post::findMany([1]);
-        static::assertInstanceOf(\Leevel\Database\Ddd\EntityCollection::class, $collection);
+        self::assertInstanceOf(EntityCollection::class, $collection);
         $post = $collection[0];
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -2107,7 +2110,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -2120,9 +2123,9 @@ EOT,
         );
 
         $post = Post::findOrFail(1);
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -2143,7 +2146,7 @@ EOT,
     {
         $demo = new DemoVirtualEntity(['id' => 1]);
         $demo->delete();
-        static::assertSame(0, $demo->flush());
+        self::assertSame(0, $demo->flush());
     }
 
     #[Api([
@@ -2153,7 +2156,7 @@ EOT,
     {
         $demo = new DemoVirtualEntity(['id' => 1]);
         $demo->create();
-        static::assertSame(1, $demo->flush());
+        self::assertSame(1, $demo->flush());
     }
 
     #[Api([
@@ -2163,14 +2166,14 @@ EOT,
     {
         $demo = new DemoVirtualEntity(['id' => 1, 'name' => 'new']);
         $demo->update();
-        static::assertSame(0, $demo->flush());
+        self::assertSame(0, $demo->flush());
     }
 
     public function testVirtualUpdate2(): void
     {
         $demo = new DemoVirtualEntity(['id' => 1]);
         $demo->update();
-        static::assertNull($demo->flush());
+        self::assertNull($demo->flush());
     }
 
     #[Api([
@@ -2188,7 +2191,7 @@ EOT,
 
     public function test1(): void
     {
-        $this->expectException(\Leevel\Database\DuplicateKeyException::class);
+        $this->expectException(DuplicateKeyException::class);
         $this->expectExceptionMessage(
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'foo\' for key'
         );
@@ -2198,7 +2201,7 @@ EOT,
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_unique')
@@ -2219,7 +2222,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('test_unique')
@@ -2234,7 +2237,7 @@ EOT,
             'identity' => 'foo',
         ]);
         $affectedRow = $post->update()->flush();
-        static::assertSame(1, $affectedRow);
+        self::assertSame(1, $affectedRow);
     }
 
     #[Api([
@@ -2255,7 +2258,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 Post::columnNames(),
@@ -2270,12 +2273,12 @@ eot;
     {
         $this->initI18n();
 
-        static::assertSame('用户ID', Post::columnName('user_id'));
+        self::assertSame('用户ID', Post::columnName('user_id'));
     }
 
     public function testColumnName2(): void
     {
-        static::assertSame('', Post::columnName('user_id_not_found'));
+        self::assertSame('', Post::columnName('user_id_not_found'));
     }
 
     #[Api([
@@ -2311,7 +2314,7 @@ EOT,
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
     }

@@ -107,9 +107,6 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
         return (string) $this->render();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toHtml(): string
     {
         return (string) $this->render();
@@ -527,9 +524,6 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         return [
@@ -543,17 +537,11 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toJson(?int $config = null): string
     {
         return ConvertJson::handle($this->jsonSerialize(), $config);

@@ -38,7 +38,7 @@ final class ResponseTest extends TestCase
         $redirect = $this->makeRedirect();
         $container = $this->createContainer();
         $factory = new RouterResponse($view, $redirect);
-        $container->singleton('response', function () use ($factory): RouterResponse {
+        $container->singleton('response', static function () use ($factory): RouterResponse {
             return $factory;
         });
 
@@ -47,11 +47,11 @@ final class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        static::assertSame('hello', $response->getContent());
-        static::assertSame(200, $response->getStatusCode());
+        self::assertSame('hello', $response->getContent());
+        self::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
         unset($headers['date']);
-        static::assertSame(['cache-control' => ['no-cache, private']], $headers);
+        self::assertSame(['cache-control' => ['no-cache, private']], $headers);
     }
 
     public function testProxy(): void
@@ -60,7 +60,7 @@ final class ResponseTest extends TestCase
         $redirect = $this->makeRedirect();
         $container = $this->createContainer();
         $factory = new RouterResponse($view, $redirect);
-        $container->singleton('response', function () use ($factory): RouterResponse {
+        $container->singleton('response', static function () use ($factory): RouterResponse {
             return $factory;
         });
 
@@ -69,11 +69,11 @@ final class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
-        static::assertSame('hello', $response->getContent());
-        static::assertSame(200, $response->getStatusCode());
+        self::assertSame('hello', $response->getContent());
+        self::assertSame(200, $response->getStatusCode());
         $headers = $response->headers->all();
         unset($headers['date']);
-        static::assertSame(['cache-control' => ['no-cache, private']], $headers);
+        self::assertSame(['cache-control' => ['no-cache, private']], $headers);
 
         $response = ProxyResponse::json();
 
@@ -81,9 +81,9 @@ final class ResponseTest extends TestCase
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);
 
-        static::assertSame('{}', $response->getContent());
-        static::assertSame(200, $response->getStatusCode());
-        static::assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
+        self::assertSame('{}', $response->getContent());
+        self::assertSame(200, $response->getStatusCode());
+        self::assertSame(['content-type' => ['application/json']], $this->getFilterHeaders($response->headers->all()));
     }
 
     protected function createRequest(): Request
@@ -119,10 +119,10 @@ final class ResponseTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        static::assertSame('', $request->getEnter());
+        self::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        static::assertSame($isSecure, $request->isSecure($isSecure));
+        self::assertSame($isSecure, $request->isSecure($isSecure));
 
         return $request;
     }
@@ -145,8 +145,8 @@ final class ResponseTest extends TestCase
         $this->assertInstanceof(IContainer::class, $manager->container());
         $this->assertInstanceof(Container::class, $manager->container());
 
-        static::assertSame(__DIR__.'/assert', $app->themesPath());
-        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        self::assertSame(__DIR__.'/assert', $app->themesPath());
+        self::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $config = new Config([
             'view' => [
@@ -192,6 +192,4 @@ class ExtendAppForResponse extends App
     }
 }
 
-class ExtendRequestForResponse
-{
-}
+class ExtendRequestForResponse {}

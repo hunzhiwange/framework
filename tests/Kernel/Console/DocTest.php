@@ -60,26 +60,26 @@ final class DocTest extends TestCase
         $result = $this->normalizeContent($result);
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('A total of 4 files generate succeed.'),
             $result,
         );
 
-        static::assertFileExists($outputDirName.'/demo1.md');
-        static::assertFileExists($outputDirName.'/demo2.md');
-        static::assertFileExists($outputDirName.'/demo3.md');
+        self::assertFileExists($outputDirName.'/demo1.md');
+        self::assertFileExists($outputDirName.'/demo2.md');
+        self::assertFileExists($outputDirName.'/demo3.md');
     }
 
     public function test1(): void
@@ -106,7 +106,7 @@ final class DocTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Files was not found.'),
             $result,
         );
@@ -137,16 +137,16 @@ final class DocTest extends TestCase
         $result = $this->normalizeContent($result);
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('A total of 1 files generate succeed.'),
             $result,
         );
 
-        static::assertFileExists($outputDirName.'/demo1.md');
+        self::assertFileExists($outputDirName.'/demo1.md');
     }
 
     public function test3(): void
@@ -176,16 +176,16 @@ final class DocTest extends TestCase
         $result = $this->normalizeContent($result);
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('A total of 1 files generate succeed.'),
             $result,
         );
 
-        static::assertFileExists($outputDirName.'/demo1.md');
+        self::assertFileExists($outputDirName.'/demo1.md');
     }
 
     public function test4(): void
@@ -216,17 +216,17 @@ final class DocTest extends TestCase
         $result = $this->normalizeContent($result);
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('A total of 1 files generate succeed.'),
             $result,
         );
 
-        static::assertFileExists($outputDirName.'/demo1.md');
-        static::assertSame(1, $GLOBALS['make:doc:bootstrap']);
+        self::assertFileExists($outputDirName.'/demo1.md');
+        self::assertSame(1, $GLOBALS['make:doc:bootstrap']);
     }
 
     protected function initContainerService(IContainer $container): void
@@ -239,7 +239,5 @@ final class DocTest extends TestCase
 
 class AppForDoc extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

@@ -13,12 +13,12 @@ final class TestCaseTest extends TestCase
     public function test1(): void
     {
         $t = new TestCase1('');
-        static::assertNull($this->getTestProperty($t, 'app'));
+        self::assertNull($this->getTestProperty($t, 'app'));
         $this->invokeTestMethod($t, 'setUp');
         $this->invokeTestMethod($t, 'setUp');
-        static::assertInstanceOf(App::class, $this->getTestProperty($t, 'app'));
+        self::assertInstanceOf(App::class, $this->getTestProperty($t, 'app'));
         $this->invokeTestMethod($t, 'tearDown');
-        static::assertNull($this->getTestProperty($t, 'app'));
+        self::assertNull($this->getTestProperty($t, 'app'));
     }
 }
 

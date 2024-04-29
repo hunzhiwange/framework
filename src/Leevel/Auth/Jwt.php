@@ -53,9 +53,6 @@ class Jwt extends Auth implements IAuth
         return BaseJwt::encode($payload, $this->config['auth_key'], $this->config['alg']);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function tokenData(): array
     {
         return (array) $this->getPersistence($this->getTokenName());

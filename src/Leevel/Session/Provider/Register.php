@@ -16,9 +16,6 @@ use Leevel\Session\Session;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->sessions();
@@ -26,9 +23,6 @@ class Register extends Provider
         $this->middleware();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -38,9 +32,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -54,7 +45,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'sessions',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -67,7 +58,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'session',
-                fn (IContainer $container): ISession => $container['sessions']->connect(),
+                static fn (IContainer $container): ISession => $container['sessions']->connect(),
             )
         ;
     }

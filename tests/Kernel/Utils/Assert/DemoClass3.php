@@ -6,7 +6,5 @@ namespace Tests\Kernel\Utils\Assert;
 
 class DemoClass3
 {
-    public function demo1()
-    {
-    }
+    public function demo1(): void {}
 }

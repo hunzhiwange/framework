@@ -52,11 +52,11 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertNull($post->id);
+        self::assertNull($post->id);
 
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -68,7 +68,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('post_content')
@@ -80,40 +80,38 @@ EOT,
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->user_id);
-        static::assertSame(1, $post->userId);
-        static::assertSame(1, $post['user_id']);
-        static::assertSame(1, $post->getUserId());
-        static::assertSame('hello world', $post->title);
-        static::assertSame('hello world', $post['title']);
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('Say hello to the world.', $post->summary);
-        static::assertSame('Say hello to the world.', $post['summary']);
-        static::assertSame('Say hello to the world.', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->user_id);
+        self::assertSame(1, $post->userId);
+        self::assertSame(1, $post['user_id']);
+        self::assertSame(1, $post->getUserId());
+        self::assertSame('hello world', $post->title);
+        self::assertSame('hello world', $post['title']);
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('Say hello to the world.', $post->summary);
+        self::assertSame('Say hello to the world.', $post['summary']);
+        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $postContent = $post->postContent;
 
         $this->assertInstanceof(PostContent::class, $postContent);
-        static::assertSame(1, $postContent->post_id);
-        static::assertSame(1, $postContent->postId);
-        static::assertSame(1, $postContent['post_id']);
-        static::assertSame(1, $postContent['postId']);
-        static::assertSame(1, $postContent->getPostId());
-        static::assertSame('I am content with big data.', $postContent->content);
-        static::assertSame('I am content with big data.', $postContent['content']);
-        static::assertSame('I am content with big data.', $postContent->getContent());
+        self::assertSame(1, $postContent->post_id);
+        self::assertSame(1, $postContent->postId);
+        self::assertSame(1, $postContent['post_id']);
+        self::assertSame(1, $postContent['postId']);
+        self::assertSame(1, $postContent->getPostId());
+        self::assertSame('I am content with big data.', $postContent->content);
+        self::assertSame('I am content with big data.', $postContent['content']);
+        self::assertSame('I am content with big data.', $postContent->getContent());
     }
 
     public function testWithoutRelationCondition(): void
     {
-        $relation = Relation::withoutRelationCondition(function (): Relation {
+        $relation = Relation::withoutRelationCondition(static function (): Relation {
             return new class() extends HasOne {
-                public function __construct()
-                {
-                }
+                public function __construct() {}
             };
         });
 
@@ -127,7 +125,7 @@ EOT,
             'error'
         );
 
-        $relation = Relation::withoutRelationCondition(function (): Relation {
+        $relation = Relation::withoutRelationCondition(static function (): Relation {
             return new class() extends HasOne {
                 public function __construct()
                 {

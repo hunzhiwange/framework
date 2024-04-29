@@ -22,17 +22,17 @@ final class StrTest extends TestCase
     ])]
     public function testBaseUse(): void
     {
-        static::assertSame('', Str::randAlphaNum(0));
+        self::assertSame('', Str::randAlphaNum(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Za-z0-9]+$/', Str::randAlphaNum(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Za-z0-9]+$/', Str::randAlphaNum(4, 'AB4cdef'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlphaNum(4))
         );
     }
@@ -48,17 +48,17 @@ EOT,
     ])]
     public function testRandAlphaNumLowercase(): void
     {
-        static::assertSame('', Str::randAlphaNumLowercase(0));
+        self::assertSame('', Str::randAlphaNumLowercase(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[a-z0-9]+$/', Str::randAlphaNumLowercase(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[a-z0-9]+$/', Str::randAlphaNumLowercase(4, 'cdefghigk2450'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlphaNumLowercase(4))
         );
     }
@@ -74,17 +74,17 @@ EOT,
     ])]
     public function testRandAlphaNumUppercase(): void
     {
-        static::assertSame('', Str::randAlphaNumUppercase(0));
+        self::assertSame('', Str::randAlphaNumUppercase(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Z0-9]+$/', Str::randAlphaNumUppercase(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Z0-9]+$/', Str::randAlphaNumUppercase(4, 'ABCDEFG1245'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlphaNumUppercase(4))
         );
     }
@@ -100,17 +100,17 @@ EOT,
     ])]
     public function testRandAlpha(): void
     {
-        static::assertSame('', Str::randAlpha(0));
+        self::assertSame('', Str::randAlpha(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Za-z]+$/', Str::randAlpha(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Za-z]+$/', Str::randAlpha(4, 'ABCDEFGefijk'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlpha(4))
         );
     }
@@ -120,17 +120,17 @@ EOT,
     ])]
     public function testRandAlphaLowercase(): void
     {
-        static::assertSame('', Str::randAlphaLowercase(0));
+        self::assertSame('', Str::randAlphaLowercase(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4, 'cdefghigk'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlphaLowercase(4))
         );
     }
@@ -140,17 +140,17 @@ EOT,
     ])]
     public function testRandAlphaUppercase(): void
     {
-        static::assertSame('', Str::randAlphaUppercase(0));
+        self::assertSame('', Str::randAlphaUppercase(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4, 'ABCDEFG'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randAlphaUppercase(4))
         );
     }
@@ -160,17 +160,17 @@ EOT,
     ])]
     public function testRandNum(): void
     {
-        static::assertSame('', Str::randNum(0));
+        self::assertSame('', Str::randNum(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[0-9]+$/', Str::randNum(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[0-9]+$/', Str::randNum(4, '012456'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randNum(4))
         );
     }
@@ -180,17 +180,17 @@ EOT,
     ])]
     public function testRandChinese(): void
     {
-        static::assertSame('', Str::randChinese(0));
+        self::assertSame('', Str::randChinese(0));
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', Str::randChinese(4))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             1 === preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', Str::randChinese(4, '我是一个中国人'))
         );
 
-        static::assertTrue(
+        self::assertTrue(
             12 === \strlen(Str::randChinese(4))
         );
     }
@@ -200,10 +200,10 @@ EOT,
     ])]
     public function testRandStr(): void
     {
-        static::assertSame('', Str::randStr(0, ''));
-        static::assertSame('', Str::randStr(5, ''));
+        self::assertSame('', Str::randStr(0, ''));
+        self::assertSame('', Str::randStr(5, ''));
 
-        static::assertTrue(
+        self::assertTrue(
             4 === \strlen(Str::randStr(4, 'helloworld'))
         );
     }
@@ -215,19 +215,19 @@ EOT,
     {
         $time = time();
 
-        static::assertSame(date('Y-m-d H:i', $time + 600), Str::formatDate($time + 600));
-        static::assertSame(date('Y-m-d', $time + 600), Str::formatDate($time + 600, [], 'Y-m-d'));
+        self::assertSame(date('Y-m-d H:i', $time + 600), Str::formatDate($time + 600));
+        self::assertSame(date('Y-m-d', $time + 600), Str::formatDate($time + 600, [], 'Y-m-d'));
 
-        static::assertSame(date('Y-m-d', $time - 1286400), Str::formatDate($time - 1286400, [], 'Y-m-d'));
+        self::assertSame(date('Y-m-d', $time - 1286400), Str::formatDate($time - 1286400, [], 'Y-m-d'));
 
-        static::assertSame('1 hours ago', Str::formatDate($time - 5040));
-        static::assertSame('1 小时之前', Str::formatDate($time - 5040, ['hours' => '小时之前']));
+        self::assertSame('1 hours ago', Str::formatDate($time - 5040));
+        self::assertSame('1 小时之前', Str::formatDate($time - 5040, ['hours' => '小时之前']));
 
-        static::assertSame('4 minutes ago', Str::formatDate($time - 240));
-        static::assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
+        self::assertSame('4 minutes ago', Str::formatDate($time - 240));
+        self::assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
 
-        static::assertTrue(\in_array(Str::formatDate($time - 40), ['40 seconds ago', '41 seconds ago', '42 seconds ago'], true));
-        static::assertTrue(\in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
+        self::assertTrue(\in_array(Str::formatDate($time - 40), ['40 seconds ago', '41 seconds ago', '42 seconds ago'], true));
+        self::assertTrue(\in_array(Str::formatDate($time - 40, ['seconds' => '秒之前']), ['40 秒之前', '41 秒之前', '42 秒之前'], true));
     }
 
     #[Api([
@@ -235,17 +235,17 @@ EOT,
     ])]
     public function testFormatBytes(): void
     {
-        static::assertSame('2.4G', Str::formatBytes(2573741824));
-        static::assertSame('2.4', Str::formatBytes(2573741824, false));
+        self::assertSame('2.4G', Str::formatBytes(2573741824));
+        self::assertSame('2.4', Str::formatBytes(2573741824, false));
 
-        static::assertSame('4.81M', Str::formatBytes(5048576));
-        static::assertSame('4.81', Str::formatBytes(5048576, false));
+        self::assertSame('4.81M', Str::formatBytes(5048576));
+        self::assertSame('4.81', Str::formatBytes(5048576, false));
 
-        static::assertSame('2.95K', Str::formatBytes(3024));
-        static::assertSame('2.95', Str::formatBytes(3024, false));
+        self::assertSame('2.95K', Str::formatBytes(3024));
+        self::assertSame('2.95', Str::formatBytes(3024, false));
 
-        static::assertSame('100B', Str::formatBytes(100));
-        static::assertSame('100', Str::formatBytes(100, false));
+        self::assertSame('100B', Str::formatBytes(100));
+        self::assertSame('100', Str::formatBytes(100, false));
     }
 
     #[Api([
@@ -253,12 +253,12 @@ EOT,
     ])]
     public function testCamelize(): void
     {
-        static::assertSame('helloWorld', Str::camelize('helloWorld'));
-        static::assertSame('helloWorld', Str::camelize('helloWorld', '-'));
-        static::assertSame('helloWorld', Str::camelize('hello_world'));
-        static::assertSame('helloWorld', Str::camelize('hello-world', '-'));
-        static::assertSame('he3lloWorld', Str::camelize('he3llo_world'));
-        static::assertSame('hello3World', Str::camelize('hello3_world'));
+        self::assertSame('helloWorld', Str::camelize('helloWorld'));
+        self::assertSame('helloWorld', Str::camelize('helloWorld', '-'));
+        self::assertSame('helloWorld', Str::camelize('hello_world'));
+        self::assertSame('helloWorld', Str::camelize('hello-world', '-'));
+        self::assertSame('he3lloWorld', Str::camelize('he3llo_world'));
+        self::assertSame('hello3World', Str::camelize('hello3_world'));
     }
 
     #[Api([
@@ -266,12 +266,12 @@ EOT,
     ])]
     public function testUnCamelize(): void
     {
-        static::assertSame('hello_world', Str::unCamelize('hello_world'));
-        static::assertSame('hello-world', Str::unCamelize('hello-world', '-'));
-        static::assertSame('hello_world', Str::unCamelize('helloWorld'));
-        static::assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
-        static::assertSame('hello2_world', Str::unCamelize('hello2World'));
-        static::assertSame('hel2lo_world', Str::unCamelize('hel2loWorld'));
+        self::assertSame('hello_world', Str::unCamelize('hello_world'));
+        self::assertSame('hello-world', Str::unCamelize('hello-world', '-'));
+        self::assertSame('hello_world', Str::unCamelize('helloWorld'));
+        self::assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
+        self::assertSame('hello2_world', Str::unCamelize('hello2World'));
+        self::assertSame('hel2lo_world', Str::unCamelize('hel2loWorld'));
     }
 
     public function testStrNotFound(): void
@@ -279,6 +279,6 @@ EOT,
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Support\\Str\\NotFound" not found');
 
-        static::assertTrue(Str::notFound());
+        self::assertTrue(Str::notFound());
     }
 }

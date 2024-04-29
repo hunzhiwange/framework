@@ -266,49 +266,31 @@ abstract class Database implements IDatabase
         return $this->databaseSelect()->{$method}(...$args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getContainer(): IContainer
     {
         return $this->container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setCache(?ICache $cache): void
     {
         $this->cache = $cache;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getCache(): ?ICache
     {
         return $this->cache;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function databaseSelect(): Select
     {
         return new Select($this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getPdo(bool $master = false): \PDO
     {
         return $master ? $this->getMasterPdo() : $this->getSlavePdo();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function query(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
@@ -331,9 +313,6 @@ abstract class Database implements IDatabase
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function procedure(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
     {
         if ($cacheName && false !== ($result = $this->getDataFromCache($cacheName, $cache))) {
@@ -350,9 +329,6 @@ abstract class Database implements IDatabase
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function execute(string $sql, array $bindParams = [], bool $master = false, bool $insert = false): int|string
     {
         $statement = $this->prepare($sql, $bindParams, $master);
@@ -372,9 +348,6 @@ abstract class Database implements IDatabase
         return $lastInsertId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator
     {
         $statement = $this->prepare($sql, $bindParams, $master);
@@ -383,9 +356,6 @@ abstract class Database implements IDatabase
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function prepare(string $sql, array $bindParams = [], bool $master = false): \PDOStatement
     {
         $bindParamsResult = $this->normalizeBindParams($bindParams);
@@ -419,9 +389,6 @@ abstract class Database implements IDatabase
         return $statement;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function transaction(\Closure $action): mixed
     {
         $this->beginTransaction();
@@ -438,9 +405,6 @@ abstract class Database implements IDatabase
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function beginTransaction(): void
     {
         ++$this->transactionLevel;
@@ -459,23 +423,17 @@ abstract class Database implements IDatabase
 
                 throw $e;
             }
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } elseif ($this->transactionLevel > 1 && $this->hasSavepoints()) {
             $this->createSavepoint($this->getSavepointName()); // @codeCoverageIgnore
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function inTransaction(): bool
     {
         return $this->getPdo(true)->inTransaction();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function commit(): void
     {
         if (0 === $this->transactionLevel) {
@@ -499,9 +457,6 @@ abstract class Database implements IDatabase
         $this->transactionLevel = max(0, $this->transactionLevel - 1);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function rollBack(): void
     {
         if (0 === $this->transactionLevel) {
@@ -539,50 +494,32 @@ abstract class Database implements IDatabase
         $this->transactionWithSavepoints = $savepoints;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function hasSavepoints(): bool
     {
         return $this->transactionWithSavepoints;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getLastSql(): string
     {
         return $this->sql;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setRealLastSql(array $realLastSql): void
     {
         $this->realLastSql = $realLastSql;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRealLastSql(): array
     {
         return $this->realLastSql;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function close(): void
     {
         $this->masterPdo = null;
         $this->slavePdo = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function getRawSql(string $sql, array $bindParams): string
     {
         $keys = $values = [];
@@ -592,7 +529,7 @@ abstract class Database implements IDatabase
         // if we have a param name :user
         $isNamedMarkers = false;
         if (\count($bindParams) && \is_string(key($bindParams))) {
-            uksort($bindParams, function (string $k1, string $k2): int {
+            uksort($bindParams, static function (string $k1, string $k2): int {
                 return \strlen($k2) - \strlen($k1);
             });
             $isNamedMarkers = true;
@@ -1017,7 +954,7 @@ abstract class Database implements IDatabase
     /**
      * PDO 异常处理.
      *
-     * @throws \Leevel\Database\DuplicateKeyException
+     * @throws DuplicateKeyException
      */
     protected function pdoException(\PDOException $e): void
     {

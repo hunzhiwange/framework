@@ -6,6 +6,7 @@ namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection as Collection;
+use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Database\Ddd\Select;
 use Leevel\Database\Page;
 use Leevel\Kernel\Utils\Api;
@@ -29,7 +30,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -46,10 +47,10 @@ final class SelectTest extends TestCase
         $entity = $select->entity();
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
         $this->assertInstanceof(Entity::class, $entity);
     }
 
@@ -60,7 +61,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -76,10 +77,10 @@ final class SelectTest extends TestCase
         $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -89,7 +90,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('composite_id')
@@ -103,9 +104,9 @@ final class SelectTest extends TestCase
         $select = new Select(new CompositeId());
         $entity = $select->where(['id1' => 1, 'id2' => 2])->findOne();
         $this->assertInstanceof(CompositeId::class, $entity);
-        static::assertSame(1, $entity->id1);
-        static::assertSame(2, $entity->id2);
-        static::assertSame('hello liu', $entity->name);
+        self::assertSame(1, $entity->id1);
+        self::assertSame(2, $entity->id2);
+        self::assertSame('hello liu', $entity->name);
     }
 
     #[Api([
@@ -115,7 +116,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -131,10 +132,10 @@ final class SelectTest extends TestCase
         $post = $select->findOrFail(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     #[Api([
@@ -142,7 +143,7 @@ final class SelectTest extends TestCase
     ])]
     public function testFindOrFailThrowsException(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityNotFoundException::class);
+        $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage(
             'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not found.'
         );
@@ -155,7 +156,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -171,8 +172,8 @@ final class SelectTest extends TestCase
         $post = $select->findOrFail(1, ['title']);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame('hello world', $post->title);
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
     }
 
     #[Api([
@@ -182,7 +183,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -194,7 +195,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -210,19 +211,19 @@ final class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
         $post1 = $posts[0];
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
 
         $post2 = $posts[1];
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
     }
 
     public function testFindManyWithEmptyIds(): void
@@ -231,7 +232,7 @@ final class SelectTest extends TestCase
         $posts = $select->findMany([]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
     }
 
     #[Api([
@@ -243,7 +244,7 @@ final class SelectTest extends TestCase
         $posts = $select->findMany([1, 2]);
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
     }
 
     #[Api([
@@ -253,7 +254,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -265,7 +266,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -282,41 +283,41 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = Post::select()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
     }
 
     #[Api([
@@ -326,7 +327,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -338,7 +339,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -355,41 +356,41 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = Post::withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
     }
 
     #[Api([
@@ -399,7 +400,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -411,7 +412,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -428,41 +429,41 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = Post::onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
     }
 
     #[Api([
@@ -472,7 +473,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -484,7 +485,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -501,41 +502,41 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
     }
 
     #[Api([
@@ -545,7 +546,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -557,7 +558,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -574,48 +575,48 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
             SQL: [72] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 | Params:  1 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
     }
 
     public function testWithSoftDeletedWillInitSelect(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -627,7 +628,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -644,44 +645,44 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
 
         $posts = $select->withSoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [27] SELECT `post`.* FROM `post` | Params:  0 (SELECT `post`.* FROM `post`)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(2, $posts);
+        self::assertCount(2, $posts);
     }
 
     public function testOnlySoftDeletedWillInitSelect(): void
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -693,7 +694,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -710,37 +711,37 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [97] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` > :post_id | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(1, $posts);
+        self::assertCount(1, $posts);
 
         $posts = $select->where('id', '>', 2)->findAll();
         $sql = <<<'eot'
             SQL: [130] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at_1 AND `post`.`id` > :post_id_1 AND `post`.`id` > :post_id_2 | Params:  3 | Key: Name: [17] :post_delete_at_1 | paramno=0 | name=[17] ":post_delete_at_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_1 | paramno=1 | name=[10] ":post_id_1" | is_param=1 | param_type=1 | Key: Name: [10] :post_id_2 | paramno=2 | name=[10] ":post_id_2" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` > 1 AND `post`.`id` > 2)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
 
         $posts = $select->onlySoftDeleted()->findAll();
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` > 0)
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
     }
 
     #[Api([
@@ -750,7 +751,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -766,16 +767,16 @@ final class SelectTest extends TestCase
         $post = $select->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
 
         $sql = <<<'eot'
             SQL: [105] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0 AND `post`.`id` = 1 LIMIT 1)
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->databaseConnect()->getLastSql(),
         );
@@ -788,7 +789,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -801,15 +802,15 @@ final class SelectTest extends TestCase
         );
 
         $select = new Select(new Post());
-        $post = Select::withoutPreLoadsResult(function () use ($select) {
+        $post = Select::withoutPreLoadsResult(static function () use ($select) {
             return $select->findEntity(1);
         });
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
     }
 
     public function testWithoutPreLoadsResultWithException(): void
@@ -819,7 +820,7 @@ final class SelectTest extends TestCase
             'test exception'
         );
 
-        Select::withoutPreLoadsResult(function (): void {
+        Select::withoutPreLoadsResult(static function (): void {
             throw new \Exception('test exception');
         });
     }
@@ -831,7 +832,7 @@ final class SelectTest extends TestCase
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -843,7 +844,7 @@ final class SelectTest extends TestCase
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -861,17 +862,17 @@ final class SelectTest extends TestCase
         $sql = <<<'eot'
             SQL: [63] SELECT `user`.* FROM `user` WHERE `user`.`id` IN (:user_id_in0) | Params:  1 | Key: Name: [12] :user_id_in0 | paramno=0 | name=[12] ":user_id_in0" | is_param=1 | param_type=1 (SELECT `user`.* FROM `user` WHERE `user`.`id` IN (1))
             eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $select->getLastSql(),
         );
 
         $this->assertInstanceof(Page::class, $page);
         $data = $page->getData();
-        static::assertCount(2, $data);
+        self::assertCount(2, $data);
         $this->assertInstanceof(Collection::class, $data);
         $pageData = $page->toArray();
-        static::assertCount(2, $pageData['data']);
+        self::assertCount(2, $pageData['data']);
         $this->assertInstanceof(Collection::class, $pageData['data']);
 
         $data = <<<'eot'
@@ -886,7 +887,7 @@ final class SelectTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $pageData['page']

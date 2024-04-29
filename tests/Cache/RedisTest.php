@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\Redis;
-use RedisException;
 use Tests\TestCase;
 
 final class RedisTest extends TestCase
@@ -14,13 +13,13 @@ final class RedisTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->makeRedis();
-        } catch (RedisException) {
-            static::markTestSkipped('Redis read error on connection and ignore.');
+        } catch (\RedisException) {
+            self::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
@@ -32,21 +31,21 @@ final class RedisTest extends TestCase
         $redis->set('foo', 'bar');
         $redis->set('num', 123);
 
-        static::assertSame('world', $redis->get('hello'));
-        static::assertSame('bar', $redis->get('foo'));
-        static::assertSame(123, $redis->get('num'));
+        self::assertSame('world', $redis->get('hello'));
+        self::assertSame('bar', $redis->get('foo'));
+        self::assertSame(123, $redis->get('num'));
 
         $redis->delete('hello');
         $redis->delete('foo');
         $redis->delete('num');
 
-        static::assertFalse($redis->get('hello'));
-        static::assertFalse($redis->get('foo'));
-        static::assertFalse($redis->get('num'));
+        self::assertFalse($redis->get('hello'));
+        self::assertFalse($redis->get('foo'));
+        self::assertFalse($redis->get('num'));
 
         $this->assertInstanceof(\Redis::class, $redis->getHandle());
-        static::assertNull($redis->close());
-        static::assertNull($redis->getHandle());
+        self::assertNull($redis->close());
+        self::assertNull($redis->getHandle());
     }
 
     public function testSet(): void
@@ -55,106 +54,106 @@ final class RedisTest extends TestCase
 
         $redis->set('testset', 'world');
 
-        static::assertSame('world', $redis->get('testset'));
+        self::assertSame('world', $redis->get('testset'));
 
         $redis->delete('testset');
 
-        static::assertFalse($redis->get('hello'));
+        self::assertFalse($redis->get('hello'));
 
         $redis->set('testfoo', 'bar', 1);
 
-        static::assertSame('bar', $redis->get('testfoo'));
+        self::assertSame('bar', $redis->get('testfoo'));
 
         // 0.7 秒未过期
         usleep(700000);
-        static::assertSame('bar', $redis->get('testfoo'));
+        self::assertSame('bar', $redis->get('testfoo'));
 
         // 1.1 就过期
         usleep(400000);
-        static::assertFalse($redis->get('testfoo'));
+        self::assertFalse($redis->get('testfoo'));
     }
 
     public function testIncrease(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testIncrease'));
-        static::assertSame(1, $redis->increase('testIncrease'));
-        static::assertSame(101, $redis->increase('testIncrease', 100));
-        static::assertSame(201, $redis->increase('testIncrease', 100));
+        self::assertFalse($redis->get('testIncrease'));
+        self::assertSame(1, $redis->increase('testIncrease'));
+        self::assertSame(101, $redis->increase('testIncrease', 100));
+        self::assertSame(201, $redis->increase('testIncrease', 100));
         $redis->delete('testIncrease');
-        static::assertFalse($redis->get('testIncrease'));
+        self::assertFalse($redis->get('testIncrease'));
     }
 
     public function testIncreaseWithExpire(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testIncreaseWithExpire'));
-        static::assertSame(1, $redis->increase('testIncreaseWithExpire', 1, 1));
-        static::assertSame(1, $redis->get('testIncreaseWithExpire'));
+        self::assertFalse($redis->get('testIncreaseWithExpire'));
+        self::assertSame(1, $redis->increase('testIncreaseWithExpire', 1, 1));
+        self::assertSame(1, $redis->get('testIncreaseWithExpire'));
 
         // 0.7 秒未过期
         usleep(700000);
-        static::assertSame(1, $redis->get('testIncreaseWithExpire'));
+        self::assertSame(1, $redis->get('testIncreaseWithExpire'));
 
         // 1.1 就过期
         usleep(400000);
-        static::assertFalse($redis->get('testIncreaseWithExpire'));
+        self::assertFalse($redis->get('testIncreaseWithExpire'));
     }
 
     public function testIncreaseReturnFalse(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testIncreaseReturnFalse'));
+        self::assertFalse($redis->get('testIncreaseReturnFalse'));
         $redis->set('testIncreaseReturnFalse', 'world');
-        static::assertFalse($redis->increase('testIncreaseReturnFalse'));
+        self::assertFalse($redis->increase('testIncreaseReturnFalse'));
         $redis->delete('testIncreaseReturnFalse');
-        static::assertFalse($redis->get('testIncreaseReturnFalse'));
+        self::assertFalse($redis->get('testIncreaseReturnFalse'));
     }
 
     public function testDecrease(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testDecrease'));
-        static::assertSame(-1, $redis->decrease('testDecrease'));
-        static::assertSame(-101, $redis->decrease('testDecrease', 100));
-        static::assertSame(-201, $redis->decrease('testDecrease', 100));
+        self::assertFalse($redis->get('testDecrease'));
+        self::assertSame(-1, $redis->decrease('testDecrease'));
+        self::assertSame(-101, $redis->decrease('testDecrease', 100));
+        self::assertSame(-201, $redis->decrease('testDecrease', 100));
         $redis->delete('testDecrease');
-        static::assertFalse($redis->get('testIncrease'));
+        self::assertFalse($redis->get('testIncrease'));
     }
 
     public function testDecreaseWithExpire(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testDecreaseWithExpire'));
-        static::assertSame(-1, $redis->decrease('testDecreaseWithExpire', 1, 1));
-        static::assertSame(-1, $redis->get('testDecreaseWithExpire'));
+        self::assertFalse($redis->get('testDecreaseWithExpire'));
+        self::assertSame(-1, $redis->decrease('testDecreaseWithExpire', 1, 1));
+        self::assertSame(-1, $redis->get('testDecreaseWithExpire'));
 
         // 0.7 秒未过期
         usleep(700000);
-        static::assertSame(-1, $redis->get('testDecreaseWithExpire'));
+        self::assertSame(-1, $redis->get('testDecreaseWithExpire'));
 
         // 1.1 就过期
         usleep(400000);
-        static::assertFalse($redis->get('testDecreaseWithExpire'));
+        self::assertFalse($redis->get('testDecreaseWithExpire'));
     }
 
     public function testDecreaseReturnFalse(): void
     {
         $redis = $this->makeRedis();
-        static::assertFalse($redis->get('testDecreaseReturnFalse'));
+        self::assertFalse($redis->get('testDecreaseReturnFalse'));
         $redis->set('testDecreaseReturnFalse', 'world');
-        static::assertFalse($redis->decrease('testDecreaseReturnFalse'));
+        self::assertFalse($redis->decrease('testDecreaseReturnFalse'));
         $redis->delete('testDecreaseReturnFalse');
-        static::assertFalse($redis->get('testDecreaseReturnFalse'));
+        self::assertFalse($redis->get('testDecreaseReturnFalse'));
     }
 
     public function testHas(): void
     {
         $redis = $this->makeRedis();
 
-        static::assertFalse($redis->has('has'));
+        self::assertFalse($redis->has('has'));
         $redis->set('has', 'world');
-        static::assertTrue($redis->has('has'));
+        self::assertTrue($redis->has('has'));
         $redis->delete('has');
     }
 
@@ -162,14 +161,14 @@ final class RedisTest extends TestCase
     {
         $redis = $this->makeRedis();
 
-        static::assertFalse($redis->has('ttl'));
-        static::assertSame(-2, $redis->ttl('ttl'));
+        self::assertFalse($redis->has('ttl'));
+        self::assertSame(-2, $redis->ttl('ttl'));
         $redis->set('ttl', 'world');
-        static::assertSame(-1, $redis->ttl('ttl'));
+        self::assertSame(-1, $redis->ttl('ttl'));
         $redis->set('ttl', 'world', 1);
-        static::assertSame(1, $redis->ttl('ttl'));
+        self::assertSame(1, $redis->ttl('ttl'));
         $redis->set('ttl', 'world', 0);
-        static::assertSame(-1, $redis->ttl('ttl'));
+        self::assertSame(-1, $redis->ttl('ttl'));
         $redis->delete('ttl');
     }
 
@@ -177,9 +176,9 @@ final class RedisTest extends TestCase
     {
         $redis = $this->makeRedis();
 
-        static::assertSame([], $redis->keys('hello'));
+        self::assertSame([], $redis->keys('hello'));
         $redis->set('hello', 'world');
-        static::assertSame(['hello'], $redis->keys('hello'));
+        self::assertSame(['hello'], $redis->keys('hello'));
         $redis->delete('hello');
     }
 
@@ -191,16 +190,16 @@ final class RedisTest extends TestCase
 
         $redis->set('selecttest', 'world');
 
-        static::assertSame('world', $redis->get('selecttest'));
+        self::assertSame('world', $redis->get('selecttest'));
 
         $redis->delete('selecttest');
 
-        static::assertFalse($redis->get('selecttest'));
+        self::assertFalse($redis->get('selecttest'));
     }
 
     public function testWithPassword(): void
     {
-        static::assertTrue(true);
+        self::assertTrue(true);
         $this->expectException(\RedisException::class);
 
         $redis = $this->makeRedis([

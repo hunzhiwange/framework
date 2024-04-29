@@ -27,7 +27,7 @@ final class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -51,7 +51,7 @@ final class FindDynamicsTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -83,7 +83,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -115,7 +115,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -150,7 +150,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
@@ -185,7 +185,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')

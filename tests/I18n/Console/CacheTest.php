@@ -52,13 +52,13 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache succeed at %s.',
@@ -68,12 +68,12 @@ final class CacheTest extends TestCase
                 $result
             );
 
-            static::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+            self::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
 
             unlink($cacheFileForI18n);
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n cache succeed.'),
             $result
         );
@@ -114,13 +114,13 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache i18n.'),
             $result
         );
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n cache succeed at %s.',
@@ -130,12 +130,12 @@ final class CacheTest extends TestCase
                 $result
             );
 
-            static::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
+            self::assertSame($cacheData[$i18n], (array) (include $cacheFileForI18n));
 
             unlink($cacheFileForI18n);
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n cache succeed.'),
             $result
         );
@@ -151,7 +151,7 @@ final class CacheTest extends TestCase
         $app->setCacheFile($cacheFile);
 
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
-            static::assertSame(
+            self::assertSame(
                 str_replace('[i18n]', $i18n, $cacheFile),
                 $app->i18nCachedPath($i18n)
             );
@@ -171,7 +171,7 @@ final class CacheTest extends TestCase
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -198,7 +198,5 @@ class App extends Apps
         return __DIR__.'/i18n';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

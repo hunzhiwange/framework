@@ -14,15 +14,12 @@ use Leevel\Encryption\IEncryption;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->container
             ->singleton(
                 'encryption',
-                function (IContainer $container): Encryption {
+                static function (IContainer $container): Encryption {
                     $config = $container['config'];
 
                     return new Encryption(
@@ -36,9 +33,6 @@ class Register extends Provider
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -46,9 +40,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;

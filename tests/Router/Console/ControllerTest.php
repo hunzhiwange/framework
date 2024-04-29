@@ -30,8 +30,8 @@ final class ControllerTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        static::assertStringContainsString('class BarValue', file_get_contents($file));
+        self::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        self::assertStringContainsString('class BarValue', file_get_contents($file));
         unlink($file);
     }
 
@@ -51,9 +51,9 @@ final class ControllerTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('controller <Hello> created successfully.'), $result);
-        static::assertStringContainsString('class Hello', $content = file_get_contents($file));
-        static::assertStringContainsString('function helloWorldYes', $content);
+        self::assertStringContainsString($this->normalizeContent('controller <Hello> created successfully.'), $result);
+        self::assertStringContainsString('class Hello', $content = file_get_contents($file));
+        self::assertStringContainsString('function helloWorldYes', $content);
         unlink($file);
     }
 
@@ -75,9 +75,9 @@ final class ControllerTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        static::assertStringContainsString($this->normalizeContent(realpath($file)), $result);
-        static::assertStringContainsString('class BarValue', file_get_contents($file));
+        self::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        self::assertStringContainsString($this->normalizeContent(realpath($file)), $result);
+        self::assertStringContainsString('class BarValue', file_get_contents($file));
         Helper::deleteDirectory($dir);
     }
 
@@ -98,8 +98,8 @@ final class ControllerTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
-        static::assertStringContainsString('controller_stub', file_get_contents($file));
+        self::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
+        self::assertStringContainsString('controller_stub', file_get_contents($file));
         unlink($file);
     }
 
@@ -115,10 +115,8 @@ final class ControllerTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString($this->normalizeContent('Controller stub file `/notFound` was not found.'), $result);
+        self::assertStringContainsString($this->normalizeContent('Controller stub file `/notFound` was not found.'), $result);
     }
 
-    protected function initContainerService(IContainer $container): void
-    {
-    }
+    protected function initContainerService(IContainer $container): void {}
 }

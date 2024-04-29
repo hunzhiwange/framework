@@ -27,7 +27,6 @@ use Leevel\Session\ISession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 /**
  * 调试器.
@@ -257,7 +256,7 @@ class Debug
     {
         try {
             $this->getTimeDataCollector()->stopMeasure($name);
-        } catch (Throwable) {
+        } catch (\Throwable) {
         }
     }
 
@@ -352,7 +351,7 @@ class Debug
 
         try {
             return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return false;
         }
     }

@@ -90,9 +90,6 @@ class ManyMany extends Relation
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addRelationCondition(): void
     {
         $this->prepareRelationCondition(function ($sourceValue): void {
@@ -100,9 +97,6 @@ class ManyMany extends Relation
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function preLoadCondition(array $entities): void
     {
         if (!$sourceValue = $this->getPreLoadSourceValue($entities)) {
@@ -115,9 +109,6 @@ class ManyMany extends Relation
         $this->selectRelationData($sourceValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
@@ -132,9 +123,6 @@ class ManyMany extends Relation
         return $entities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function sourceQuery(): mixed
     {
         if ($this->emptySourceData) {
@@ -163,9 +151,6 @@ class ManyMany extends Relation
         return $this->targetEntity->collection($result);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getPreLoad(): mixed
     {
         return $this->getSelect()->preLoadResult($this->sourceQuery());

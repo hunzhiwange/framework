@@ -24,13 +24,13 @@ final class ArrTest extends TestCase
     ])]
     public function testBaseUse(): void
     {
-        static::assertTrue(Arr::normalize(true));
-        static::assertSame(['a', 'b'], Arr::normalize('a,b'));
-        static::assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
-        static::assertSame(['a'], Arr::normalize(['a', '']));
-        static::assertSame(['a'], Arr::normalize(['a', ''], ',', true));
-        static::assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
-        static::assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
+        self::assertTrue(Arr::normalize(true));
+        self::assertSame(['a', 'b'], Arr::normalize('a,b'));
+        self::assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
+        self::assertSame(['a'], Arr::normalize(['a', '']));
+        self::assertSame(['a'], Arr::normalize(['a', ''], ',', true));
+        self::assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
+        self::assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
     }
 
     #[Api([
@@ -46,7 +46,7 @@ final class ArrTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -68,7 +68,7 @@ final class ArrTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -90,7 +90,7 @@ final class ArrTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -112,7 +112,7 @@ final class ArrTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -135,7 +135,7 @@ final class ArrTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -150,7 +150,7 @@ final class ArrTest extends TestCase
     {
         $result = Arr::normalize(false);
 
-        static::assertFalse($result);
+        self::assertFalse($result);
     }
 
     #[Api([
@@ -170,7 +170,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -194,7 +194,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -223,7 +223,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -240,7 +240,7 @@ EOT,
         $rule = [
             'i' => ['intval'],
             'foo' => ['md5'],
-            'bar' => [function ($v) {
+            'bar' => [static function ($v) {
                 return $v.' php';
             }],
         ];
@@ -255,7 +255,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -315,7 +315,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -339,7 +339,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $result
@@ -371,10 +371,10 @@ EOT,
     ])]
     public function testShouldJson(): void
     {
-        static::assertTrue(Arr::shouldJson(['foo' => 'bar']));
-        static::assertTrue(Arr::shouldJson(new ArrMyArray()));
-        static::assertTrue(Arr::shouldJson(new ArrMyJson()));
-        static::assertTrue(Arr::shouldJson(new ArrMyJsonSerializable()));
+        self::assertTrue(Arr::shouldJson(['foo' => 'bar']));
+        self::assertTrue(Arr::shouldJson(new ArrMyArray()));
+        self::assertTrue(Arr::shouldJson(new ArrMyJson()));
+        self::assertTrue(Arr::shouldJson(new ArrMyJsonSerializable()));
     }
 
     #[Api([
@@ -382,13 +382,13 @@ EOT,
     ])]
     public function testConvertJson(): void
     {
-        static::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar']));
-        static::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar'], JSON_THROW_ON_ERROR));
-        static::assertSame('{"hello":"IArray"}', Arr::convertJson(new ArrMyArray()));
-        static::assertSame('{"hello":"IJson"}', Arr::convertJson(new ArrMyJson()));
-        static::assertSame('{"hello":"JsonSerializable"}', Arr::convertJson(new ArrMyJsonSerializable()));
-        static::assertSame('{"成":"都"}', Arr::convertJson(['成' => '都']));
-        static::assertSame('{"\u6210":"\u90fd"}', Arr::convertJson(['成' => '都'], 0));
+        self::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar']));
+        self::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar'], JSON_THROW_ON_ERROR));
+        self::assertSame('{"hello":"IArray"}', Arr::convertJson(new ArrMyArray()));
+        self::assertSame('{"hello":"IJson"}', Arr::convertJson(new ArrMyJson()));
+        self::assertSame('{"hello":"JsonSerializable"}', Arr::convertJson(new ArrMyJsonSerializable()));
+        self::assertSame('{"成":"都"}', Arr::convertJson(['成' => '都']));
+        self::assertSame('{"\u6210":"\u90fd"}', Arr::convertJson(['成' => '都'], 0));
     }
 
     public function testConvertJsonWithInvalidUtf8Characters(): void
@@ -444,7 +444,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -457,7 +457,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -470,7 +470,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -492,7 +492,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -505,7 +505,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -528,7 +528,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -541,7 +541,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -558,7 +558,7 @@ EOT,
             ['id' => 'haha', 'name' => '0'],
         ];
 
-        $result = Arr::inCondition($data, 'id', fn ($v): int => (int) $v);
+        $result = Arr::inCondition($data, 'id', static fn ($v): int => (int) $v);
         $json = <<<'eot'
             [
                 5,
@@ -567,12 +567,12 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($data, 'name', fn ($v): string => (string) $v);
+        $result = Arr::inCondition($data, 'name', static fn ($v): string => (string) $v);
         $json = <<<'eot'
             [
                 "5",
@@ -581,7 +581,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson($result)
         );
@@ -602,7 +602,7 @@ EOT,
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Support\\Arr\NotFound" not found');
 
-        static::assertTrue(Arr::notFound());
+        self::assertTrue(Arr::notFound());
     }
 }
 
@@ -634,9 +634,7 @@ class ArrMyJsonSerializable implements \JsonSerializable
     }
 }
 
-class ArrMyException extends \Exception
-{
-}
+class ArrMyException extends \Exception {}
 
 class ArrMyJsonSerializableWithException implements \JsonSerializable
 {

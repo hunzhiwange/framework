@@ -442,7 +442,7 @@ class AnnotationRouter
             'replace' => [],
         ];
 
-        $rule = (string) preg_replace_callback('/{(.+?)}/', function ($matches) use (&$routerVar, &$mapRegex) {
+        $rule = (string) preg_replace_callback('/{(.+?)}/', static function ($matches) use (&$routerVar, &$mapRegex) {
             if (str_contains($matches[1], ':')) {
                 $colonPos = (int) strpos($matches[1], ':');
                 $routerVar[] = substr($matches[1], 0, $colonPos);
@@ -532,7 +532,7 @@ class AnnotationRouter
      */
     protected function parseGroups(array $groupsSource): array
     {
-        return array_map(fn (string $v): string => '/'.ltrim($v, '/'), $groupsSource);
+        return array_map(static fn (string $v): string => '/'.ltrim($v, '/'), $groupsSource);
     }
 
     /**

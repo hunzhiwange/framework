@@ -48,8 +48,6 @@ final class Struct extends Collection
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \InvalidArgumentException
      */
     public function offsetSet(mixed $index, mixed $newval): void

@@ -16,9 +16,6 @@ final class Test extends PhinxTest
     use RuntimeEnvironment;
     use SelectDatabase;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function configure(): void
     {
         parent::configure();

@@ -74,23 +74,23 @@ EOT,
 
         $config = new ConfigTest();
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
-        static::assertNull($bootstrap->handle($app));
+        self::assertNull($bootstrap->handle($app));
 
         // for deferredAlias
-        static::assertArrayNotHasKey('providerDeferTest1', $_SERVER);
+        self::assertArrayNotHasKey('providerDeferTest1', $_SERVER);
         $container->alias(ProviderDeferTest1::providers());
-        static::assertSame('bar', $container->make('foo'));
-        static::assertSame('bar', $container->make(ProviderDeferTest1::class));
-        static::assertSame(1, $_SERVER['providerDeferTest1']);
+        self::assertSame('bar', $container->make('foo'));
+        self::assertSame('bar', $container->make(ProviderDeferTest1::class));
+        self::assertSame(1, $_SERVER['providerDeferTest1']);
 
         // for providers
-        static::assertSame(1, $_SERVER['testRegisterProvidersRegister']);
-        static::assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
-        static::assertTrue($container->isBootstrap());
+        self::assertSame(1, $_SERVER['testRegisterProvidersRegister']);
+        self::assertSame(1, $_SERVER['testRegisterProvidersBootstrap']);
+        self::assertTrue($container->isBootstrap());
 
         unset(
             $_SERVER['providerDeferTest1'],
@@ -102,9 +102,7 @@ EOT,
 
 class App2 extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class ConfigTest
@@ -138,7 +136,7 @@ class ProviderDeferTest1 extends Provider
     {
         $_SERVER['providerDeferTest1'] = 1;
 
-        $this->container->singleton('foo', function (IContainer $container) {
+        $this->container->singleton('foo', static function (IContainer $container) {
             return 'bar';
         });
     }
@@ -160,9 +158,7 @@ class ProviderDeferTest1 extends Provider
 
 class ProviderTest3 extends Provider
 {
-    public function __construct(IContainer $container)
-    {
-    }
+    public function __construct(IContainer $container) {}
 
     public function bootstrap(): void
     {

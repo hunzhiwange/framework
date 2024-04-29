@@ -31,7 +31,7 @@ final class DebugTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        static::assertFalse($debug->isBootstrap());
+        self::assertFalse($debug->isBootstrap());
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
@@ -39,7 +39,7 @@ final class DebugTest extends TestCase
             return new Response();
         }, $request);
 
-        static::assertTrue($debug->isBootstrap());
+        self::assertTrue($debug->isBootstrap());
     }
 
     public function testHandleWithDebugIsFalse(): void
@@ -51,7 +51,7 @@ final class DebugTest extends TestCase
 
         $request = $this->createRequest('http://127.0.0.1');
 
-        static::assertFalse($debug->isBootstrap());
+        self::assertFalse($debug->isBootstrap());
 
         $middleware->handle(function (Request $request): Response {
             $this->assertSame('http://127.0.0.1', $request->getUri());
@@ -59,7 +59,7 @@ final class DebugTest extends TestCase
             return new Response();
         }, $request);
 
-        static::assertFalse($debug->isBootstrap());
+        self::assertFalse($debug->isBootstrap());
     }
 
     protected function createRequest(string $url): Request
@@ -67,7 +67,7 @@ final class DebugTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getUri')->willReturn($url);
-        static::assertSame($url, $request->getUri());
+        self::assertSame($url, $request->getUri());
 
         return $request;
     }
@@ -86,7 +86,7 @@ final class DebugTest extends TestCase
         $container->instance('config', $this->createConfig($debug));
 
         $eventDispatch = $this->createMock(IDispatch::class);
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;
@@ -138,7 +138,5 @@ final class DebugTest extends TestCase
 
 class App extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

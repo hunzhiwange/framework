@@ -22,20 +22,20 @@ final class RegisterTest extends TestCase
 
         // auths
         $manager = $container->make('auths');
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
-        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
-        static::assertNull($manager->logout());
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
+        self::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertNull($manager->logout());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
         // auth
         $session = $container->make('auth');
-        static::assertInstanceOf(Session::class, $session);
-        static::assertFalse($session->isLogin());
-        static::assertSame([], $session->getLogin());
+        self::assertInstanceOf(Session::class, $session);
+        self::assertFalse($session->isLogin());
+        self::assertSame([], $session->getLogin());
     }
 
     protected function createSession(): SessionFile

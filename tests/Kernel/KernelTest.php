@@ -19,12 +19,12 @@ use Leevel\Kernel\Kernel;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Log\ILog;
 use Leevel\Router\IRouter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Kernel\Middlewares\Demo1;
 use Tests\Kernel\Middlewares\Demo2;
 use Tests\Kernel\Middlewares\Demo3;
 use Tests\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '内核',
@@ -89,7 +89,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $kernel->terminate($request, $resultResponse);
-        static::assertTrue($GLOBALS['DemoBootstrapForKernel']);
+        self::assertTrue($GLOBALS['DemoBootstrapForKernel']);
         unset($GLOBALS['DemoBootstrapForKernel']);
     }
 
@@ -122,7 +122,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        static::assertSame('{"foo":"bar"}', $resultResponse->getContent());
+        self::assertSame('{"foo":"bar"}', $resultResponse->getContent());
     }
 
     #[Api([
@@ -152,9 +152,9 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
-        static::assertStringContainsString('hello foo bar.', $resultResponse->getContent());
-        static::assertStringContainsString('Exception: hello foo bar. in file', $resultResponse->getContent());
-        static::assertStringContainsString('Exception-&gt;()', $resultResponse->getContent());
+        self::assertStringContainsString('hello foo bar.', $resultResponse->getContent());
+        self::assertStringContainsString('Exception: hello foo bar. in file', $resultResponse->getContent());
+        self::assertStringContainsString('Exception-&gt;()', $resultResponse->getContent());
     }
 
     #[Api([
@@ -185,8 +185,8 @@ EOT,
 
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
 
-        static::assertStringContainsString('ErrorException: hello bar foo', $resultResponse->getContent());
-        static::assertStringContainsString('ErrorException-&gt;()', $resultResponse->getContent());
+        self::assertStringContainsString('ErrorException: hello bar foo', $resultResponse->getContent());
+        self::assertStringContainsString('ErrorException-&gt;()', $resultResponse->getContent());
     }
 
     #[Api([
@@ -225,7 +225,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $kernel->terminate($request, $resultResponse);
-        static::assertSame(['Demo1::terminate'], $GLOBALS['demo_middlewares']);
+        self::assertSame(['Demo1::terminate'], $GLOBALS['demo_middlewares']);
         unset($GLOBALS['demo_middlewares']);
     }
 
@@ -265,7 +265,7 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $kernel->terminate($request, $resultResponse);
-        static::assertSame(['Demo2::handle', 'Demo2::terminate'], $GLOBALS['demo_middlewares']);
+        self::assertSame(['Demo2::handle', 'Demo2::terminate'], $GLOBALS['demo_middlewares']);
         unset($GLOBALS['demo_middlewares']);
     }
 
@@ -305,14 +305,14 @@ EOT,
         $this->assertInstanceof(IApp::class, $kernel->getApp());
         $this->assertInstanceof(Response::class, $resultResponse = $kernel->handle($request));
         $kernel->terminate($request, $resultResponse);
-        static::assertSame(['Demo3::handle(arg1:5,arg2:foo)'], $GLOBALS['demo_middlewares']);
+        self::assertSame(['Demo3::handle(arg1:5,arg2:foo)'], $GLOBALS['demo_middlewares']);
         unset($GLOBALS['demo_middlewares']);
     }
 
     protected function createLog(IContainer $container): void
     {
         $log = $this->createMock(ILog::class);
-        $container->singleton(ILog::class, function () use ($log) {
+        $container->singleton(ILog::class, static function () use ($log) {
             return $log;
         });
     }
@@ -323,7 +323,7 @@ EOT,
 
         $config
             ->method('get')
-            ->willReturnCallback(function (string $k) use ($debug) {
+            ->willReturnCallback(static function (string $k) use ($debug) {
                 $map = [
                     'debug' => $debug,
                     'environment' => 'development',
@@ -333,10 +333,10 @@ EOT,
             })
         ;
 
-        static::assertSame($debug, $config->get('debug'));
-        static::assertSame('development', $config->get('environment'));
+        self::assertSame($debug, $config->get('debug'));
+        self::assertSame('development', $config->get('environment'));
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
     }
@@ -344,7 +344,7 @@ EOT,
     protected function createRuntime(IContainer $container): void
     {
         $runtime = $this->createMock(IRuntime::class);
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, static function () use ($runtime) {
             return $runtime;
         });
     }
@@ -352,7 +352,7 @@ EOT,
     protected function createRuntimeWithRender(IContainer $container): void
     {
         $runtime = new ExceptionRuntime1($container->make('app'));
-        $container->singleton(IRuntime::class, function () use ($runtime) {
+        $container->singleton(IRuntime::class, static function () use ($runtime) {
             return $runtime;
         });
     }
@@ -362,7 +362,7 @@ EOT,
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
         $router->method('dispatch')->willReturn($response);
-        static::assertSame($response, $router->dispatch($request));
+        self::assertSame($response, $router->dispatch($request));
 
         return $router;
     }
@@ -371,7 +371,7 @@ EOT,
     {
         $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
-        $router->method('dispatch')->will(static::throwException(new \Exception('hello foo bar.')));
+        $router->method('dispatch')->will(self::throwException(new \Exception('hello foo bar.')));
 
         return $router;
     }
@@ -380,7 +380,7 @@ EOT,
     {
         $request = $this->createMock(Request::class);
         $router = $this->createMock(IRouter::class);
-        $router->method('dispatch')->will(static::throwException(new \Error('hello bar foo.')));
+        $router->method('dispatch')->will(self::throwException(new \Error('hello bar foo.')));
 
         return $router;
     }
@@ -416,9 +416,7 @@ class Kernel4 extends Kernel
 
 class AppKernel extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class ExceptionRuntime1 extends Runtime

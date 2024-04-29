@@ -39,9 +39,7 @@ class InstallDoc
 对于每位 PHP 工程师来说，您的电脑早已经运行着一个 PHP 7 版本，接着您可以进行安装了。
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => '国内镜像',
@@ -57,9 +55,7 @@ composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
 EOT,
     ])]
-    public function doc2(): void
-    {
-    }
+    public function doc2(): void {}
 
     #[Api([
         'zh-CN:title' => 'Composer 安装',
@@ -104,9 +100,7 @@ Swagger Api（apis）、Debugbar 调试（debugbar）。
 :::
 EOT,
     ])]
-    public function doc3(): void
-    {
-    }
+    public function doc3(): void {}
 
     #[Api([
         'zh-CN:title' => '基础配置',
@@ -130,9 +124,7 @@ index index.html index.php;
 系统有几个目录需要配置写入权限 `storage`。
 EOT,
     ])]
-    public function doc4(): void
-    {
-    }
+    public function doc4(): void {}
 
     #[Api([
         'zh-CN:title' => '搭建站点',
@@ -231,7 +223,5 @@ Web 根目录已经内置了 `www/.htaccess` 文件来为隐藏 index.php,需要
 ```
 EOT,
     ])]
-    public function doc5(): void
-    {
-    }
+    public function doc5(): void {}
 }

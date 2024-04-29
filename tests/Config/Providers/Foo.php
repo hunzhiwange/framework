@@ -14,7 +14,7 @@ class Foo extends Provider
 {
     public function register(): void
     {
-        $this->container->singleton('foo', function (IContainer $container) {
+        $this->container->singleton('foo', static function (IContainer $container) {
             return 'bar';
         });
     }

@@ -22,7 +22,7 @@ final class ValidateTest extends TestCase
     {
         $container = Container::singletons();
         $container->clear();
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
 
@@ -33,7 +33,7 @@ final class ValidateTest extends TestCase
     {
         $container = $this->createContainer();
         $validateFactory = $this->createValidate($container);
-        $container->singleton('validate', function () use ($validateFactory): Validate {
+        $container->singleton('validate', static function () use ($validateFactory): Validate {
             return $validateFactory;
         });
 
@@ -66,13 +66,13 @@ final class ValidateTest extends TestCase
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -84,7 +84,7 @@ final class ValidateTest extends TestCase
     {
         $container = $this->createContainer();
         $validateFactory = $this->createValidate($container);
-        $container->singleton('validate', function () use ($validateFactory): Validate {
+        $container->singleton('validate', static function () use ($validateFactory): Validate {
             return $validateFactory;
         });
 
@@ -117,13 +117,13 @@ final class ValidateTest extends TestCase
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()

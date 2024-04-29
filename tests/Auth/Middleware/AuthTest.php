@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Auth\Middleware;
 
+use Leevel\Auth\AuthException;
 use Leevel\Auth\Manager;
 use Leevel\Auth\Middleware\Auth as MiddlewareAuth;
 use Leevel\Cache\File as CacheFile;
@@ -34,7 +35,7 @@ final class AuthTest extends TestCase
 
     public function testAuthFailed(): void
     {
-        $this->expectException(\Leevel\Auth\AuthException::class);
+        $this->expectException(AuthException::class);
         $this->expectExceptionMessage(
             'User authorization failed.'
         );
@@ -56,7 +57,7 @@ final class AuthTest extends TestCase
     {
         $request = $this->createMock(Request::class);
         $request->method('getUri')->willReturn($url);
-        static::assertSame($url, $request->getUri());
+        self::assertSame($url, $request->getUri());
 
         return $request;
     }

@@ -7,6 +7,4 @@ namespace Leevel\Database;
 /**
  * 构造器方法未找到异常.
  */
-class ConditionErrorException extends \RuntimeException
-{
-}
+class ConditionErrorException extends \RuntimeException {}

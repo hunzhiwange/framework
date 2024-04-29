@@ -44,9 +44,6 @@ class Ftp extends Filesystem implements IFilesystem
         'timeout' => 20,
     ];
 
-    /**
-     * {@inheritDoc}
-     */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
         return new FtpAdapter(FtpConnectionOptions::fromArray($this->config));

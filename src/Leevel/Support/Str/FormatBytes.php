@@ -18,7 +18,7 @@ class FormatBytes
         } elseif ($fileSize >= 1024) {
             $fileSize = round($fileSize / 1024, 2).($withUnit ? 'K' : '');
         } else {
-            $fileSize = $fileSize.($withUnit ? 'B' : '');
+            $fileSize .= ($withUnit ? 'B' : '');
         }
 
         return $fileSize;

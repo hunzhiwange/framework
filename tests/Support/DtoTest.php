@@ -42,15 +42,15 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->all();
-        static::assertSame('foo', $data['demo_string_prop']);
-        static::assertSame(1, $data['demo_int_prop']);
-        static::assertSame(1.5, $data['demo_float_prop']);
-        static::assertTrue($data['demo_true_prop']);
-        static::assertFalse($data['demo_false_prop']);
-        static::assertSame($dtoProp1, $data['demo_object_prop']);
-        static::assertSame($dtoProp2, $data['demo_object2_prop']);
-        static::assertSame($dto2, $data['demo_object3_prop']);
-        static::assertTrue($data['demo_mixed_prop']);
+        self::assertSame('foo', $data['demo_string_prop']);
+        self::assertSame(1, $data['demo_int_prop']);
+        self::assertSame(1.5, $data['demo_float_prop']);
+        self::assertTrue($data['demo_true_prop']);
+        self::assertFalse($data['demo_false_prop']);
+        self::assertSame($dtoProp1, $data['demo_object_prop']);
+        self::assertSame($dtoProp2, $data['demo_object2_prop']);
+        self::assertSame($dto2, $data['demo_object3_prop']);
+        self::assertTrue($data['demo_mixed_prop']);
     }
 
     #[Api([
@@ -68,15 +68,15 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->all(false);
-        static::assertSame('foo', $data['demoStringProp']);
-        static::assertSame(1, $data['demoIntProp']);
-        static::assertSame(1.5, $data['demoFloatProp']);
-        static::assertTrue($data['demoTrueProp']);
-        static::assertFalse($data['demoFalseProp']);
-        static::assertSame($dtoProp1, $data['demoObjectProp']);
-        static::assertSame($dtoProp2, $data['demoObject2Prop']);
-        static::assertSame($dto2, $data['demoObject3Prop']);
-        static::assertTrue($data['demoMixedProp']);
+        self::assertSame('foo', $data['demoStringProp']);
+        self::assertSame(1, $data['demoIntProp']);
+        self::assertSame(1.5, $data['demoFloatProp']);
+        self::assertTrue($data['demoTrueProp']);
+        self::assertFalse($data['demoFalseProp']);
+        self::assertSame($dtoProp1, $data['demoObjectProp']);
+        self::assertSame($dtoProp2, $data['demoObject2Prop']);
+        self::assertSame($dto2, $data['demoObject3Prop']);
+        self::assertTrue($data['demoMixedProp']);
     }
 
     #[Api([
@@ -94,7 +94,7 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        static::assertSame('foo', $dto1->demo_string_prop);
+        self::assertSame('foo', $dto1->demo_string_prop);
     }
 
     #[Api([
@@ -136,7 +136,7 @@ final class DtoTest extends TestCase
             ->only(['demoIntProp', 'demoObject3Prop'])
             ->toArray()
         ;
-        static::assertSame([
+        self::assertSame([
             'demo_int_prop' => 1,
             'demo_object3_prop' => [
                 'demo_string_prop' => 'hello world',
@@ -162,7 +162,7 @@ final class DtoTest extends TestCase
             ->only(['demoIntProp', 'demoObject3Prop'])
             ->toArray()
         ;
-        static::assertSame([
+        self::assertSame([
             'demo_int_prop' => 1,
             'demo_object3_prop' => [
                 'demo_string_prop' => 'hello world',
@@ -182,13 +182,13 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_int_prop' => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
 
         $data = $dto1->only(['demoStringProp'])->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_prop' => 123456,
             'demo_int_or_string_prop' => 45,
@@ -207,13 +207,13 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_int_prop' => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
 
         $data = $dto1->only(['demoStringProp'], true)->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
         ], $data);
     }
@@ -239,7 +239,7 @@ final class DtoTest extends TestCase
             )
             ->toArray()
         ;
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'foo',
             'demo_float_prop' => 1.5,
             'demo_true_prop' => true,
@@ -259,12 +259,12 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
         ], $data);
 
         $data = $dto1->except(['demoStringProp'])->toArray();
-        static::assertSame([], $data);
+        self::assertSame([], $data);
     }
 
     #[Api([
@@ -279,12 +279,12 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
         ], $data);
 
         $data = $dto1->except(['demo_int_prop'], true)->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_or_string_prop' => 45,
         ], $data);
@@ -300,14 +300,14 @@ final class DtoTest extends TestCase
             'demoIntProp' => 123456,
         ]);
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_prop' => 123456,
             'demo_configal_int_prop' => null,
         ], $data);
 
         $data = $dto1->withoutNull()->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_prop' => 123456,
         ], $data);
@@ -328,15 +328,15 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame('foo', $data['demo_string_prop']);
-        static::assertSame(1, $data['demo_int_prop']);
-        static::assertSame(1.5, $data['demo_float_prop']);
-        static::assertTrue($data['demo_true_prop']);
-        static::assertFalse($data['demo_false_prop']);
-        static::assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demo_object_prop']);
-        static::assertSame($dtoProp2, $data['demo_object2_prop']);
-        static::assertSame(['demo_string_prop' => 'hello world'], $data['demo_object3_prop']);
-        static::assertTrue($data['demo_mixed_prop']);
+        self::assertSame('foo', $data['demo_string_prop']);
+        self::assertSame(1, $data['demo_int_prop']);
+        self::assertSame(1.5, $data['demo_float_prop']);
+        self::assertTrue($data['demo_true_prop']);
+        self::assertFalse($data['demo_false_prop']);
+        self::assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demo_object_prop']);
+        self::assertSame($dtoProp2, $data['demo_object2_prop']);
+        self::assertSame(['demo_string_prop' => 'hello world'], $data['demo_object3_prop']);
+        self::assertTrue($data['demo_mixed_prop']);
     }
 
     #[Api([
@@ -354,15 +354,15 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->camelizeNamingStyle()->toArray();
-        static::assertSame('foo', $data['demoStringProp']);
-        static::assertSame(1, $data['demoIntProp']);
-        static::assertSame(1.5, $data['demoFloatProp']);
-        static::assertTrue($data['demoTrueProp']);
-        static::assertFalse($data['demoFalseProp']);
-        static::assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demoObjectProp']);
-        static::assertSame($dtoProp2, $data['demoObject2Prop']);
-        static::assertSame(['demoStringProp' => 'hello world'], $data['demoObject3Prop']);
-        static::assertTrue($data['demoMixedProp']);
+        self::assertSame('foo', $data['demoStringProp']);
+        self::assertSame(1, $data['demoIntProp']);
+        self::assertSame(1.5, $data['demoFloatProp']);
+        self::assertTrue($data['demoTrueProp']);
+        self::assertFalse($data['demoFalseProp']);
+        self::assertSame(['demo1' => 'hello', 'demo2' => 'world'], $data['demoObjectProp']);
+        self::assertSame($dtoProp2, $data['demoObject2Prop']);
+        self::assertSame(['demoStringProp' => 'hello world'], $data['demoObject3Prop']);
+        self::assertTrue($data['demoMixedProp']);
     }
 
     #[Api([
@@ -377,7 +377,7 @@ final class DtoTest extends TestCase
         ]);
 
         $data = $dto1->toArray();
-        static::assertSame([
+        self::assertSame([
             'demo_int_prop' => 123456,
             'demo_int_or_string_prop' => 45,
         ], $data);
@@ -397,8 +397,8 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        static::assertTrue(isset($dto1['demo_string_prop']));
-        static::assertTrue(isset($dto1['demoStringProp']));
+        self::assertTrue(isset($dto1['demo_string_prop']));
+        self::assertTrue(isset($dto1['demoStringProp']));
     }
 
     #[Api([
@@ -416,12 +416,12 @@ final class DtoTest extends TestCase
         ]);
 
         $dto1['demo_string_prop'] = 'hello_world';
-        static::assertSame('hello_world', $dto1['demo_string_prop']);
-        static::assertSame('hello_world', $dto1['demoStringProp']);
+        self::assertSame('hello_world', $dto1['demo_string_prop']);
+        self::assertSame('hello_world', $dto1['demoStringProp']);
 
         $dto1['demo_string_prop'] = 'hello_world2';
-        static::assertSame('hello_world2', $dto1['demo_string_prop']);
-        static::assertSame('hello_world2', $dto1['demoStringProp']);
+        self::assertSame('hello_world2', $dto1['demo_string_prop']);
+        self::assertSame('hello_world2', $dto1['demoStringProp']);
     }
 
     #[Api([
@@ -438,8 +438,8 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        static::assertSame('foo', $dto1['demo_string_prop']);
-        static::assertSame('foo', $dto1['demoStringProp']);
+        self::assertSame('foo', $dto1['demo_string_prop']);
+        self::assertSame('foo', $dto1['demoStringProp']);
     }
 
     #[Api([
@@ -461,8 +461,8 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        static::assertSame('foo', $dto1['demo_string_prop']);
-        static::assertSame('foo', $dto1['demoStringProp']);
+        self::assertSame('foo', $dto1['demo_string_prop']);
+        self::assertSame('foo', $dto1['demoStringProp']);
 
         unset($dto1['demo_string_prop']);
     }
@@ -480,8 +480,8 @@ final class DtoTest extends TestCase
             'demoObject2Prop' => new DtoProp2(),
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
-        static::assertTrue(isset($dto1->demo_string_prop));
-        static::assertTrue(isset($dto1->demo_int_prop));
+        self::assertTrue(isset($dto1->demo_string_prop));
+        self::assertTrue(isset($dto1->demo_int_prop));
     }
 
     #[Api([
@@ -498,9 +498,9 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        static::assertSame('foo', $dto1->demo_string_prop);
+        self::assertSame('foo', $dto1->demo_string_prop);
         $dto1->demo_string_prop = 'hello';
-        static::assertSame('hello', $dto1->demo_string_prop);
+        self::assertSame('hello', $dto1->demo_string_prop);
     }
 
     #[Api([
@@ -516,7 +516,7 @@ final class DtoTest extends TestCase
             'demoObject2Prop' => new DtoProp2(),
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
-        static::assertSame('foo', $dto1->demo_string_prop);
+        self::assertSame('foo', $dto1->demo_string_prop);
     }
 
     #[Api([
@@ -557,7 +557,7 @@ final class DtoTest extends TestCase
             ->toArray()
         ;
 
-        static::assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
+        self::assertSame(['demoObject3Prop' => ['demoStringProp' => 'hello world']], $data);
     }
 
     public function test1(): void
@@ -570,9 +570,9 @@ final class DtoTest extends TestCase
             'demoObject2Prop' => new DtoProp2(),
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
-        static::assertSame(1, $dto1->demoIntProp);
+        self::assertSame(1, $dto1->demoIntProp);
         $dto1->demo_float_prop = null;
-        static::assertNull($dto1->demoFloatProp);
+        self::assertNull($dto1->demoFloatProp);
     }
 
     #[Api([
@@ -586,7 +586,7 @@ EOT,
     public function test2(): void
     {
         $dto = new Dto3();
-        static::assertSame('hello world', $dto->demoStringProp);
+        self::assertSame('hello world', $dto->demoStringProp);
     }
 
     #[Api([
@@ -600,13 +600,13 @@ EOT,
     public function test3(): void
     {
         $dto = new Dto4(['demoStringProp' => 123456]);
-        static::assertSame('123456', $dto->demoStringProp);
+        self::assertSame('123456', $dto->demoStringProp);
     }
 
     public function test4(): void
     {
         $dto = new Dto5(['demoStringProp' => null]);
-        static::assertSame('hello world', $dto->demoStringProp);
+        self::assertSame('hello world', $dto->demoStringProp);
     }
 
     #[Api([
@@ -626,11 +626,11 @@ EOT,
             'bool4' => 0,
             'array5' => 'hello',
         ]);
-        static::assertSame(0, $dto->int1);
-        static::assertSame('123456', $dto->string2);
-        static::assertSame(0.0, $dto->float3);
-        static::assertFalse($dto->bool4);
-        static::assertSame(['hello'], $dto->array5);
+        self::assertSame(0, $dto->int1);
+        self::assertSame('123456', $dto->string2);
+        self::assertSame(0.0, $dto->float3);
+        self::assertFalse($dto->bool4);
+        self::assertSame(['hello'], $dto->array5);
     }
 
     public function test6(): void

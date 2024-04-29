@@ -30,19 +30,19 @@ final class RegisterTest extends TestCase
         $manager = $container->make('views');
         $manager->setVar('foo', 'bar');
         $result = $manager->display('html_test');
-        static::assertSame('hello html,bar.', $result);
+        self::assertSame('hello html,bar.', $result);
 
         // alias
         $manager = $container->make(Manager::class);
         $manager->setVar('foo', 'newbar');
         $result = $manager->display('html_test');
-        static::assertSame('hello html,newbar.', $result);
+        self::assertSame('hello html,newbar.', $result);
 
         // view
         $view = $container->make('view');
         $view->setVar('foo', 'newbarview');
         $result = $view->display('html_test');
-        static::assertSame('hello html,newbarview.', $result);
+        self::assertSame('hello html,newbarview.', $result);
     }
 
     protected function createContainer(): Container
@@ -50,8 +50,8 @@ final class RegisterTest extends TestCase
         $app = new ExtendApp($container = new Container(), '');
         $container->instance('app', $app);
 
-        static::assertSame(__DIR__.'/assert', $app->themesPath());
-        static::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
+        self::assertSame(__DIR__.'/assert', $app->themesPath());
+        self::assertSame(__DIR__.'/cache_theme', $app->storagePath('theme'));
 
         $config = new Config([
             'view' => [
@@ -95,6 +95,4 @@ class ExtendApp extends App
     }
 }
 
-class ExtendRequest
-{
-}
+class ExtendRequest {}

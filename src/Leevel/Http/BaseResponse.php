@@ -12,7 +12,7 @@ trait BaseResponse
     /**
      * 设置响应头.
      */
-    public function setHeader(string $key, string|array $values, bool $replace = true): void
+    public function setHeader(string $key, array|string $values, bool $replace = true): void
     {
         $this->headers->set($key, $values, $replace);
     }

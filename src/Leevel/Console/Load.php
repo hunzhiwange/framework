@@ -81,12 +81,12 @@ class Load
             if ($currentFiles) {
                 $currentFiles = array_values(array_filter(
                     $currentFiles,
-                    fn (string $item): bool => '.php' === substr($item, -4)
+                    static fn (string $item): bool => '.php' === substr($item, -4)
                 ));
             }
 
             $currentFiles = array_map(
-                fn (string $item): string => $key.'\\'.basename($item, '.php'),
+                static fn (string $item): string => $key.'\\'.basename($item, '.php'),
                 $currentFiles,
             );
 

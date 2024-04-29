@@ -25,10 +25,10 @@ final class MapStringTest extends TestCase
         ];
 
         $collection = new MapString($data, 'string');
-        static::assertSame($collection['h'], 'hello');
-        static::assertSame($collection['w'], 'world');
-        static::assertTrue(isset($collection['h']));
-        static::assertTrue(isset($collection['w']));
+        self::assertSame($collection['h'], 'hello');
+        self::assertSame($collection['w'], 'world');
+        self::assertTrue(isset($collection['h']));
+        self::assertTrue(isset($collection['w']));
     }
 
     #[Api([
@@ -42,10 +42,10 @@ final class MapStringTest extends TestCase
         ];
 
         $collection = new MapString($data, 'int');
-        static::assertSame($collection['h'], 1);
-        static::assertSame($collection['w'], 2);
-        static::assertTrue(isset($collection['h']));
-        static::assertTrue(isset($collection['w']));
+        self::assertSame($collection['h'], 1);
+        self::assertSame($collection['w'], 2);
+        self::assertTrue(isset($collection['h']));
+        self::assertTrue(isset($collection['w']));
     }
 
     public function testError(): void

@@ -24,14 +24,14 @@ final class VectorTest extends TestCase
         ];
 
         $collection = new Vector($data);
-        static::assertSame($collection[0], 1);
-        static::assertSame($collection[1], 'hello');
-        static::assertSame($collection[2], 3);
-        static::assertSame($collection[3], 4);
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
-        static::assertTrue(isset($collection[3]));
+        self::assertSame($collection[0], 1);
+        self::assertSame($collection[1], 'hello');
+        self::assertSame($collection[2], 3);
+        self::assertSame($collection[3], 4);
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
+        self::assertTrue(isset($collection[3]));
     }
 
     public function test2(): void
@@ -46,10 +46,10 @@ final class VectorTest extends TestCase
         ];
 
         $collection = new Vector($data);
-        static::assertSame($collection[0], 1);
-        static::assertSame($collection[1], 'hello');
-        static::assertSame($collection[2], 3);
-        static::assertSame($collection[3], 4);
+        self::assertSame($collection[0], 1);
+        self::assertSame($collection[1], 'hello');
+        self::assertSame($collection[2], 3);
+        self::assertSame($collection[3], 4);
 
         $collection[5] = 'hello';
     }

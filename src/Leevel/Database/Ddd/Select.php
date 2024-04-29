@@ -283,7 +283,7 @@ class Select
     /**
      * 通过主键或条件查找实体.
      */
-    public function findEntity(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*']): Entity
+    public function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
             ->if(\is_int($idOrCondition) || \is_string($idOrCondition))
@@ -326,7 +326,7 @@ class Select
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*']): Entity
+    public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
     {
         // 没有查询主键字段，自动补上主键自动
         $singlePrimaryKey = $this->entity->singlePrimaryKey();
@@ -367,7 +367,7 @@ class Select
     /**
      * 取得关联实体.
      */
-    protected function getRelation(string $name, null|array|string|\Closure $relationScope = null): Relation
+    protected function getRelation(string $name, null|array|\Closure|string $relationScope = null): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name, $relationScope): Relation {
             return $this->entity->relation($name, $relationScope);
@@ -464,7 +464,7 @@ class Select
     /**
      * 关联数据设置到实体上.
      */
-    protected function loadRelation(array $entities, string $name, null|array|string|\Closure $relationScope = null): array
+    protected function loadRelation(array $entities, string $name, null|array|\Closure|string $relationScope = null): array
     {
         $relation = $this->getRelation($name, $relationScope);
         $relation->preLoadCondition($entities);

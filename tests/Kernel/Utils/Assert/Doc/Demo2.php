@@ -23,9 +23,7 @@ hello
 world
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => 'title2',

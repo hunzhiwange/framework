@@ -35,14 +35,14 @@ final class FileTest extends TestCase
         ]);
 
         $file->set('hello', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertSame('world', $file->get('hello'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame('world', $file->get('hello'));
 
         $file->delete('hello');
-        static::assertFalse(is_file($filePath));
-        static::assertFalse($file->get('hello'));
-        static::assertNull($file->close());
-        static::assertNull($file->close()); // 关闭多次不做任何事
+        self::assertFalse(is_file($filePath));
+        self::assertFalse($file->get('hello'));
+        self::assertNull($file->close());
+        self::assertNull($file->close()); // 关闭多次不做任何事
     }
 
     public function testIncrease(): void
@@ -52,9 +52,9 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertSame(1, $file->increase('increase'));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(101, $file->increase('increase', 100));
+        self::assertSame(1, $file->increase('increase'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(101, $file->increase('increase', 100));
     }
 
     public function testIncrease2(): void
@@ -64,9 +64,9 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertSame(1, $file->increase('increase', 1, -50));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(101, $file->increase('increase', 100));
+        self::assertSame(1, $file->increase('increase', 1, -50));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(101, $file->increase('increase', 100));
     }
 
     public function testDecrease(): void
@@ -76,9 +76,9 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertSame(-1, $file->decrease('decrease'));
-        static::assertTrue(is_file($filePath));
-        static::assertSame(-101, $file->decrease('decrease', 100));
+        self::assertSame(-1, $file->decrease('decrease'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(-101, $file->decrease('decrease', 100));
     }
 
     public function testIncreaseCacheDataIsInvalid(): void
@@ -86,7 +86,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testIncreaseCacheDataIsInvalid'));
+        self::assertFalse($file->get('testIncreaseCacheDataIsInvalid'));
 
         $filePath = __DIR__.'/cacheFile/testIncreaseCacheDataIsInvalid.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -94,7 +94,7 @@ final class FileTest extends TestCase
         }
 
         file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[86400,"\\"[1583755712,\\\\\\"hello\\\\\\"]\\""]');
-        static::assertFalse($file->increase('testIncreaseCacheDataIsInvalid'));
+        self::assertFalse($file->increase('testIncreaseCacheDataIsInvalid'));
     }
 
     public function testHas(): void
@@ -104,10 +104,10 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertFalse($file->has('has'));
+        self::assertFalse($file->has('has'));
         $file->set('has', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertTrue($file->has('has'));
+        self::assertTrue(is_file($filePath));
+        self::assertTrue($file->has('has'));
     }
 
     public function testTtl(): void
@@ -117,15 +117,15 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertFalse($file->has('ttl'));
-        static::assertSame(-2, $file->ttl('ttl'));
+        self::assertFalse($file->has('ttl'));
+        self::assertSame(-2, $file->ttl('ttl'));
         $file->set('ttl', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertSame(86400, $file->ttl('ttl'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(86400, $file->ttl('ttl'));
         $file->set('ttl', 'world', 1);
-        static::assertSame(1, $file->ttl('ttl'));
+        self::assertSame(1, $file->ttl('ttl'));
         $file->set('ttl', 'world', 0);
-        static::assertSame(-1, $file->ttl('ttl'));
+        self::assertSame(-1, $file->ttl('ttl'));
     }
 
     public function testReconnect(): void
@@ -134,13 +134,13 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertNull($file->close());
-        static::assertFalse(is_file($filePath));
-        static::assertFalse($file->get('hello'));
+        self::assertNull($file->close());
+        self::assertFalse(is_file($filePath));
+        self::assertFalse($file->get('hello'));
 
         $file->set('hello', 'world');
-        static::assertTrue(is_file($filePath));
-        static::assertSame('world', $file->get('hello'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame('world', $file->get('hello'));
         $file->delete('hello');
     }
 
@@ -150,7 +150,7 @@ final class FileTest extends TestCase
             'path' => __DIR__.'/cacheFile',
         ]);
 
-        static::assertFalse($file->get('notExists'));
+        self::assertFalse($file->get('notExists'));
     }
 
     public function testGetInvalidContent(): void
@@ -158,7 +158,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testGetInvalidContent'));
+        self::assertFalse($file->get('testGetInvalidContent'));
 
         $filePath = __DIR__.'/cacheFile/testGetInvalidContent.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -166,7 +166,7 @@ final class FileTest extends TestCase
         }
 
         file_put_contents($filePath, 'foo');
-        static::assertFalse($file->get('testGetInvalidContent'));
+        self::assertFalse($file->get('testGetInvalidContent'));
         unlink($filePath);
     }
 
@@ -175,7 +175,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testGetInvalidContentNotIsArray'));
+        self::assertFalse($file->get('testGetInvalidContentNotIsArray'));
 
         $filePath = __DIR__.'/cacheFile/testGetInvalidContentNotIsArray.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -183,7 +183,7 @@ final class FileTest extends TestCase
         }
 
         file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>11');
-        static::assertFalse($file->get('testGetInvalidContentNotIsArray'));
+        self::assertFalse($file->get('testGetInvalidContentNotIsArray'));
         unlink($filePath);
     }
 
@@ -197,7 +197,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testGetWithException'));
+        self::assertFalse($file->get('testGetWithException'));
 
         $filePath = __DIR__.'/cacheFile/testGetWithException.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -205,7 +205,7 @@ final class FileTest extends TestCase
         }
 
         file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[11..,22]');
-        static::assertFalse($file->get('testGetWithException'));
+        self::assertFalse($file->get('testGetWithException'));
     }
 
     public function testGetWithNotExpire(): void
@@ -213,7 +213,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testGetWithNotExpire'));
+        self::assertFalse($file->get('testGetWithNotExpire'));
 
         $filePath = __DIR__.'/cacheFile/testGetWithNotExpire.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -221,7 +221,7 @@ final class FileTest extends TestCase
         }
 
         file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[-2,"22"]');
-        static::assertSame(22, $file->get('testGetWithNotExpire'));
+        self::assertSame(22, $file->get('testGetWithNotExpire'));
     }
 
     public function testGetIsNotReadable(): void
@@ -232,7 +232,7 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('readable'));
+        self::assertFalse($file->get('readable'));
 
         $filePath = __DIR__.'/cacheFile/readable.php';
         if (!is_dir(__DIR__.'/cacheFile')) {
@@ -243,10 +243,10 @@ final class FileTest extends TestCase
         chmod($filePath, 0);
 
         if (is_readable($filePath)) {
-            static::markTestSkipped('Chmod is invalid.');
+            self::markTestSkipped('Chmod is invalid.');
         }
 
-        static::assertFalse($file->get('readable'));
+        self::assertFalse($file->get('readable'));
     }
 
     public function testGetIsNotExpired(): void
@@ -254,10 +254,10 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('isNotExpired'));
+        self::assertFalse($file->get('isNotExpired'));
 
         $file->set('isNotExpired', 'bar', -100);
-        static::assertSame('bar', $file->get('isNotExpired'));
+        self::assertSame('bar', $file->get('isNotExpired'));
     }
 
     public function testSetExpire(): void
@@ -269,13 +269,13 @@ final class FileTest extends TestCase
 
         $file->set('withConfig', 'world', 111);
 
-        static::assertTrue(is_file($filePath));
-        static::assertStringContainsString('[111,', file_get_contents($filePath));
+        self::assertTrue(is_file($filePath));
+        self::assertStringContainsString('[111,', file_get_contents($filePath));
 
         $file->set('withConfig', 'world', 222);
 
-        static::assertTrue(is_file($filePath));
-        static::assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
+        self::assertTrue(is_file($filePath));
+        self::assertStringNotContainsString('s:5:"world"', file_get_contents($filePath));
     }
 
     public function testGetAndIsExpired(): void
@@ -283,17 +283,17 @@ final class FileTest extends TestCase
         $file = new File([
             'path' => __DIR__.'/cacheFile',
         ]);
-        static::assertFalse($file->get('testGetAndIsExpired'));
+        self::assertFalse($file->get('testGetAndIsExpired'));
         $file->set('testGetAndIsExpired', 'hello', 2);
-        static::assertSame('hello', $file->get('testGetAndIsExpired'));
+        self::assertSame('hello', $file->get('testGetAndIsExpired'));
 
         // 1 秒未过期
         sleep(1);
-        static::assertSame('hello', $file->get('testGetAndIsExpired'));
+        self::assertSame('hello', $file->get('testGetAndIsExpired'));
 
         // 4 秒就过期
         sleep(3);
-        static::assertFalse($file->get('testGetAndIsExpired'));
+        self::assertFalse($file->get('testGetAndIsExpired'));
     }
 
     public function testCachePathEmpty(): void
@@ -316,7 +316,7 @@ final class FileTest extends TestCase
 
         $file->set('cachePathSub', 'world');
         $filePath = $path.'/cachePathSub.php';
-        static::assertTrue(is_file($filePath));
+        self::assertTrue(is_file($filePath));
 
         unlink($filePath);
         rmdir($path);
@@ -330,7 +330,7 @@ final class FileTest extends TestCase
         ]);
 
         $file->set('hello:world:foo:bar', 1);
-        static::assertTrue(is_file($filePath));
-        static::assertSame(1, $file->get('hello:world:foo:bar'));
+        self::assertTrue(is_file($filePath));
+        self::assertSame(1, $file->get('hello:world:foo:bar'));
     }
 }

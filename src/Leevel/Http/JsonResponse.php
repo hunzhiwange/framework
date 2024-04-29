@@ -17,11 +17,9 @@ class JsonResponse extends SymfonyJsonResponse
     /**
      * 默认 JSON 编码配置.
      */
-    protected int $encodingOptions = JSON_UNESCAPED_UNICODE; /** @phpstan-ignore-line */
+    protected int $encodingOptions = JSON_UNESCAPED_UNICODE;
 
-    /**
-     * {@inheritDoc}
-     */
+/** @phpstan-ignore-line */
     public function setData(mixed $data = []): static
     {
         $data = ConvertJson::handle($data, $this->encodingOptions);

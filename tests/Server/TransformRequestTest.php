@@ -23,7 +23,7 @@ class TransformRequestTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('swoole')) {
-            static::markTestSkipped('Swoole extension must be loaded before use.');
+            self::markTestSkipped('Swoole extension must be loaded before use.');
         }
     }
 
@@ -40,7 +40,7 @@ class TransformRequestTest extends TestCase
             'foo' => 'bar',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        static::assertInstanceOf(Request::class, $request);
+        self::assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'
             {
@@ -50,7 +50,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $request->server->all()
@@ -71,7 +71,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $this->getFilterHeaders($request->headers->all()),
@@ -100,7 +100,7 @@ class TransformRequestTest extends TestCase
             'REQUEST_METHOD' => 'GET',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        static::assertInstanceOf(Request::class, $request);
+        self::assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'
             {
@@ -115,7 +115,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $request->server->all()
@@ -136,7 +136,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $this->getFilterHeaders($request->headers->all()),
@@ -159,7 +159,7 @@ class TransformRequestTest extends TestCase
             'hello' => 'world',
         ];
         $request = $swoole2Leevel->createRequest($wooleRequest);
-        static::assertInstanceOf(Request::class, $request);
+        self::assertInstanceOf(Request::class, $request);
 
         $data = <<<'eot'
             {
@@ -167,7 +167,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $request->query->all()
@@ -180,7 +180,7 @@ class TransformRequestTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $request->request->all(),

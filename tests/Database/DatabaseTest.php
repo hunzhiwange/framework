@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Database;
 
+use Leevel\Database\ConnectionException;
 use Leevel\Database\Database;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
 use Leevel\Filesystem\Helper;
 use Leevel\Kernel\Utils\Api;
+use PHPUnit\Framework\Attributes\Group;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\MysqlNeedReconnectMock;
-use PHPUnit\Framework\Attributes\Group;
 
 #[Api([
     'zh-CN:title' => '数据库连接',
@@ -41,7 +42,7 @@ final class DatabaseTest extends TestCase
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $database
                 ->table('guest_book')
@@ -54,8 +55,8 @@ final class DatabaseTest extends TestCase
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     public function testBaseUse2(): void
@@ -79,7 +80,7 @@ final class DatabaseTest extends TestCase
 
         $data = ['name' => '小鸭子', 'content' => '吃饭饭'];
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -92,14 +93,14 @@ final class DatabaseTest extends TestCase
         $this->truncateDatabase(['guest_book']);
 
         // 写入数据
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
                 ->insert($data),
         );
 
-        static::assertSame(1, $connect->table('guest_book')->findCount());
+        self::assertSame(1, $connect->table('guest_book')->findCount());
 
         $insertData = $connect
             ->table('guest_book')
@@ -107,10 +108,10 @@ final class DatabaseTest extends TestCase
             ->findOne()
         ;
 
-        static::assertSame(1, $insertData->id);
-        static::assertSame('小鸭子', $insertData->name);
-        static::assertSame('吃饭饭', $insertData->content);
-        static::assertStringContainsString(date('Y-m'), $insertData->create_at);
+        self::assertSame(1, $insertData->id);
+        self::assertSame('小鸭子', $insertData->name);
+        self::assertSame('吃饭饭', $insertData->content);
+        self::assertStringContainsString(date('Y-m'), $insertData->create_at);
     }
 
     #[Api([
@@ -121,7 +122,7 @@ final class DatabaseTest extends TestCase
         $connect = $this->createDatabaseConnect();
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -131,10 +132,10 @@ final class DatabaseTest extends TestCase
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testQueryBindBoolType(): void
@@ -142,7 +143,7 @@ final class DatabaseTest extends TestCase
         $connect = $this->createDatabaseConnect();
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -152,10 +153,10 @@ final class DatabaseTest extends TestCase
         $insertData = $connect->query('select * from guest_book where id=?', [true]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     #[Api([
@@ -190,11 +191,11 @@ EOT,
             ->table('guest_book')
             ->query('SELECT * FROM guest_book')
         ;
-        static::assertFileDoesNotExist($cacheFile);
-        static::assertCount(6, $result);
-        static::assertSame(1, $result[0]->id);
-        static::assertSame('tom', $result[0]->name);
-        static::assertSame('I love movie.', $result[0]->content);
+        self::assertFileDoesNotExist($cacheFile);
+        self::assertCount(6, $result);
+        self::assertSame(1, $result[0]->id);
+        self::assertSame('tom', $result[0]->name);
+        self::assertSame('I love movie.', $result[0]->content);
 
         $resultWithoutCache = $manager
             ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
@@ -204,14 +205,14 @@ EOT,
             ->query('SELECT * FROM guest_book', [], false, 'testcachekey')
         ;
 
-        static::assertFileExists($cacheFile);
-        static::assertCount(6, $resultWithCache);
-        static::assertSame(1, $resultWithCache[0]->id);
-        static::assertSame('tom', $resultWithCache[0]->name);
-        static::assertSame('I love movie.', $resultWithCache[0]->content);
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertFileExists($cacheFile);
+        self::assertCount(6, $resultWithCache);
+        self::assertSame(1, $resultWithCache[0]->id);
+        self::assertSame('tom', $resultWithCache[0]->name);
+        self::assertSame('I love movie.', $resultWithCache[0]->content);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheQueryButCacheWasNotSet(): void
@@ -252,14 +253,14 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(1, $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
+        self::assertSame(1, $connect->execute('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']));
         $insertData = $connect->query('select * from guest_book where id=?', [1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('小鸭子', $insertData['name']);
-        static::assertSame('喜欢游泳', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('小鸭子', $insertData['name']);
+        self::assertSame('喜欢游泳', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     public function testExecuteFailed(): void
@@ -286,24 +287,24 @@ EOT,
 
     public function testQueryOnlyAllowedSelect(): void
     {
-        static::markTestSkipped('Skip query only allowed select.');
+        self::markTestSkipped('Skip query only allowed select.');
 
         $this->expectException(\PDOException::class);
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->query('insert into guest_book (name, content) values (?, ?)', ['小鸭子', '喜欢游泳']);
-        static::assertSame([], $result);
+        self::assertSame([], $result);
     }
 
     public function testExecuteNotAllowedSelect(): void
     {
-        static::markTestSkipped('Execute not allowed select.');
+        self::markTestSkipped('Execute not allowed select.');
 
         $connect = $this->createDatabaseConnect();
         // 由用户自己保证使用 query,procedure 还是 execute，系统不加限制，减少底层设计复杂度
         $result = $connect->execute('select * from guest_book where id=?', [1]);
-        static::assertSame(0, $result);
+        self::assertSame(0, $result);
     }
 
     #[Api([
@@ -335,9 +336,9 @@ EOT,
         $this->assertInstanceof(\Generator::class, $result);
         $n = 1;
         foreach ($result as $v) {
-            static::assertSame($n, $v->id);
-            static::assertSame('tom', $v->name);
-            static::assertSame('I love movie.', $v->content);
+            self::assertSame($n, $v->id);
+            self::assertSame('tom', $v->name);
+            self::assertSame('I love movie.', $v->content);
             ++$n;
         }
     }
@@ -351,7 +352,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -361,10 +362,10 @@ EOT,
         $insertData = $connect->select('select * from guest_book where id = ?', [1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     #[Api([
@@ -376,7 +377,7 @@ EOT,
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('guest_book')
@@ -386,10 +387,10 @@ EOT,
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     #[Api([
@@ -399,15 +400,15 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        self::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     #[Api([
@@ -417,25 +418,25 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        self::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
-        static::assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
+        self::assertSame(1, $connect->update('update guest_book set name = "小牛" where id = ?', [1]));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('小牛', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('小牛', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
     }
 
     #[Api([
@@ -445,18 +446,18 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
+        self::assertSame(1, $connect->insert('insert into guest_book (name, content) values (?, ?)', ['tom', 'I love movie.']));
 
         $insertData = $connect->select('select * from guest_book where id = :id', ['id' => 1]);
         $insertData = (array) $insertData[0];
 
-        static::assertSame(1, $insertData['id']);
-        static::assertSame('tom', $insertData['name']);
-        static::assertSame('I love movie.', $insertData['content']);
-        static::assertStringContainsString(date('Y-m'), $insertData['create_at']);
+        self::assertSame(1, $insertData['id']);
+        self::assertSame('tom', $insertData['name']);
+        self::assertSame('I love movie.', $insertData['content']);
+        self::assertStringContainsString(date('Y-m'), $insertData['create_at']);
 
-        static::assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
-        static::assertSame(0, $connect->table('guest_book')->findCount());
+        self::assertSame(1, $connect->delete('delete from guest_book where id = ?', [1]));
+        self::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     #[Api([
@@ -475,7 +476,7 @@ EOT,
             ;
         }
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->transaction(function ($connect): void {
             $connect
@@ -495,7 +496,7 @@ EOT,
             $this->assertSame(0, $connect->table('guest_book')->findCount());
         });
 
-        static::assertSame(0, $connect->table('guest_book')->findCount());
+        self::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     #[Api([
@@ -514,9 +515,9 @@ EOT,
             ;
         }
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
 
-        static::assertFalse($connect->inTransaction());
+        self::assertFalse($connect->inTransaction());
 
         try {
             $connect->transaction(function ($connect): void {
@@ -530,12 +531,12 @@ EOT,
                 $connect->table('guest_book')->where('id', 2)->delete();
             });
         } catch (\Throwable $e) {
-            static::assertSame('Will rollback', $e->getMessage());
+            self::assertSame('Will rollback', $e->getMessage());
         }
 
-        static::assertFalse($connect->inTransaction());
+        self::assertFalse($connect->inTransaction());
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
     #[Api([
@@ -554,21 +555,21 @@ EOT,
             ;
         }
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
 
         $connect->beginTransaction();
 
         $connect->table('guest_book')->where('id', 1)->delete();
 
-        static::assertSame(1, $connect->table('guest_book')->findCount());
+        self::assertSame(1, $connect->table('guest_book')->findCount());
 
         $connect->table('guest_book')->where('id', 2)->delete();
 
-        static::assertSame(0, $connect->table('guest_book')->findCount());
+        self::assertSame(0, $connect->table('guest_book')->findCount());
 
         $connect->commit();
 
-        static::assertSame(0, $connect->table('guest_book')->findCount());
+        self::assertSame(0, $connect->table('guest_book')->findCount());
     }
 
     #[Api([
@@ -587,9 +588,9 @@ EOT,
             ;
         }
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
 
-        static::assertFalse($connect->inTransaction());
+        self::assertFalse($connect->inTransaction());
 
         try {
             $connect->beginTransaction();
@@ -600,23 +601,23 @@ EOT,
                 ->delete()
             ;
 
-            static::assertSame(1, $connect->table('guest_book')->findCount());
+            self::assertSame(1, $connect->table('guest_book')->findCount());
 
-            static::assertTrue($connect->inTransaction());
+            self::assertTrue($connect->inTransaction());
 
             throw new \Exception('Will rollback');
             $connect->table('guest_book')->where('id', 2)->delete();
 
             $connect->commit();
         } catch (\Throwable $e) {
-            static::assertSame('Will rollback', $e->getMessage());
+            self::assertSame('Will rollback', $e->getMessage());
 
             $connect->rollBack();
         }
 
-        static::assertFalse($connect->inTransaction());
+        self::assertFalse($connect->inTransaction());
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame(2, $connect->table('guest_book')->findCount());
     }
 
     #[Api([
@@ -656,7 +657,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -700,7 +701,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -751,7 +752,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -790,7 +791,7 @@ EOT,
         $result = $manager
             ->procedure('CALL test_procedure(0)')
         ;
-        static::assertFileDoesNotExist($cacheFile);
+        self::assertFileDoesNotExist($cacheFile);
         $data = <<<'eot'
             [
                 [
@@ -809,7 +810,7 @@ EOT,
                 []
             ]
             eot;
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -819,21 +820,21 @@ EOT,
         $resultWithoutCache = $manager
             ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
         ;
-        static::assertFileExists($cacheFile);
+        self::assertFileExists($cacheFile);
         // cached data
         $resultWithCache = $manager
             ->procedure('CALL test_procedure(0)', [], false, 'testcachekey')
         ;
-        static::assertFileExists($cacheFile);
-        static::assertSame(
+        self::assertFileExists($cacheFile);
+        self::assertSame(
             $data,
             $this->varJson(
                 $resultWithCache
             )
         );
-        static::assertEquals($result, $resultWithCache);
-        static::assertFalse($result === $resultWithCache);
-        static::assertEquals($resultWithCache, $resultWithoutCache);
+        self::assertEquals($result, $resultWithCache);
+        self::assertFalse($result === $resultWithCache);
+        self::assertEquals($resultWithCache, $resultWithoutCache);
     }
 
     public function testCacheProcedureButCacheWasNotSet(): void
@@ -882,7 +883,7 @@ EOT,
         ;
 
         $connect->beginTransaction();
-        static::assertSame('SAVEPOINT trans2', $connect->getLastSql());
+        self::assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
             ->table('guest_book')
@@ -890,7 +891,7 @@ EOT,
         ;
 
         $connect->rollBack();
-        static::assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->getLastSql());
+        self::assertSame('ROLLBACK TO SAVEPOINT trans2', $connect->getLastSql());
         $connect->commit();
 
         $book = $connect
@@ -899,13 +900,13 @@ EOT,
             ->findOne()
         ;
 
-        static::assertSame(1, $connect->table('guest_book')->findCount());
-        static::assertSame('tom', $book->name);
+        self::assertSame(1, $connect->table('guest_book')->findCount());
+        self::assertSame('tom', $book->name);
     }
 
     public function testCommitWithoutActiveTransaction(): void
     {
-        $this->expectException(\Leevel\Database\ConnectionException::class);
+        $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage(
             '[Commit]There was no active transaction.'
         );
@@ -916,7 +917,7 @@ EOT,
 
     public function testCommitButIsRollbackOnly(): void
     {
-        $this->expectException(\Leevel\Database\ConnectionException::class);
+        $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage(
             'Only transaction rollback is allowed.'
         );
@@ -944,7 +945,7 @@ EOT,
         ;
 
         $connect->beginTransaction();
-        static::assertSame('SAVEPOINT trans2', $connect->getLastSql());
+        self::assertSame('SAVEPOINT trans2', $connect->getLastSql());
 
         $connect
             ->table('guest_book')
@@ -952,7 +953,7 @@ EOT,
         ;
 
         $connect->commit();
-        static::assertSame('RELEASE SAVEPOINT trans2', $connect->getLastSql());
+        self::assertSame('RELEASE SAVEPOINT trans2', $connect->getLastSql());
         $connect->commit();
 
         $book = $connect
@@ -966,14 +967,14 @@ EOT,
             ->findOne()
         ;
 
-        static::assertSame(2, $connect->table('guest_book')->findCount());
-        static::assertSame('tom', $book->name);
-        static::assertSame('jerry', $book2->name);
+        self::assertSame(2, $connect->table('guest_book')->findCount());
+        self::assertSame('tom', $book->name);
+        self::assertSame('jerry', $book2->name);
     }
 
     public function testRollBackWithoutActiveTransaction(): void
     {
-        $this->expectException(\Leevel\Database\ConnectionException::class);
+        $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage(
             '[RollBack]There was no active transaction.'
         );
@@ -1001,7 +1002,7 @@ EOT,
             ->update(['name' => 'jerry'])
         ;
 
-        static::assertSame(0, $numRows);
+        self::assertSame(0, $numRows);
 
         $numRows = $connect
             ->table('guest_book')
@@ -1009,7 +1010,7 @@ EOT,
             ->update(['name' => 'tom'])
         ;
 
-        static::assertSame(1, $numRows);
+        self::assertSame(1, $numRows);
     }
 
     #[Api([
@@ -1328,13 +1329,13 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
         $result = $this->invokeTestMethod($connect, 'parseDuplicateUniqueIndex', ['hello_world']);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function testDatabaseSelect(): void
     {
         $connect = $this->createDatabaseConnect();
-        static::assertSame([], $connect->query('SELECT * FROM guest_book'));
+        self::assertSame([], $connect->query('SELECT * FROM guest_book'));
         $this->assertInstanceof(Select::class, $connect->databaseSelect());
     }
 
@@ -1354,7 +1355,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
         $result = $connect->getTableNames('test');
-        static::assertTrue(\in_array('guest_book', $result, true));
+        self::assertTrue(\in_array('guest_book', $result, true));
     }
 
     #[Api([
@@ -1460,7 +1461,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJson(
                 $result
@@ -1483,7 +1484,7 @@ eot;
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJson(
                 $result
@@ -1516,7 +1517,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJson(
                 $result
@@ -1541,7 +1542,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [1],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlString(): void
@@ -1549,7 +1550,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => ['hello'],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'hello\'');
     }
 
     public function testGetRawSqlInt(): void
@@ -1557,7 +1558,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [5],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 5');
     }
 
     public function testGetRawSqlFloat(): void
@@ -1565,7 +1566,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [0.5],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 0.5');
     }
 
     public function testGetRawSqlArray(): void
@@ -1573,7 +1574,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IN (:id)', [
             ':id' => [[1, 2, 3]],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id IN (1,2,3)');
     }
 
     public function testGetRawSqlNull(): void
@@ -1581,7 +1582,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
             ':id' => [null],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
     }
 
     public function testGetRawSqlForPdoParamBool(): void
@@ -1589,7 +1590,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [true, \PDO::PARAM_BOOL],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlForPdoParamInt(): void
@@ -1597,7 +1598,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => [true, \PDO::PARAM_INT],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = 1');
     }
 
     public function testGetRawSqlForPdoParamNull(): void
@@ -1605,7 +1606,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id IS :id', [
             ':id' => [null, \PDO::PARAM_NULL],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id IS NULL');
     }
 
     public function testGetRawSqlForPdoParamString(): void
@@ -1613,7 +1614,7 @@ EOT,
         $sql = Database::getRawSql('SELECT * FROM guest_book WHERE id = :id', [
             ':id' => ['1', \PDO::PARAM_STR],
         ]);
-        static::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
+        self::assertSame($sql, 'SELECT * FROM guest_book WHERE id = \'1\'');
     }
 
     protected function getDatabaseTable(): array

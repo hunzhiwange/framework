@@ -172,33 +172,21 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         return $this->valueTypes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->elements);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $index): bool
     {
         return isset($this->elements[$index]);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet(mixed $index): mixed
     {
         return $this->elements[$index] ?? null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->checkType($index, true);
@@ -207,9 +195,6 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         $this->watchElements();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset(mixed $offset): void
     {
         if (isset($this->elements[$offset])) {
@@ -218,9 +203,6 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         $this->watchElements();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function count(): int
     {
         return \count($this->elements);
@@ -242,22 +224,16 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         return $this->elements;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
-        return array_map(function ($value) {
+        return array_map(static function ($value) {
             return $value instanceof IArray ? $value->toArray() : $value;
         }, $this->elements);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function jsonSerialize(): array
     {
-        return array_map(function ($value) {
+        return array_map(static function ($value) {
             if ($value instanceof IArray) {
                 return $value->toArray();
             }
@@ -278,9 +254,6 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         }, $this->elements);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toJson(?int $config = null): string
     {
         return ConvertJson::handle($this->jsonSerialize(), $config);
@@ -365,7 +338,5 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
     /**
      * 监听集合元素发生变化.
      */
-    protected function watchElements(): void
-    {
-    }
+    protected function watchElements(): void {}
 }

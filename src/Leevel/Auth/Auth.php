@@ -25,25 +25,16 @@ abstract class Auth implements IAuth
         $this->config = array_merge($this->config, $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isLogin(): bool
     {
         return (bool) $this->getLogin();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getLogin(): array
     {
         return $this->tokenData();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function login(array $data, ?int $loginTime = null): string
     {
         return $this->tokenPersistence(
@@ -52,25 +43,17 @@ abstract class Auth implements IAuth
         );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function logout(): void
     {
         $this->tokenDelete();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setTokenName(string $tokenName): void
     {
         $this->config['token'] = $tokenName;
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \RuntimeException
      */
     public function getTokenName(): string

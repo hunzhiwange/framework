@@ -7,10 +7,10 @@ namespace Tests\Database\Ddd;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Kernel\Utils\Api;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\DemoConversionEntity;
 use Tests\Database\Ddd\Entity\DemoEntity;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => '实体类型转换',
@@ -52,7 +52,7 @@ EOT,
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
 
-        static::assertSame($prop, $this->getTestProperty($entity, $field));
+        self::assertSame($prop, $this->getTestProperty($entity, $field));
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 

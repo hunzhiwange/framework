@@ -43,9 +43,9 @@ EOT,
 
         $this->assertInstanceof(Entity::class, $entity);
 
-        static::assertSame(DemoEntity::TABLE, $entity->table());
-        static::assertSame([DemoEntity::ID], $entity->primaryKey());
-        static::assertSame(DemoEntity::AUTO, $entity->autoIncrement());
+        self::assertSame(DemoEntity::TABLE, $entity->table());
+        self::assertSame([DemoEntity::ID], $entity->primaryKey());
+        self::assertSame(DemoEntity::AUTO, $entity->autoIncrement());
     }
 
     #[Api([
@@ -83,9 +83,7 @@ EOT,
     }
 }
 
-class Test1Entity extends Entity
-{
-}
+class Test1Entity extends Entity {}
 
 class Test2Entity extends Entity
 {

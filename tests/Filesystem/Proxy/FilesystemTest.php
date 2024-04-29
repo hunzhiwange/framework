@@ -30,7 +30,7 @@ final class FilesystemTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('filesystems', function () use ($manager): Manager {
+        $container->singleton('filesystems', static function () use ($manager): Manager {
             return $manager;
         });
 
@@ -39,8 +39,8 @@ final class FilesystemTest extends TestCase
         $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        static::assertTrue(is_file($file));
-        static::assertSame('manager', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('manager', file_get_contents($file));
 
         unlink($file);
         rmdir($path);
@@ -50,7 +50,7 @@ final class FilesystemTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('filesystems', function () use ($manager): Manager {
+        $container->singleton('filesystems', static function () use ($manager): Manager {
             return $manager;
         });
 
@@ -59,8 +59,8 @@ final class FilesystemTest extends TestCase
         Filesystem::write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        static::assertTrue(is_file($file));
-        static::assertSame('manager', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('manager', file_get_contents($file));
 
         unlink($file);
         rmdir($path);

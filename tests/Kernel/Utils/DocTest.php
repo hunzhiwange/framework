@@ -47,7 +47,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo1::class);
-        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo1.md'), $result);
+        self::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo1.md'), $result);
     }
 
     public function testDoc(): void
@@ -59,7 +59,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo2::class);
-        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo2.md'), $result);
+        self::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo2.md'), $result);
     }
 
     public function testExecutePhpCode(): void
@@ -71,7 +71,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo3::class);
-        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo3.md'), $result);
+        self::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo3.md'), $result);
     }
 
     public function testHandleAndSave(): void
@@ -84,9 +84,9 @@ final class DocTest extends TestCase
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3.md';
-        static::assertSame($result[0], $docFile);
-        static::assertFileExists($docFile);
-        static::assertSame(file_get_contents($docFile), $result[1]);
+        self::assertSame($result[0], $docFile);
+        self::assertFileExists($docFile);
+        self::assertSame(file_get_contents($docFile), $result[1]);
     }
 
     public function testHandleAndSaveWithCustomPath(): void
@@ -99,9 +99,9 @@ final class DocTest extends TestCase
         );
         $result = $doc->handleAndSave(Demo3::class, 'demo3_custom');
         $docFile = __DIR__.'/Assert/Doc/Doc/zh-CN/demo3_custom.md';
-        static::assertSame($result[0], $docFile);
-        static::assertFileExists($docFile);
-        static::assertSame(file_get_contents($docFile), $result[1]);
+        self::assertSame($result[0], $docFile);
+        self::assertFileExists($docFile);
+        self::assertSame(file_get_contents($docFile), $result[1]);
     }
 
     public function test1(): void
@@ -113,7 +113,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo4::class);
-        static::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo4.md'), $result);
+        self::assertSame(file_get_contents(__DIR__.'/Assert/Doc/Demo4.md'), $result);
     }
 
     public function test2(): void
@@ -125,7 +125,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(\stdClass::class);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test3(): void
@@ -137,7 +137,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handle(Demo5::class);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test4(): void
@@ -149,7 +149,7 @@ final class DocTest extends TestCase
             'https://github.com/hunzhiwange/framework/blob/master',
         );
         $result = $doc->handleAndSave(Demo5::class);
-        static::assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function test5(): void
@@ -161,13 +161,13 @@ public function doc1(): void
 {
 }
 eot;
-        static::assertSame($resultNew, $result);
+        self::assertSame($resultNew, $result);
     }
 
     public function test6(): void
     {
         $result = Doc::getMethodBody(\stdClass::class, 'foo');
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test7(): void
@@ -191,13 +191,13 @@ class Demo5
     }
 }
 eot;
-        static::assertSame($resultNew, $result);
+        self::assertSame($resultNew, $result);
     }
 
     public function test8(): void
     {
         $result = Doc::getClassBody(\stdClass::class);
-        static::assertSame('', $result);
+        self::assertSame('', $result);
     }
 
     public function test9(): void
@@ -216,7 +216,7 @@ class Demo6
     }
 }
 eot;
-        static::assertSame($resultNew, $result);
+        self::assertSame($resultNew, $result);
     }
 
     public function test10(): void
@@ -258,7 +258,7 @@ note
 
 
 eot;
-        static::assertSame($resultNew, $result);
+        self::assertSame($resultNew, $result);
     }
 
     public function test11(): void

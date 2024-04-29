@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use Throwable;
-
 class Timezone
 {
     /**
@@ -19,7 +17,7 @@ class Timezone
             }
 
             new \DateTimeZone($value);
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return false;
         }
 

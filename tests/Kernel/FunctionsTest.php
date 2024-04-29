@@ -42,7 +42,7 @@ final class FunctionsTest extends TestCase
     public function testLeevel(): void
     {
         $this->createContainer();
-        static::assertSame(App::VERSION, \Leevel::version());
+        self::assertSame(App::VERSION, \Leevel::version());
     }
 
     #[Api([
@@ -51,7 +51,7 @@ final class FunctionsTest extends TestCase
     public function testApp(): void
     {
         $this->createContainer();
-        static::assertSame(App::VERSION, Apps::version());
+        self::assertSame(App::VERSION, Apps::version());
     }
 
     #[Api([
@@ -60,7 +60,7 @@ final class FunctionsTest extends TestCase
     public function testLeevelWithContainerMethod(): void
     {
         $this->createContainer();
-        static::assertNull(\Leevel::make('foo', throw: false));
+        self::assertNull(\Leevel::make('foo', throw: false));
     }
 
     #[Api([
@@ -69,7 +69,7 @@ final class FunctionsTest extends TestCase
     public function testAppWithContainerMethod(): void
     {
         $this->createContainer();
-        static::assertNull(Apps::make('foo', throw: false));
+        self::assertNull(Apps::make('foo', throw: false));
     }
 
     #[Api([
@@ -78,7 +78,7 @@ final class FunctionsTest extends TestCase
     public function testFunctionLang(): void
     {
         $this->createContainer();
-        static::assertNull(Apps::make('foo', throw: false));
+        self::assertNull(Apps::make('foo', throw: false));
 
         $i18n = $this->createMock(II18n::class);
         $map = [
@@ -87,18 +87,18 @@ final class FunctionsTest extends TestCase
             ['hello %d', 5, 'hello 5'],
         ];
         $i18n->method('gettext')->willReturnMap($map);
-        static::assertSame('hello', $i18n->gettext('hello'));
-        static::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
-        static::assertSame('hello 5', $i18n->gettext('hello %d', 5));
+        self::assertSame('hello', $i18n->gettext('hello'));
+        self::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
+        self::assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $container = $this->createContainer();
-        $container->singleton('i18n', function () use ($i18n): II18n {
+        $container->singleton('i18n', static function () use ($i18n): II18n {
             return $i18n;
         });
 
-        static::assertSame('hello', __('hello'));
-        static::assertSame('hello foo', __('hello %s', 'foo'));
-        static::assertSame('hello 5', __('hello %d', 5));
+        self::assertSame('hello', __('hello'));
+        self::assertSame('hello foo', __('hello %s', 'foo'));
+        self::assertSame('hello 5', __('hello %d', 5));
     }
 
     public function test1(): void
@@ -106,13 +106,13 @@ final class FunctionsTest extends TestCase
         $i18n = new DemoI18n();
 
         $container = $this->createContainer();
-        $container->singleton('i18n', function () use ($i18n): DemoI18n {
+        $container->singleton('i18n', static function () use ($i18n): DemoI18n {
             return $i18n;
         });
 
-        static::assertSame('hello', __('hello'));
-        static::assertSame('hello foo', __('hello %s', 'foo'));
-        static::assertSame('hello 5', __('hello %d', 5));
+        self::assertSame('hello', __('hello'));
+        self::assertSame('hello foo', __('hello %s', 'foo'));
+        self::assertSame('hello 5', __('hello %d', 5));
     }
 
     protected function createContainer(): Container
@@ -129,10 +129,10 @@ final class FunctionsTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        static::assertSame('', $request->getEnter());
+        self::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        static::assertSame($isSecure, $request->isSecure());
+        self::assertSame($isSecure, $request->isSecure());
 
         return $request;
     }

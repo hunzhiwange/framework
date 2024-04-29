@@ -24,12 +24,12 @@ final class StructTest extends TestCase
         ];
 
         $collection = new Struct($data, 'string', 'int', 'string');
-        static::assertSame($collection['a'], 'hello');
-        static::assertSame($collection['b'], 2);
-        static::assertSame($collection['c'], 'world');
-        static::assertTrue(isset($collection['a']));
-        static::assertTrue(isset($collection['b']));
-        static::assertTrue(isset($collection['c']));
+        self::assertSame($collection['a'], 'hello');
+        self::assertSame($collection['b'], 2);
+        self::assertSame($collection['c'], 'world');
+        self::assertTrue(isset($collection['a']));
+        self::assertTrue(isset($collection['b']));
+        self::assertTrue(isset($collection['c']));
     }
 
     #[Api([

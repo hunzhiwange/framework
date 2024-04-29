@@ -12,7 +12,5 @@ class BasePath
         path: '/basePath/normalize/',
         bind: '\\Tests\\Router\\Controllers\\Annotation\\BasePath@normalize',
     )]
-    private function foo(): void
-    {
-    }
+    private function foo(): void {}
 }

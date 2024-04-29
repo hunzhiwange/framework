@@ -24,12 +24,12 @@ final class SetTest extends TestCase
         ];
 
         $collection = new Set($data, 'int');
-        static::assertSame($collection[0], 1);
-        static::assertSame($collection[1], 2);
-        static::assertSame($collection[2], 3);
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
+        self::assertSame($collection[0], 1);
+        self::assertSame($collection[1], 2);
+        self::assertSame($collection[2], 3);
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
     }
 
     #[Api([
@@ -42,12 +42,12 @@ final class SetTest extends TestCase
         ];
 
         $collection = new Set($data, 'string');
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 't');
-        static::assertSame($collection[2], 'world');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 't');
+        self::assertSame($collection[2], 'world');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
     }
 
     #[Api([

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Delete;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityIdentifyConditionException;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -50,9 +51,9 @@ EOT,
         $entity = new DemoEntity(['id' => 5, 'name' => 'foo']);
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['id', 'name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertNull($entity->flushData());
 
         $entity->delete();
 
@@ -64,7 +65,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -88,7 +89,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -100,7 +101,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -115,35 +116,35 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->softDelete()->flush();
-        static::assertTrue($post->softDeleted());
+        self::assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -153,7 +154,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -165,7 +166,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -180,35 +181,35 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
-        static::assertSame(1, Post::softDestroy([1]));
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
+        self::assertSame(1, Post::softDestroy([1]));
+        self::assertFalse($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -218,7 +219,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -230,7 +231,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -245,33 +246,33 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
         Post::destroy([1]);
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -281,7 +282,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -293,7 +294,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -308,33 +309,33 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
         Post::forceDestroy([1]);
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -344,7 +345,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -356,7 +357,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -371,50 +372,50 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->softDelete()->flush();
-        static::assertTrue($post->softDeleted());
+        self::assertTrue($post->softDeleted());
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $newPost = Post::withSoftDeleted()->findEntity(1);
-        static::assertTrue($newPost->softDeleted());
+        self::assertTrue($newPost->softDeleted());
         $newPost->softRestore()->flush();
-        static::assertFalse($newPost->softDeleted());
+        self::assertFalse($newPost->softDeleted());
 
         $restorePost1 = Post::select()->findEntity(1);
-        static::assertSame(0, $restorePost1->delete_at);
+        self::assertSame(0, $restorePost1->delete_at);
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
     }
 
     #[Api([
@@ -424,7 +425,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -436,7 +437,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -451,40 +452,40 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->delete()->flush();
         $sql1 = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`id` = 1 LIMIT 1)';
         $time = time();
-        static::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
-        static::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
-        static::assertTrue($post->softDeleted());
+        self::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
+        self::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
+        self::assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(date('Y-m'), date('Y-m', $post1->delete_at));
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -494,7 +495,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -506,7 +507,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -521,40 +522,40 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->condition(['user_id' => 99999])->delete()->flush();
         $sql1 = 'SQL: [135] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)';
         $time = time();
-        static::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
-        static::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
-        static::assertTrue($post->softDeleted());
+        self::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
+        self::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
+        self::assertTrue($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
     }
 
     #[Api([
@@ -564,7 +565,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             0,
             $connect
                 ->table('composite_id')
@@ -578,18 +579,18 @@ EOT,
         $entity = CompositeId::select()->where(['id1' => 1, 'id2' => 2])->findOne();
 
         $this->assertInstanceof(CompositeId::class, $entity);
-        static::assertSame(1, $entity->id1);
-        static::assertSame(2, $entity->id2);
-        static::assertSame('hello liu', $entity->name);
+        self::assertSame(1, $entity->id1);
+        self::assertSame(2, $entity->id2);
+        self::assertSame('hello liu', $entity->name);
 
         $entity->delete()->flush();
 
         $entity = CompositeId::select()->where(['id1' => 1, 'id2' => 2])->findOne();
 
         $this->assertInstanceof(CompositeId::class, $entity);
-        static::assertNull($entity->id1);
-        static::assertNull($entity->id2);
-        static::assertNull($entity->name);
+        self::assertNull($entity->id1);
+        self::assertNull($entity->id2);
+        self::assertNull($entity->name);
     }
 
     #[Api([
@@ -599,7 +600,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -611,7 +612,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -626,36 +627,36 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->forceDelete()->flush();
-        static::assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
-        static::assertFalse($post->softDeleted());
+        self::assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
+        self::assertFalse($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertNull($post1->userId);
-        static::assertNull($post1->title);
-        static::assertNull($post1->summary);
-        static::assertNull($post1->delete_at);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
     }
 
     #[Api([
@@ -665,7 +666,7 @@ EOT,
     {
         $connect = $this->createDatabaseConnect();
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('post')
@@ -677,7 +678,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('post')
@@ -692,36 +693,36 @@ EOT,
         $post = Post::select()->findEntity(1);
 
         $this->assertInstanceof(Post::class, $post);
-        static::assertSame(1, $post->userId);
-        static::assertSame('hello world', $post->title);
-        static::assertSame('post summary', $post->summary);
-        static::assertSame(0, $post->delete_at);
+        self::assertSame(1, $post->userId);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame(0, $post->delete_at);
 
-        static::assertFalse($post->softDeleted());
+        self::assertFalse($post->softDeleted());
         $post->condition(['user_id' => 99999])->forceDelete()->flush();
-        static::assertSame('SQL: [92] DELETE FROM `post` WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [13] :post_user_id | paramno=0 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
-        static::assertFalse($post->softDeleted());
+        self::assertSame('SQL: [92] DELETE FROM `post` WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [13] :post_user_id | paramno=0 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
+        self::assertFalse($post->softDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
 
         $post2 = Post::select()->findEntity(2);
         $this->assertInstanceof(Post::class, $post2);
-        static::assertSame(1, $post2->userId);
-        static::assertSame('hello world', $post2->title);
-        static::assertSame('post summary', $post2->summary);
-        static::assertSame(0, $post2->delete_at);
+        self::assertSame(1, $post2->userId);
+        self::assertSame('hello world', $post2->title);
+        self::assertSame('post summary', $post2->summary);
+        self::assertSame(0, $post2->delete_at);
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
-        static::assertSame(1, $post1->userId);
-        static::assertSame('hello world', $post1->title);
-        static::assertSame('post summary', $post1->summary);
-        static::assertSame(0, $post1->delete_at);
+        self::assertSame(1, $post1->userId);
+        self::assertSame('hello world', $post1->title);
+        self::assertSame('post summary', $post1->summary);
+        self::assertSame(0, $post1->delete_at);
     }
 
     public function testDeleteAtColumnNotDefined(): void
@@ -748,7 +749,7 @@ EOT,
 
     public function testDeleteWithoutPrimaryKey(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no identify condition data.'
         );
@@ -759,7 +760,7 @@ EOT,
 
     public function testDeleteButPrimaryKeyDataNotFound(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );
@@ -770,7 +771,7 @@ EOT,
 
     public function testForceDeleteButPrimaryKeyDataNotFound(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityIdentifyConditionException::class);
+        $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
             'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
         );

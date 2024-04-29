@@ -21,7 +21,7 @@ interface IServer
     /**
      * 获取服务.
      */
-    public function getServer(): SwooleServer|SwooleHttpServer;
+    public function getServer(): SwooleHttpServer|SwooleServer;
 
     /**
      * 获取服务配置.

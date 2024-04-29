@@ -36,7 +36,7 @@ abstract class Server implements IServer
     /**
      * 服务.
      */
-    protected SwooleServer|SwooleHttpServer|null $server = null;
+    protected null|SwooleHttpServer|SwooleServer $server = null;
 
     /**
      * 工作进程运行状态.
@@ -67,11 +67,9 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \RuntimeException
      */
-    public function getServer(): SwooleServer|SwooleHttpServer
+    public function getServer(): SwooleHttpServer|SwooleServer
     {
         if (!$this->server) {
             throw new \RuntimeException('Server was not started.');
@@ -80,9 +78,6 @@ abstract class Server implements IServer
         return $this->server;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getConfig(): array
     {
         $config = $this->config;
@@ -94,8 +89,6 @@ abstract class Server implements IServer
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throw \RuntimeException
      */
     public function getProcessStatisticTable(): Table

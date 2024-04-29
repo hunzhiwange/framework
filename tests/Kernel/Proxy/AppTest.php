@@ -29,28 +29,28 @@ final class AppTest extends TestCase
     {
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);
-        $container->singleton('app', function () use ($app): Apps {
+        $container->singleton('app', static function () use ($app): Apps {
             return $app;
         });
 
         $appPath = __DIR__.'/app';
-        static::assertSame($appPath, $app->path());
-        static::assertSame($appPath.'/foobar', $app->path('foobar'));
-        static::assertInstanceOf(Apps::class, $app->container()->make('app'));
+        self::assertSame($appPath, $app->path());
+        self::assertSame($appPath.'/foobar', $app->path('foobar'));
+        self::assertInstanceOf(Apps::class, $app->container()->make('app'));
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);
-        $container->singleton('app', function () use ($app): Apps {
+        $container->singleton('app', static function () use ($app): Apps {
             return $app;
         });
 
         $appPath = __DIR__.'/app';
-        static::assertSame($appPath, ProxyApp::path());
-        static::assertSame($appPath.'/foobar', ProxyApp::path('foobar'));
-        static::assertInstanceOf(Apps::class, ProxyApp::make('app'));
+        self::assertSame($appPath, ProxyApp::path());
+        self::assertSame($appPath.'/foobar', ProxyApp::path('foobar'));
+        self::assertInstanceOf(Apps::class, ProxyApp::make('app'));
     }
 
     public function testProxyNotFound(): void
@@ -60,7 +60,7 @@ final class AppTest extends TestCase
 
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);
-        $container->singleton('app', function () use ($app): Apps {
+        $container->singleton('app', static function () use ($app): Apps {
             return $app;
         });
 
@@ -73,7 +73,7 @@ final class AppTest extends TestCase
 
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);
-        $container->singleton('app', function () use ($app): Apps {
+        $container->singleton('app', static function () use ($app): Apps {
             return $app;
         });
 

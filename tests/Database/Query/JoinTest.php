@@ -44,7 +44,7 @@ final class JoinTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -72,7 +72,7 @@ final class JoinTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -103,7 +103,7 @@ final class JoinTest extends TestCase
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -138,7 +138,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -173,12 +173,12 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->join('test_query_subsql', 'name,value', function ($select): void {
+                    ->join('test_query_subsql', 'name,value', static function ($select): void {
                         $select
                             ->where('id', '<', 5)
                             ->where('name', 'like', 'hello')
@@ -210,7 +210,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -241,7 +241,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -272,7 +272,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -298,7 +298,8 @@ EOT,
         $connect
             ->table('test_query')
             ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
-            ->findAll();
+            ->findAll()
+        ;
     }
 
     #[Api([
@@ -319,7 +320,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -349,7 +350,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -378,7 +379,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -411,7 +412,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -444,7 +445,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -477,7 +478,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -510,7 +511,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -543,7 +544,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -575,7 +576,8 @@ EOT,
             ->else()
             ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
             ->fi()
-            ->findAll();
+            ->findAll()
+        ;
     }
 
     public function testFullJsonFlow2(): void
@@ -594,7 +596,8 @@ EOT,
             ->else()
             ->fullJoin(['t' => 'test_query_subsql'], ['name as nikename', 'tt' => 'value'], 'name', '=', '仔')
             ->fi()
-            ->findAll();
+            ->findAll()
+        ;
     }
 
     public function testRightJsonFlow(): void
@@ -614,7 +617,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -647,7 +650,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -680,7 +683,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -713,7 +716,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -742,7 +745,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -771,7 +774,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -826,7 +829,7 @@ EOT,
 
         $joinTable = $connect->table('test_query_subsql as b');
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -862,7 +865,7 @@ EOT,
             ->databaseCondition()
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -893,12 +896,12 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->innerJoin(function ($select): void {
+                    ->innerJoin(static function ($select): void {
                         $select->table('test_query_subsql as b');
                     }, ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')
                     ->findAll(),
@@ -931,7 +934,7 @@ EOT,
             ->databaseCondition()
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -979,7 +982,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1006,7 +1009,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect

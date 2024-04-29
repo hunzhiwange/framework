@@ -29,15 +29,15 @@ final class AutoloadTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache autoload.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('\'composer\' dump-autoload --optimize --no-dev'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Autoload cache succeed.'),
             $result
         );
@@ -58,15 +58,15 @@ final class AutoloadTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache autoload.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('\'composer\' dump-autoload --optimize'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Autoload cache succeed.'),
             $result
         );
@@ -82,7 +82,5 @@ final class AutoloadTest extends TestCase
 
 class AppForAutoload extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

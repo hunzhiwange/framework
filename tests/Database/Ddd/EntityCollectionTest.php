@@ -17,7 +17,7 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 2]),
         ];
         $collection = new EntityCollection($data, DemoEntity::class);
-        static::assertCount(2, $collection);
+        self::assertCount(2, $collection);
     }
 
     public function test2(): void
@@ -28,7 +28,7 @@ final class EntityCollectionTest extends TestCase
         ];
         $collection = new EntityCollection($data, DemoEntity::class);
         $entity = $collection->get(0);
-        static::assertSame(1, $entity->id);
+        self::assertSame(1, $entity->id);
     }
 
     public function test3(): void
@@ -39,7 +39,7 @@ final class EntityCollectionTest extends TestCase
         ];
         $collection = new EntityCollection($data, DemoEntity::class);
         $collection->remove(1);
-        static::assertCount(1, $collection);
+        self::assertCount(1, $collection);
     }
 
     public function test4(): void
@@ -49,7 +49,7 @@ final class EntityCollectionTest extends TestCase
             new DemoEntity(['id' => 2]),
         ];
         $collection = new EntityCollection($data, DemoEntity::class);
-        static::assertTrue($collection->has(0));
+        self::assertTrue($collection->has(0));
     }
 
     public function test5(): void
@@ -57,7 +57,7 @@ final class EntityCollectionTest extends TestCase
         $data = [];
         $collection = new EntityCollection($data, DemoEntity::class);
         $collection->set(0, new DemoEntity(['id' => 2]));
-        static::assertCount(1, $collection);
+        self::assertCount(1, $collection);
     }
 
     public function test6(): void

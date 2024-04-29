@@ -16,9 +16,6 @@ class Breakpoint extends PhinxBreakpoint
     use RuntimeEnvironment;
     use SelectDatabase;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function configure(): void
     {
         parent::configure();

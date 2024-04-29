@@ -24,19 +24,19 @@ final class IdeHelperTest extends TestCase
         $result = $ideHelper->handle(DemoClass::class);
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo1()'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo4(...$hello)'),
             $result,
         );
@@ -55,23 +55,23 @@ final class IdeHelperTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo1()'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo4(...$hello)'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demoHelloWorld()'),
             $result,
         );
@@ -83,7 +83,7 @@ final class IdeHelperTest extends TestCase
         $result = $ideHelper->handle(DemoClass2::class);
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo1()'),
             $result,
         );
@@ -95,7 +95,7 @@ final class IdeHelperTest extends TestCase
         $result = $ideHelper->handle(DemoClass3::class);
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static mixed demo1()'),
             $result,
         );
@@ -107,7 +107,7 @@ final class IdeHelperTest extends TestCase
         $result = $ideHelper->handle(DemoClass3::class);
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static mixed demo1()'),
             $result,
         );
@@ -119,22 +119,22 @@ final class IdeHelperTest extends TestCase
         $result = $ideHelper->handle(DemoClass4::class);
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string|bool demo1(bool $isBool = false)'),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string|bool demo2(string|bool $isBool)'),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string demo3(\\Tests\\Kernel\\Utils\\Assert\\DemoClass3 $demoClass3)'),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string demo4(\\?Tests\\Kernel\\Utils\\Assert\\DemoClass3 $demoClass3 = null)'),
             $result,
         );

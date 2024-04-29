@@ -29,13 +29,13 @@ final class DbTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createDatabaseManager($container);
-        $container->singleton('databases', function () use ($manager): Manager {
+        $container->singleton('databases', static function () use ($manager): Manager {
             return $manager;
         });
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             $manager
                 ->table('guest_book')
@@ -47,21 +47,21 @@ final class DbTest extends TestCase
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     public function testProxy(): void
     {
         $container = $this->createContainer();
         $manager = $this->createDatabaseManager($container);
-        $container->singleton('databases', function () use ($manager): Manager {
+        $container->singleton('databases', static function () use ($manager): Manager {
             return $manager;
         });
 
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
 
-        static::assertSame(
+        self::assertSame(
             1,
             Db::table('guest_book')
                 ->insert($data)
@@ -72,8 +72,8 @@ final class DbTest extends TestCase
             ->findOne()
         ;
 
-        static::assertSame('tom', $result->name);
-        static::assertSame('I love movie.', $result->content);
+        self::assertSame('tom', $result->name);
+        self::assertSame('I love movie.', $result->content);
     }
 
     protected function createContainer(): Container

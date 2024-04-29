@@ -47,11 +47,11 @@ final class LinkApisTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/apis` directory to `%s/assert_new/apis` succeed.', __DIR__, __DIR__)),
             $result
         );
-        static::assertTrue(is_file(__DIR__.'/assert_new/apis'));
+        self::assertTrue(is_file(__DIR__.'/assert_new/apis'));
     }
 
     protected function initContainerService(IContainer $container): void
@@ -73,7 +73,5 @@ class AppForLinkApis extends Apps
         return __DIR__.'/assert/apis';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

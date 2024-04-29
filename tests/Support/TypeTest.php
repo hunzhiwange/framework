@@ -22,8 +22,8 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeString(): void
     {
-        static::assertTrue(Type::type('foo', 'string'));
-        static::assertFalse(Type::type(1, 'string'));
+        self::assertTrue(Type::type('foo', 'string'));
+        self::assertFalse(Type::type(1, 'string'));
     }
 
     #[Api([
@@ -31,9 +31,9 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeInt(): void
     {
-        static::assertTrue(Type::type(1, 'int'));
-        static::assertTrue(Type::type(3, 'integer'));
-        static::assertFalse(Type::type(true, 'int'));
+        self::assertTrue(Type::type(1, 'int'));
+        self::assertTrue(Type::type(3, 'integer'));
+        self::assertFalse(Type::type(true, 'int'));
     }
 
     #[Api([
@@ -41,9 +41,9 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeFloat(): void
     {
-        static::assertTrue(Type::type(1.1, 'float'));
-        static::assertTrue(Type::type(3.14, 'double'));
-        static::assertFalse(Type::type(true, 'double'));
+        self::assertTrue(Type::type(1.1, 'float'));
+        self::assertTrue(Type::type(3.14, 'double'));
+        self::assertFalse(Type::type(true, 'double'));
     }
 
     #[Api([
@@ -51,9 +51,9 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeBool(): void
     {
-        static::assertTrue(Type::type(true, 'bool'));
-        static::assertTrue(Type::type(false, 'bool'));
-        static::assertFalse(Type::type(4, 'bool'));
+        self::assertTrue(Type::type(true, 'bool'));
+        self::assertTrue(Type::type(false, 'bool'));
+        self::assertFalse(Type::type(4, 'bool'));
     }
 
     #[Api([
@@ -61,10 +61,10 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeNumeric(): void
     {
-        static::assertTrue(Type::type(1.2, 'numeric'));
-        static::assertTrue(Type::type(2, 'numeric'));
-        static::assertTrue(Type::type('2.5', 'numeric'));
-        static::assertFalse(Type::type(false, 'numeric'));
+        self::assertTrue(Type::type(1.2, 'numeric'));
+        self::assertTrue(Type::type(2, 'numeric'));
+        self::assertTrue(Type::type('2.5', 'numeric'));
+        self::assertFalse(Type::type(false, 'numeric'));
     }
 
     #[Api([
@@ -72,14 +72,14 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeScalar(): void
     {
-        static::assertTrue(Type::type(1, 'scalar'));
-        static::assertTrue(Type::type('hello world', 'scalar'));
-        static::assertTrue(Type::type(0, 'scalar'));
-        static::assertTrue(Type::type(false, 'scalar'));
-        static::assertTrue(Type::type(1.1, 'scalar'));
-        static::assertTrue(Type::type(false, 'scalar'));
-        static::assertFalse(Type::type([], 'scalar'));
-        static::assertFalse(Type::type(null, 'scalar'));
+        self::assertTrue(Type::type(1, 'scalar'));
+        self::assertTrue(Type::type('hello world', 'scalar'));
+        self::assertTrue(Type::type(0, 'scalar'));
+        self::assertTrue(Type::type(false, 'scalar'));
+        self::assertTrue(Type::type(1.1, 'scalar'));
+        self::assertTrue(Type::type(false, 'scalar'));
+        self::assertFalse(Type::type([], 'scalar'));
+        self::assertFalse(Type::type(null, 'scalar'));
     }
 
     #[Api([
@@ -90,8 +90,8 @@ final class TypeTest extends TestCase
         $testFile = __DIR__.'/test.txt';
         file_put_contents($testFile, 'foo');
         $resource = fopen($testFile, 'r');
-        static::assertTrue(Type::type($resource, 'resource'));
-        static::assertFalse(Type::type(4, 'resource'));
+        self::assertTrue(Type::type($resource, 'resource'));
+        self::assertFalse(Type::type(4, 'resource'));
         fclose($resource);
         unlink($testFile);
     }
@@ -101,9 +101,8 @@ final class TypeTest extends TestCase
     ])]
     public function testTypeClosure(): void
     {
-        static::assertTrue(Type::type(function (): void {
-        }, 'Closure'));
-        static::assertFalse(Type::type(true, 'Closure'));
+        self::assertTrue(Type::type(static function (): void {}, 'Closure'));
+        self::assertFalse(Type::type(true, 'Closure'));
     }
 
     #[Api([
@@ -119,16 +118,16 @@ EOT,
     ])]
     public function testTypeArray(): void
     {
-        static::assertTrue(Type::type([], 'array'));
-        static::assertTrue(Type::type([1, 2], 'array:int'));
-        static::assertFalse(Type::type([1, 2], 'array:'));
-        static::assertTrue(Type::type([1, 2], 'array:int:int'));
-        static::assertTrue(Type::type(['foo' => 1, 'bar' => 2], 'array:string:int'));
-        static::assertTrue(Type::type(['foo' => [], 'bar' => []], 'array:string:array'));
-        static::assertTrue(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:int'));
-        static::assertFalse(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:string'));
-        static::assertTrue(Type::type(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], 'array:string:array:string:int'));
-        static::assertTrue(Type::type(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], 'array:string:array:string:array:string:int'));
+        self::assertTrue(Type::type([], 'array'));
+        self::assertTrue(Type::type([1, 2], 'array:int'));
+        self::assertFalse(Type::type([1, 2], 'array:'));
+        self::assertTrue(Type::type([1, 2], 'array:int:int'));
+        self::assertTrue(Type::type(['foo' => 1, 'bar' => 2], 'array:string:int'));
+        self::assertTrue(Type::type(['foo' => [], 'bar' => []], 'array:string:array'));
+        self::assertTrue(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:int'));
+        self::assertFalse(Type::type(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], 'array:string:array:string'));
+        self::assertTrue(Type::type(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], 'array:string:array:string:int'));
+        self::assertTrue(Type::type(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], 'array:string:array:string:array:string:int'));
     }
 
     #[Api([
@@ -136,8 +135,8 @@ EOT,
     ])]
     public function testTypeObject(): void
     {
-        static::assertTrue(Type::type(new \stdClass(), 'object'));
-        static::assertFalse(Type::type(null, 'object'));
+        self::assertTrue(Type::type(new \stdClass(), 'object'));
+        self::assertFalse(Type::type(null, 'object'));
     }
 
     #[Api([
@@ -145,8 +144,8 @@ EOT,
     ])]
     public function testTypeNull(): void
     {
-        static::assertTrue(Type::type(null, 'null'));
-        static::assertFalse(Type::type(1, 'null'));
+        self::assertTrue(Type::type(null, 'null'));
+        self::assertFalse(Type::type(1, 'null'));
     }
 
     #[Api([
@@ -161,12 +160,11 @@ EOT,
     ])]
     public function testTypeCallback(): void
     {
-        static::assertTrue(Type::type(function (): void {
-        }, 'callable'));
-        static::assertTrue(Type::type('md5', 'callable'));
-        static::assertTrue(Type::type([new Callback1(), 'test'], 'callable'));
-        static::assertTrue(Type::type([Callback1::class, 'test2'], 'callable'));
-        static::assertFalse(Type::type(1, 'callable'));
+        self::assertTrue(Type::type(static function (): void {}, 'callable'));
+        self::assertTrue(Type::type('md5', 'callable'));
+        self::assertTrue(Type::type([new Callback1(), 'test'], 'callable'));
+        self::assertTrue(Type::type([Callback1::class, 'test2'], 'callable'));
+        self::assertFalse(Type::type(1, 'callable'));
     }
 
     #[Api([
@@ -187,10 +185,10 @@ EOT,
     ])]
     public function testTypeInstance(): void
     {
-        static::assertTrue(Type::type(new \stdClass(), \stdClass::class));
-        static::assertTrue(Type::type(new Callback1(), Callback1::class));
-        static::assertTrue(Type::type(new Callback2(), IInterface::class));
-        static::assertFalse(Type::type(1, 'callback'));
+        self::assertTrue(Type::type(new \stdClass(), \stdClass::class));
+        self::assertTrue(Type::type(new Callback1(), Callback1::class));
+        self::assertTrue(Type::type(new Callback2(), IInterface::class));
+        self::assertFalse(Type::type(1, 'callback'));
     }
 
     #[Api([
@@ -198,15 +196,15 @@ EOT,
     ])]
     public function testTypeThese(): void
     {
-        static::assertTrue(Type::these('foo', ['string']));
-        static::assertTrue(Type::these(1, ['string', 'int']));
+        self::assertTrue(Type::these('foo', ['string']));
+        self::assertTrue(Type::these(1, ['string', 'int']));
     }
 
     public function testTypeTheseException(): void
     {
         $this->expectException(\TypeError::class);
 
-        static::assertTrue(Type::these('foo', [[]]));
+        self::assertTrue(Type::these('foo', [[]]));
     }
 
     #[Api([
@@ -221,16 +219,16 @@ EOT,
     ])]
     public function testTypeStrictArray(): void
     {
-        static::assertTrue(Type::arr(['foo'], ['string']));
-        static::assertFalse(Type::arr([1, 2], ['string']));
-        static::assertTrue(Type::arr(['bar', 'foo'], ['string']));
-        static::assertTrue(Type::arr(['bar', 2], ['string', 'int']));
-        static::assertTrue(Type::arr(['hello' => 'bar', 2], ['string:string', 'int']));
-        static::assertTrue(Type::arr(['hello' => 'bar', 'foo' => 'bar'], ['string:string']));
-        static::assertFalse(Type::arr(['hello' => 'bar', 2], ['string:string']));
-        static::assertFalse(Type::arr(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], ['string:array:string']));
-        static::assertTrue(Type::arr(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], ['string:array:string:int']));
-        static::assertTrue(Type::arr(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], ['string:array:string:array:string:int']));
+        self::assertTrue(Type::arr(['foo'], ['string']));
+        self::assertFalse(Type::arr([1, 2], ['string']));
+        self::assertTrue(Type::arr(['bar', 'foo'], ['string']));
+        self::assertTrue(Type::arr(['bar', 2], ['string', 'int']));
+        self::assertTrue(Type::arr(['hello' => 'bar', 2], ['string:string', 'int']));
+        self::assertTrue(Type::arr(['hello' => 'bar', 'foo' => 'bar'], ['string:string']));
+        self::assertFalse(Type::arr(['hello' => 'bar', 2], ['string:string']));
+        self::assertFalse(Type::arr(['foo' => [1, 2, 3], 'bar' => [4, 5, 6]], ['string:array:string']));
+        self::assertTrue(Type::arr(['foo' => ['hello' => 1], 'bar' => ['hello' => 4]], ['string:array:string:int']));
+        self::assertTrue(Type::arr(['foo' => ['hello' => ['foo' => 2]], 'bar' => ['hello' => ['foo' => 2]]], ['string:array:string:array:string:int']));
     }
 
     public function testTypeNotFound(): void
@@ -238,20 +236,20 @@ EOT,
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('Class "Leevel\\Support\\Type\\NotFound" not found');
 
-        static::assertTrue(Type::notFound());
+        self::assertTrue(Type::notFound());
     }
 
     public function test1(): void
     {
-        static::assertTrue(Type::arr([
+        self::assertTrue(Type::arr([
             'base' => [__DIR__.'/assert/lang'],
         ], ['string:array']));
 
-        static::assertTrue(Type::arr([
+        self::assertTrue(Type::arr([
             'base' => [__DIR__.'/assert/lang'],
         ], ['string:array:int:string']));
 
-        static::assertTrue(Type::arr([
+        self::assertTrue(Type::arr([
             'base' => [__DIR__.'/assert/lang'],
         ], ['string:array:string']));
     }
@@ -259,19 +257,11 @@ EOT,
 
 class Callback1
 {
-    public function test(): void
-    {
-    }
+    public function test(): void {}
 
-    public static function test2(): void
-    {
-    }
+    public static function test2(): void {}
 }
 
-interface IInterface
-{
-}
+interface IInterface {}
 
-class Callback2 implements IInterface
-{
-}
+class Callback2 implements IInterface {}

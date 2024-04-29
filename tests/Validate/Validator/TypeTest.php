@@ -7,8 +7,8 @@ namespace Tests\Validate\Validator;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Helper\Type;
 use Leevel\Validate\Validator;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.数据类型验证',
@@ -43,7 +43,7 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
     }
 
     public static function baseUseProvider(): array
@@ -96,7 +96,7 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public static function badProvider(): array
@@ -142,10 +142,8 @@ EOT,
     public function test1(): void
     {
         $result = Type::handle('foo', [1]);
-        static::assertFalse($result);
+        self::assertFalse($result);
     }
 }
 
-class Type1
-{
-}
+class Type1 {}

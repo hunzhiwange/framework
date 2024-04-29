@@ -6,9 +6,7 @@ namespace Tests\Router;
 
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request;
-use Leevel\Router\IUrl;
 use Leevel\Router\Redirect;
-use Leevel\Router\Url;
 use Leevel\Session\ISession;
 use Tests\TestCase;
 
@@ -18,8 +16,8 @@ final class RedirectTest extends TestCase
     {
         $redirect = new Redirect();
         $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('http://www.queryphp.com/foo/bar'));
-        static::assertSame('http://www.queryphp.com/foo/bar', $response->getTargetUrl());
-        static::assertNull($response->getSession());
+        self::assertSame('http://www.queryphp.com/foo/bar', $response->getTargetUrl());
+        self::assertNull($response->getSession());
 
         $content = <<<'eot'
             <!DOCTYPE html>
@@ -36,7 +34,7 @@ final class RedirectTest extends TestCase
             </html>
             eot;
 
-        static::assertSame($content, $response->getContent());
+        self::assertSame($content, $response->getContent());
     }
 
     public function testSetSession(): void
@@ -45,8 +43,8 @@ final class RedirectTest extends TestCase
         $session = $this->createMock(ISession::class);
         $redirect->setSession($session);
         $this->assertInstanceof(RedirectResponse::class, $response = $redirect->url('/foo/bar'));
-        static::assertSame('/foo/bar', $response->getTargetUrl());
-        static::assertSame($session, $response->getSession());
+        self::assertSame('/foo/bar', $response->getTargetUrl());
+        self::assertSame($session, $response->getSession());
     }
 
     protected function makeRequest(bool $isSecure = false): Request
@@ -54,10 +52,10 @@ final class RedirectTest extends TestCase
         $request = $this->createMock(Request::class);
 
         $request->method('getEnter')->willReturn('');
-        static::assertSame('', $request->getEnter());
+        self::assertSame('', $request->getEnter());
 
         $request->method('isSecure')->willReturn($isSecure);
-        static::assertSame($isSecure, $request->isSecure($isSecure));
+        self::assertSame($isSecure, $request->isSecure($isSecure));
 
         return $request;
     }

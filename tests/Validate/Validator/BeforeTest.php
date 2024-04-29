@@ -6,8 +6,8 @@ namespace Tests\Validate\Validator;
 
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证在给定日期之前',
@@ -40,7 +40,7 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
     }
 
     public static function baseUseProvider(): array
@@ -76,7 +76,7 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public static function badProvider(): array
@@ -107,7 +107,7 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     #[Api([

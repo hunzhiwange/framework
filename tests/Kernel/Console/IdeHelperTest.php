@@ -51,24 +51,24 @@ final class IdeHelperTest extends TestCase
         $result = $this->normalizeContent($result);
         $outResult = $this->normalizeContent($outResult);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo1()'),
             $outResult,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo2(string $hello, int $world)'),
             $outResult,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static string demo3(string $hello, ?int $world = null) demo3'),
             $outResult,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('* @method static void demo4(...$hello)'),
             $outResult,
         );
@@ -94,12 +94,12 @@ final class IdeHelperTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Ide helper cache succeed at %s.', $cachePath)),
             $result,
         );
@@ -124,7 +124,7 @@ final class IdeHelperTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Ide helper for class %s generate succeed.', DemoClass::class)),
             $result,
         );
@@ -149,7 +149,7 @@ final class IdeHelperTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('File `%s` is not exits.', $classPath)),
             $result,
         );
@@ -165,7 +165,5 @@ final class IdeHelperTest extends TestCase
 
 class AppForIdeHelper extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

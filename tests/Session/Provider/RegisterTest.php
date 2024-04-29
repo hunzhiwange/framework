@@ -20,42 +20,42 @@ final class RegisterTest extends TestCase
         // sessions
         $manager = $container->make('sessions');
 
-        static::assertFalse($manager->isStart());
-        static::assertSame('', $manager->getId());
-        static::assertSame('UID', $manager->getName());
+        self::assertFalse($manager->isStart());
+        self::assertSame('', $manager->getId());
+        self::assertSame('UID', $manager->getName());
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         $manager->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $manager->all());
-        static::assertTrue($manager->has('hello'));
-        static::assertSame('world', $manager->get('hello'));
+        self::assertSame(['hello' => 'world'], $manager->all());
+        self::assertTrue($manager->has('hello'));
+        self::assertSame('world', $manager->get('hello'));
 
         $manager->delete('hello');
-        static::assertSame([], $manager->all());
-        static::assertFalse($manager->has('hello'));
-        static::assertNull($manager->get('hello'));
+        self::assertSame([], $manager->all());
+        self::assertFalse($manager->has('hello'));
+        self::assertNull($manager->get('hello'));
 
         $manager->start();
-        static::assertTrue($manager->isStart());
+        self::assertTrue($manager->isStart());
 
         // session
         $test = $container->make('session');
-        static::assertTrue($test->isStart());
+        self::assertTrue($test->isStart());
 
         $test->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $test->all());
-        static::assertTrue($test->has('hello'));
-        static::assertSame('world', $test->get('hello'));
+        self::assertSame(['hello' => 'world'], $test->all());
+        self::assertTrue($test->has('hello'));
+        self::assertSame('world', $test->get('hello'));
 
         $test->delete('hello');
-        static::assertSame([], $test->all());
-        static::assertFalse($test->has('hello'));
-        static::assertNull($test->get('hello'));
+        self::assertSame([], $test->all());
+        self::assertFalse($test->has('hello'));
+        self::assertNull($test->get('hello'));
 
         $test->start();
-        static::assertTrue($test->isStart());
+        self::assertTrue($test->isStart());
     }
 
     protected function createContainer(): Container

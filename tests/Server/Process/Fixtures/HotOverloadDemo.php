@@ -33,7 +33,7 @@ class HotOverloadDemo extends HotOverload
 
                 if (3 === $n) {
                     file_put_contents($tmpFile = __DIR__.'/tmp.php', 'demo'.random_int(0, 1000));
-                    defer(function () use ($tmpFile): void {
+                    defer(static function () use ($tmpFile): void {
                         if (is_file($tmpFile)) {
                             unlink($tmpFile);
                         }

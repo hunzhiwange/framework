@@ -15,13 +15,13 @@ final class EntityNotFoundExceptionTest extends TestCase
         $e = new EntityNotFoundException();
         $e->setEntity(Guestbook::class);
 
-        static::assertSame(Guestbook::class, $e->entity());
-        static::assertSame('Entity `Tests\\Database\\Ddd\\Entity\\Guestbook` was not found.', $e->getMessage());
+        self::assertSame(Guestbook::class, $e->entity());
+        self::assertSame('Entity `Tests\\Database\\Ddd\\Entity\\Guestbook` was not found.', $e->getMessage());
     }
 
     public function testEntityNotFoundExceptionReportable(): void
     {
         $e = new EntityNotFoundException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 }

@@ -25,7 +25,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -39,7 +39,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"\u5b9e\u4f53\u540d\u5b57","description":"goods name","address":"\u56db\u5ddd\u6210\u90fd","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(0),
         );
@@ -53,7 +53,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson()
         );
@@ -62,7 +62,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->only(['name'])
@@ -73,7 +73,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->only(['name', 'description'])
@@ -84,7 +84,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->only(['name', 'description', 'hello'])
@@ -100,7 +100,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson()
         );
@@ -109,7 +109,7 @@ final class EntityToJsonTest extends TestCase
             {"description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->except(['name'])
@@ -120,7 +120,7 @@ final class EntityToJsonTest extends TestCase
             {"address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->except(['name', 'description'])
@@ -131,7 +131,7 @@ final class EntityToJsonTest extends TestCase
             {"description":"goods name","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->except(['foo_bar', 'name', 'address'])
@@ -147,7 +147,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"四川成都","foo_bar":"foo","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -156,7 +156,7 @@ final class EntityToJsonTest extends TestCase
             {"hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
                 ->only(['hello'])
@@ -173,7 +173,7 @@ final class EntityToJsonTest extends TestCase
             {"description":"goods name","foo_bar":"foo"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -187,7 +187,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","address":"四川成都","hello":"hello world"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -201,7 +201,7 @@ final class EntityToJsonTest extends TestCase
             {"id":5,"title":"I am title","user_id":7,"summary":"I am summary","user":{"id":7,"name":"xiaoniuge"}}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -215,10 +215,10 @@ final class EntityToJsonTest extends TestCase
             {"id":5,"title":"I am title","user_id":7,"summary":"I am summary","user":{"name":"xiaoniuge"}}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity
-                ->each(function ($value, $k) {
+                ->each(static function ($value, $k) {
                     if ('user' === $k) {
                         $value = $value->only(['name']);
                     }
@@ -237,7 +237,7 @@ final class EntityToJsonTest extends TestCase
             {"name":"实体名字","description":"goods name","address":"","foo_bar":null,"hello":"default_value"}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );
@@ -251,7 +251,7 @@ final class EntityToJsonTest extends TestCase
             {"id":5,"name":"I am name","description":"I am description","address":"","foo_bar":null,"hello":"default_value","target":{"id":5,"name":"xiaoniuge"}}
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $entity->toJson(),
         );

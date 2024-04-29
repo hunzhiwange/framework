@@ -84,16 +84,16 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
-        static::assertFalse($app->isCachedConfig());
-        static::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
+        self::assertFalse($app->isCachedConfig());
+        self::assertSame($appPath.'/config', $app->configPath());
 
-        static::assertNull($bootstrap->handle($app));
+        self::assertNull($bootstrap->handle($app));
 
         $config = $container->make('config');
 
-        static::assertSame('development', $config->get('environment'));
-        static::assertSame('bar', $config->get('demo\\foo'));
+        self::assertSame('development', $config->get('environment'));
+        self::assertSame('bar', $config->get('demo\\foo'));
     }
 
     #[Api([
@@ -124,16 +124,16 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->configCachedPath());
-        static::assertFalse($app->isCachedConfig());
-        static::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/storage/bootstrap/fooenv.php', $app->configCachedPath());
+        self::assertFalse($app->isCachedConfig());
+        self::assertSame($appPath.'/config', $app->configPath());
 
-        static::assertNull($bootstrap->handle($app));
+        self::assertNull($bootstrap->handle($app));
 
         $config = $container->make('config');
 
-        static::assertSame('testing', $config->get('environment'));
-        static::assertSame('bar', $config->get('demo\\foo'));
+        self::assertSame('testing', $config->get('environment'));
+        self::assertSame('bar', $config->get('demo\\foo'));
     }
 
     public function testWithRuntimeEnvNotFound(): void
@@ -157,9 +157,9 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->configCachedPath());
-        static::assertFalse($app->isCachedConfig());
-        static::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/storage/bootstrap/notfoundenv.php', $app->configCachedPath());
+        self::assertFalse($app->isCachedConfig());
+        self::assertSame($appPath.'/config', $app->configPath());
 
         $bootstrap->handle($app);
     }
@@ -190,36 +190,32 @@ EOT,
         $this->assertInstanceof(IApp::class, $app);
         $this->assertInstanceof(Apps::class, $app);
 
-        static::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
-        static::assertFalse($app->isCachedConfig());
-        static::assertSame($appPath.'/config', $app->configPath());
+        self::assertSame($appPath.'/storage/bootstrap/config.php', $app->configCachedPath());
+        self::assertFalse($app->isCachedConfig());
+        self::assertSame($appPath.'/config', $app->configPath());
 
         mkdir($appPath.'/storage/bootstrap', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/config.php', file_get_contents($appPath.'/assert/config.php'));
 
-        static::assertTrue($app->isCachedConfig());
+        self::assertTrue($app->isCachedConfig());
 
-        static::assertNull($bootstrap->handle($app));
+        self::assertNull($bootstrap->handle($app));
 
         $config = $container->make('config');
 
-        static::assertSame('development', $config->get('environment'));
-        static::assertSame('bar', $config->get('demo\\foo'));
-        static::assertNull($config->get(':env.foo'));
-        static::assertTrue($config->get(':env.debug'));
+        self::assertSame('development', $config->get('environment'));
+        self::assertSame('bar', $config->get('demo\\foo'));
+        self::assertNull($config->get(':env.foo'));
+        self::assertTrue($config->get(':env.debug'));
     }
 }
 
 class App3 extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class LoadConfig1 extends LoadConfig
 {
-    protected function initialization(Config $config): void
-    {
-    }
+    protected function initialization(Config $config): void {}
 }

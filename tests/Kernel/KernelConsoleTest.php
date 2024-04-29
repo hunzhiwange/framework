@@ -103,9 +103,9 @@ EOT,
         $kernel = new KernelConsole1($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-        static::assertSame(0, $kernel->handle());
+        self::assertSame(0, $kernel->handle());
         $kernel->terminate(0);
-        static::assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
+        self::assertTrue($GLOBALS['DemoBootstrapForKernelConsole']);
         unset($GLOBALS['DemoBootstrapForKernelConsole']);
     }
 
@@ -116,8 +116,8 @@ EOT,
         $kernel = new KernelConsole2($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-        static::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication'));
-        static::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
+        self::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication'));
+        self::assertInstanceOf(Application::class, $this->invokeTestMethod($kernel, 'getConsoleApplication')); // cached
     }
 
     public function test3(): void
@@ -128,7 +128,7 @@ EOT,
         $kernel = new KernelConsole3($app);
         $this->assertInstanceof(IKernelConsole::class, $kernel);
         $this->assertInstanceof(IApp::class, $kernel->getApp());
-        static::assertSame(0, $kernel->handle());
+        self::assertSame(0, $kernel->handle());
     }
 
     protected function createConfig(IContainer $container): void
@@ -148,14 +148,14 @@ EOT,
             ],
         ];
         $config = new Config($configData);
-        static::assertSame([], $config->get('console\\template'));
-        static::assertSame([
+        self::assertSame([], $config->get('console\\template'));
+        self::assertSame([
             'Tests\\Kernel\\Commands\\Demo',
             'Tests\\Kernel\\Commands\\Console',
             SeedRun::class,
         ], $config->get(':composer.commands'));
 
-        $container->singleton('config', function () use ($config): IConfig {
+        $container->singleton('config', static function () use ($config): IConfig {
             return $config;
         });
     }
@@ -208,9 +208,7 @@ class AppKernelConsole extends Apps
         return __DIR__.'/Commands/Console';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class Application1 extends Application

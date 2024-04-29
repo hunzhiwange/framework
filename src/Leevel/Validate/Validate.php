@@ -26,9 +26,6 @@ class Validate implements IValidate
         $this->initMessages();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
     {
         $validator = new Validator($data, $rules, $names, $messages);
@@ -37,9 +34,6 @@ class Validate implements IValidate
         return $validator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function initMessages(): void
     {
         Validator::initMessages([

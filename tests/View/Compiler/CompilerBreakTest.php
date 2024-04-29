@@ -45,7 +45,7 @@ final class CompilerBreakTest extends TestCase
             <?php endforeach; endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -75,6 +75,6 @@ final class CompilerBreakTest extends TestCase
             <?php endforeach; endif; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

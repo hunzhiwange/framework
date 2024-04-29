@@ -25,7 +25,7 @@ class TransformResponseTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('swoole')) {
-            static::markTestSkipped('Swoole extension must be loaded before use.');
+            self::markTestSkipped('Swoole extension must be loaded before use.');
         }
 
         if (isset($GLOBALS['swoole.response'])) {
@@ -55,7 +55,7 @@ class TransformResponseTest extends TestCase
         ]);
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
     }
 
     public function testResponseWithHeaderDemo(): void
@@ -69,7 +69,7 @@ class TransformResponseTest extends TestCase
         ]);
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
 
         $result = <<<'eot'
             {
@@ -93,7 +93,7 @@ class TransformResponseTest extends TestCase
             eot;
 
         $GLOBALS['swoole.response']['header'] = $this->getFilterHeaders($GLOBALS['swoole.response']['header']);
-        static::assertSame(
+        self::assertSame(
             $result,
             $this->varJson($GLOBALS['swoole.response'])
         );
@@ -113,7 +113,7 @@ class TransformResponseTest extends TestCase
         ]);
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
     }
 
     public function testResponseWithCookieDemo(): void
@@ -128,7 +128,7 @@ class TransformResponseTest extends TestCase
         $time = time() + 86400;
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
 
         $result = <<<'eot'
             {
@@ -144,16 +144,16 @@ class TransformResponseTest extends TestCase
         $headers = $GLOBALS['swoole.response']['header'];
         unset($GLOBALS['swoole.response']['header']);
 
-        static::assertSame(
+        self::assertSame(
             sprintf($result, $time, $time),
             $this->varJson($GLOBALS['swoole.response'])
         );
-        static::assertSame(['Cache-Control', 'no-cache, private'], $headers[0]);
-        static::assertSame('Date', $headers[1][0]);
-        static::assertSame('Set-Cookie', $headers[2][0]);
-        static::assertStringContainsString('foo=bar;', $headers[2][1]);
-        static::assertSame('Set-Cookie', $headers[3][0]);
-        static::assertStringContainsString('hello=world;', $headers[3][1]);
+        self::assertSame(['Cache-Control', 'no-cache, private'], $headers[0]);
+        self::assertSame('Date', $headers[1][0]);
+        self::assertSame('Set-Cookie', $headers[2][0]);
+        self::assertStringContainsString('foo=bar;', $headers[2][1]);
+        self::assertSame('Set-Cookie', $headers[3][0]);
+        self::assertStringContainsString('hello=world;', $headers[3][1]);
     }
 
     #[Api([
@@ -166,7 +166,7 @@ class TransformResponseTest extends TestCase
         $response = new RedirectResponse('https://queryphp.com');
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
     }
 
     public function testRedirectResponseDemo(): void
@@ -176,7 +176,7 @@ class TransformResponseTest extends TestCase
         $response = new RedirectResponse('https://queryphp.com');
 
         $leevel2Swoole->createResponse($response, $swooleResponse);
-        static::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
+        self::assertInstanceOf(SwooleHttpResponse::class, $swooleResponse);
 
         $result = <<<'eot'
             {
@@ -199,7 +199,7 @@ class TransformResponseTest extends TestCase
             eot;
 
         $GLOBALS['swoole.response']['header'] = $this->getFilterHeaders($GLOBALS['swoole.response']['header']);
-        static::assertSame(
+        self::assertSame(
             $result,
             $this->varJson($GLOBALS['swoole.response'])
         );

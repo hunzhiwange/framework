@@ -13,6 +13,4 @@ use Leevel\Kernel\Utils\Api;
 {['hello world' . ' php' . ' expression']}
 EOT,
 ])]
-class Demo3
-{
-}
+class Demo3 {}

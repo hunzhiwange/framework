@@ -101,9 +101,6 @@ class Container implements IContainer, \ArrayAccess
         throw new \BadMethodCallException(sprintf('Method `%s` is not exits.', $method));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function singletons(): IContainer
     {
         if (static::$instance) {
@@ -113,9 +110,6 @@ class Container implements IContainer, \ArrayAccess
         return static::$instance = new static();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function bind(array|string $name, mixed $service = null, bool $share = false): IContainer
     {
         if (\is_array($name)) {
@@ -136,9 +130,6 @@ class Container implements IContainer, \ArrayAccess
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function instance(array|string $name, mixed $service = null): IContainer
     {
         if (\is_array($name)) {
@@ -155,17 +146,11 @@ class Container implements IContainer, \ArrayAccess
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function singleton(array|string $name, mixed $service = null): IContainer
     {
         return $this->bind($name, $service, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
         if (\is_array($alias)) {
@@ -185,9 +170,6 @@ class Container implements IContainer, \ArrayAccess
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function make(string $name, array $args = [], bool $throw = true): mixed
     {
         // 别名
@@ -234,8 +216,6 @@ class Container implements IContainer, \ArrayAccess
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \InvalidArgumentException
      */
     public function call(array|callable|string $callback, array $args = []): mixed
@@ -274,9 +254,6 @@ class Container implements IContainer, \ArrayAccess
         return $callback(...$args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function remove(string $name): void
     {
         $name = $this->normalize($name);
@@ -292,9 +269,6 @@ class Container implements IContainer, \ArrayAccess
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function exists(string $name): bool
     {
         $name = $this->normalize($name);
@@ -304,9 +278,6 @@ class Container implements IContainer, \ArrayAccess
             || $this->existsContextValue(IContainer::INSTANCES, $name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clear(): void
     {
         $this->clearContextValue(IContainer::SERVICES, true);
@@ -320,33 +291,21 @@ class Container implements IContainer, \ArrayAccess
         $this->isBootstrap = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addContextKeys(string ...$contextKeys): void
     {
         $this->contextKeys = [$this->contextKeys, ...$contextKeys];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function removeContextKeys(string ...$contextKeys): void
     {
         $this->contextKeys = array_diff($this->contextKeys, $contextKeys);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setContextResolver(?\Closure $contextResolver = null): void
     {
         $this->contextResolver = $contextResolver;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function inContext(?string $name = null): bool
     {
         if (!$this->contextResolver) {
@@ -360,17 +319,11 @@ class Container implements IContainer, \ArrayAccess
         return \in_array($name, $this->contextKeys, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function enabledCoroutine(): bool
     {
         return true === $this->make(IContainer::ENABLED_COROUTINE, throw: false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function callProviderBootstrap(Provider $provider): void
     {
         $providerClass = $provider::class;
@@ -388,17 +341,11 @@ class Container implements IContainer, \ArrayAccess
         $this->bootedProviders[] = $providerClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function makeProvider(string $provider): Provider
     {
         return new $provider($this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function register(Provider|string $provider): Provider
     {
         $providerClass = \is_string($provider) ? $provider : $provider::class;
@@ -421,17 +368,11 @@ class Container implements IContainer, \ArrayAccess
         return $this->registeredProviders[$providerClass] = $provider;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function isBootstrap(): bool
     {
         return $this->isBootstrap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
     {
         if ($this->isBootstrap) {
@@ -454,49 +395,31 @@ class Container implements IContainer, \ArrayAccess
         $this->isBootstrap = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $index): bool
     {
         return $this->exists($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet(mixed $index): mixed
     {
         return $this->make($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->bind($index, $newval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $id)
     {
         return $this->make($id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $id): bool
     {
         return $this->exists($id);
@@ -541,7 +464,7 @@ class Container implements IContainer, \ArrayAccess
     /**
      * 根据 class 名字创建实例.
      */
-    protected function getInjectionObject(string $className, array $args = []): object|string|null
+    protected function getInjectionObject(string $className, array $args = []): null|object|string
     {
         if (interface_exists($className)) {
             throw new ContainerInvalidArgumentException(sprintf('Interface %s cannot be normalize because not bound.', $className));
@@ -559,7 +482,7 @@ class Container implements IContainer, \ArrayAccess
     /**
      * 格式化依赖参数.
      *
-     * @throws \Leevel\Di\ContainerInvalidArgumentException
+     * @throws ContainerInvalidArgumentException
      */
     protected function normalizeInjectionArgs(mixed $value, array $args): array
     {

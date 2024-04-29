@@ -23,9 +23,7 @@ class BootstrapSimple extends Bootstrap
     /**
      * 初始化配置.
      */
-    protected function intConfig(): void
-    {
-    }
+    protected function intConfig(): void {}
 
     /**
      * 返回渲染 header.

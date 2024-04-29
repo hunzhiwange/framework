@@ -25,25 +25,16 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers
 {
-    /**
-     * {@inheritDoc}
-     */
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IAuth
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reconnect(?string $connect = null, ...$arguments): IAuth
     {
         return parent::reconnect($connect, ...$arguments);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getDefaultConnect(): string
     {
         $config = $this->getContainerConfig('default');
@@ -51,9 +42,6 @@ class Manager extends Managers
         return (string) $this->getContainerConfig($config.'_default');
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setDefaultConnect(string $name): void
     {
         $config = $this->getContainerConfig('default');

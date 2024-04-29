@@ -21,6 +21,4 @@ EOT,
 QueryPHP ORM 非常强大
 EOT,
 ])]
-class SummaryDoc
-{
-}
+class SummaryDoc {}

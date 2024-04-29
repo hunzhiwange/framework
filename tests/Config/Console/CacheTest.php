@@ -56,19 +56,19 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache config.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache succeed at %s.', $cacheFile)),
             $result
         );
 
         $configData = file_get_contents(__DIR__.'/assert/config.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($configData),
             $this->varJson(
                 (array) (include $cacheFile)
@@ -94,19 +94,19 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache config.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache succeed at %s.', $cacheFile)),
             $result
         );
 
         $configData = file_get_contents(__DIR__.'/assert/config.json');
 
-        static::assertSame(
+        self::assertSame(
             trim($configData),
             $this->varJson(
                 (array) (include $cacheFile)
@@ -133,19 +133,19 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache config.'),
             $result
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Config cache succeed at %s.', $cacheFile)),
             $result
         );
 
         $configData = (array) (include __DIR__.'/assertRelative/config.php');
 
-        static::assertSame(
+        self::assertSame(
             $configData,
             (array) (include $cacheFile)
         );
@@ -160,19 +160,19 @@ final class CacheTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('path')->willReturn(__DIR__.'/'.$assertDir);
-        static::assertSame(__DIR__.'/'.$assertDir, $app->path());
+        self::assertSame(__DIR__.'/'.$assertDir, $app->path());
 
         $app->method('envPath')->willReturn(__DIR__.'/'.$assertDir);
-        static::assertSame(__DIR__.'/'.$assertDir, $app->envPath());
+        self::assertSame(__DIR__.'/'.$assertDir, $app->envPath());
 
         $app->method('envFile')->willReturn('.env');
-        static::assertSame('.env', $app->envFile());
+        self::assertSame('.env', $app->envFile());
 
         $app->method('configCachedPath')->willReturn($cacheFile);
-        static::assertSame($cacheFile, $app->configCachedPath());
+        self::assertSame($cacheFile, $app->configCachedPath());
 
         $app->method('configPath')->willReturn(__DIR__.'/'.$assertDir.'/config');
-        static::assertSame(__DIR__.'/'.$assertDir.'/config', $app->configPath());
+        self::assertSame(__DIR__.'/'.$assertDir.'/config', $app->configPath());
 
         $container->singleton(IApp::class, $app);
     }

@@ -43,7 +43,7 @@ EOT,
 
             eot;
 
-        static::assertSame(trim($compiled), trim($parser->doCompile($source, null, true)));
+        self::assertSame(trim($compiled), trim($parser->doCompile($source, null, true)));
     }
 
     #[Api([
@@ -63,7 +63,7 @@ EOT,
             <?php echo $value; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -81,6 +81,6 @@ EOT,
             <?php echo 'Hello QueryPHP!'; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

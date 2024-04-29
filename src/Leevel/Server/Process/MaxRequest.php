@@ -54,9 +54,6 @@ class MaxRequest extends Process
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function handle(IServer $server): void
     {
         Timer::tick(1000, function () use ($server): void {

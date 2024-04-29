@@ -45,7 +45,5 @@ ORM  | orm  |
 EOT,
         'lang' => 'shell',
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 }

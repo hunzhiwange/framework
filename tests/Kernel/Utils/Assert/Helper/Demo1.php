@@ -6,7 +6,5 @@ namespace Tests\Kernel\Utils\Assert\Helper;
 
 class Demo1
 {
-    public static function handle(): void
-    {
-    }
+    public static function handle(): void {}
 }

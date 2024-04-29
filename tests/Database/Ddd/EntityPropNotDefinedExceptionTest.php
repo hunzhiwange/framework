@@ -12,6 +12,6 @@ final class EntityPropNotDefinedExceptionTest extends TestCase
     public function test1(): void
     {
         $e = new EntityPropNotDefinedException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 }

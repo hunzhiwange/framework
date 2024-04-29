@@ -28,7 +28,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->setHeader('foo', 'bar');
-        static::assertSame('bar', $response->headers->get('foo'));
+        self::assertSame('bar', $response->headers->get('foo'));
     }
 
     #[Api([
@@ -38,7 +38,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->withHeaders(['foo' => 'bar']);
-        static::assertSame('bar', $response->headers->get('foo'));
+        self::assertSame('bar', $response->headers->get('foo'));
     }
 
     #[Api([
@@ -48,7 +48,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->setCookie('foo', 'bar');
-        static::assertCount(1, $response->headers->getCookies());
+        self::assertCount(1, $response->headers->getCookies());
     }
 
     #[Api([
@@ -58,7 +58,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->withCookies(['hello' => 'world']);
-        static::assertCount(1, $response->headers->getCookies());
+        self::assertCount(1, $response->headers->getCookies());
     }
 
     public function testSetCookieButExpireIsInvalid(): void

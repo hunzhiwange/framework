@@ -17,14 +17,12 @@ class Auth
     /**
      * 构造函数.
      */
-    public function __construct(protected Manager $manager)
-    {
-    }
+    public function __construct(protected Manager $manager) {}
 
     /**
      * 请求.
      *
-     * @throws \Leevel\Auth\AuthException
+     * @throws AuthException
      */
     public function handle(\Closure $next, Request $request): Response
     {

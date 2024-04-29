@@ -41,7 +41,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -73,7 +73,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -108,7 +108,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -150,7 +150,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -184,7 +184,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -229,7 +229,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -272,7 +272,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -315,7 +315,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -345,7 +345,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -375,7 +375,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -405,7 +405,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -435,7 +435,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -471,7 +471,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -508,7 +508,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -548,7 +548,7 @@ EOT,
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -556,7 +556,7 @@ eot;
                     ->setColumns('votes,title,id')
                     ->groupBy('votes,title,id')
                     ->having('id', 5)
-                    ->orHaving(function ($select): void {
+                    ->orHaving(static function ($select): void {
                         $select
                             ->having('votes', '>', 100)
                             ->having('title', '<>', 'Admin')
@@ -583,7 +583,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -636,7 +636,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -673,7 +673,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -708,7 +708,7 @@ eot;
     false
 ]
 eot;
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -764,7 +764,7 @@ eot;
 ]
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -830,7 +830,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -866,7 +866,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -905,7 +905,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -944,7 +944,7 @@ eot;
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1017,7 +1017,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1084,14 +1084,14 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('name,id')
                     ->groupBy('name,id')
-                    ->havingBetween('id', [function ($select): void {
+                    ->havingBetween('id', [static function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1125,14 +1125,14 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('name,id')
                     ->groupBy('name,id')
-                    ->havingIn('id', [function ($select): void {
+                    ->havingIn('id', [static function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1160,7 +1160,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1193,7 +1193,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1223,7 +1223,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1256,7 +1256,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1288,7 +1288,7 @@ EOT,
 
         $select = $connect->table('test_query_subsql', 'id')->one();
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1320,7 +1320,7 @@ EOT,
 
         $select = $connect->table('test_query_subsql', 'id')->one();
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1356,7 +1356,7 @@ EOT,
             ->databaseCondition()
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1392,7 +1392,7 @@ EOT,
             ->databaseCondition()
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1418,14 +1418,14 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('id')
                     ->groupBy('id')
-                    ->havingIn('id', function ($select): void {
+                    ->havingIn('id', static function ($select): void {
                         $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(),
@@ -1451,7 +1451,7 @@ EOT,
             ->makeSql(true)
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1486,7 +1486,7 @@ EOT,
             ->makeSql(true)
         ;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1514,7 +1514,7 @@ EOT,
 
         $subSql = $connect->table('test_query_subsql', 'id');
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1544,14 +1544,14 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
                     ->setColumns('id')
                     ->groupBy('id')
-                    ->having('id', '=', function ($select): void {
+                    ->having('id', '=', static function ($select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1578,7 +1578,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1606,7 +1606,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1634,7 +1634,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1665,7 +1665,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1696,7 +1696,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -1729,7 +1729,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql($connect
                 ->table('test_query', 'name,id,value')

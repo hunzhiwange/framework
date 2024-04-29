@@ -44,12 +44,13 @@ trait Helper
             return $this
                 ->parseTestProperty($classOrObject, $prop)
                 ->getValue($classOrObject)
-                ;
-        } else {
-            // @phpstan-ignore-next-line
-            $reflectedClass = new \ReflectionClass($classOrObject);
-            return $reflectedClass->getStaticPropertyValue($prop);
+            ;
         }
+
+        /** @phpstan-ignore-next-line */
+        $reflectedClass = new \ReflectionClass($classOrObject);
+
+        return $reflectedClass->getStaticPropertyValue($prop);
     }
 
     /**
@@ -63,7 +64,7 @@ trait Helper
                 ->setValue($classOrObject, $value)
             ;
         } else {
-            // @phpstan-ignore-next-line
+            /** @phpstan-ignore-next-line */
             $reflectedClass = new \ReflectionClass($classOrObject);
             $reflectedClass->setStaticPropertyValue($prop, $value);
         }

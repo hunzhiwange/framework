@@ -13,9 +13,6 @@ use Leevel\Database\Ddd\Select;
  */
 class BelongsTo extends Relation
 {
-    /**
-     * {@inheritDoc}
-     */
     public function addRelationCondition(): void
     {
         $this->prepareRelationCondition(function ($sourceValue): void {
@@ -23,9 +20,6 @@ class BelongsTo extends Relation
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         $maps = $this->buildMap($result);
@@ -39,9 +33,6 @@ class BelongsTo extends Relation
         return $entities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function preLoadCondition(array $entities): void
     {
         if (!$sourceValue = $this->getPreLoadEntityValue($entities)) {
@@ -54,9 +45,6 @@ class BelongsTo extends Relation
         $this->select->whereIn($this->targetKey, $sourceValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function sourceQuery(): mixed
     {
         if ($this->emptySourceData) {

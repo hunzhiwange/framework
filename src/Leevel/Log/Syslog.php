@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
+use Monolog\Handler\AbstractSyslogHandler;
 use Monolog\Handler\SyslogHandler;
 use Psr\Log\LogLevel;
 
@@ -15,7 +16,7 @@ class Syslog extends Log implements ILog
     /**
      * 配置.
      *
-     * @see \Monolog\Handler\AbstractSyslogHandler
+     * @see AbstractSyslogHandler
      */
     protected array $config = [
         'level' => [

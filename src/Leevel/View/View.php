@@ -27,9 +27,6 @@ abstract class View implements IView
         $this->config = array_merge($this->config, $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setVar(array|string $name, mixed $value = null): void
     {
         if (\is_array($name)) {
@@ -41,9 +38,6 @@ abstract class View implements IView
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getVar(?string $name = null): mixed
     {
         if (null === $name) {
@@ -53,9 +47,6 @@ abstract class View implements IView
         return $this->vars[$name] ?? null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function deleteVar(array $name): void
     {
         foreach ($name as $item) {
@@ -65,9 +56,6 @@ abstract class View implements IView
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function clearVar(): void
     {
         $this->vars = [];

@@ -14,9 +14,6 @@ class Hash implements IHash
      */
     public const string ALGO = ':algo';
 
-    /**
-     * {@inheritDoc}
-     */
     public function password(string $password, array $config = []): string
     {
         $algo = $config[self::ALGO] ?? PASSWORD_BCRYPT;
@@ -24,9 +21,6 @@ class Hash implements IHash
         return password_hash($password, (int) $algo, $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function verify(string $password, string $hash): bool
     {
         return password_verify($password, $hash);

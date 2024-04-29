@@ -32,8 +32,7 @@ class Response
     public function __construct(
         protected IView $view,
         protected Redirect $redirect,
-    ) {
-    }
+    ) {}
 
     /**
      * 返回一个响应.
@@ -101,7 +100,7 @@ class Response
     /**
      * 返回下载响应.
      */
-    public function download(\SplFileInfo|\SplFileObject|string $file, string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
+    public function download(\SplFileInfo|\SplFileObject|string $file, ?string $name = null, int $status = 200, array $headers = [], bool $public = true, bool $autoEtag = false, bool $autoLastModified = true): BinaryFileResponse
     {
         $response = new BinaryFileResponse($file, $status, $headers, $public, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
         if (null !== $name) {

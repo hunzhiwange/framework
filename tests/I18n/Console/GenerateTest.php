@@ -43,13 +43,13 @@ final class GenerateTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to generate i18n file.'),
             $result
         );
 
         foreach (['zh-CN', 'en-US'] as $i18n) {
-            static::assertStringContainsString(
+            self::assertStringContainsString(
                 $this->normalizeContent(
                     sprintf(
                         'I18n file base generate succeed at %s.',
@@ -60,7 +60,7 @@ final class GenerateTest extends TestCase
             );
         }
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('I18n file generate succeed.'),
             $result
         );
@@ -88,7 +88,7 @@ final class GenerateTest extends TestCase
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
         $container->singleton(IConfig::class, $config);

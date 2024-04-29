@@ -20,7 +20,7 @@ final class LoadTest extends TestCase
 
         $data = $load->loadData();
 
-        static::assertSame([
+        self::assertSame([
             'Tests\\Console\\Load1\\Test1',
             'Tests\\Console\\Load2\\Test1',
             'Tests\\Console\\Load2\\Test2',
@@ -28,7 +28,7 @@ final class LoadTest extends TestCase
 
         $data = $load->loadData();
 
-        static::assertSame([
+        self::assertSame([
             'Tests\\Console\\Load1\\Test1',
             'Tests\\Console\\Load2\\Test1',
             'Tests\\Console\\Load2\\Test2',

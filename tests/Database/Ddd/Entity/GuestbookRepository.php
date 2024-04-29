@@ -6,6 +6,4 @@ namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Repository;
 
-class GuestbookRepository extends Repository
-{
-}
+class GuestbookRepository extends Repository {}

@@ -12,9 +12,6 @@ use Leevel\Database\Ddd\Select;
  */
 class HasOne extends HasMany
 {
-    /**
-     * {@inheritDoc}
-     */
     public function sourceQuery(): mixed
     {
         if ($this->emptySourceData) {
@@ -26,9 +23,6 @@ class HasOne extends HasMany
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function matchPreLoad(array $entities, EntityCollection $result, string $relation): array
     {
         return $this->matchPreLoadOneOrMany($entities, $result, $relation, 'one');

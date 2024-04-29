@@ -25,10 +25,10 @@ final class MapIntTest extends TestCase
         ];
 
         $collection = new MapInt($data, 'string');
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 'world');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 'world');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
     }
 
     #[Api([
@@ -42,10 +42,10 @@ final class MapIntTest extends TestCase
         ];
 
         $collection = new MapInt($data, 'int');
-        static::assertSame($collection[0], 1);
-        static::assertSame($collection[1], 2);
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
+        self::assertSame($collection[0], 1);
+        self::assertSame($collection[1], 2);
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
     }
 
     public function testError(): void

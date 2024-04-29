@@ -28,7 +28,7 @@ final class EnumTest extends TestCase
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
     }
@@ -44,18 +44,18 @@ final class EnumTest extends TestCase
     ])]
     public function testDescription(): void
     {
-        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
-        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
-        static::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
-        static::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
-        static::assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
-        static::assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
-        static::assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
-        static::assertSame('Type bool false', Enum1::description(Enum1::TYPE_BOOL_FALSE, 'type'));
-        static::assertSame('Type int', Enum1::description(Enum1::TYPE_INT, 'type'));
-        static::assertSame('Type string float', Enum1::description(Enum1::TYPE_STRING_FLOAT, 'type'));
-        static::assertSame('Type string', Enum1::description(Enum1::TYPE_STRING, 'type'));
-        static::assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
+        self::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
+        self::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
+        self::assertSame('错误类型一', Enum1::description(Enum1::ERROR_ONE));
+        self::assertSame('自定义错误', Enum1::description(Enum1::CUSTOM_ERROR));
+        self::assertSame('Status disabled', Enum1::description(Enum1::STATUS_DISABLE, 'status'));
+        self::assertSame('Type enabled', Enum1::description(Enum1::TYPE_ENABLE, 'type'));
+        self::assertSame('Type bool true', Enum1::description(Enum1::TYPE_BOOL_TRUE, 'type'));
+        self::assertSame('Type bool false', Enum1::description(Enum1::TYPE_BOOL_FALSE, 'type'));
+        self::assertSame('Type int', Enum1::description(Enum1::TYPE_INT, 'type'));
+        self::assertSame('Type string float', Enum1::description(Enum1::TYPE_STRING_FLOAT, 'type'));
+        self::assertSame('Type string', Enum1::description(Enum1::TYPE_STRING, 'type'));
+        self::assertSame('Type null', Enum1::description(Enum1::TYPE_NULL, 'type'));
     }
 
     #[Api([
@@ -76,7 +76,7 @@ final class EnumTest extends TestCase
     ])]
     public function testDescriptionButAttributesDescriptionNotFound(): void
     {
-        static::assertSame('', Enum1::description(Enum1::NO_MSG));
+        self::assertSame('', Enum1::description(Enum1::NO_MSG));
     }
 
     #[Api([
@@ -89,7 +89,7 @@ final class EnumTest extends TestCase
             'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
         );
 
-        static::assertSame('', Enum1::description(999999999999999));
+        self::assertSame('', Enum1::description(999999999999999));
     }
 
     #[Api([
@@ -100,8 +100,8 @@ EOT,
     ])]
     public function testDescriptionSameValueDescriptionWillBeFristOne(): void
     {
-        static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
-        static::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
+        self::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR1));
+        self::assertSame('相同错误1', Enum1::description(Enum1::SAME_ERROR2));
     }
 
     #[Api([
@@ -179,7 +179,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -200,7 +200,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -224,7 +224,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -244,14 +244,14 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
             )
         );
 
-        static::assertSame('错误类型我是:谁', Enum2::description(Enum2::ERROR_ONE));
+        self::assertSame('错误类型我是:谁', Enum2::description(Enum2::ERROR_ONE));
     }
 
     public function testRealEnumValueIntDescriptionMap(): void
@@ -264,7 +264,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -282,7 +282,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -300,7 +300,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -327,7 +327,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $json,
             $this->varJson(
                 $value
@@ -353,10 +353,10 @@ EOT,
     ])]
     public function testIsValid(): void
     {
-        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
-        static::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
-        static::assertFalse(Enum1::isValid(9999999));
-        static::assertFalse(RealEnumInt::isValid('hello'));
+        self::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
+        self::assertTrue(Enum1::isValid(Enum1::ERROR_ONE));
+        self::assertFalse(Enum1::isValid(9999999));
+        self::assertFalse(RealEnumInt::isValid('hello'));
     }
 
     #[Api([
@@ -364,10 +364,10 @@ EOT,
     ])]
     public function testIsValidKey(): void
     {
-        static::assertTrue(Enum1::isValidKey('ERROR_ONE'));
-        static::assertFalse(Enum1::isValidKey('NOT_FOUND'));
-        static::assertFalse(RealEnumInt::isValidKey('NOT_FOUND'));
-        static::assertTrue(RealEnumInt::isValidKey('TRUE'));
+        self::assertTrue(Enum1::isValidKey('ERROR_ONE'));
+        self::assertFalse(Enum1::isValidKey('NOT_FOUND'));
+        self::assertFalse(RealEnumInt::isValidKey('NOT_FOUND'));
+        self::assertTrue(RealEnumInt::isValidKey('TRUE'));
     }
 
     #[Api([
@@ -375,10 +375,10 @@ EOT,
     ])]
     public function testValueByKey(): void
     {
-        static::assertSame(100010, Enum1::valueByKey('ERROR_ONE'));
-        static::assertSame(100011, Enum1::valueByKey('CUSTOM_ERROR'));
-        static::assertSame(1, RealEnumInt::valueByKey('FALSE'));
-        static::assertSame(2, RealEnumInt::valueByKey('TRUE'));
+        self::assertSame(100010, Enum1::valueByKey('ERROR_ONE'));
+        self::assertSame(100011, Enum1::valueByKey('CUSTOM_ERROR'));
+        self::assertSame(1, RealEnumInt::valueByKey('FALSE'));
+        self::assertSame(2, RealEnumInt::valueByKey('TRUE'));
     }
 
     public function testValueByKey1(): void
@@ -388,7 +388,7 @@ EOT,
             'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\\Support\\Fixtures\\Enum1'
         );
 
-        static::assertSame(100010, Enum1::valueByKey('ERROR_ONE_NOT_FOUND'));
+        self::assertSame(100010, Enum1::valueByKey('ERROR_ONE_NOT_FOUND'));
     }
 
     public function testValueByKey2(): void
@@ -398,7 +398,7 @@ EOT,
             'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\\Support\\Fixtures\\RealEnumInt'
         );
 
-        static::assertSame(100010, RealEnumInt::valueByKey('ERROR_ONE_NOT_FOUND'));
+        self::assertSame(100010, RealEnumInt::valueByKey('ERROR_ONE_NOT_FOUND'));
     }
 
     public function testValueByKey3(): void
@@ -408,7 +408,7 @@ EOT,
             'Key `ENABLE` of Tests\\Support\\Fixtures\\RealEnumNoValue does not have a value'
         );
 
-        static::assertSame(100010, RealEnumNoValue::valueByKey('ENABLE'));
+        self::assertSame(100010, RealEnumNoValue::valueByKey('ENABLE'));
     }
 
     #[Api([
@@ -416,10 +416,10 @@ EOT,
     ])]
     public function testSearchKey(): void
     {
-        static::assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
-        static::assertFalse(Enum1::searchKey(88));
-        static::assertFalse(RealEnumInt::searchKey('hello'));
-        static::assertSame('FALSE', RealEnumInt::searchKey(1));
+        self::assertSame('ERROR_ONE', Enum1::searchKey(Enum1::ERROR_ONE));
+        self::assertFalse(Enum1::searchKey(88));
+        self::assertFalse(RealEnumInt::searchKey('hello'));
+        self::assertSame('FALSE', RealEnumInt::searchKey(1));
     }
 
     #[Api([
@@ -427,9 +427,9 @@ EOT,
     ])]
     public function testValue(): void
     {
-        static::assertSame(100010, Enum1::value('错误类型一'));
-        static::assertSame(1, RealEnumInt::value('未完成')->value);
-        static::assertSame('FALSE', RealEnumInt::value('未完成')->name);
+        self::assertSame(100010, Enum1::value('错误类型一'));
+        self::assertSame(1, RealEnumInt::value('未完成')->value);
+        self::assertSame('FALSE', RealEnumInt::value('未完成')->name);
     }
 
     public function testValue1(): void
@@ -467,7 +467,7 @@ EOT,
     "SAME_ERROR2"
 ]
 eot;
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->varJson(
                 Enum1::names()
@@ -480,7 +480,7 @@ eot;
     "TRUE"
 ]
 eot;
-        static::assertSame(
+        self::assertSame(
             $value,
             $this->varJson(
                 RealEnumInt::names()
@@ -493,17 +493,17 @@ eot;
     ])]
     public function testRealEnumDescription(): void
     {
-        static::assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
-        static::assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
-        static::assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
-        static::assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
-        static::assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
-        static::assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
+        self::assertSame('已完成', RealEnumInt::description(RealEnumInt::TRUE));
+        self::assertSame('未完成', RealEnumInt::description(RealEnumInt::FALSE));
+        self::assertSame('世界', RealEnumString::description(RealEnumString::HELLO));
+        self::assertSame('你好', RealEnumString::description(RealEnumString::WORLD));
+        self::assertSame('启用', RealEnumNoValue::description(RealEnumNoValue::ENABLE));
+        self::assertSame('禁用', RealEnumNoValue::description(RealEnumNoValue::DISABLE));
     }
 
     public function test3(): void
     {
-        static::assertTrue(RealEnumInt::isValid('1'));
-        static::assertFalse(RealEnumInt::isValid('hello world'));
+        self::assertTrue(RealEnumInt::isValid('1'));
+        self::assertFalse(RealEnumInt::isValid('hello world'));
     }
 }

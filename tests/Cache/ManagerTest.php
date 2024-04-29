@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\Manager;
-use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\Redis;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Filesystem\Helper\DeleteDirectory;
-use RedisException;
 use Tests\TestCase;
-use Leevel\Cache\Redis;
 
 final class ManagerTest extends TestCase
 {
@@ -29,24 +27,24 @@ final class ManagerTest extends TestCase
     {
         $manager = $this->createManager();
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
     }
 
     public function testReconnect(): void
     {
         $manager = $this->createManager();
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
 
         $cache = $manager->reconnect();
         $cache->set('manager-foo', 'bar');
-        static::assertSame('bar', $cache->get('manager-foo'));
+        self::assertSame('bar', $cache->get('manager-foo'));
     }
 
     public function testRedis(): void
@@ -55,10 +53,10 @@ final class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
     }
 
     public function testRedisReconnect(): void
@@ -67,18 +65,18 @@ final class ManagerTest extends TestCase
 
         $manager = $this->createManager('redis');
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
 
         $manager->close();
 
         $manager->set('manager-foo', 'bar');
-        static::assertSame('bar', $manager->get('manager-foo'));
+        self::assertSame('bar', $manager->get('manager-foo'));
 
         $manager->delete('manager-foo');
-        static::assertFalse($manager->get('manager-foo'));
+        self::assertFalse($manager->get('manager-foo'));
     }
 
     public function testRedisCloseTwice(): void
@@ -93,13 +91,13 @@ final class ManagerTest extends TestCase
     protected function checkRedis(): void
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->makePhpRedis();
-        } catch (RedisException) {
-            static::markTestSkipped('Redis read error on connection and ignore.');
+        } catch (\RedisException) {
+            self::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 

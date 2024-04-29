@@ -12,6 +12,6 @@ final class DataNotFoundExceptionTest extends TestCase
     public function test1(): void
     {
         $e = new DataNotFoundException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 }

@@ -50,12 +50,12 @@ EOT,
         $posts = Post::select()->limit(5)->findAll();
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(0, $posts);
+        self::assertCount(0, $posts);
 
         $connect = $this->createDatabaseConnect();
 
         for ($i = 0; $i <= 5; ++$i) {
-            static::assertSame(
+            self::assertSame(
                 $i + 1,
                 $connect
                     ->table('post')
@@ -68,7 +68,7 @@ EOT,
             );
         }
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('user')
@@ -77,7 +77,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('role')
@@ -86,7 +86,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('role')
@@ -95,7 +95,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             3,
             $connect
                 ->table('role')
@@ -104,7 +104,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             1,
             $connect
                 ->table('user_role')
@@ -114,7 +114,7 @@ EOT,
                 ])
         );
 
-        static::assertSame(
+        self::assertSame(
             2,
             $connect
                 ->table('user_role')
@@ -130,33 +130,33 @@ EOT,
         ;
 
         $this->assertInstanceof(Collection::class, $posts);
-        static::assertCount(5, $posts);
+        self::assertCount(5, $posts);
 
         $post = Post::select()->where('id', 1)->findOne();
 
-        static::assertSame(1, $post->id);
-        static::assertSame(1, $post['id']);
-        static::assertSame(1, $post->getId());
-        static::assertSame(1, $post->user_id);
-        static::assertSame(1, $post->userId);
-        static::assertSame(1, $post['user_id']);
-        static::assertSame(1, $post->getUserId());
-        static::assertSame('hello world', $post->title);
-        static::assertSame('hello world', $post['title']);
-        static::assertSame('hello world', $post->getTitle());
-        static::assertSame('Say hello to the world.', $post->summary);
-        static::assertSame('Say hello to the world.', $post['summary']);
-        static::assertSame('Say hello to the world.', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame(1, $post['id']);
+        self::assertSame(1, $post->getId());
+        self::assertSame(1, $post->user_id);
+        self::assertSame(1, $post->userId);
+        self::assertSame(1, $post['user_id']);
+        self::assertSame(1, $post->getUserId());
+        self::assertSame('hello world', $post->title);
+        self::assertSame('hello world', $post['title']);
+        self::assertSame('hello world', $post->getTitle());
+        self::assertSame('Say hello to the world.', $post->summary);
+        self::assertSame('Say hello to the world.', $post['summary']);
+        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
-        static::assertSame(1, $user->id);
-        static::assertSame(1, $user['id']);
-        static::assertSame(1, $user->getId());
-        static::assertSame('niu', $user->name);
-        static::assertSame('niu', $user['name']);
-        static::assertSame('niu', $user->getName());
+        self::assertSame(1, $user->id);
+        self::assertSame(1, $user['id']);
+        self::assertSame(1, $user->getId());
+        self::assertSame('niu', $user->name);
+        self::assertSame('niu', $user['name']);
+        self::assertSame('niu', $user->getName());
 
         $role = $user->role;
 
@@ -165,37 +165,37 @@ EOT,
         $user1 = $role[0];
 
         $this->assertInstanceof(Role::class, $user1);
-        static::assertSame(1, $user1->id);
-        static::assertSame(1, $user1['id']);
-        static::assertSame(1, $user1->getId());
-        static::assertSame('管理员', $user1->name);
-        static::assertSame('管理员', $user1['name']);
-        static::assertSame('管理员', $user1->getName());
+        self::assertSame(1, $user1->id);
+        self::assertSame(1, $user1['id']);
+        self::assertSame(1, $user1->getId());
+        self::assertSame('管理员', $user1->name);
+        self::assertSame('管理员', $user1['name']);
+        self::assertSame('管理员', $user1->getName());
 
         $user2 = $role[1];
         $this->assertInstanceof(Role::class, $user2);
-        static::assertSame(3, $user2->id);
-        static::assertSame(3, $user2['id']);
-        static::assertSame(3, $user2->getId());
-        static::assertSame('会员', $user2->name);
-        static::assertSame('会员', $user2['name']);
-        static::assertSame('会员', $user2->getName());
+        self::assertSame(3, $user2->id);
+        self::assertSame(3, $user2['id']);
+        self::assertSame(3, $user2->getId());
+        self::assertSame('会员', $user2->name);
+        self::assertSame('会员', $user2['name']);
+        self::assertSame('会员', $user2->getName());
 
-        static::assertCount(2, $role);
-        static::assertSame(1, $role[0]['id']);
-        static::assertSame('管理员', $role[0]['name']);
-        static::assertSame(3, $role[1]['id']);
-        static::assertSame('会员', $role[1]['name']);
+        self::assertCount(2, $role);
+        self::assertSame(1, $role[0]['id']);
+        self::assertSame('管理员', $role[0]['name']);
+        self::assertSame(3, $role[1]['id']);
+        self::assertSame('会员', $role[1]['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        static::assertSame(1, $middle->userId);
-        static::assertSame(1, $middle->roleId);
+        self::assertSame(1, $middle->userId);
+        self::assertSame(1, $middle->roleId);
 
         $middle = $role[1]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
-        static::assertSame(1, $middle->userId);
-        static::assertSame(3, $middle->roleId);
+        self::assertSame(1, $middle->userId);
+        self::assertSame(3, $middle->roleId);
     }
 
     protected function getDatabaseTable(): array

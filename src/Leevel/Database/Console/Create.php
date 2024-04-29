@@ -16,9 +16,6 @@ class Create extends PhinxCreate
     use RuntimeEnvironment;
     use SelectDatabase;
 
-    /**
-     * {@inheritDoc}
-     */
     protected function configure(): void
     {
         parent::configure();

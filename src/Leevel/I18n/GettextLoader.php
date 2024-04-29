@@ -18,7 +18,7 @@ class GettextLoader
      */
     public function loadPoFile(array $fileNames): array
     {
-        return $this->loadGettextFile($fileNames, function (): PoLoader {
+        return $this->loadGettextFile($fileNames, static function (): PoLoader {
             return new PoLoader();
         });
     }
@@ -28,7 +28,7 @@ class GettextLoader
      */
     public function loadMoFile(array $fileNames): array
     {
-        return $this->loadGettextFile($fileNames, function (): MoLoader {
+        return $this->loadGettextFile($fileNames, static function (): MoLoader {
             return new MoLoader();
         });
     }
@@ -49,6 +49,6 @@ class GettextLoader
             $result[$each['original']] = $each['translation'];
         }
 
-        return array_filter($result, fn (string $v) => '' !== $v);
+        return array_filter($result, static fn (string $v) => '' !== $v);
     }
 }

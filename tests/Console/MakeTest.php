@@ -63,16 +63,16 @@ EOT,
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
+        self::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
-        static::assertStringContainsString('hello make file', $content = file_get_contents($file));
+        self::assertStringContainsString('hello make file', $content = file_get_contents($file));
 
-        static::assertStringContainsString('hello key1', $content);
-        static::assertStringContainsString('hello key2', $content);
-        static::assertStringContainsString('hello key3', $content);
-        static::assertStringContainsString('hello key4', $content);
+        self::assertStringContainsString('hello key1', $content);
+        self::assertStringContainsString('hello key2', $content);
+        self::assertStringContainsString('hello key3', $content);
+        self::assertStringContainsString('hello key4', $content);
 
         unlink($file);
         rmdir(\dirname($file));
@@ -92,7 +92,7 @@ EOT,
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
+        self::assertStringContainsString($this->normalizeContent('File is already exits.'), $result);
 
         unlink($file);
         rmdir($dirname);
@@ -111,7 +111,7 @@ EOT,
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
+        self::assertStringContainsString($this->normalizeContent('Stub not found.'), $result);
     }
 
     public function testMakeFileWithGlobalReplace(): void
@@ -123,18 +123,18 @@ EOT,
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
+        self::assertStringContainsString($this->normalizeContent('test <test> created successfully.'), $result);
 
         $file = __DIR__.'/Command/cache/test';
 
-        static::assertStringContainsString('hello make file', $content = file_get_contents($file));
+        self::assertStringContainsString('hello make file', $content = file_get_contents($file));
 
-        static::assertStringContainsString('hello key1', $content);
-        static::assertStringContainsString('hello key2 global', $content);
-        static::assertStringContainsString('hello key3', $content);
-        static::assertStringContainsString('hello key4', $content);
+        self::assertStringContainsString('hello key1', $content);
+        self::assertStringContainsString('hello key2 global', $content);
+        self::assertStringContainsString('hello key3', $content);
+        self::assertStringContainsString('hello key4', $content);
 
-        static::assertSame([], Make::getGlobalReplace());
+        self::assertSame([], Make::getGlobalReplace());
 
         unlink($file);
         rmdir(\dirname($file));

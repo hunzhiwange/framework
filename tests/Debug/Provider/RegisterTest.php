@@ -43,11 +43,11 @@ final class RegisterTest extends TestCase
 
         $content = $response->getContent();
 
-        static::assertStringContainsString('{"foo":"bar",":trace":', $content);
+        self::assertStringContainsString('{"foo":"bar",":trace":', $content);
 
-        static::assertStringContainsString('"php":{"version":', $content);
+        self::assertStringContainsString('"php":{"version":', $content);
 
-        static::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
     protected function createApp(): App
@@ -64,7 +64,7 @@ final class RegisterTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
 
         $container->singleton(IDispatch::class, $eventDispatch);
 
@@ -116,7 +116,5 @@ final class RegisterTest extends TestCase
 
 class App extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

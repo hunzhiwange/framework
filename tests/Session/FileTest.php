@@ -26,25 +26,25 @@ final class FileTest extends TestCase
 
         $this->assertInstanceof(ISession::class, $session);
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
 
         $session->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $session->all());
-        static::assertTrue($session->has('hello'));
-        static::assertSame('world', $session->get('hello'));
+        self::assertSame(['hello' => 'world'], $session->all());
+        self::assertTrue($session->has('hello'));
+        self::assertSame('world', $session->get('hello'));
 
         $session->delete('hello');
-        static::assertSame([], $session->all());
-        static::assertFalse($session->has('hello'));
-        static::assertNull($session->get('hello'));
+        self::assertSame([], $session->all());
+        self::assertFalse($session->has('hello'));
+        self::assertNull($session->get('hello'));
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
     }
 
     protected function createFileSessionHandler(): File

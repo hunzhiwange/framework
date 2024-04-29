@@ -37,13 +37,13 @@ final class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
 
         $container = $this->createContainer();
-        $container->singleton('router', function () use ($router): Router {
+        $container->singleton('router', static function () use ($router): Router {
             return $router;
         });
 
         $result = $router->dispatch($request);
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello my home', $result->getContent());
+        self::assertSame('hello my home', $result->getContent());
     }
 
     public function testProxy(): void
@@ -57,13 +57,13 @@ final class RouterTest extends TestCase
         $router->setControllerDir($controllerDir);
 
         $container = $this->createContainer();
-        $container->singleton('router', function () use ($router): Router {
+        $container->singleton('router', static function () use ($router): Router {
             return $router;
         });
 
         $result = ProxyRouter::dispatch($request);
         $this->assertInstanceof(Response::class, $result);
-        static::assertSame('hello my home', $result->getContent());
+        self::assertSame('hello my home', $result->getContent());
     }
 
     protected function createRouter(): Router
@@ -77,10 +77,10 @@ final class RouterTest extends TestCase
         $this->assertInstanceof(Request::class, $request);
 
         $request->method('getPathInfo')->willReturn($pathInfo);
-        static::assertSame($pathInfo, $request->getPathInfo());
+        self::assertSame($pathInfo, $request->getPathInfo());
 
         $request->method('getMethod')->willReturn($method);
-        static::assertSame($method, $request->getMethod());
+        self::assertSame($method, $request->getMethod());
 
         $request->attributes = new ParameterBag($attributes);
 

@@ -17,9 +17,7 @@ class Session
     /**
      * 构造函数.
      */
-    public function __construct(protected Manager $manager)
-    {
-    }
+    public function __construct(protected Manager $manager) {}
 
     /**
      * 请求.

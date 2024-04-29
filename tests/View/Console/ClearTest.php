@@ -19,7 +19,7 @@ final class ClearTest extends TestCase
     {
         $cacheDir = __DIR__.'/view_clear';
         Helper::createFile($cacheDir.'/hello.txt', 'foo');
-        static::assertDirectoryExists($cacheDir);
+        self::assertDirectoryExists($cacheDir);
 
         $result = $this->runCommand(
             new Clear(),
@@ -31,13 +31,13 @@ final class ClearTest extends TestCase
             }
         );
 
-        static::assertDirectoryDoesNotExist($cacheDir);
+        self::assertDirectoryDoesNotExist($cacheDir);
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to clear cache view.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('View cache files in path %s clear succeed.', $cacheDir)),
             $result
         );
@@ -49,7 +49,7 @@ final class ClearTest extends TestCase
         $this->assertInstanceof(IApp::class, $app);
 
         $app->method('storagePath')->willReturn($cacheDir);
-        static::assertSame($cacheDir, $app->storagePath('theme'));
+        self::assertSame($cacheDir, $app->storagePath('theme'));
 
         $container->singleton(IApp::class, $app);
     }

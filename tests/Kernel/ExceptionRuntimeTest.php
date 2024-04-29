@@ -116,15 +116,15 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
         $log = $this->createMock(ILog::class);
 
-        static::assertNull($log->error('hello world', []));
+        self::assertNull($log->error('hello world', []));
 
-        $container->singleton(ILog::class, function () use ($log) {
+        $container->singleton(ILog::class, static function () use ($log) {
             return $log;
         });
 
@@ -132,7 +132,7 @@ EOT,
 
         $e = new Exception1('hello world');
 
-        static::assertNull($runtime->report($e));
+        self::assertNull($runtime->report($e));
     }
 
     #[Api([
@@ -157,11 +157,11 @@ EOT,
 
         $e = new Exception2('hello world');
 
-        static::assertArrayNotHasKey('testExceptionItSelfWithReport', $_SERVER);
+        self::assertArrayNotHasKey('testExceptionItSelfWithReport', $_SERVER);
 
-        static::assertNull($runtime->report($e));
+        self::assertNull($runtime->report($e));
 
-        static::assertSame(1, $_SERVER['testExceptionItSelfWithReport']);
+        self::assertSame(1, $_SERVER['testExceptionItSelfWithReport']);
 
         unset($_SERVER['testExceptionItSelfWithReport']);
     }
@@ -185,9 +185,9 @@ EOT,
         $app = new AppRuntime(new Container(), __DIR__.'/app');
         $runtime = new Runtime11($app);
         $e = new ExceptionCanReportable('hello world');
-        static::assertArrayNotHasKey('testExceptionReportable', $_SERVER);
-        static::assertNull($runtime->report($e));
-        static::assertSame(1, $_SERVER['testExceptionReportable']);
+        self::assertArrayNotHasKey('testExceptionReportable', $_SERVER);
+        self::assertNull($runtime->report($e));
+        self::assertSame(1, $_SERVER['testExceptionReportable']);
         unset($_SERVER['testExceptionReportable']);
     }
 
@@ -208,9 +208,9 @@ EOT,
         $app = new AppRuntime(new Container(), __DIR__.'/app');
         $runtime = new Runtime11($app);
         $e = new ExceptionCannotReportable('hello world');
-        static::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
-        static::assertNull($runtime->report($e));
-        static::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+        self::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
+        self::assertNull($runtime->report($e));
+        self::assertArrayNotHasKey('testExceptionReportableIsFalse', $_SERVER);
     }
 
     #[Api([
@@ -223,9 +223,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -236,7 +236,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -245,8 +245,8 @@ EOT,
         $e = new Exception1('hello world');
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
-        static::assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -272,15 +272,15 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
         $log = $this->createMock(ILog::class);
 
-        static::assertNull($log->error('hello world', []));
+        self::assertNull($log->error('hello world', []));
 
-        $container->singleton(ILog::class, function () use ($log) {
+        $container->singleton(ILog::class, static function () use ($log) {
             return $log;
         });
 
@@ -312,9 +312,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -325,7 +325,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -335,8 +335,8 @@ EOT,
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        static::assertSame('hello world', $resultResponse->getContent());
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertSame('hello world', $resultResponse->getContent());
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -360,9 +360,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -373,7 +373,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -383,8 +383,8 @@ EOT,
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        static::assertSame('foo bar', $resultResponse->getContent());
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertSame('foo bar', $resultResponse->getContent());
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -397,9 +397,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -410,7 +410,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -420,11 +420,11 @@ EOT,
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        static::assertIsArray($content = json_decode($resultResponse->getContent(), true));
-        static::assertArrayHasKey('error', $content);
-        static::assertSame('Tests\\Kernel\\Exception1', $content['error']['type']);
-        static::assertSame('hello world', $content['error']['message']);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertIsArray($content = json_decode($resultResponse->getContent(), true));
+        self::assertArrayHasKey('error', $content);
+        self::assertSame('Tests\\Kernel\\Exception1', $content['error']['type']);
+        self::assertSame('hello world', $content['error']['message']);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -448,9 +448,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -461,7 +461,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -471,8 +471,8 @@ EOT,
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
 
-        static::assertSame('{"foo":"bar"}', $resultResponse->getContent());
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertSame('{"foo":"bar"}', $resultResponse->getContent());
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -518,7 +518,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -530,10 +530,10 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('<div id="status-code">500</div>', $content);
-        static::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        static::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('<div id="status-code">500</div>', $content);
+        self::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
+        self::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -567,7 +567,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -579,10 +579,10 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('<div id="status-code">404</div>', $content);
-        static::assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        static::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
-        static::assertSame(404, $resultResponse->getStatusCode());
+        self::assertStringContainsString('<div id="status-code">404</div>', $content);
+        self::assertStringContainsString('<p id="title">页面未找到</p>', $content);
+        self::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
+        self::assertSame(404, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -622,7 +622,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -634,10 +634,10 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('<div id="status-code">405</div>', $content);
-        static::assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
-        static::assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
-        static::assertSame(405, $resultResponse->getStatusCode());
+        self::assertStringContainsString('<div id="status-code">405</div>', $content);
+        self::assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
+        self::assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
+        self::assertSame(405, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundView(): void
@@ -651,7 +651,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -669,8 +669,8 @@ EOT,
     <p id="sub-title">0 hello world</p>
 </div>';
 
-        static::assertSame($contentNew, $content);
-        static::assertSame(405, $resultResponse->getStatusCode());
+        self::assertSame($contentNew, $content);
+        self::assertSame(405, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -683,9 +683,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -696,7 +696,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -708,10 +708,10 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('<div id="status-code">500</div>', $content);
-        static::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
-        static::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('<div id="status-code">500</div>', $content);
+        self::assertStringContainsString('<p id="title">服务器内部错误</p>', $content);
+        self::assertStringContainsString('<p id="sub-title">0 服务器遇到错误，无法完成请求</p>', $content);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -724,9 +724,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -737,7 +737,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -749,8 +749,8 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -778,9 +778,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -791,7 +791,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -803,8 +803,8 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -832,9 +832,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -845,7 +845,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -857,8 +857,8 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
-        static::assertSame(500, $resultResponse->getStatusCode());
+        self::assertStringContainsString('{"error":{"code":0,"message":"hello world"}}', $content);
+        self::assertSame(500, $resultResponse->getStatusCode());
     }
 
     #[Api([
@@ -886,9 +886,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(true);
-        static::assertTrue($request->isAcceptJson());
+        self::assertTrue($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -899,7 +899,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -911,8 +911,8 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('{"error":{"title":"方法禁用","code":0,"message":"hello world","duration":5}}', $content);
-        static::assertSame(405, $resultResponse->getStatusCode());
+        self::assertStringContainsString('{"error":{"title":"方法禁用","code":0,"message":"hello world","duration":5}}', $content);
+        self::assertSame(405, $resultResponse->getStatusCode());
     }
 
     public function testRendorWithHttpExceptionViewButNotFoundViewAndWithDefaultViewButNotStill(): void
@@ -931,7 +931,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -948,9 +948,9 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('isAcceptJson')->willReturn(false);
-        static::assertFalse($request->isAcceptJson());
+        self::assertFalse($request->isAcceptJson());
 
-        $container->singleton('request', function () use ($request) {
+        $container->singleton('request', static function () use ($request) {
             return $request;
         });
 
@@ -961,7 +961,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -973,10 +973,10 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        static::assertStringContainsString('<div id="status-code">404</div>', $content);
-        static::assertStringContainsString('<p id="title">页面未找到</p>', $content);
-        static::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
-        static::assertSame(404, $resultResponse->getStatusCode());
+        self::assertStringContainsString('<div id="status-code">404</div>', $content);
+        self::assertStringContainsString('<p id="title">页面未找到</p>', $content);
+        self::assertStringContainsString('<p id="sub-title">0 用户发出的请求针对的是不存在的页面</p>', $content);
+        self::assertSame(404, $resultResponse->getStatusCode());
     }
 
     public function testReportToLogError(): void
@@ -999,7 +999,7 @@ EOT,
             ],
         ]);
 
-        $container->singleton('config', function () use ($config) {
+        $container->singleton('config', static function () use ($config) {
             return $config;
         });
 
@@ -1007,7 +1007,7 @@ EOT,
 
         $e = new Exception1('hello world');
 
-        static::assertNull($runtime->report($e));
+        self::assertNull($runtime->report($e));
     }
 
     public function test4(): void
@@ -1025,9 +1025,7 @@ EOT,
 
 class AppRuntime extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppRuntimeForNotDebug extends Apps
@@ -1037,9 +1035,7 @@ class AppRuntimeForNotDebug extends Apps
         return false;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppRuntimeForConsole extends Apps
@@ -1049,9 +1045,7 @@ class AppRuntimeForConsole extends Apps
         return true;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class Runtime11 extends Runtime
@@ -1194,9 +1188,7 @@ class Runtime4 extends Runtime
     }
 }
 
-class Exception1 extends \Exception
-{
-}
+class Exception1 extends \Exception {}
 
 class Exception2 extends \Exception
 {
@@ -1230,13 +1222,9 @@ class Exception5 extends \Exception
     }
 }
 
-class Exception6 extends InternalServerErrorHttpException
-{
-}
+class Exception6 extends InternalServerErrorHttpException {}
 
-class Exception7 extends NotFoundHttpException
-{
-}
+class Exception7 extends NotFoundHttpException {}
 
 class Exception8 extends MethodNotAllowedHttpException
 {

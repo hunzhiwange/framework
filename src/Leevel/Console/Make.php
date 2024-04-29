@@ -159,7 +159,7 @@ abstract class Make extends Command
     protected function parseSourceAndReplace(): array
     {
         $replaceKeyValue = array_merge(static::$globalReplace, $this->getDefaultReplaceKeyValue());
-        $sourceKey = array_map(function ($item) {
+        $sourceKey = array_map(static function ($item) {
             return '{{'.$item.'}}';
         }, array_keys($replaceKeyValue));
         $replace = array_values($replaceKeyValue);
@@ -238,7 +238,7 @@ abstract class Make extends Command
 
         $subDir = str_replace('\\', '/', $subDir);
         $subDir = explode('/', $subDir);
-        $subDir = array_map(fn ($item) => ucfirst($item), $subDir);
+        $subDir = array_map(static fn ($item) => ucfirst($item), $subDir);
 
         return false === $isNamespace ? implode('/', $subDir).'/' : '\\'.implode('\\', $subDir);
     }

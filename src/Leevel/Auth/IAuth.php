@@ -37,7 +37,7 @@ interface IAuth
     /**
      * 取得认证名字.
      *
-     * @throws \Leevel\Auth\AuthException
+     * @throws AuthException
      */
     public function getTokenName(): string;
 }

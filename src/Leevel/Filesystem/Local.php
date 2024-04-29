@@ -26,8 +26,6 @@ class Local extends Filesystem implements IFilesystem
     ];
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \InvalidArgumentException
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter

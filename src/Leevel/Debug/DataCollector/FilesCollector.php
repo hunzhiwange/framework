@@ -12,9 +12,6 @@ use DebugBar\DataCollector\Renderable;
  */
 class FilesCollector extends DataCollector implements Renderable
 {
-    /**
-     * {@inheritDoc}
-     */
     public function collect(): array
     {
         return [
@@ -22,9 +19,6 @@ class FilesCollector extends DataCollector implements Renderable
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getWidgets(): array
     {
         return [
@@ -37,9 +31,6 @@ class FilesCollector extends DataCollector implements Renderable
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): string
     {
         return 'files';

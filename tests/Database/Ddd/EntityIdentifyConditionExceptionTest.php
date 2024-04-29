@@ -12,6 +12,6 @@ final class EntityIdentifyConditionExceptionTest extends TestCase
     public function test1(): void
     {
         $e = new EntityIdentifyConditionException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 }

@@ -118,99 +118,99 @@ EOT,
         $session = $this->createFileSessionHandler();
 
         $this->assertInstanceof(ISession::class, $session);
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
 
         $session->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $session->all());
-        static::assertTrue($session->has('hello'));
-        static::assertSame('world', $session->get('hello'));
+        self::assertSame(['hello' => 'world'], $session->all());
+        self::assertTrue($session->has('hello'));
+        self::assertSame('world', $session->get('hello'));
 
         $session->delete('hello');
-        static::assertSame([], $session->all());
-        static::assertFalse($session->has('hello'));
-        static::assertNull($session->get('hello'));
+        self::assertSame([], $session->all());
+        self::assertFalse($session->has('hello'));
+        self::assertNull($session->get('hello'));
 
         $session->start();
-        static::assertTrue($session->isStart());
-        static::assertTrue($session->open('foo', 'bar'));
-        static::assertTrue($session->close());
-        static::assertTrue($session->destroy('foo'));
-        static::assertSame(0, $session->gc(500));
+        self::assertTrue($session->isStart());
+        self::assertTrue($session->open('foo', 'bar'));
+        self::assertTrue($session->close());
+        self::assertTrue($session->destroy('foo'));
+        self::assertSame(0, $session->gc(500));
     }
 
     public function testSave(): void
     {
         $session = $this->createFileSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $sessionId = $session->getId();
         $dirPath = __DIR__.'/cache';
         $filePath = $dirPath.'/'.$sessionId.'.php';
 
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
 
         $session->destroySession();
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
     }
 
     public function testSaveAndStart(): void
     {
         $session = $this->createFileSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
-        static::assertSame([], $session->all());
+        self::assertTrue($session->isStart());
+        self::assertSame([], $session->all());
 
         $session->set('foo', 'bar');
         $session->set('hello', 'world');
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->all());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->all());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $session->clear();
-        static::assertSame([], $session->all());
+        self::assertSame([], $session->all());
 
         $session->set('other', 'value');
-        static::assertSame(['other' => 'value'], $session->all());
+        self::assertSame(['other' => 'value'], $session->all());
 
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $sessionId = $session->getId();
         $session->start($sessionId);
 
-        static::assertTrue($session->isStart());
-        static::assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
+        self::assertTrue($session->isStart());
+        self::assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $sessionId = $session->getId();
         $dirPath = __DIR__.'/cache';
         $filePath = $dirPath.'/'.$sessionId.'.php';
 
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
 
         $session->destroySession();
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
     }
 
     public function testSaveButNotStart(): void
@@ -220,9 +220,9 @@ EOT,
 
         $session = $this->createFileSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->save();
     }
@@ -243,7 +243,7 @@ EOT,
 
         $session->setExpire(50);
         $session->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $session->all());
+        self::assertSame(['hello' => 'world'], $session->all());
 
         $session->start();
         $session->save();
@@ -251,8 +251,8 @@ EOT,
         $sessionId = $session->getId();
         $dirPath = __DIR__.'/cache';
         $filePath = $dirPath.'/'.$sessionId.'.php';
-        static::assertFileExists($filePath);
-        static::assertStringContainsString('[50,', file_get_contents($filePath));
+        self::assertFileExists($filePath);
+        self::assertStringContainsString('[50,', file_get_contents($filePath));
     }
 
     #[Api([
@@ -263,13 +263,13 @@ EOT,
         $session = $this->createFileSessionHandler();
 
         $session->put('hello', 'world');
-        static::assertSame(['hello' => 'world'], $session->all());
+        self::assertSame(['hello' => 'world'], $session->all());
 
         $session->put(['foo' => 'bar']);
-        static::assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
+        self::assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
 
         $session->put(['foo' => 'bar']);
-        static::assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
+        self::assertSame(['hello' => 'world', 'foo' => 'bar'], $session->all());
     }
 
     #[Api([
@@ -280,10 +280,10 @@ EOT,
         $session = $this->createFileSessionHandler();
 
         $session->set('hello', ['sub' => 'me', 'foo' => 'bar', 'hello' => 'world']);
-        static::assertSame(['hello' => ['sub' => 'me', 'foo' => 'bar', 'hello' => 'world']], $session->all());
+        self::assertSame(['hello' => ['sub' => 'me', 'foo' => 'bar', 'hello' => 'world']], $session->all());
 
         $session->clear();
-        static::assertSame([], $session->all());
+        self::assertSame([], $session->all());
     }
 
     #[Api([
@@ -305,7 +305,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -328,7 +328,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -357,7 +357,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -383,7 +383,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -411,7 +411,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -439,7 +439,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -460,7 +460,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -488,7 +488,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -509,7 +509,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -534,7 +534,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -555,7 +555,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -572,16 +572,16 @@ EOT,
 
         $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
 
-        static::assertSame('world', $session->getFlash('hello'));
-        static::assertSame('bar', $session->getFlash('foo'));
+        self::assertSame('world', $session->getFlash('hello'));
+        self::assertSame('bar', $session->getFlash('foo'));
 
         $session->flash('test', ['foo', 'bar']);
-        static::assertSame(['foo', 'bar'], $session->getFlash('test'));
-        static::assertNull($session->getFlash('notFound'));
+        self::assertSame(['foo', 'bar'], $session->getFlash('test'));
+        self::assertNull($session->getFlash('notFound'));
 
         $session->flash('bar', ['sub' => ['foo' => 'bar']]);
-        static::assertSame(['foo', 'bar'], $session->getFlash('test'));
-        static::assertNull($session->getFlash('test\\notFound'));
+        self::assertSame(['foo', 'bar'], $session->getFlash('test'));
+        self::assertNull($session->getFlash('test\\notFound'));
     }
 
     public function deleteFlash(): void
@@ -602,7 +602,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -621,7 +621,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -647,7 +647,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -668,7 +668,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -697,7 +697,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -716,7 +716,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -748,7 +748,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -768,7 +768,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $flash,
             $this->varJson(
                 $session->all()
@@ -782,9 +782,9 @@ EOT,
     public function testPrevUrl(): void
     {
         $session = $this->createFileSessionHandler();
-        static::assertNull($session->prevUrl());
+        self::assertNull($session->prevUrl());
         $session->setPrevUrl('foo');
-        static::assertSame('foo', $session->prevUrl());
+        self::assertSame('foo', $session->prevUrl());
     }
 
     #[Api([
@@ -794,36 +794,36 @@ EOT,
     {
         $session = $this->createFileSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
-        static::assertNotNull($session->getId());
-        static::assertNotNull($session->getName());
+        self::assertTrue($session->isStart());
+        self::assertNotNull($session->getId());
+        self::assertNotNull($session->getName());
 
         $session->destroySession();
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
     }
 
     public function testRegenerateId(): void
     {
         $session = $this->createFileSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
-        static::assertNotNull($sessionId = $session->getId());
-        static::assertNotNull($session->getName());
+        self::assertTrue($session->isStart());
+        self::assertNotNull($sessionId = $session->getId());
+        self::assertNotNull($session->getName());
 
         $session->regenerateId();
-        static::assertFalse($sessionId === $session->getId());
+        self::assertFalse($sessionId === $session->getId());
     }
 
     protected function createFileSessionHandler(): File

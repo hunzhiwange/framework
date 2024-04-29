@@ -278,7 +278,7 @@ class Doc
         return implode(PHP_EOL, $data).PHP_EOL;
     }
 
-    protected function parseClassOrMethodApi(\ReflectionMethod|\ReflectionClass $reflection): array
+    protected function parseClassOrMethodApi(\ReflectionClass|\ReflectionMethod $reflection): array
     {
         if (!($methodAttributes = $reflection->getAttributes())) {
             return [];
@@ -362,7 +362,7 @@ class Doc
     protected function formatDescription(string $description): string
     {
         if ($description) {
-            $description = $description.PHP_EOL;
+            $description .= PHP_EOL;
         }
 
         return $description;

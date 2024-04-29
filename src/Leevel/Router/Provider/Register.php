@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Provider;
 
+use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
 use Leevel\Http\CookieUtils;
@@ -17,9 +18,6 @@ use Leevel\Router\Router;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->router();
@@ -35,9 +33,6 @@ class Register extends Provider
         $this->cookie();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -55,7 +50,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'router',
-                fn (IContainer $container): Router => new Router($container),
+                static fn (IContainer $container): Router => new Router($container),
             )
         ;
     }
@@ -68,7 +63,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'redirect',
-                function (IContainer $container): Redirect {
+                static function (IContainer $container): Redirect {
                     $redirect = new Redirect();
                     if (isset($container['session'])) {
                         $redirect->setSession($container['session']);
@@ -88,7 +83,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'response',
-                function (IContainer $container): Response {
+                static function (IContainer $container): Response {
                     $config = $container['config'];
 
                     return (new Response($container['view'], $container['redirect']))
@@ -105,7 +100,7 @@ class Register extends Provider
      */
     protected function cookie(): void
     {
-        /** @var \Leevel\Config\IConfig $config */
+        /** @var IConfig $config */
         $config = $this->container->make('config');
         CookieUtils::initConfig((array) $config->get('cookie\\', []));
     }

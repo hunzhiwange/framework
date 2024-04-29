@@ -22,7 +22,7 @@ final class VectorInt extends Vector
     /**
      * 从 HTTP 请求创建 VecInt 数组.
      */
-    public static function fromRequest(string|array $data): self
+    public static function fromRequest(array|string $data): self
     {
         if (\is_string($data)) {
             $data = explode(',', $data);
@@ -30,7 +30,7 @@ final class VectorInt extends Vector
 
         array_walk(
             $data,
-            fn (int|float|string & $value, int $key) => $value = (int) $value,
+            static fn (float|int|string &$value, int $key) => $value = (int) $value,
         );
 
         return new self($data);

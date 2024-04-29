@@ -34,23 +34,23 @@ EOT,
     public function testBaseUse(): void
     {
         $stack = new Stack();
-        static::assertSame(0, $stack->count());
+        self::assertSame(0, $stack->count());
 
         // 入栈 5
         $stack->push(5);
-        static::assertSame(1, $stack->count());
+        self::assertSame(1, $stack->count());
 
         // 入栈 6
         $stack->push(6);
-        static::assertSame(2, $stack->count());
+        self::assertSame(2, $stack->count());
 
         // 出栈，后进先出
-        static::assertSame(6, $stack->pop());
-        static::assertSame(1, $stack->count());
+        self::assertSame(6, $stack->pop());
+        self::assertSame(1, $stack->count());
 
         // 出栈，后进先出
-        static::assertSame(5, $stack->pop());
-        static::assertSame(0, $stack->count());
+        self::assertSame(5, $stack->pop());
+        self::assertSame(0, $stack->count());
     }
 
     #[Api([

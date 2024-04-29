@@ -70,7 +70,7 @@ final class SessionTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->cookies = new InputBag();
         $request->method('getUri')->willReturn($url);
-        static::assertSame($url, $request->getUri());
+        self::assertSame($url, $request->getUri());
 
         return $request;
     }
@@ -79,7 +79,7 @@ final class SessionTest extends TestCase
     {
         $response = $this->createMock(Response::class);
         $response->method('getContent')->willReturn('content');
-        static::assertSame('content', $response->getContent());
+        self::assertSame('content', $response->getContent());
         $response->headers = new ResponseHeaderBag();
 
         return $response;

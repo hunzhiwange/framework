@@ -14,22 +14,16 @@ use Leevel\Validate\Validate;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->container
             ->singleton(
                 'validate',
-                fn (IContainer $container): Validate => new Validate($container),
+                static fn (IContainer $container): Validate => new Validate($container),
             )
         ;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -37,9 +31,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;

@@ -11,7 +11,5 @@ class Pet
     #[Route(
         path: '/api/v1/petLeevel/{petId:[A-Za-z]+}/',
     )]
-    private function petLeevel(): void
-    {
-    }
+    private function petLeevel(): void {}
 }

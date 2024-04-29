@@ -9,9 +9,7 @@ namespace PHPUnit\Framework;
 // @codeCoverageIgnoreStart
 if (!class_exists('PHPUnit\\Framework\\TestCase')) {
     /** @codeCoverageIgnoreEnd */
-    class TestCase
-    {
-    }
+    class TestCase {}
 }
 
 namespace Leevel\Kernel\Testing;

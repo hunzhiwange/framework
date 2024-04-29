@@ -46,11 +46,11 @@ final class LinkStaticTest extends TestCase
         );
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Linked `%s/assert/static` directory to `%s/assert_new/static` succeed.', __DIR__, __DIR__)),
             $result
         );
-        static::assertTrue(is_file(__DIR__.'/assert_new/static'));
+        self::assertTrue(is_file(__DIR__.'/assert_new/static'));
     }
 
     protected function initContainerService(IContainer $container): void
@@ -70,7 +70,5 @@ class AppForLinkStatic extends Apps
                 __DIR__.'/assert_new/static';
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

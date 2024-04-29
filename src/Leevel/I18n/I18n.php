@@ -28,9 +28,6 @@ class I18n implements II18n
         $this->text[$i18n] = [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function gettext(string $text, ...$data): string // @phpstan-ignore-line
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
@@ -42,9 +39,6 @@ class I18n implements II18n
         return $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addtext(string $i18n, array $data = []): void
     {
         if (\array_key_exists($i18n, $this->text)) {
@@ -54,25 +48,16 @@ class I18n implements II18n
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setI18n(string $i18n): void
     {
         $this->i18n = $i18n;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getI18n(): string
     {
         return $this->i18n;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function all(): array
     {
         return $this->text;

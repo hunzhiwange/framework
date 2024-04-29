@@ -11,6 +11,7 @@ use Monolog\Handler\HandlerInterface;
 use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\AbstractLogger;
+use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Swoole\Coroutine;
 
@@ -60,17 +61,11 @@ abstract class Log extends AbstractLogger implements ILog
         $this->createMonolog();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMonolog(): Logger
     {
         return $this->monolog;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function log($level, string|\Stringable $message, array $context = []): void
     {
         if (!$this->enabledCoroutine) {
@@ -88,7 +83,7 @@ abstract class Log extends AbstractLogger implements ILog
     {
         $level = (string) $level;
         if (!\defined(LogLevel::class.'::'.strtoupper($level))) {
-            throw new \Psr\Log\InvalidArgumentException(sprintf('Level %s is invalid.', $level));
+            throw new InvalidArgumentException(sprintf('Level %s is invalid.', $level));
         }
 
         $message = (string) $message;

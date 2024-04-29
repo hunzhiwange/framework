@@ -320,7 +320,7 @@ class Entity extends Make
         }
 
         if (\count($columns['primary_key']) > 1) {
-            return '['.implode(', ', array_map(function ($item) {
+            return '['.implode(', ', array_map(static function ($item) {
                 return "'{$item}'";
             }, $columns['primary_key'])).']';
         }

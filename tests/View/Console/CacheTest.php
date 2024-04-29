@@ -42,20 +42,20 @@ final class CacheTest extends TestCase
         });
 
         $result = $this->normalizeContent($result);
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('View files cache succeed.'),
             $result,
         );
 
-        static::assertDirectoryExists(__DIR__.'/cache_app/themes');
+        self::assertDirectoryExists(__DIR__.'/cache_app/themes');
     }
 
     public function test2(): void
@@ -75,15 +75,15 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('View files cache succeed.'),
             $result,
         );
@@ -106,15 +106,15 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Compile files not found in path `%s` and skipped', __DIR__.'/assert/no')),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('View files cache succeed.'),
             $result,
         );
@@ -137,20 +137,20 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/app/path1')),
             $result,
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('View files cache succeed.'),
             $result,
         );
@@ -173,12 +173,12 @@ final class CacheTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to cache view.'),
             $result,
         );
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent(sprintf('View dir `%s` is not exist.', __DIR__.'/app2/path2')),
             $result,
         );
@@ -253,7 +253,7 @@ final class CacheTest extends TestCase
         $container
             ->singleton(
                 'views',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -271,9 +271,7 @@ class AppForCache extends Apps
         return __DIR__.'/cache_'.$path;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppForCache2 extends Apps
@@ -293,9 +291,7 @@ class AppForCache2 extends Apps
         return __DIR__.'/cache_'.$path;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppForCache3 extends Apps
@@ -315,9 +311,7 @@ class AppForCache3 extends Apps
         return __DIR__.'/cache_'.$path;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppForCache4 extends Apps
@@ -337,9 +331,7 @@ class AppForCache4 extends Apps
         return __DIR__.'/cache_'.$path;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class AppForCache5 extends Apps
@@ -359,7 +351,5 @@ class AppForCache5 extends Apps
         return __DIR__.'/cache_'.$path;
     }
 
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }

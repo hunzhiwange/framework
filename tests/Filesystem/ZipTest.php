@@ -40,7 +40,7 @@ final class ZipTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The zip driver requires path config.');
 
-        $zip = new zip([
+        $zip = new Zip([
             'path' => '',
         ]);
     }

@@ -21,6 +21,4 @@ EOT,
 QueryPHP 資料庫非常强大
 EOT,
 ])]
-class SummaryDoc
-{
-}
+class SummaryDoc {}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Create;
 
 use Leevel\Database\Ddd\Entity;
+use Leevel\Database\Ddd\EntityPropNotDefinedException;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -55,9 +56,9 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['name'], $entity->changed());
-        static::assertNull($entity->flushData());
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['name'], $entity->changed());
+        self::assertNull($entity->flushData());
 
         $entity->save();
 
@@ -69,7 +70,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -89,10 +90,10 @@ EOT,
         $entity->name = 'foo';
 
         $this->assertInstanceof(Entity::class, $entity);
-        static::assertSame('foo', $entity->name);
-        static::assertSame(['name'], $entity->changed());
+        self::assertSame('foo', $entity->name);
+        self::assertSame(['name'], $entity->changed());
 
-        static::assertNull($entity->flushData());
+        self::assertNull($entity->flushData());
 
         $entity->create();
 
@@ -104,7 +105,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -131,8 +132,8 @@ EOT,
             'name' => 'foo',
         ]);
 
-        static::assertSame(5, $entity->getId());
-        static::assertNull($entity->getName());
+        self::assertSame(5, $entity->getId());
+        self::assertNull($entity->getName());
     }
 
     #[Api([
@@ -154,8 +155,8 @@ EOT,
             'name' => 'foo',
         ]);
 
-        static::assertNull($entity->getId());
-        static::assertSame('foo', $entity->getName());
+        self::assertNull($entity->getId());
+        self::assertSame('foo', $entity->getName());
     }
 
     #[Api([
@@ -186,7 +187,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -210,7 +211,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -220,7 +221,7 @@ EOT,
 
     public function testPropNotExist(): void
     {
-        $this->expectException(\Leevel\Database\Ddd\EntityPropNotDefinedException::class);
+        $this->expectException(EntityPropNotDefinedException::class);
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new DemoEntity();
@@ -238,7 +239,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -273,7 +274,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -304,7 +305,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -332,7 +333,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -359,7 +360,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -383,7 +384,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -414,7 +415,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -438,7 +439,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()
@@ -460,7 +461,7 @@ EOT,
             ]
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $entity->flushData()

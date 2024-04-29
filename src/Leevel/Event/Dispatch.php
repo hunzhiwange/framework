@@ -34,9 +34,6 @@ class Dispatch implements IDispatch
         $this->container = $container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function handle(object|string $event, ...$params): void // @phpstan-ignore-line
     {
         if (\is_object($event)) {
@@ -54,16 +51,13 @@ class Dispatch implements IDispatch
         }
 
         ksort($listeners);
-        $listeners = array_reduce($listeners, function (array $result, array $value) {
+        $listeners = array_reduce($listeners, static function (array $result, array $value) {
             return array_merge($result, $value);
         }, []);
 
         $this->makeSubject($listeners, $params)->notify();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function register(array|object|string $event, \Closure|\SplObserver|string $listener, int $priority = 500): void
     {
         $event = \is_object($event) ? [$event] : (array) $event;
@@ -77,9 +71,6 @@ class Dispatch implements IDispatch
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(object|string $event): array
     {
         $listeners = [];
@@ -100,17 +91,11 @@ class Dispatch implements IDispatch
         return $listeners;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(object|string $event): bool
     {
         return [] !== $this->get($event);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function delete(object|string $event): void
     {
         $event = $this->normalizeEvent($event);

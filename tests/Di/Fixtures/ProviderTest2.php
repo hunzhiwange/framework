@@ -9,16 +9,12 @@ use Leevel\Di\Provider;
 
 class ProviderTest2 extends Provider
 {
-    public function __construct(IContainer $container)
-    {
-    }
+    public function __construct(IContainer $container) {}
 
     public function bootstrap(): void
     {
         $_SERVER['testCallProviderBootstrap'] = 1;
     }
 
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

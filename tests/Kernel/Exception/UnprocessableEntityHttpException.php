@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\UnprocessableEntityHttpException as BaseUnprocessableEntityHttpException;
 
-class UnprocessableEntityHttpException extends BaseUnprocessableEntityHttpException
-{
-}
+class UnprocessableEntityHttpException extends BaseUnprocessableEntityHttpException {}

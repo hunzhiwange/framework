@@ -132,17 +132,11 @@ class Validator implements IValidator
         throw new \BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
     {
         return new static($data, $rules, $names, $messages);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function success(): bool
     {
         $skipRule = $this->getSkipRule();
@@ -175,33 +169,21 @@ class Validator implements IValidator
         return 0 === \count($this->errorMessages);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function fail(): bool
     {
         return !$this->success();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function error(): array
     {
         return $this->errorMessages;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getData(): array
     {
         return $this->data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function data(array $data): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -213,9 +195,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addData(array $data): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -227,17 +206,11 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getRule(): array
     {
         return $this->rules;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function rule(array $rules, ?\Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -251,9 +224,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addRule(array $rules, ?\Closure $callbacks = null): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -267,17 +237,11 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getMessage(): array
     {
         return $this->messages;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function message(array $messages): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -289,9 +253,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addMessage(array $messages): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -306,17 +267,11 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getName(): array
     {
         return $this->names;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function name(array $names): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -328,9 +283,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function addName(array $names): IValidator
     {
         if ($this->checkFlowControl()) {
@@ -342,9 +294,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function after(\Closure $callbacks): IValidator
     {
         $this->afters[] = function () use ($callbacks) {
@@ -354,9 +303,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function extend(string $rule, \Closure|string $extends): IValidator
     {
         $this->extends[strtolower($rule)] = $extends;
@@ -364,9 +310,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function setContainer(IContainer $container): IValidator
     {
         $this->container = $container;
@@ -374,17 +317,11 @@ class Validator implements IValidator
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function initMessages(array $messages): void
     {
         static::$defaultMessages = $messages;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getParseRule(string $field, array|string $rules): array
     {
         $rules = (array) $rules;
@@ -398,9 +335,6 @@ class Validator implements IValidator
         return [];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getFieldValue(string $rule): mixed
     {
         if (!str_contains($rule, '.')) {
@@ -538,7 +472,7 @@ class Validator implements IValidator
     /**
      * 分析验证规则和参数.
      */
-    protected function parseRule(string|array $rule): array
+    protected function parseRule(array|string $rule): array
     {
         [$rule, $params] = array_pad(\is_array($rule) ? $rule : explode(':', $rule, 2), 2, []);
         if (\is_string($params)) {
@@ -546,7 +480,7 @@ class Validator implements IValidator
         } elseif (!\is_array($params)) {
             $params = [$params];
         }
-        $params = array_map(fn (mixed $item) => !\is_string($item) ? $item : StringDecode::handle($item, false), $params);
+        $params = array_map(static fn (mixed $item) => !\is_string($item) ? $item : StringDecode::handle($item, false), $params);
 
         return [$rule, $params];
     }
@@ -571,7 +505,7 @@ class Validator implements IValidator
     /**
      * 转换单条规则为数组.
      */
-    protected function arrayRuleItem(string|array $rules): array
+    protected function arrayRuleItem(array|string $rules): array
     {
         $parsedRules = [];
         foreach ((array) Normalize::handle($rules, '|') as $item) {
@@ -807,7 +741,7 @@ class Validator implements IValidator
             }
         }
 
-        $message = preg_replace_callback('/{(.+?)}/', function ($matches) use ($replace): string {
+        $message = preg_replace_callback('/{(.+?)}/', static function ($matches) use ($replace): string {
             return $replace[$matches[1]] ?? $matches[0];
         }, $message);
 

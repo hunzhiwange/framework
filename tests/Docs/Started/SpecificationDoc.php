@@ -51,9 +51,7 @@ PSR-4 基础目录使用小写，其它依次使用大驼峰法命名，例如�
 ```
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => '统一代码风格',
@@ -105,7 +103,5 @@ git commit -n -m 'pass hook'
 这样子我们再也不需要浪费时间在无意义的代码风格的讨论上了。
 EOT,
     ])]
-    public function doc2(): void
-    {
-    }
+    public function doc2(): void {}
 }

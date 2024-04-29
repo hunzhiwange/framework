@@ -22,9 +22,6 @@ class Config implements IConfig, \ArrayAccess
         $this->config = $config;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name = 'app\\'): bool
     {
         $name = $this->parseNamespace($name);
@@ -51,9 +48,6 @@ class Config implements IConfig, \ArrayAccess
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $name = 'app\\', mixed $defaults = null): mixed
     {
         $name = $this->parseNamespace($name);
@@ -82,17 +76,11 @@ class Config implements IConfig, \ArrayAccess
         return $config;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function all(): array
     {
         return $this->config;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function set(mixed $name, mixed $value = null): void
     {
         if (\is_array($name)) {
@@ -131,9 +119,6 @@ class Config implements IConfig, \ArrayAccess
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function delete(string $name): void
     {
         $name = $this->parseNamespace($name);
@@ -170,9 +155,6 @@ class Config implements IConfig, \ArrayAccess
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reset(mixed $namespaces = null): void
     {
         if (\is_array($namespaces)) {
@@ -184,33 +166,21 @@ class Config implements IConfig, \ArrayAccess
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $index): bool
     {
         return $this->has($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet(mixed $index): mixed
     {
         return $this->get($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->set($index, $newval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset(mixed $offset): void
     {
         $this->delete($offset);

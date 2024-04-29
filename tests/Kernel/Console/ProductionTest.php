@@ -38,11 +38,11 @@ final class ProductionTest extends TestCase
 
         $result = $this->normalizeContent($result);
 
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Start to optimize you app.'),
             $result
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             $this->normalizeContent('Optimize succeed.'),
             $result
         );
@@ -58,9 +58,7 @@ final class ProductionTest extends TestCase
 
 class AppForProduction extends Apps
 {
-    protected function registerBaseProvider(): void
-    {
-    }
+    protected function registerBaseProvider(): void {}
 }
 
 class DemoRouterCache extends Command

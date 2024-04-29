@@ -21,8 +21,8 @@ final class LocalTest extends TestCase
 
         $file = $path.'/hello.txt';
 
-        static::assertTrue(is_file($file));
-        static::assertSame('foo', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('foo', file_get_contents($file));
         unlink($file);
     }
 

@@ -28,14 +28,14 @@ final class RegisterTest extends TestCase
 
         $encodeMessage = $encryption->encrypt($sourceMessage);
 
-        static::assertFalse($sourceMessage === $encodeMessage);
+        self::assertFalse($sourceMessage === $encodeMessage);
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
 
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );

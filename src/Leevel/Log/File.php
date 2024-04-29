@@ -15,7 +15,7 @@ class File extends Log implements ILog
     /**
      * 配置.
      *
-     * @see \Monolog\Handler\StreamHandler
+     * @see StreamHandler
      */
     protected array $config = [
         'level' => [

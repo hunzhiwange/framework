@@ -24,9 +24,9 @@ final class RegisterTest extends TestCase
         // logs
         $manager = $container->make('logs');
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
         $manager->info('foo', ['bar']);
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -38,11 +38,11 @@ final class RegisterTest extends TestCase
 
         // log
         $file = $container->make('log');
-        static::assertInstanceOf(File::class, $file);
+        self::assertInstanceOf(File::class, $file);
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
         $file->info('foo', ['bar']);
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -84,7 +84,7 @@ final class RegisterTest extends TestCase
 
         $eventDispatch = $this->createMock(IDispatch::class);
 
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
 
         $container->singleton('event', $eventDispatch);
 

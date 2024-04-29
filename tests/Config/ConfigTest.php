@@ -182,7 +182,7 @@ final class ConfigTest extends TestCase
 
         $config = new Config($data);
 
-        static::assertSame($config->all(), $data);
+        self::assertSame($config->all(), $data);
     }
 
     #[Api([
@@ -206,31 +206,31 @@ final class ConfigTest extends TestCase
 
         $config = new Config($data);
 
-        static::assertSame('testing', $config->get('app\\environment'));
-        static::assertSame('testing', $config->get('environment'), 'Default namespace is app, so it equal app\\testing.');
-        static::assertNull($config->get('hello'), 'The default namespace is app, so it equal app\\hello');
-        static::assertNull($config->get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
-        static::assertSame($config->get('hello\\'), 'world');
-        static::assertSame($config->get('hello\\*'), 'world');
+        self::assertSame('testing', $config->get('app\\environment'));
+        self::assertSame('testing', $config->get('environment'), 'Default namespace is app, so it equal app\\testing.');
+        self::assertNull($config->get('hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertNull($config->get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertSame($config->get('hello\\'), 'world');
+        self::assertSame($config->get('hello\\*'), 'world');
 
-        static::assertSame([
+        self::assertSame([
             'environment' => 'testing',
             'debug' => true,
         ], $config->get('app\\'));
 
-        static::assertSame([
+        self::assertSame([
             'environment' => 'testing',
             'debug' => true,
         ], $config->get('app\\*'));
 
-        static::assertFalse([
+        self::assertFalse([
             'environment' => 'testing',
             'debug' => true,
         ] === $config->get('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
-        static::assertSame($config->get('cache\\time_preset.foo'), 'bar');
-        static::assertNull($config->get('cache\\time_preset.foo2'));
+        self::assertSame($config->get('cache\\time_preset.foo'), 'bar');
+        self::assertNull($config->get('cache\\time_preset.foo2'));
     }
 
     #[Api([
@@ -254,19 +254,19 @@ final class ConfigTest extends TestCase
 
         $config = new Config($data);
 
-        static::assertTrue($config->has('app\\environment'));
-        static::assertTrue($config->has('environment'), 'Default namespace is app, so it equal app\\testing.');
-        static::assertFalse($config->has('hello'), 'The default namespace is app, so it equal app\\hello');
-        static::assertFalse($config->has('app\\hello'), 'The default namespace is app, so it equal app\\hello');
-        static::assertTrue($config->has('hello\\'));
-        static::assertTrue($config->has('hello\\*'));
-        static::assertTrue($config->has('app\\'));
-        static::assertTrue($config->has('app\\*'));
-        static::assertFalse($config->has('app'), 'The default namespace is app, so it equal app\\app');
+        self::assertTrue($config->has('app\\environment'));
+        self::assertTrue($config->has('environment'), 'Default namespace is app, so it equal app\\testing.');
+        self::assertFalse($config->has('hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertFalse($config->has('app\\hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertTrue($config->has('hello\\'));
+        self::assertTrue($config->has('hello\\*'));
+        self::assertTrue($config->has('app\\'));
+        self::assertTrue($config->has('app\\*'));
+        self::assertFalse($config->has('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
-        static::assertTrue($config->has('cache\\time_preset.foo'));
-        static::assertFalse($config->has('cache\\time_preset.foo2'));
+        self::assertTrue($config->has('cache\\time_preset.foo'));
+        self::assertFalse($config->has('cache\\time_preset.foo2'));
     }
 
     #[Api([
@@ -280,14 +280,14 @@ final class ConfigTest extends TestCase
 
         // set app\environment value
         $config->set('environment', 'testing');
-        static::assertSame('testing', $config->get('app\\environment'));
-        static::assertSame('testing', $config->get('environment'), 'Default namespace is app, so it equal app\\testing.');
+        self::assertSame('testing', $config->get('app\\environment'));
+        self::assertSame('testing', $config->get('environment'), 'Default namespace is app, so it equal app\\testing.');
 
-        static::assertNull($config->get('hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertNull($config->get('hello'), 'The default namespace is app, so it equal app\\hello');
         $config->set('hello', 'i am hello');
-        static::assertSame($config->get('hello'), 'i am hello', 'The default namespace is app, so it equal app\\hello');
+        self::assertSame($config->get('hello'), 'i am hello', 'The default namespace is app, so it equal app\\hello');
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'app' => [
                 'environment' => 'testing',
                 'hello' => 'i am hello',
@@ -296,17 +296,17 @@ final class ConfigTest extends TestCase
 
         // 当我们获取一个不存在的配置命名空间时，返回一个初始化的空数组
         // hello namespace not app\hello
-        static::assertSame($config->get('hello\\'), []);
-        static::assertSame($config->get('hello\\*'), []);
+        self::assertSame($config->get('hello\\'), []);
+        self::assertSame($config->get('hello\\*'), []);
 
         $config->set('hello\\', ['foo' => ['sub' => 'bar']]);
 
-        static::assertSame($config->get('hello\\foo.sub'), 'bar');
+        self::assertSame($config->get('hello\\foo.sub'), 'bar');
 
         // namespace\sub.sub1.sub2
         $config->set('cache\\time_preset.foo', 'bar');
-        static::assertSame($config->get('cache\\time_preset.foo'), 'bar');
-        static::assertNull($config->get('cache\\time_preset.foo2'));
+        self::assertSame($config->get('cache\\time_preset.foo'), 'bar');
+        self::assertNull($config->get('cache\\time_preset.foo2'));
     }
 
     public function testSet2(): void
@@ -318,7 +318,7 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $config->set($data);
 
-        static::assertSame($data, $config->get());
+        self::assertSame($data, $config->get());
     }
 
     #[Api([
@@ -343,7 +343,7 @@ final class ConfigTest extends TestCase
         $config = new Config($data);
         $config->delete('debug');
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
@@ -358,7 +358,7 @@ final class ConfigTest extends TestCase
 
         $config->delete('cache\\time_preset.foo');
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
@@ -373,7 +373,7 @@ final class ConfigTest extends TestCase
         // 删除命令空间会初始化该命名空间为空数组，不存在会创建一个空数组
         $config->delete('hello\\');
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
@@ -387,7 +387,7 @@ final class ConfigTest extends TestCase
 
         $config->delete('world\\');
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
@@ -420,7 +420,7 @@ final class ConfigTest extends TestCase
         $config = new Config($data);
         $config->delete('debug2.foo.bar');
 
-        static::assertSame($config->all(), $data);
+        self::assertSame($config->all(), $data);
     }
 
     #[Api([
@@ -437,31 +437,31 @@ EOT,
 
         $config = new Config($data);
 
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'hello' => 'world',
         ]);
 
         // array
         $config->reset(['foo' => 'bar']);
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'foo' => 'bar',
         ]);
 
         // set a namespace
         $config->reset('foo');
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'foo' => [],
         ]);
 
         $config->reset('foo2');
-        static::assertSame($config->all(), [
+        self::assertSame($config->all(), [
             'foo' => [],
             'foo2' => [],
         ]);
 
         // reset all
         $config->reset();
-        static::assertSame($config->all(), []);
+        self::assertSame($config->all(), []);
     }
 
     #[Api([
@@ -489,17 +489,17 @@ EOT,
         $config = new Config($data);
 
         // get
-        static::assertSame($config['cache\\time_preset.foo'], 'bar');
+        self::assertSame($config['cache\\time_preset.foo'], 'bar');
 
         // remove
         unset($config['cache\\time_preset.foo']);
-        static::assertNull($config['cache\\time_preset.foo']);
+        self::assertNull($config['cache\\time_preset.foo']);
 
         // set
         $config['cache\\foo'] = 'bar';
-        static::assertSame($config['cache\\foo'], 'bar');
+        self::assertSame($config['cache\\foo'], 'bar');
 
         // has
-        static::assertTrue(isset($config['hello\\']));
+        self::assertTrue(isset($config['hello\\']));
     }
 }

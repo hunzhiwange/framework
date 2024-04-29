@@ -11,6 +11,5 @@ namespace Leevel\Router;
 class IgnoreRoute
 {
     public function __construct(...$args) // @phpstan-ignore-line
-    {
-    }
+    {}
 }

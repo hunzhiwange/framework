@@ -23,11 +23,11 @@ class HotOverloadTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('swoole')) {
-            static::markTestSkipped('Swoole extension must be loaded before use.');
+            self::markTestSkipped('Swoole extension must be loaded before use.');
         }
 
         if (\extension_loaded('xdebug')) {
-            static::markTestSkipped('32663 Segmentation fault (core dumped).');
+            self::markTestSkipped('32663 Segmentation fault (core dumped).');
         }
     }
 
@@ -49,10 +49,10 @@ class HotOverloadTest extends TestCase
 
         $hotOverload = new HotOverloadDemo($config, $this);
 
-        /** @var \Leevel\Server\IServer $server */
+        /** @var IServer $server */
         $server = $this->createMock(IServer::class);
         $hotOverload->handle($server);
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 }

@@ -52,9 +52,6 @@ class Http extends Server implements IServer
         'settings' => [],
     ];
 
-    /**
-     * {@inheritDoc}
-     */
     public function start(): void
     {
         $this->createProcessStatisticTable();
@@ -164,7 +161,7 @@ class Http extends Server implements IServer
         return (new TransformRequest())->createRequest($swooleRequest);
     }
 
-    protected function serverShutdown(SwooleServer|SwooleHttpServer $server): void
+    protected function serverShutdown(SwooleHttpServer|SwooleServer $server): void
     {
         if (WorkerStatusEnum::OK !== $this->workerStatus) {
             return;

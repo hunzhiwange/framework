@@ -33,18 +33,18 @@ final class HelperTest extends TestCase
             ['hello %d', 5, 'hello 5'],
         ];
         $i18n->method('gettext')->willReturnMap($map);
-        static::assertSame('hello', $i18n->gettext('hello'));
-        static::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
-        static::assertSame('hello 5', $i18n->gettext('hello %d', 5));
+        self::assertSame('hello', $i18n->gettext('hello'));
+        self::assertSame('hello foo', $i18n->gettext('hello %s', 'foo'));
+        self::assertSame('hello 5', $i18n->gettext('hello %d', 5));
 
         $container = $this->createContainer();
-        $container->singleton('i18n', function () use ($i18n) {
+        $container->singleton('i18n', static function () use ($i18n) {
             return $i18n;
         });
 
-        static::assertSame('hello', Gettext::handle('hello'));
-        static::assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
-        static::assertSame('hello 5', Gettext::handle('hello %d', 5));
+        self::assertSame('hello', Gettext::handle('hello'));
+        self::assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
+        self::assertSame('hello 5', Gettext::handle('hello %d', 5));
     }
 
     public function test1(): void
@@ -52,13 +52,13 @@ final class HelperTest extends TestCase
         $i18n = new DemoI18n();
 
         $container = $this->createContainer();
-        $container->singleton('i18n', function () use ($i18n) {
+        $container->singleton('i18n', static function () use ($i18n) {
             return $i18n;
         });
 
-        static::assertSame('hello', Gettext::handle('hello'));
-        static::assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
-        static::assertSame('hello 5', Gettext::handle('hello %d', 5));
+        self::assertSame('hello', Gettext::handle('hello'));
+        self::assertSame('hello foo', Gettext::handle('hello %s', 'foo'));
+        self::assertSame('hello 5', Gettext::handle('hello %d', 5));
     }
 
     protected function createContainer(): Container

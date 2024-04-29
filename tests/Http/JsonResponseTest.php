@@ -25,7 +25,7 @@ final class JsonResponseTest extends TestCase
     public function testGetEncodingConfigs(): void
     {
         $response = new JsonResponse();
-        static::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
+        self::assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
     #[Api([
@@ -36,15 +36,15 @@ final class JsonResponseTest extends TestCase
         $response = new JsonResponse();
 
         $response->setData(['成都', 'QueryPHP']);
-        static::assertSame('["成都","QueryPHP"]', $response->getContent());
+        self::assertSame('["成都","QueryPHP"]', $response->getContent());
 
         $response->setEncodingOptions(0);
         $response->setData(['成都', 'QueryPHP']);
-        static::assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
+        self::assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
 
         $response->setEncodingOptions(JSON_FORCE_OBJECT);
         $response->setData(['成都', 'QueryPHP']);
-        static::assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
+        self::assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
     }
 
     #[Api([
@@ -73,16 +73,16 @@ EOT,
     {
         $response = new JsonResponse();
         $response->setData(['foo' => 'bar']);
-        static::assertSame('{"foo":"bar"}', $response->getContent());
+        self::assertSame('{"foo":"bar"}', $response->getContent());
 
         $response->setData(new JsonResponseMyArray());
-        static::assertSame('{"hello":"IArray"}', $response->getContent());
+        self::assertSame('{"hello":"IArray"}', $response->getContent());
 
         $response->setData(new JsonResponseMyJson());
-        static::assertSame('{"hello":"IJson"}', $response->getContent());
+        self::assertSame('{"hello":"IJson"}', $response->getContent());
 
         $response->setData(new JsonResponseMyJsonSerializable());
-        static::assertSame('{"hello":"JsonSerializable"}', $response->getContent());
+        self::assertSame('{"hello":"JsonSerializable"}', $response->getContent());
     }
 }
 

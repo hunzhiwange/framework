@@ -7,7 +7,6 @@ namespace Tests\Session;
 use Leevel\Cache\Redis as CacheRedis;
 use Leevel\Session\ISession;
 use Leevel\Session\Redis;
-use RedisException;
 use Tests\TestCase;
 
 final class RedisTest extends TestCase
@@ -16,13 +15,13 @@ final class RedisTest extends TestCase
     protected function setUp(): void
     {
         if (!\extension_loaded('redis')) {
-            static::markTestSkipped('Redis extension must be loaded before use.');
+            self::markTestSkipped('Redis extension must be loaded before use.');
         }
 
         try {
             $this->createRedisSessionHandler();
-        } catch (RedisException) {
-            static::markTestSkipped('Redis read error on connection and ignore.');
+        } catch (\RedisException) {
+            self::markTestSkipped('Redis read error on connection and ignore.');
         }
     }
 
@@ -32,85 +31,85 @@ final class RedisTest extends TestCase
 
         $this->assertInstanceof(ISession::class, $session);
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
 
         $session->set('hello', 'world');
-        static::assertSame(['hello' => 'world'], $session->all());
-        static::assertTrue($session->has('hello'));
-        static::assertSame('world', $session->get('hello'));
+        self::assertSame(['hello' => 'world'], $session->all());
+        self::assertTrue($session->has('hello'));
+        self::assertSame('world', $session->get('hello'));
 
         $session->delete('hello');
-        static::assertSame([], $session->all());
-        static::assertFalse($session->has('hello'));
-        static::assertNull($session->get('hello'));
+        self::assertSame([], $session->all());
+        self::assertFalse($session->has('hello'));
+        self::assertNull($session->get('hello'));
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
     }
 
     public function testSave(): void
     {
         $session = $this->createRedisSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
+        self::assertTrue($session->isStart());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
     }
 
     public function testSaveAndStart(): void
     {
         $session = $this->createRedisSessionHandler();
 
-        static::assertFalse($session->isStart());
-        static::assertSame('', $session->getId());
-        static::assertSame('UID', $session->getName());
+        self::assertFalse($session->isStart());
+        self::assertSame('', $session->getId());
+        self::assertSame('UID', $session->getName());
 
         $session->start();
-        static::assertTrue($session->isStart());
-        static::assertSame([], $session->all());
+        self::assertTrue($session->isStart());
+        self::assertSame([], $session->all());
 
         $session->set('foo', 'bar');
         $session->set('hello', 'world');
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->all());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $session->all());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $session->clear();
-        static::assertSame([], $session->all());
+        self::assertSame([], $session->all());
 
         $session->set('other', 'value');
-        static::assertSame(['other' => 'value'], $session->all());
+        self::assertSame(['other' => 'value'], $session->all());
 
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $sessionId = $session->getId();
         $session->start($sessionId);
 
-        static::assertTrue($session->isStart());
-        static::assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
+        self::assertTrue($session->isStart());
+        self::assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
 
         $session->save();
-        static::assertFalse($session->isStart());
+        self::assertFalse($session->isStart());
 
         $sessionId = $session->getId();
 
-        static::assertSame('a:4:{s:5:"other";s:5:"value";s:3:"foo";s:3:"bar";s:5:"hello";s:5:"world";s:13:"flash.old.key";a:0:{}}', $session->read($sessionId));
+        self::assertSame('a:4:{s:5:"other";s:5:"value";s:3:"foo";s:3:"bar";s:5:"hello";s:5:"world";s:13:"flash.old.key";a:0:{}}', $session->read($sessionId));
 
         $session->destroySession();
 
-        static::assertSame('a:0:{}', $session->read($sessionId));
+        self::assertSame('a:0:{}', $session->read($sessionId));
     }
 
     protected function createRedisSessionHandler(): Redis

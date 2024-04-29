@@ -91,35 +91,35 @@ EOT,
     {
         $manager = $this->createManager();
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
-        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        static::assertNull($manager->logout());
+        self::assertNull($manager->logout());
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
     }
 
     public function testReconnect(): void
     {
         $manager = $this->createManager();
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
-        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
         $auth = $manager->reconnect();
-        static::assertTrue($auth->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $auth->getLogin());
+        self::assertTrue($auth->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $auth->getLogin());
     }
 
     #[Api([
@@ -131,18 +131,18 @@ EOT,
 
         $manager->setTokenName('token');
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
-        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        static::assertNull($manager->logout());
+        self::assertNull($manager->logout());
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
     }
 
     #[Api([
@@ -154,21 +154,21 @@ EOT,
 
         $manager->setTokenName('token');
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
         $tokenResult = $manager->login(['foo' => 'bar', 'hello' => 'world'], 100);
         $manager->setTokenName($tokenResult);
 
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        static::assertNull($manager->logout());
+        self::assertNull($manager->logout());
 
         // JWT 无法注销，模拟实现
         $manager->setTokenName('not found');
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
     }
 
     #[Api([
@@ -182,18 +182,18 @@ EOT,
 
         $manager->setTokenName('token');
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
 
-        static::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $manager->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($manager->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
+        self::assertTrue($manager->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $manager->getLogin());
 
-        static::assertNull($manager->logout());
+        self::assertNull($manager->logout());
 
-        static::assertFalse($manager->isLogin());
-        static::assertSame([], $manager->getLogin());
+        self::assertFalse($manager->isLogin());
+        self::assertSame([], $manager->getLogin());
     }
 
     protected function createCache(): CacheFile
@@ -219,7 +219,7 @@ EOT,
         $request = $this->createMock(Request::class);
 
         $request->method('get')->willReturn('token');
-        static::assertSame('token', $request->get('input_token'));
+        self::assertSame('token', $request->get('input_token'));
 
         return $request;
     }

@@ -104,7 +104,7 @@ class Doc extends Command
         if (is_file($fileOrDir)) {
             $result[] = $fileOrDir;
         } elseif (is_dir($fileOrDir)) {
-            TraverseDirectory::handle($fileOrDir, true, function (\DirectoryIterator $file) use (&$result): void {
+            TraverseDirectory::handle($fileOrDir, true, static function (\DirectoryIterator $file) use (&$result): void {
                 if ($file->isFile()) {
                     $result[] = $file->getPathname();
                 }

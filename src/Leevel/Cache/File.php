@@ -34,9 +34,6 @@ class File extends Cache implements ICache
      */
     protected int $currentExpire = 0;
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $name, mixed $defaults = false): mixed
     {
         clearstatcache();
@@ -61,9 +58,6 @@ class File extends Cache implements ICache
         return $this->decodeData($data);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
         clearstatcache();
@@ -74,9 +68,6 @@ class File extends Cache implements ICache
         $this->writeData($cachePath, $data);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function delete(string $name): void
     {
         clearstatcache();
@@ -86,17 +77,12 @@ class File extends Cache implements ICache
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name): bool
     {
         return false !== $this->get($name);
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \JsonException
      */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
@@ -127,17 +113,11 @@ class File extends Cache implements ICache
         return $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->increase($name, -$step, $expire);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function ttl(string $name): int
     {
         if (false === $this->get($name)) {
@@ -147,12 +127,7 @@ class File extends Cache implements ICache
         return $this->currentExpire <= 0 ? -1 : $this->currentExpire;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function close(): void
-    {
-    }
+    public function close(): void {}
 
     /**
      * 从文件读取内容.
@@ -185,7 +160,7 @@ class File extends Cache implements ICache
             throw new \Exception(sprintf('Get file size of file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
-        // @phpstan-ignore-next-line
+        /** @phpstan-ignore-next-line */
         $readResult = fread($fp, static::HEADER_LENGTH);
         if (false === $readResult) {
             throw new \Exception(sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore

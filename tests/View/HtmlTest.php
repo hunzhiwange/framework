@@ -32,7 +32,7 @@ final class HtmlTest extends TestCase
         $html->setVar('foo', 'bar');
 
         $result = $html->display('html_test');
-        static::assertSame('hello html,bar.', $result);
+        self::assertSame('hello html,bar.', $result);
     }
 
     public function testDisplayReturn(): void
@@ -50,7 +50,7 @@ final class HtmlTest extends TestCase
 
         $result = $html->display('html_test');
 
-        static::assertSame('hello html,bar.', $result);
+        self::assertSame('hello html,bar.', $result);
     }
 
     public function testDisplayWithVar(): void
@@ -66,7 +66,7 @@ final class HtmlTest extends TestCase
 
         $result = $html->display('html_test', ['foo' => 'bar']);
 
-        static::assertSame('hello html,bar.', $result);
+        self::assertSame('hello html,bar.', $result);
     }
 
     public function testNotSetParseResolverException(): void
@@ -117,13 +117,13 @@ final class HtmlTest extends TestCase
 
         $html->setVar('foo', 'bar');
 
-        static::assertFalse(is_file($cachePath));
+        self::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime');
 
-        static::assertSame('hello html cachelifetime,bar.', $result);
+        self::assertSame('hello html cachelifetime,bar.', $result);
 
-        static::assertTrue(is_file($cachePath));
+        self::assertTrue(is_file($cachePath));
     }
 
     public function testCacheLifetime2(): void
@@ -141,19 +141,19 @@ final class HtmlTest extends TestCase
 
         $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime2.html');
 
-        static::assertFalse(is_file($cachePath));
+        self::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime2');
 
-        static::assertTrue(is_file($cachePath));
+        self::assertTrue(is_file($cachePath));
 
-        static::assertSame('hello html cachelifetime2,bar.', $result);
+        self::assertSame('hello html cachelifetime2,bar.', $result);
 
         $result = $html->display('html_test_cachelisfetime2');
 
-        static::assertTrue(is_file($cachePath));
+        self::assertTrue(is_file($cachePath));
 
-        static::assertSame('hello html cachelifetime2,bar.', $result);
+        self::assertSame('hello html cachelifetime2,bar.', $result);
     }
 
     public function testCacheLifetime3(): void
@@ -172,13 +172,13 @@ final class HtmlTest extends TestCase
         $cachePath = $html->parseCachePath(__DIR__.'/assert/html_test_cachelisfetime3.html');
 
         // 模板不存在，已过期
-        static::assertFalse(is_file($cachePath));
+        self::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime3');
 
-        static::assertTrue(is_file($cachePath));
+        self::assertTrue(is_file($cachePath));
 
-        static::assertSame('hello html cachelifetime3,bar.', $result);
+        self::assertSame('hello html cachelifetime3,bar.', $result);
     }
 
     public function testCacheLifetime4(): void
@@ -202,24 +202,24 @@ final class HtmlTest extends TestCase
 
         sleep(1);
 
-        static::assertFalse(is_file($cachePath));
+        self::assertFalse(is_file($cachePath));
 
         $result = $html->display('html_test_cachelisfetime4');
 
-        static::assertTrue(is_file($cachePath));
+        self::assertTrue(is_file($cachePath));
 
-        static::assertSame('hello html cachelifetime4,bar.', $result);
+        self::assertSame('hello html cachelifetime4,bar.', $result);
 
-        static::assertFalse(filemtime($file) >= filemtime($cachePath));
+        self::assertFalse(filemtime($file) >= filemtime($cachePath));
 
         // 源文件已更新，过期
         file_put_contents($file, 'new for hello html cachelifetime4,{{ $foo }}.');
 
-        static::assertTrue(filemtime($file) >= filemtime($cachePath));
+        self::assertTrue(filemtime($file) >= filemtime($cachePath));
 
         $result = $html->display('html_test_cachelisfetime4');
 
-        static::assertSame('new for hello html cachelifetime4,bar.', $result);
+        self::assertSame('new for hello html cachelifetime4,bar.', $result);
 
         unlink($file);
     }
@@ -243,7 +243,7 @@ final class HtmlTest extends TestCase
 
         $file = '/path/to/theme/file';
         $expectedCachePath = '/dir/cache/file.php';
-        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
+        self::assertEquals($expectedCachePath, $mock->parseCachePath($file));
     }
 
     public function testParseCachePathWithFileNotInThemePath(): void
@@ -265,7 +265,7 @@ final class HtmlTest extends TestCase
 
         $file = '/path/to/other/file.php';
         $expectedCachePath = '/dir/cache/:hash/file.856cbf84e0aead0a72417d9c84c7f88a.php';
-        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
+        self::assertEquals($expectedCachePath, $mock->parseCachePath($file));
     }
 
     public function testParseCachePathWithRelativeFilePath(): void
@@ -287,7 +287,7 @@ final class HtmlTest extends TestCase
 
         $file = 'relative/file.php';
         $expectedCachePath = '/dir/cache/:hash/file.58cbd34870938ada67e00f6f337c52e3.php';
-        static::assertEquals($expectedCachePath, $mock->parseCachePath($file));
+        self::assertEquals($expectedCachePath, $mock->parseCachePath($file));
     }
 
     protected function makeHtml(): Parser

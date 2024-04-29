@@ -26,18 +26,18 @@ final class TokenTest extends TestCase
 
         $token->setTokenName('token');
 
-        static::assertFalse($token->isLogin());
-        static::assertSame([], $token->getLogin());
+        self::assertFalse($token->isLogin());
+        self::assertSame([], $token->getLogin());
 
-        static::assertSame('token', $token->login(['foo' => 'bar', 'hello' => 'world'], 10));
+        self::assertSame('token', $token->login(['foo' => 'bar', 'hello' => 'world'], 10));
 
-        static::assertTrue($token->isLogin());
-        static::assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());
+        self::assertTrue($token->isLogin());
+        self::assertSame(['foo' => 'bar', 'hello' => 'world'], $token->getLogin());
 
-        static::assertNull($token->logout());
+        self::assertNull($token->logout());
 
-        static::assertFalse($token->isLogin());
-        static::assertSame([], $token->getLogin());
+        self::assertFalse($token->isLogin());
+        self::assertSame([], $token->getLogin());
     }
 
     public function testTokenNameWasNotSet(): void

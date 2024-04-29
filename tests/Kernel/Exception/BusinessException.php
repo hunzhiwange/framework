@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\BusinessException as BaseBusinessException;
 
-class BusinessException extends BaseBusinessException
-{
-}
+class BusinessException extends BaseBusinessException {}

@@ -14,7 +14,5 @@ class ProviderTest1 extends Provider
         $_SERVER['testMakeProvider'] = 1;
     }
 
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

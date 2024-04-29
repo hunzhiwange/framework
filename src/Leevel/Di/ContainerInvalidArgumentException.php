@@ -7,6 +7,4 @@ namespace Leevel\Di;
 /**
  * 容器参数异常.
  */
-class ContainerInvalidArgumentException extends \RuntimeException
-{
-}
+class ContainerInvalidArgumentException extends \RuntimeException {}

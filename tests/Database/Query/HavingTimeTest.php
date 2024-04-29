@@ -497,7 +497,7 @@ final class HavingTimeTest extends TestCase
         $value2 = $value + 1;
         $value3 = $value + 2;
 
-        static::assertTrue(
+        self::assertTrue(
             \in_array(
                 $this->varJsonSql(
                     $connect
@@ -543,7 +543,7 @@ final class HavingTimeTest extends TestCase
         $value2 = $value + 1;
         $value3 = $value + 2;
 
-        static::assertTrue(
+        self::assertTrue(
             \in_array(
                 $this->varJsonSql(
                     $connect
@@ -784,7 +784,7 @@ final class HavingTimeTest extends TestCase
         $date2 = $date + 1;
         $date3 = $date + 2;
 
-        static::assertTrue(
+        self::assertTrue(
             \in_array(
                 $this->varJsonSql(
                     $connect

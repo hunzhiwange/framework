@@ -52,11 +52,11 @@ EOT,
 
         $test->register();
 
-        static::assertSame('world', $container->make('foo')->hello());
-        static::assertSame('world', $container->make('bar')->hello());
-        static::assertSame('world', $container->make('hello')->hello());
+        self::assertSame('world', $container->make('foo')->hello());
+        self::assertSame('world', $container->make('bar')->hello());
+        self::assertSame('world', $container->make('hello')->hello());
 
-        static::assertFalse($test->isDeferred());
+        self::assertFalse($test->isDeferred());
     }
 
     #[Api([
@@ -86,13 +86,13 @@ EOT,
 
         $test->register();
 
-        static::assertSame('bar', $container->make('world')->foo());
-        static::assertNull($container->make('hello', throw: false));
+        self::assertSame('bar', $container->make('world')->foo());
+        self::assertNull($container->make('hello', throw: false));
 
         $container->alias($test->providers());
 
-        static::assertSame('bar', $container->make('hello')->foo());
-        static::assertTrue($test->isDeferred());
+        self::assertSame('bar', $container->make('hello')->foo());
+        self::assertTrue($test->isDeferred());
     }
 
     public function testEmptyProviders(): void
@@ -120,7 +120,7 @@ EOT,
         }
 
         $test->bootstrap();
-        static::assertSame('bootstrap', $_SERVER['test.privider']);
+        self::assertSame('bootstrap', $_SERVER['test.privider']);
 
         if (isset($_SERVER['test.privider'])) {
             unset($_SERVER['test.privider']);
@@ -141,7 +141,7 @@ EOT,
     public function testMethodBootstrapByCall(): void
     {
         $test = new PrividerTest3(new Container());
-        static::assertNull($test->bootstrap());
+        self::assertNull($test->bootstrap());
     }
 }
 
@@ -149,7 +149,7 @@ final class PrividerTest extends Provider
 {
     public function register(): void
     {
-        $this->container->singleton('foo', function ($container) {
+        $this->container->singleton('foo', static function ($container) {
             return new PrividerService1($container);
         });
     }
@@ -174,7 +174,7 @@ class PrividerTest2 extends Provider
 {
     public function register(): void
     {
-        $this->container->singleton('world', function ($container) {
+        $this->container->singleton('world', static function ($container) {
             return new PrividerService2();
         });
     }
@@ -194,16 +194,12 @@ class PrividerTest2 extends Provider
 
 class PrividerTest3 extends Provider
 {
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }
 
 class PrividerService1
 {
-    public function __construct(IContainer $container)
-    {
-    }
+    public function __construct(IContainer $container) {}
 
     public function hello()
     {

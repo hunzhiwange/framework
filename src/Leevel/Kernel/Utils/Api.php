@@ -11,6 +11,5 @@ namespace Leevel\Kernel\Utils;
 class Api
 {
     public function __construct(...$args) // @phpstan-ignore-line
-    {
-    }
+    {}
 }

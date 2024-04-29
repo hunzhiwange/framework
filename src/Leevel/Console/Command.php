@@ -6,6 +6,7 @@ namespace Leevel\Console;
 
 use Leevel\Di\IContainer;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -66,7 +67,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 运行命令.
      *
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function run(InputInterface $input, OutputInterface $output): int
     {
@@ -80,7 +81,7 @@ abstract class Command extends SymfonyCommand
      * 调用其他命令.
      *
      * @throws \Exception
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function call(string $command, array $arguments = []): int
     {

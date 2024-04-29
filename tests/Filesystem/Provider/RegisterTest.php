@@ -24,8 +24,8 @@ final class RegisterTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
         $manager->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
-        static::assertTrue(is_file($file));
-        static::assertSame('register', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('register', file_get_contents($file));
         unlink($file);
         rmdir($path);
 
@@ -35,8 +35,8 @@ final class RegisterTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
         $local->write('helloregister.txt', 'register');
         $file = $path.'/helloregister.txt';
-        static::assertTrue(is_file($file));
-        static::assertSame('register', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('register', file_get_contents($file));
         unlink($file);
         rmdir($path);
     }

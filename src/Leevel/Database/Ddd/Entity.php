@@ -20,7 +20,6 @@ use Leevel\Support\IJson;
 use Leevel\Support\Str\Camelize;
 use Leevel\Support\Str\UnCamelize;
 use Leevel\Validate\IValidator;
-use OutOfBoundsException;
 
 /**
  * 实体 Object Relational Mapping.
@@ -770,7 +769,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 通过主键或条件查找实体.
      */
-    public static function findEntity(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findEntity($idOrCondition, $column);
     }
@@ -786,7 +785,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public static function findOrFail(null|int|string|array|\Closure $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findOrFail($idOrCondition, $column);
     }
@@ -822,7 +821,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         $select = static::meta()
             ->select()
-            ->asSome(fn (...$args): self => new static(...$args), [true, true])
+            ->asSome(static fn (...$args): self => new static(...$args), [true, true])
             ->asCollection(true, [static::class])
         ;
 
@@ -1281,7 +1280,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public function relation(string $prop, null|array|string|\Closure $relationScope = null): Relation
+    public function relation(string $prop, null|array|\Closure|string $relationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
             throw new \InvalidArgumentException(sprintf(
@@ -1794,9 +1793,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $entity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         $prop = $this->normalizeWhiteAndBlack($this->fields(), 'show_prop');
@@ -1841,17 +1837,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toJson(?int $config = null): string
     {
         return ConvertJson::handle($this->toArray(), $config);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
@@ -1870,7 +1860,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * - 主键优先，唯一键候选
      *
-     * @throws \Leevel\Database\Ddd\EntityIdentifyConditionException
+     * @throws EntityIdentifyConditionException
      */
     public function idCondition(bool $cached = true): array
     {
@@ -1902,33 +1892,21 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $index): bool
     {
         return $this->hasProp($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $index, mixed $newval): void
     {
         $this->withProp($index, $newval);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet(mixed $index): mixed
     {
         return $this->prop($index);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset(mixed $offset): void
     {
         $this->withProp($offset, null);
@@ -2196,7 +2174,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             ->findAll()
         ;
 
-        /** @var \Leevel\Database\Ddd\Entity $entity */
+        /** @var Entity $entity */
         foreach ($entitys as $entity) { // @phpstan-ignore-line
             $entity->{$type}($forceDelete)->flush();
         }
@@ -2281,7 +2259,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $saveData = $this->normalizeWhiteAndBlackChangedData('create');
         $this->removeVirtualColumnData($saveData);
 
-        $this->flushFramework = function (array $saveData): string|int {
+        $this->flushFramework = function (array $saveData): int|string {
             $this->handleEvent(self::BEFORE_CREATING_EVENT, $saveData);
 
             if (static::shouldVirtual()) {
@@ -2595,7 +2573,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 验证 getter setter 属性.
      *
-     * @throws \Leevel\Database\Ddd\EntityPropNotDefinedException
+     * @throws EntityPropNotDefinedException
      */
     protected static function validate(string $prop): void
     {
@@ -2677,7 +2655,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             foreach ($enumValue as $v) {
                 try {
                     $tempValue[] = __($enumClass::description($v));
-                } catch (OutOfBoundsException) {
+                } catch (\OutOfBoundsException) {
                     // 枚举值不存在不抛出异常，避免业务中新增枚举无法匹配
                     $tempValue[] = '';
                 }
@@ -2777,7 +2755,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return \Closure::fromCallable($call);
     }
 
-    protected function prepareRelationScope(array $defined, null|array|string|\Closure $relationScope): ?\Closure
+    protected function prepareRelationScope(array $defined, null|array|\Closure|string $relationScope): ?\Closure
     {
         if (!isset($defined[self::RELATION_SCOPE]) && !$relationScope) {
             return null;

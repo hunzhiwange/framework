@@ -27,22 +27,22 @@ final class EncryptionTest extends TestCase
     {
         $container = $this->createContainer();
         $encryption = $this->createEncryption($container);
-        $container->singleton('encryption', function () use ($encryption): Encryption {
+        $container->singleton('encryption', static function () use ($encryption): Encryption {
             return $encryption;
         });
 
         $sourceMessage = '123456';
         $encodeMessage = $encryption->encrypt($sourceMessage);
-        static::assertFalse($sourceMessage === $encodeMessage);
-        static::assertSame(
+        self::assertFalse($sourceMessage === $encodeMessage);
+        self::assertSame(
             $encryption->decrypt($encodeMessage),
             $sourceMessage
         );
-        static::assertSame(
+        self::assertSame(
             $encryption->decrypt($encodeMessage.'foo'),
             false
         );
-        static::assertSame(
+        self::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );
@@ -52,22 +52,22 @@ final class EncryptionTest extends TestCase
     {
         $container = $this->createContainer();
         $encryption = $this->createEncryption($container);
-        $container->singleton('encryption', function () use ($encryption): Encryption {
+        $container->singleton('encryption', static function () use ($encryption): Encryption {
             return $encryption;
         });
 
         $sourceMessage = '123456';
         $encodeMessage = ProxyEncryption::encrypt($sourceMessage);
-        static::assertFalse($sourceMessage === $encodeMessage);
-        static::assertSame(
+        self::assertFalse($sourceMessage === $encodeMessage);
+        self::assertSame(
             ProxyEncryption::decrypt($encodeMessage),
             $sourceMessage
         );
-        static::assertSame(
+        self::assertSame(
             ProxyEncryption::decrypt($encodeMessage.'foo'),
             false
         );
-        static::assertSame(
+        self::assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );

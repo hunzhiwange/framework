@@ -61,25 +61,25 @@ EOT,
         $foo = $manager->connect('foo');
         $bar = $manager->connect('bar');
 
-        static::assertSame([
+        self::assertSame([
             'driver' => 'foo',
             'config1' => 'world',
         ], $foo->config());
 
-        static::assertSame('hello foo', $foo->foo());
-        static::assertSame('hello foo bar', $foo->bar('bar'));
-        static::assertSame('hello foo 1', $foo->bar('1'));
-        static::assertSame('hello foo 2', $foo->bar('2'));
+        self::assertSame('hello foo', $foo->foo());
+        self::assertSame('hello foo bar', $foo->bar('bar'));
+        self::assertSame('hello foo 1', $foo->bar('1'));
+        self::assertSame('hello foo 2', $foo->bar('2'));
 
-        static::assertSame([
+        self::assertSame([
             'driver' => 'bar',
             'config1' => 'foo',
             'config2' => 'bar',
         ], $bar->config());
-        static::assertSame('hello bar', $bar->foo());
-        static::assertSame('hello bar bar', $bar->bar('bar'));
-        static::assertSame('hello bar 1', $bar->bar('1'));
-        static::assertSame('hello bar 2', $bar->bar('2'));
+        self::assertSame('hello bar', $bar->foo());
+        self::assertSame('hello bar bar', $bar->bar('bar'));
+        self::assertSame('hello bar 1', $bar->bar('1'));
+        self::assertSame('hello bar 2', $bar->bar('2'));
     }
 
     #[Api([
@@ -92,12 +92,12 @@ EOT,
         $foo = $manager->connect('foo');
         $bar = $manager->connect('foo');
 
-        static::assertSame($foo, $bar);
+        self::assertSame($foo, $bar);
 
         $foo1 = $manager->connect('foo', true);
         $bar1 = $manager->connect('foo', true);
 
-        static::assertFalse($foo1 === $bar1);
+        self::assertFalse($foo1 === $bar1);
     }
 
     #[Api([
@@ -120,17 +120,17 @@ EOT,
         $manager = $this->createManager();
 
         $foo = $manager->connect('foo');
-        static::assertSame('hello foo', $foo->foo());
-        static::assertSame('hello foo bar', $foo->bar('bar'));
+        self::assertSame('hello foo', $foo->foo());
+        self::assertSame('hello foo bar', $foo->bar('bar'));
 
-        $manager->extend('foo', function (Manager $manager): FooExtend {
+        $manager->extend('foo', static function (Manager $manager): FooExtend {
             return new FooExtend($manager->normalizeConnectConfig('foo'));
         });
 
         $manager->disconnect('foo');
         $foo = $manager->connect('foo');
-        static::assertSame('hello extend foo', $foo->foo());
-        static::assertSame('hello extend foo bar', $foo->bar('bar'));
+        self::assertSame('hello extend foo', $foo->foo());
+        self::assertSame('hello extend foo bar', $foo->bar('bar'));
     }
 
     #[Api([
@@ -145,8 +145,8 @@ EOT,
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
 
-        static::assertSame($foo, $foo2);
-        static::assertSame($bar, $bar2);
+        self::assertSame($foo, $foo2);
+        self::assertSame($bar, $bar2);
     }
 
     #[Api([
@@ -161,8 +161,8 @@ EOT,
         $foo2 = $manager->reconnect('foo');
         $bar2 = $manager->reconnect('bar');
 
-        static::assertFalse($foo === $foo2);
-        static::assertFalse($bar === $bar2);
+        self::assertFalse($foo === $foo2);
+        self::assertFalse($bar === $bar2);
     }
 
     #[Api([
@@ -181,8 +181,8 @@ EOT,
         $foo2 = $manager->connect('foo');
         $bar2 = $manager->connect('bar');
 
-        static::assertFalse($foo === $foo2);
-        static::assertFalse($bar === $bar2);
+        self::assertFalse($foo === $foo2);
+        self::assertFalse($bar === $bar2);
     }
 
     #[Api([
@@ -192,10 +192,10 @@ EOT,
     {
         $manager = $this->createManager();
 
-        static::assertSame('hello foo', $manager->foo());
-        static::assertSame('hello foo bar', $manager->bar('bar'));
-        static::assertSame('hello foo 1', $manager->bar('1'));
-        static::assertSame('hello foo 2', $manager->bar('2'));
+        self::assertSame('hello foo', $manager->foo());
+        self::assertSame('hello foo bar', $manager->bar('bar'));
+        self::assertSame('hello foo 1', $manager->bar('1'));
+        self::assertSame('hello foo 2', $manager->bar('2'));
     }
 
     #[Api([
@@ -204,17 +204,17 @@ EOT,
     public function testGetConnects(): void
     {
         $manager = $this->createManager();
-        static::assertCount(0, $manager->getConnects());
+        self::assertCount(0, $manager->getConnects());
 
         $manager->connect('foo');
         $manager->connect('bar');
-        static::assertCount(2, $manager->getConnects());
+        self::assertCount(2, $manager->getConnects());
 
         $manager->disconnect('foo');
-        static::assertCount(1, $manager->getConnects());
+        self::assertCount(1, $manager->getConnects());
 
         $manager->disconnect('bar');
-        static::assertCount(0, $manager->getConnects());
+        self::assertCount(0, $manager->getConnects());
     }
 
     #[Api([
@@ -224,18 +224,18 @@ EOT,
     {
         $manager = $this->createManager();
 
-        static::assertSame('hello foo', $manager->foo());
-        static::assertSame('hello foo bar', $manager->bar('bar'));
-        static::assertSame('hello foo 1', $manager->bar('1'));
-        static::assertSame('hello foo 2', $manager->bar('2'));
+        self::assertSame('hello foo', $manager->foo());
+        self::assertSame('hello foo bar', $manager->bar('bar'));
+        self::assertSame('hello foo 1', $manager->bar('1'));
+        self::assertSame('hello foo 2', $manager->bar('2'));
 
         $manager->disconnect();
         $manager->setDefaultConnect('bar');
 
-        static::assertSame('hello bar', $manager->foo());
-        static::assertSame('hello bar bar', $manager->bar('bar'));
-        static::assertSame('hello bar 1', $manager->bar('1'));
-        static::assertSame('hello bar 2', $manager->bar('2'));
+        self::assertSame('hello bar', $manager->foo());
+        self::assertSame('hello bar bar', $manager->bar('bar'));
+        self::assertSame('hello bar 1', $manager->bar('1'));
+        self::assertSame('hello bar 2', $manager->bar('2'));
     }
 
     public function testParseConfigParamConnectIsNotArray(): void

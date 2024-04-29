@@ -58,9 +58,6 @@ abstract class Filesystem implements IFilesystem
         return $this->filesystem->{$method}(...$args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getFilesystem(): LeagueFilesystem
     {
         return $this->filesystem;

@@ -23,7 +23,5 @@ hello
 world
 EOT,
     ])]
-    public function test1(): void
-    {
-    }
+    public function test1(): void {}
 }

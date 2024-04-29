@@ -6,6 +6,4 @@ namespace Tests\Kernel\Exception;
 
 use Leevel\Kernel\Exceptions\MethodNotAllowedHttpException as BaseMethodNotAllowedHttpException;
 
-class MethodNotAllowedHttpException extends BaseMethodNotAllowedHttpException
-{
-}
+class MethodNotAllowedHttpException extends BaseMethodNotAllowedHttpException {}

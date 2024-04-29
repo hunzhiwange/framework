@@ -93,7 +93,5 @@ EOT,
 为了减少学习成本，系统还支持 PHP 自身作为 UI 模板。
 EOT,
     ])]
-    public function doc6(): void
-    {
-    }
+    public function doc6(): void {}
 }

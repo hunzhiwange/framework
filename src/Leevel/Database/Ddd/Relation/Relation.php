@@ -352,7 +352,7 @@ abstract class Relation
      */
     protected function getEntityKey(array $entitys, string $key): array
     {
-        $values = array_map(function (Entity $entity) use ($key): mixed {
+        $values = array_map(static function (Entity $entity) use ($key): mixed {
             return $entity->prop($key);
         }, $entitys);
 

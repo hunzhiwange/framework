@@ -27,8 +27,6 @@ class Observer implements \SplObserver
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws \InvalidArgumentException
      */
     public function update(\SplSubject $subject): void

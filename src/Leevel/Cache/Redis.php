@@ -46,9 +46,6 @@ class Redis extends Cache implements ICache
         return $this->handle->{$method}(...$args);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function get(string $name, mixed $defaults = false): mixed
     {
         $this->checkConnect();
@@ -62,9 +59,6 @@ class Redis extends Cache implements ICache
         return $this->decodeData($data);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
         $this->checkConnect();
@@ -81,9 +75,6 @@ class Redis extends Cache implements ICache
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function delete(string $name): void
     {
         $this->checkConnect();
@@ -91,9 +82,6 @@ class Redis extends Cache implements ICache
         $this->handle->del($this->getCacheName($name));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function has(string $name): bool
     {
         $this->checkConnect();
@@ -102,25 +90,16 @@ class Redis extends Cache implements ICache
         return 1 === $this->handle->exists($this->getCacheName($name));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('incrby', $name, $step, $expire);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         return $this->doIncreaseOrDecrease('decrby', $name, $step, $expire);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function ttl(string $name): int
     {
         $this->checkConnect();
@@ -129,9 +108,6 @@ class Redis extends Cache implements ICache
         return (int) $this->handle->ttl($name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function close(): void
     {
         if (!$this->handle) {
@@ -144,8 +120,6 @@ class Redis extends Cache implements ICache
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @todo 是否返回 handle
      */
     public function getHandle(): ?\Redis

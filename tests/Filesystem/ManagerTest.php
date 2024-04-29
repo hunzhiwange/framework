@@ -80,8 +80,8 @@ final class ManagerTest extends TestCase
         $manager->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        static::assertTrue(is_file($file));
-        static::assertSame('manager', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('manager', file_get_contents($file));
         $this->clearTempDir();
     }
 
@@ -95,8 +95,8 @@ final class ManagerTest extends TestCase
         $connect->write('hellomanager.txt', 'manager');
         $file = $path.'/hellomanager.txt';
 
-        static::assertTrue(is_file($file));
-        static::assertSame('manager', file_get_contents($file));
+        self::assertTrue(is_file($file));
+        self::assertSame('manager', file_get_contents($file));
         $this->clearTempDir();
     }
 

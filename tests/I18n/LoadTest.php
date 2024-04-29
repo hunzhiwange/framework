@@ -23,10 +23,10 @@ final class LoadTest extends TestCase
         $load = $this->createLoad('zh-CN');
 
         $result = $load->loadData();
-        static::assertSame([], $result);
+        self::assertSame([], $result);
 
         $result = $load->loadData();
-        static::assertSame([], $result);
+        self::assertSame([], $result);
     }
 
     public function testEnus(): void
@@ -127,7 +127,7 @@ final class LoadTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result
@@ -234,7 +234,7 @@ final class LoadTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $result

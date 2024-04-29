@@ -10,8 +10,8 @@ use Leevel\Validate\IValidator;
 use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Leevel\Validate\ValidatorException;
-use Tests\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\TestCase;
 
 #[Api([
     'title' => 'Validate',
@@ -41,7 +41,7 @@ final class ValidatorTest extends TestCase
         $container = Container::singletons();
         $container->clear();
 
-        $container->singleton('i18n', function (): \I18nMock {
+        $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
 
@@ -93,13 +93,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -146,13 +146,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -199,13 +199,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -252,13 +252,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -315,13 +315,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -363,13 +363,13 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([], $validate->error());
-        static::assertSame([], $validate->getMessage());
-        static::assertSame(['name' => '小牛哥'], $validate->getData());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([], $validate->error());
+        self::assertSame([], $validate->getMessage());
+        self::assertSame(['name' => '小牛哥'], $validate->getData());
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
@@ -402,10 +402,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -438,10 +438,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -450,8 +450,8 @@ EOT,
 
         $validate->data(['name' => '12345678901234567890']);
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     #[Api([
@@ -478,15 +478,15 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->addData(['name' => '中国']);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -518,15 +518,15 @@ EOT,
             }
             eot;
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20']);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -535,8 +535,8 @@ EOT,
 
         $validate->rule(['name' => 'required|max_length:20']);
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     #[Api([
@@ -558,8 +558,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -571,15 +571,15 @@ EOT,
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     public function testRuleIf2(): void
@@ -595,8 +595,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -604,8 +604,8 @@ EOT,
             return true;
         });
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -615,7 +615,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -639,8 +639,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20']);
 
@@ -661,15 +661,15 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -679,7 +679,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -706,8 +706,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -719,15 +719,15 @@ EOT,
             []
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule()
             )
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     public function testAddRuleIf2(): void
@@ -743,8 +743,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
@@ -752,8 +752,8 @@ EOT,
             return true;
         });
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -763,7 +763,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -796,10 +796,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -816,10 +816,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -855,10 +855,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -875,10 +875,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -914,10 +914,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -934,10 +934,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -973,10 +973,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -993,10 +993,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1024,8 +1024,8 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1035,7 +1035,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1044,8 +1044,8 @@ EOT,
 
         $validate->addMessage(['name.sub.sub' => ['required' => '字段 {field} 不能为空']]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1055,7 +1055,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1083,8 +1083,8 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1094,7 +1094,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1103,8 +1103,8 @@ EOT,
 
         $validate->addMessage(['name*' => ['required' => 'sub {field} must have value']]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1114,7 +1114,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1136,8 +1136,8 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1147,7 +1147,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1180,11 +1180,11 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '用户名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '用户名'], $validate->getName());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1201,10 +1201,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1237,11 +1237,11 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '用户名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '用户名'], $validate->getName());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1258,10 +1258,10 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1293,8 +1293,8 @@ EOT,
             $this->assertSame(['name' => '地名'], $v->getName());
         });
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     #[Api([
@@ -1314,7 +1314,7 @@ EOT,
             ]
         );
 
-        $validate->extend('custom_rule', function ($value, array $param, IValidator $validator, string $field): bool {
+        $validate->extend('custom_rule', static function ($value, array $param, IValidator $validator, string $field): bool {
             if (1 === $value) {
                 return true;
             }
@@ -1322,13 +1322,13 @@ EOT,
             return false;
         });
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->data(['name' => 0]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
     }
 
     #[Api([
@@ -1338,11 +1338,11 @@ EOT,
     {
         $validate = new Validator();
 
-        static::assertTrue($validate->minLength('成都', 1));
-        static::assertTrue($validate->minLength('成都', 2));
-        static::assertFalse($validate->minLength('成都', 3));
-        static::assertFalse($validate->alpha('成都'));
-        static::assertTrue($validate->alpha('cd'));
+        self::assertTrue($validate->minLength('成都', 1));
+        self::assertTrue($validate->minLength('成都', 2));
+        self::assertFalse($validate->minLength('成都', 3));
+        self::assertFalse($validate->alpha('成都'));
+        self::assertTrue($validate->alpha('cd'));
     }
 
     #[Api([
@@ -1352,7 +1352,7 @@ EOT,
     {
         $validate = new Validator();
 
-        $validate->extend('custom_foo_bar', function (string $field, $value, array $param): bool {
+        $validate->extend('custom_foo_bar', static function (string $field, $value, array $param): bool {
             if ('成都' === $value) {
                 return true;
             }
@@ -1360,8 +1360,8 @@ EOT,
             return false;
         });
 
-        static::assertTrue($validate->customFooBar('成都'));
-        static::assertFalse($validate->customFooBar('魂之挽歌'));
+        self::assertTrue($validate->customFooBar('成都'));
+        self::assertFalse($validate->customFooBar('魂之挽歌'));
     }
 
     public function testCallException(): void
@@ -1450,9 +1450,9 @@ EOT,
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest1::class);
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     #[Api([
@@ -1484,9 +1484,9 @@ EOT,
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public function testCallExtendClassWithCustomMethod2(): void
@@ -1506,9 +1506,9 @@ EOT,
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest2::class);
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public function test13(): void
@@ -1597,7 +1597,7 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
     }
 
     public static function skipRuleProvider(): array
@@ -1646,11 +1646,11 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1659,8 +1659,8 @@ EOT,
 
         $validate->addRule(['name' => 'required|alpha|'.IValidator::SKIP_OTHER]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1670,7 +1670,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1713,11 +1713,11 @@ EOT,
             }
             eot;
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名', 'value' => '值'], $validate->getName());
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1726,8 +1726,8 @@ EOT,
 
         $validate->addRule(['name' => 'required|alpha|'.IValidator::SKIP_SELF]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1740,7 +1740,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1768,9 +1768,9 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
     }
 
     #[Api([
@@ -1793,9 +1793,9 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
 
         $validate = new Validator(
             [
@@ -1809,9 +1809,9 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
     }
 
     #[Api([
@@ -1834,13 +1834,13 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
 
         $validate->rule(['name' => 'required']);
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1850,7 +1850,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1858,8 +1858,8 @@ EOT,
         );
 
         $validate->data(['name' => null]);
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
 
         $error = <<<'eot'
             {
@@ -1869,7 +1869,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -1899,9 +1899,9 @@ EOT,
 
         $validate->addMessage(['na*' => ['required' => 'test {field} required message']]);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
             {
@@ -1911,7 +1911,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $message,
             $this->varJson(
                 $validate->getMessage()
@@ -1926,7 +1926,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validate->getData(),
@@ -1957,7 +1957,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -1979,7 +1979,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2010,9 +2010,9 @@ EOT,
 
         $validate->addMessage(['na*' => 'test {field} required message']);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $message = <<<'eot'
             {
@@ -2022,7 +2022,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $message,
             $this->varJson(
                 $validate->getMessage()
@@ -2037,7 +2037,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validate->getData(),
@@ -2068,7 +2068,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -2090,7 +2090,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2122,14 +2122,14 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
 
         $validate->rule(['na*' => 'required']);
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
 
         $data = <<<'eot'
             {
@@ -2139,7 +2139,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $validate->getData()
@@ -2169,7 +2169,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $rule,
             $this->varJson(
                 $validate->getRule(),
@@ -2191,7 +2191,7 @@ EOT,
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error(),
@@ -2214,10 +2214,10 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame([['required', []]], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
-        static::assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame([['required', []]], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
+        self::assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
     }
 
     public function testRuleIsEmpty(): void
@@ -2234,8 +2234,8 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
     }
 
     public function testHasFieldRuleWithoutParamRealWithRuleNotSet(): void
@@ -2252,18 +2252,18 @@ EOT,
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
-        static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
-        static::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'required']));
+        self::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['name', 'foo']));
+        self::assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithParam', ['bar', '']));
     }
 
     public function test1(): void
     {
         $e = new ValidatorException('hello');
-        static::assertSame('hello', $e->getMessage());
-        static::assertFalse($e->reportable());
+        self::assertSame('hello', $e->getMessage());
+        self::assertFalse($e->reportable());
     }
 
     #[Api([
@@ -2296,9 +2296,9 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
     }
 
     public function test3(): void
@@ -2319,9 +2319,9 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public function test4(): void
@@ -2342,9 +2342,9 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     public function test5(): void
@@ -2365,7 +2365,7 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
         $error = <<<'eot'
 {
     "name": [
@@ -2374,14 +2374,14 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
             )
         );
         $validate->data(['name' => 'foo']);
-        static::assertTrue($validate->success());
+        self::assertTrue($validate->success());
     }
 
     #[Api([
@@ -2414,7 +2414,7 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
         $error = <<<'eot'
 {
     "name": [
@@ -2423,14 +2423,14 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
             )
         );
         $validate->data(['name' => 'foo']);
-        static::assertFalse($validate->success());
+        self::assertFalse($validate->success());
     }
 
     #[Api([
@@ -2453,9 +2453,9 @@ EOT,
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 {
     "name": [
@@ -2464,7 +2464,7 @@ EOT,
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2488,14 +2488,14 @@ eot;
         $container = new Container();
         $validate->setContainer($container);
         $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 []
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2520,9 +2520,9 @@ eot;
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 {
     "name": [
@@ -2531,7 +2531,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2553,9 +2553,9 @@ eot;
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 {
     "name": [
@@ -2564,7 +2564,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2583,9 +2583,9 @@ eot;
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
     }
 
     public function test9(): void
@@ -2602,9 +2602,9 @@ eot;
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 {
     "name": [
@@ -2613,7 +2613,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()
@@ -2632,9 +2632,9 @@ eot;
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
     }
 
     public function test10(): void
@@ -2651,9 +2651,9 @@ eot;
             ]
         );
 
-        static::assertTrue($validate->success());
-        static::assertFalse($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertTrue($validate->success());
+        self::assertFalse($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
     }
 
     public function test11(): void
@@ -2670,9 +2670,9 @@ eot;
             ]
         );
 
-        static::assertFalse($validate->success());
-        static::assertTrue($validate->fail());
-        static::assertSame(['name' => '地名'], $validate->getName());
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
         $error = <<<'eot'
 {
     "name": [
@@ -2681,7 +2681,7 @@ eot;
 }
 eot;
 
-        static::assertSame(
+        self::assertSame(
             $error,
             $this->varJson(
                 $validate->error()

@@ -20,9 +20,9 @@ final class PoMoTest extends TestCase
         ];
 
         $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/page.po']);
-        static::assertSame($lang, $data);
+        self::assertSame($lang, $data);
         $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/page.mo']);
-        static::assertSame($lang, $data);
+        self::assertSame($lang, $data);
     }
 
     public function testMore(): void
@@ -98,7 +98,7 @@ final class PoMoTest extends TestCase
             eot;
 
         $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/validate.po']);
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $lang
@@ -176,7 +176,7 @@ final class PoMoTest extends TestCase
             }
             eot;
 
-        static::assertSame(
+        self::assertSame(
             $data,
             $this->varJson(
                 $lang,

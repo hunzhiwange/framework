@@ -9,9 +9,10 @@ use Leevel\Kernel\Utils\Api;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Monolog\Logger;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Log\InvalidArgumentException;
 use Psr\Log\LogLevel;
 use Tests\TestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 #[Api([
     'zh-CN:title' => 'Log',
@@ -125,9 +126,9 @@ EOT,
 
         $this->assertInstanceof(ILog::class, $log);
 
-        static::assertNull($log->{$level}('foo', ['hello', 'world']));
+        self::assertNull($log->{$level}('foo', ['hello', 'world']));
 
-        static::assertInstanceOf(Logger::class, $log->getMonolog());
+        self::assertInstanceOf(Logger::class, $log->getMonolog());
         Helper::deleteDirectory(__DIR__.'/cacheLog');
     }
 
@@ -152,15 +153,15 @@ EOT,
     {
         $log = $this->createFileConnect([
             'level' => [
-                ILOG::DEFAULT_MESSAGE_CATEGORY => LogLevel::INFO,
+                ILog::DEFAULT_MESSAGE_CATEGORY => LogLevel::INFO,
             ],
         ]);
         $log->info('foo', ['hello', 'world']);
         $log->debug('foo', ['hello', 'world']);
         $fileInfo = __DIR__.'/cacheLog/development.info/*-'.date('Y-m-d').'.log';
         $fileDebug = __DIR__.'/cacheLog/development.debug/*-'.date('Y-m-d').'.log';
-        static::assertTrue(is_file($fileInfo));
-        static::assertTrue(!is_file($fileDebug));
+        self::assertTrue(is_file($fileInfo));
+        self::assertTrue(!is_file($fileDebug));
     }
 
     public function testWithOutBuffer(): void
@@ -169,9 +170,9 @@ EOT,
         $this->assertInstanceof(ILog::class, $log);
 
         $dir = __DIR__.'/cacheLog';
-        static::assertDirectoryDoesNotExist($dir);
-        static::assertNull($log->info('foo', ['hello', 'world']));
-        static::assertDirectoryExists($dir);
+        self::assertDirectoryDoesNotExist($dir);
+        self::assertNull($log->info('foo', ['hello', 'world']));
+        self::assertDirectoryExists($dir);
     }
 
     #[Api([
@@ -191,13 +192,13 @@ EOT,
         $log->info('[SQL:FAILED] foo', ['hello', 'world']);
         $fileInfo1 = __DIR__.'/cacheLog/development.info/SQL:FAILED-'.date('Y-m-d').'.log';
         $fileInfo2 = __DIR__.'/cacheLog/development.info/SQL-'.date('Y-m-d').'.log';
-        static::assertTrue(is_file($fileInfo1));
-        static::assertTrue(is_file($fileInfo2));
+        self::assertTrue(is_file($fileInfo1));
+        self::assertTrue(is_file($fileInfo2));
     }
 
     public function test1(): void
     {
-        $this->expectException(\Psr\Log\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Level notFound is invalid.'
         );

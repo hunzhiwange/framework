@@ -37,7 +37,7 @@ EOT,
         Assert::notEmpty(55);
         Assert::notEmpty(66);
         Assert::lessThan(4, [5]);
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -45,7 +45,7 @@ EOT,
     ])]
     public function testAssertFailedWithDefaultMessage(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
@@ -58,7 +58,7 @@ EOT,
     ])]
     public function testAssertFailedWithCustomMessage(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
@@ -76,7 +76,7 @@ EOT,
     {
         Assert::optionalNotEmpty(null);
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -84,7 +84,7 @@ EOT,
     ])]
     public function testAssertOptionalFailed(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
@@ -102,7 +102,7 @@ EOT,
     {
         Assert::multiNotEmpty([3, ['hello'], 'bar', 'yes']);
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -113,7 +113,7 @@ EOT,
     ])]
     public function testAssertMultiFailed(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
@@ -131,7 +131,7 @@ EOT,
     {
         Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -155,7 +155,7 @@ EOT,
             ->lessThan([7])
         ;
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -174,7 +174,7 @@ EOT,
             ->optionalMultiNotEmpty()
         ;
 
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     #[Api([
@@ -206,7 +206,7 @@ EOT,
 
     public function testAssertLazyChainWithNotAll(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             '["5 not less than 3"]'
         );
@@ -225,7 +225,7 @@ EOT,
     ])]
     public function testAssertLazyChainFailed(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             '["5 not less than 3","5 not less than 4","5 not less than 2"]'
         );
@@ -244,7 +244,7 @@ EOT,
     ])]
     public function testAssertLazyChainFailedWithCustomFormat(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             '5 not less than 3'.PHP_EOL.
             '5 not less than 4'.PHP_EOL.
@@ -256,7 +256,7 @@ EOT,
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
             ->lessThan([2], '5 not less than 2')
-            ->flush(function (array $error): string {
+            ->flush(static function (array $error): string {
                 return implode(PHP_EOL, $error);
             })
         ;
@@ -294,7 +294,7 @@ EOT,
 
     public function testAssertNotLazyChainWithNotAll(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             '5 not less than 3'
         );
@@ -311,12 +311,12 @@ EOT,
     public function testAssertOptionalMultiAllWasNull(): void
     {
         Assert::optionalMultiNotEmpty([null, null, null]);
-        static::assertSame(1, 1);
+        self::assertSame(1, 1);
     }
 
     public function testAssertOptionalMultiAllWasNullFailed(): void
     {
-        $this->expectException(\Leevel\Validate\AssertException::class);
+        $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
             'No exception messsage specified.'
         );
@@ -327,6 +327,6 @@ EOT,
     public function testAssertExceptionReportable(): void
     {
         $e = new AssertException();
-        static::assertFalse($e->reportable());
+        self::assertFalse($e->reportable());
     }
 }

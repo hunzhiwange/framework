@@ -203,9 +203,6 @@ abstract class Dto implements IArray, \ArrayAccess
         return $dto;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         $all = $this->all($unCamelizeNamingStyle = $this->unCamelizeNamingStyleFramework);
@@ -215,7 +212,7 @@ abstract class Dto implements IArray, \ArrayAccess
             $all = Except::handle($all, $this->convertPropertyNamingStyle($this->exceptPropertiesFramework, $unCamelizeNamingStyle));
         }
 
-        $all = array_map(function ($value) use ($unCamelizeNamingStyle) {
+        $all = array_map(static function ($value) use ($unCamelizeNamingStyle) {
             return $value instanceof IArray ?
                     ($value instanceof self && !$unCamelizeNamingStyle ?
                         $value->camelizeNamingStyle()->toArray() :
@@ -227,38 +224,26 @@ abstract class Dto implements IArray, \ArrayAccess
             return $all;
         }
 
-        return array_filter($all, function ($v) {
+        return array_filter($all, static function ($v) {
             return null !== $v;
         });
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetExists(mixed $offset): bool
     {
         return isset($this->{$this->validateCamelizeProperties($offset)});
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetGet(mixed $offset): mixed
     {
         return $this->{$this->validateCamelizeProperties($offset)};
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->{$this->validateCamelizeProperties($offset)} = $value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function offsetUnset(mixed $offset): void
     {
         $this->{$this->validateCamelizeProperties($offset)} = null;
@@ -326,13 +311,13 @@ abstract class Dto implements IArray, \ArrayAccess
     {
         if (!$unCamelizeNamingStyle) {
             return array_map(
-                fn (string $property) => static::camelizePropertiesName($property),
+                static fn (string $property) => static::camelizePropertiesName($property),
                 $propertys,
             );
         }
 
         return array_map(
-            fn (string $property) => static::unCamelizePropertiesName($property),
+            static fn (string $property) => static::unCamelizePropertiesName($property),
             $propertys,
         );
     }

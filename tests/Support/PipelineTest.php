@@ -48,8 +48,8 @@ EOT,
             ->then()
         ;
 
-        static::assertSame('i am in first handle and get the send:hello world', $_SERVER['test.first']);
-        static::assertSame('i am in second handle and get the send:hello world', $_SERVER['test.second']);
+        self::assertSame('i am in first handle and get the send:hello world', $_SERVER['test.first']);
+        self::assertSame('i am in second handle and get the send:hello world', $_SERVER['test.second']);
 
         unset($_SERVER['test.first'], $_SERVER['test.second']);
     }
@@ -59,7 +59,7 @@ EOT,
     ])]
     public function testPipelineWithThen(): void
     {
-        $thenCallback = function (\Closure $next, $send): void {
+        $thenCallback = static function (\Closure $next, $send): void {
             $_SERVER['test.then'] = 'i am end and get the send:'.$send;
         };
 
@@ -69,9 +69,9 @@ EOT,
             ->then($thenCallback)
         ;
 
-        static::assertSame('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
-        static::assertSame('i am in second handle and get the send:foo bar', $_SERVER['test.second']);
-        static::assertSame('i am end and get the send:foo bar', $_SERVER['test.then']);
+        self::assertSame('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
+        self::assertSame('i am in second handle and get the send:foo bar', $_SERVER['test.second']);
+        self::assertSame('i am end and get the send:foo bar', $_SERVER['test.then']);
 
         unset($_SERVER['test.first'], $_SERVER['test.second'], $_SERVER['test.then']);
     }
@@ -103,9 +103,9 @@ EOT,
             ->then()
         ;
 
-        static::assertSame('1 and get the send:return test', $_SERVER['test.1']);
-        static::assertSame('2 and get the send:return test', $_SERVER['test.2']);
-        static::assertSame('return 1', $result);
+        self::assertSame('1 and get the send:return test', $_SERVER['test.1']);
+        self::assertSame('2 and get the send:return test', $_SERVER['test.2']);
+        self::assertSame('return 1', $result);
 
         unset($_SERVER['test.1'], $_SERVER['test.2']);
     }
@@ -136,7 +136,7 @@ EOT,
             ->then()
         ;
 
-        static::assertSame('get class:'.TestClass::class, $_SERVER['test.DiConstruct']);
+        self::assertSame('get class:'.TestClass::class, $_SERVER['test.DiConstruct']);
 
         unset($_SERVER['test.DiConstruct']);
     }
@@ -183,7 +183,7 @@ EOT,
     {
         $_SERVER['test.Through.count'] = 0;
 
-        $pipe = function (\Closure $next): void {
+        $pipe = static function (\Closure $next): void {
             ++$_SERVER['test.Through.count'];
 
             $next();
@@ -196,7 +196,7 @@ EOT,
             ->then()
         ;
 
-        static::assertSame(6, $_SERVER['test.Through.count']);
+        self::assertSame(6, $_SERVER['test.Through.count']);
 
         unset($_SERVER['test.Through.count']);
     }
@@ -222,7 +222,7 @@ EOT,
             ->then()
         ;
 
-        static::assertSame($params, $_SERVER['test.WithArgs']);
+        self::assertSame($params, $_SERVER['test.WithArgs']);
 
         unset($_SERVER['test.WithArgs']);
     }
@@ -260,7 +260,7 @@ EOT,
             ->then()
         ;
 
-        static::assertSame('i am in at.method handle and get the send:hello world', $_SERVER['test.at.method']);
+        self::assertSame('i am in at.method handle and get the send:hello world', $_SERVER['test.at.method']);
 
         unset($_SERVER['test.at.method']);
     }
@@ -293,9 +293,7 @@ class WithArgs
     }
 }
 
-class TestClass
-{
-}
+class TestClass {}
 
 class DiConstruct
 {

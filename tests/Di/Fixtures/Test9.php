@@ -6,9 +6,7 @@ namespace Tests\Di\Fixtures;
 
 class Test9
 {
-    protected function __construct()
-    {
-    }
+    protected function __construct() {}
 
     public function hello()
     {

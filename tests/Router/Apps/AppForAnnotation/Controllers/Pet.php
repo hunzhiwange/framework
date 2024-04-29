@@ -20,15 +20,11 @@ class Pet
         path: '/api/v1/petLeevel/{petId:[A-Za-z]+}/',
         bind: '\\Tests\\Router\\Controllers\\Annotation\\PetLeevel',
     )]
-    private function petLeevel(): void
-    {
-    }
+    private function petLeevel(): void {}
 
     #[Route(
         path: '/newPrefix/v1/petLeevel/{petId:[A-Za-z]+}/',
         bind: '\\Tests\\Router\\Controllers\\Annotation\\NewPrefix',
     )]
-    private function newPrefix(): void
-    {
-    }
+    private function newPrefix(): void {}
 }

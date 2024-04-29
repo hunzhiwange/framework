@@ -12,9 +12,6 @@ use Leevel\Router\IRouter;
  */
 class PathInfo extends BaseMatching implements IMatching
 {
-    /**
-     * {@inheritDoc}
-     */
     public function match(IRouter $router, Request $request): array
     {
         $this->setRouterAndRequest($router, $request);
@@ -110,7 +107,7 @@ class PathInfo extends BaseMatching implements IMatching
     /**
      * 找到路由前缀.
      */
-    protected function getPrefixPosition(string $path): int|false
+    protected function getPrefixPosition(string $path): false|int
     {
         return strpos($path, ':');
     }

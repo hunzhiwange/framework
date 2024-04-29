@@ -69,9 +69,7 @@ $composer->addPsr4('Tests\\', __DIR__);
 ```
 EOT,
     ])]
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
     #[Api([
         'zh-CN:title' => '自定义命名空间',
@@ -89,7 +87,5 @@ EOT,
 ```
 EOT,
     ])]
-    public function doc2(): void
-    {
-    }
+    public function doc2(): void {}
 }

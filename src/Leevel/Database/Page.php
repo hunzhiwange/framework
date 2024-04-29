@@ -32,9 +32,6 @@ class Page extends BasePage
         return $this->data;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function toArray(): array
     {
         return [

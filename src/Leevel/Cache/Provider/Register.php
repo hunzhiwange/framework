@@ -15,18 +15,12 @@ use Leevel\Di\Provider;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->caches();
         $this->cache();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -35,9 +29,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -51,7 +42,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'caches',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -64,7 +55,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'cache',
-                fn (IContainer $container): Cache => $container['caches']->connect(),
+                static fn (IContainer $container): Cache => $container['caches']->connect(),
             )
         ;
     }

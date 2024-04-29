@@ -14,7 +14,5 @@ class DeferredProvider extends Provider
         $_SERVER['testDeferredProvider'] = 1;
     }
 
-    public function register(): void
-    {
-    }
+    public function register(): void {}
 }

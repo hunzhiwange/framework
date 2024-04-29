@@ -32,14 +32,14 @@ final class LogTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('logs', function () use ($manager): Manager {
+        $container->singleton('logs', static function () use ($manager): Manager {
             return $manager;
         });
 
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
         $manager->info('foo', ['bar']);
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -47,14 +47,14 @@ final class LogTest extends TestCase
     {
         $container = $this->createContainer();
         $manager = $this->createManager($container);
-        $container->singleton('logs', function () use ($manager): Manager {
+        $container->singleton('logs', static function () use ($manager): Manager {
             return $manager;
         });
 
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
-        static::assertFileDoesNotExist($filePath);
+        self::assertFileDoesNotExist($filePath);
         Log::info('foo', ['bar']);
-        static::assertFileExists($filePath);
+        self::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }
 
@@ -96,7 +96,7 @@ final class LogTest extends TestCase
 
         $container->singleton('config', $config);
         $eventDispatch = $this->createMock(IDispatch::class);
-        static::assertNull($eventDispatch->handle('event'));
+        self::assertNull($eventDispatch->handle('event'));
         $container->singleton('event', $eventDispatch);
 
         return $manager;

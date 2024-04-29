@@ -55,9 +55,9 @@ final class RegisterTest extends TestCase
 
         $request = $this->createMock(Request::class);
         $request->method('getEnter')->willReturn('');
-        static::assertSame('', $request->getEnter());
+        self::assertSame('', $request->getEnter());
         $request->method('isSecure')->willReturn(false);
-        static::assertFalse($request->isSecure());
+        self::assertFalse($request->isSecure());
         $container->singleton('request', $request);
 
         $view = $this->createMock(IView::class);

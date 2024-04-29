@@ -24,12 +24,12 @@ final class SetStringTest extends TestCase
         ];
 
         $collection = new SetString($data, 'string', 'int', 'string');
-        static::assertSame($collection[0], 'hello');
-        static::assertSame($collection[1], 't');
-        static::assertSame($collection[2], 'world');
-        static::assertTrue(isset($collection[0]));
-        static::assertTrue(isset($collection[1]));
-        static::assertTrue(isset($collection[2]));
+        self::assertSame($collection[0], 'hello');
+        self::assertSame($collection[1], 't');
+        self::assertSame($collection[2], 'world');
+        self::assertTrue(isset($collection[0]));
+        self::assertTrue(isset($collection[1]));
+        self::assertTrue(isset($collection[2]));
     }
 
     #[Api([

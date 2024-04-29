@@ -37,7 +37,7 @@ final class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     #[Api([
@@ -58,7 +58,7 @@ final class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testForType(): void
@@ -77,6 +77,6 @@ final class CompilerForTest extends TestCase
             <?php endfor; ?>
             eot;
 
-        static::assertSame($compiled, $parser->doCompile($source, null, true));
+        self::assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

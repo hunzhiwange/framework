@@ -15,18 +15,12 @@ use Leevel\View\View;
  */
 class Register extends Provider
 {
-    /**
-     * {@inheritDoc}
-     */
     public function register(): void
     {
         $this->views();
         $this->view();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function providers(): array
     {
         return [
@@ -35,9 +29,6 @@ class Register extends Provider
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public static function isDeferred(): bool
     {
         return true;
@@ -51,7 +42,7 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'views',
-                fn (IContainer $container): Manager => new Manager($container),
+                static fn (IContainer $container): Manager => new Manager($container),
             )
         ;
     }
@@ -64,8 +55,8 @@ class Register extends Provider
         $this->container
             ->singleton(
                 'view',
-                // @phpstan-ignore-next-line
-                fn (IContainer $container): IView => $container['views']->connect(),
+                /** @phpstan-ignore-next-line */
+                static fn (IContainer $container): IView => $container['views']->connect(),
             )
         ;
     }

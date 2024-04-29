@@ -26,7 +26,7 @@ class LoadConfig
 
         if ($app->isCachedConfig()) {
             $data = (array) include $app->configCachedPath();
-            $this->setEnvVars($data['app'][':env'], function (string $name, null|bool|string $value = null): void {
+            $this->setEnvVars($data['app'][':env'], static function (string $name, null|bool|string $value = null): void {
                 // 保持和 Dotenv 兼容
                 $_SERVER[$name] = $_ENV[$name] = $value;
             });

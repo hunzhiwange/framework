@@ -9,7 +9,7 @@ class AllowedIp
     /**
      * 验证 IP 许可.
      *
-     *  @throws \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public static function handle(mixed $value, array $param): bool
     {

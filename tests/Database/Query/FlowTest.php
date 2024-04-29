@@ -38,7 +38,7 @@ final class FlowTest extends TestCase
 
         $id = 2;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -73,7 +73,7 @@ final class FlowTest extends TestCase
 
         $id = 1;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -112,7 +112,7 @@ final class FlowTest extends TestCase
 
         $id = 3;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -148,7 +148,7 @@ final class FlowTest extends TestCase
 
         $id = 4;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -195,7 +195,7 @@ eot;
 
         $id = 2;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -233,7 +233,7 @@ eot;
 
         $id = 3;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect
@@ -269,7 +269,7 @@ eot;
 
         $id = 5;
 
-        static::assertSame(
+        self::assertSame(
             $sql,
             $this->varJsonSql(
                 $connect

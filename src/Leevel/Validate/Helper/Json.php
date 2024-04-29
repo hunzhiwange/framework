@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use Throwable;
-
 class Json
 {
     /**
@@ -28,7 +26,7 @@ class Json
             json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR);
 
             return true;
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return false;
         }
     }

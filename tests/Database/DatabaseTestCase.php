@@ -58,11 +58,11 @@ abstract class DatabaseTestCase extends TestCase
 
             $connect = $this->createDatabaseConnect();
             $connect->query(...$data);
-            static::assertSame(1, 1);
+            self::assertSame(1, 1);
         } elseif (3 === \count($data) && $this->isExecuteSql($data[0])) {
             $connect = $this->createDatabaseConnect();
             $connect->execute(...$data);
-            static::assertSame(1, 1);
+            self::assertSame(1, 1);
         }
     }
 

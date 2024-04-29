@@ -15,7 +15,7 @@ final class ApplicationTest extends TestCase
     {
         $application = new Application(new Container(), '1.0');
 
-        static::assertSame($application->getVersion(), '1.0');
+        self::assertSame($application->getVersion(), '1.0');
 
         $this->assertInstanceof(Container::class, $application->getContainer());
 
@@ -34,7 +34,7 @@ final class ApplicationTest extends TestCase
 
         $application->normalizeCommands([Test2::class]);
 
-        static::assertSame($_SERVER['test'], '1');
+        self::assertSame($_SERVER['test'], '1');
 
         unset($_SERVER['test']);
     }
@@ -46,9 +46,7 @@ class Test1 extends Command
 
     protected string $description = 'test1 for command';
 
-    public function handle(): void
-    {
-    }
+    public function handle(): void {}
 }
 
 class Test2 extends Command
@@ -64,7 +62,5 @@ class Test2 extends Command
         $_SERVER['test'] = '1';
     }
 
-    public function handle(): void
-    {
-    }
+    public function handle(): void {}
 }
