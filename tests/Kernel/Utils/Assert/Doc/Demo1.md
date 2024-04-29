@@ -21,8 +21,6 @@ hello
 world
 
 ``` php
-public function test1(): void
-{
-}
+public function test1(): void {}
 ```
 

@@ -157,9 +157,7 @@ final class DocTest extends TestCase
         $result = Doc::getMethodBody(Demo5::class, 'doc1');
         $resultNew = <<<'eot'
 # Tests\Kernel\Utils\Assert\Demo5::doc1
-public function doc1(): void
-{
-}
+public function doc1(): void {}
 eot;
         self::assertSame($resultNew, $result);
     }
@@ -178,17 +176,11 @@ namespace Tests\Kernel\Utils\Assert;
 
 class Demo5
 {
-    public function __doc2(): void
-    {
-    }
+    public function __doc2(): void {}
 
-    public function doc1(): void
-    {
-    }
+    public function doc1(): void {}
 
-    protected function doc3(): void
-    {
-    }
+    protected function doc3(): void {}
 }
 eot;
         self::assertSame($resultNew, $result);

@@ -96,7 +96,7 @@ final class IdeHelperTest extends TestCase
         $result = $this->normalizeContent($result);
 
         self::assertStringContainsString(
-            $this->normalizeContent('* @method static mixed demo1()'),
+            $this->normalizeContent('* @method static void demo1()'),
             $result,
         );
     }
@@ -108,7 +108,7 @@ final class IdeHelperTest extends TestCase
         $result = $this->normalizeContent($result);
 
         self::assertStringContainsString(
-            $this->normalizeContent('* @method static mixed demo1()'),
+            $this->normalizeContent('* @method static void demo1()'),
             $result,
         );
     }
