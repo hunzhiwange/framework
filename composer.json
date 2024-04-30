@@ -67,7 +67,8 @@
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",
-        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.12.0)"
+        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.12.0)",
+        "ext-swoole": "Required to use swoole (^5.1.2)."
     },
     "autoload": {
         "files": [
