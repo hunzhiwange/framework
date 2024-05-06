@@ -22,8 +22,8 @@
         "leevel/http": "^1.1",
         "leevel/session": "^1.1",
         "maximebf/debugbar": "^1.22.3",
-        "symfony/var-dumper": "^7.0.6",
-        "symfony/http-foundation": "^7.0.6"
+        "symfony/var-dumper": "^7.0.7",
+        "symfony/http-foundation": "^7.0.7"
     },
     "suggest": {
         "leevel/console": "Required to use the make commands (^1.1).",

@@ -16,7 +16,7 @@
         "leevel/support": "^1.1",
         "league/flysystem": "^3.12.3",
         "league/flysystem-ftp": "^3.10.3",
-        "symfony/filesystem": "^7.0.6"
+        "symfony/filesystem": "^7.0.7"
     },
     "suggest": {
         "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",

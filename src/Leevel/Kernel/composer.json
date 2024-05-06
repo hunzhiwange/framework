@@ -27,7 +27,7 @@
     },
     "suggest": {
         "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "symfony/process": "Required to use php built-in web server (^7.0.4)."
+        "symfony/process": "Required to use php built-in web server (^7.0.7)."
     },
     "autoload": {
         "psr-4": {
