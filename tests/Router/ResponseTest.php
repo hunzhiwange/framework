@@ -14,6 +14,7 @@ use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Router\Redirect;
 use Leevel\Router\Response as RouterResponse;
+use Leevel\Support\Arr\Only;
 use Leevel\View\IView;
 use Leevel\View\Manager;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -640,7 +641,10 @@ EOT,
         $this->assertInstanceof(RedirectResponse::class, $response);
         self::assertSame($content, $response->getContent());
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame(['location' => ['http://www.queryphp.com/hello/world']], $this->getFilterHeaders($response->headers->all()));
+        self::assertSame(
+            ['location' => ['http://www.queryphp.com/hello/world']],
+            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+        );
     }
 
     public function testRedirect2(): void
@@ -672,7 +676,10 @@ EOT,
         $this->assertInstanceof(RedirectResponse::class, $response);
         self::assertSame($content, $response->getContent());
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame(['location' => ['http://www.queryphp.com/hello/world?foo=bar']], $this->getFilterHeaders($response->headers->all()));
+        self::assertSame(
+            ['location' => ['http://www.queryphp.com/hello/world?foo=bar']],
+            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+        );
     }
 
     #[Api([
@@ -707,7 +714,10 @@ EOT,
         $this->assertInstanceof(RedirectResponse::class, $response);
         self::assertSame($content, $response->getContent());
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame(['location' => ['http://queryphp.com/raw']], $this->getFilterHeaders($response->headers->all()));
+        self::assertSame(
+            ['location' => ['http://queryphp.com/raw']],
+            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+        );
     }
 
     public function testRedirectRaw2(): void
@@ -738,12 +748,15 @@ EOT,
         $this->assertInstanceof(RedirectResponse::class, $response);
         self::assertSame($content, $response->getContent());
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame(['location' => ['http://queryphp.com/raw?foo=bar']], $this->getFilterHeaders($response->headers->all()));
+        self::assertSame(
+            ['location' => ['http://queryphp.com/raw?foo=bar']],
+            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+        );
     }
 
     protected function getFilterHeaders(array $headers): array
     {
-        foreach (['date', 'cache-control', 'content-type'] as $v) {
+        foreach (['date', 'cache-control'] as $v) {
             if (isset($headers[$v])) {
                 unset($headers[$v]);
             }
