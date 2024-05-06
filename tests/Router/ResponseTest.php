@@ -743,12 +743,10 @@ EOT,
 
     protected function getFilterHeaders(array $headers): array
     {
-        if (isset($headers['date'])) {
-            unset($headers['date']);
-        }
-
-        if (isset($headers['cache-control'])) {
-            unset($headers['cache-control']);
+        foreach (['date', 'cache-control', 'content-type'] as $v) {
+            if (isset($headers[$v])) {
+                unset($headers[$v]);
+            }
         }
 
         return $headers;
