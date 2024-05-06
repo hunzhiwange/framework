@@ -643,7 +643,7 @@ EOT,
         self::assertSame(302, $response->getStatusCode());
         self::assertSame(
             ['location' => ['http://www.queryphp.com/hello/world']],
-            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+            Only::handle($response->headers->all(), ['location'])
         );
     }
 
@@ -678,7 +678,7 @@ EOT,
         self::assertSame(302, $response->getStatusCode());
         self::assertSame(
             ['location' => ['http://www.queryphp.com/hello/world?foo=bar']],
-            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+            Only::handle($response->headers->all(), ['location'])
         );
     }
 
@@ -716,7 +716,7 @@ EOT,
         self::assertSame(302, $response->getStatusCode());
         self::assertSame(
             ['location' => ['http://queryphp.com/raw']],
-            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+            Only::handle($response->headers->all(), ['location'])
         );
     }
 
@@ -750,7 +750,7 @@ EOT,
         self::assertSame(302, $response->getStatusCode());
         self::assertSame(
             ['location' => ['http://queryphp.com/raw?foo=bar']],
-            Only::handle($this->getFilterHeaders($response->headers->all()), ['location'])
+            Only::handle($response->headers->all(), ['location'])
         );
     }
 
