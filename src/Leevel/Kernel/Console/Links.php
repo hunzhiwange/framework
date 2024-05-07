@@ -30,22 +30,12 @@ class Links extends Command
     public function handle(): int
     {
         $this->line('Start to create symbolic links.');
-        $this->callApis();
         $this->callStatic();
         $this->callAttachments();
         $this->line('');
         $this->info('Links created succeed.');
 
         return self::SUCCESS;
-    }
-
-    /**
-     * @throws ExceptionInterface
-     */
-    protected function callApis(): void
-    {
-        $this->line('');
-        $this->call('link:apis');
     }
 
     /**

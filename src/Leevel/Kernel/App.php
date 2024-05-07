@@ -165,7 +165,7 @@ class App implements IApp
 
     public function i18nPath(?string $path = null): string
     {
-        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/i18n').
+        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'i18n').
             $this->normalizePath($path ?: '');
     }
 

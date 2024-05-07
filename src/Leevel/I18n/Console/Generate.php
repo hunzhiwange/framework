@@ -36,7 +36,7 @@ class Generate extends Command
             $config->get(':composer.i18n-paths', []),
             // @phpstan-ignore-next-line
             explode(',', $config->get('console\\app_i18n')),
-            $app->path('assets/i18n')
+            $app->path('i18n')
         );
 
         foreach ($generatedLanguageFiles as $namespace => $files) {

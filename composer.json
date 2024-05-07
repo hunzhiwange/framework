@@ -17,23 +17,22 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "composer-runtime-api": ">=2.1",
-        "egulias/email-validator": "^2.1.24",
-        "firebase/php-jwt": "^6.4",
-        "gettext/gettext": "^5.6.1",
-        "gettext/php-scanner": "^1.3.1",
-        "league/flysystem": "^3.12.3",
-        "league/flysystem-ftp": "^3.10.3",
+        "firebase/php-jwt": "^6.10.0",
+        "gettext/gettext": "^5.7.0",
+        "gettext/php-scanner": "^2.0.0",
+        "league/flysystem": "^3.27.0",
+        "league/flysystem-ftp": "^3.27.0",
         "maximebf/debugbar": "^1.22.3",
         "monolog/monolog": "^3.6.0",
         "nunomaduro/collision": "^8.1.1",
-        "psr/container": "^2.0",
+        "psr/container": "^2.0.2",
         "symfony/console": "^7.0.7",
         "symfony/filesystem": "^7.0.7",
         "symfony/finder": "^7.0.7",
         "symfony/http-foundation": "^7.0.7",
         "symfony/process": "^7.0.7",
         "symfony/var-dumper": "^7.0.7",
-        "vlucas/phpdotenv": "^5.5.0"
+        "vlucas/phpdotenv": "^5.6.0"
     },
     "replace": {
         "leevel/auth": "self.version",
@@ -61,13 +60,13 @@
     },
     "require-dev": {
         "robmorgan/phinx": "^0.16.0",
-        "league/flysystem-sftp": "^3.10.3",
-        "league/flysystem-ziparchive": "^3.12.0",
+        "league/flysystem-sftp-v3": "^3.26.0",
+        "league/flysystem-ziparchive": "^3.27.0",
         "swoole/ide-helper": "^5.1.2"
     },
     "suggest": {
-        "league/flysystem-sftp-v3": "Sftp adapter support. (^3.10.3)",
-        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.12.0)",
+        "league/flysystem-sftp-v3": "Sftp adapter support. (^3.26.0)",
+        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.27.0)",
         "ext-swoole": "Required to use swoole (^5.1.2)."
     },
     "autoload": {
