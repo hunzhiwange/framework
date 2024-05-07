@@ -64,7 +64,6 @@
         "swoole/ide-helper": "^5.1.2"
     },
     "suggest": {
-        "league/flysystem-sftp-v3": "Sftp adapter support. (^3.26.0)",
         "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.27.0)",
         "ext-swoole": "Required to use swoole (^5.1.2)."
     },
