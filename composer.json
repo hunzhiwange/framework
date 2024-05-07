@@ -21,7 +21,7 @@
         "gettext/gettext": "^5.7.0",
         "gettext/php-scanner": "^2.0.0",
         "league/flysystem": "^3.27.0",
-        "league/flysystem-ftp": "^3.27.0",
+        "league/flysystem-sftp-v3": "^3.26.0",
         "maximebf/debugbar": "^1.22.3",
         "monolog/monolog": "^3.6.0",
         "nunomaduro/collision": "^8.1.1",
@@ -60,7 +60,6 @@
     },
     "require-dev": {
         "robmorgan/phinx": "^0.16.0",
-        "league/flysystem-sftp-v3": "^3.26.0",
         "league/flysystem-ziparchive": "^3.27.0",
         "swoole/ide-helper": "^5.1.2"
     },

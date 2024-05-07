@@ -15,11 +15,10 @@
         "php": ">=8.3",
         "leevel/support": "^1.1",
         "league/flysystem": "^3.27.0",
-        "league/flysystem-ftp": "^3.27.0",
+        "league/flysystem-sftp-v3": "^3.26.0",
         "symfony/filesystem": "^7.0.7"
     },
     "suggest": {
-        "league/flysystem-sftp-v3": "Sftp adapter support. (^3.26.0)",
         "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.27.0)"
     },
     "autoload": {
