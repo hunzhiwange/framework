@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use League\Flysystem\FilesystemAdapter;
-use League\Flysystem\PhpseclibV2\SftpAdapter;
-use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 
 /**
  * Filesystem sftp.

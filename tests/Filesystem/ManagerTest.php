@@ -106,12 +106,6 @@ final class ManagerTest extends TestCase
         $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
     }
 
-    public function testFtp(): void
-    {
-        $manager = $this->createManager('ftp');
-        $this->assertInstanceof(LeagueFilesystem::class, $manager->getFilesystem());
-    }
-
     public function testSftp(): void
     {
         $manager = $this->createManager('sftp');

@@ -68,18 +68,6 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 ftp 连接.
-     */
-    protected function makeConnectFtp(string $connect, ?string $driverClass = null): Ftp
-    {
-        $driverClass = $this->getDriverClass(Ftp::class, $driverClass);
-
-        return new $driverClass(
-            $this->normalizeConnectConfig($connect)
-        );
-    }
-
-    /**
      * 创建 sftp 连接.
      */
     protected function makeConnectSftp(string $connect, ?string $driverClass = null): Sftp
