@@ -29,7 +29,7 @@ final class GenerateTest extends TestCase
 
     public function testBaseUse(): void
     {
-        $cacheFile = \dirname(__DIR__).'/cachePath/assets/i18n/[i18n]/base.po';
+        $cacheFile = \dirname(__DIR__).'/cachePath/i18n/[i18n]/base.po';
 
         $result = $this->runCommand(
             new Generate(),

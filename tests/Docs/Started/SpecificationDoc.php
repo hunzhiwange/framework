@@ -71,17 +71,17 @@ EOT,
 
 ``` sh
 $cd /data/codes/queryphp
-$php assets/build/php-cs-fixer fix --config=.php_cs.dist
+$php build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### 结合 `Git` Hooks 来格式化代码：
 
 ```
-/data/codes/queryphp/assets/build/pre-commit.sh
+/data/codes/queryphp/build/pre-commit.sh
 /data/codes/queryphp/vendor/hunzhiwange/framework/build/pre-commit.sh
 ```
 
-应用 QueryPHP 脚本 `/data/codes/queryphp/assets/build/pre-commit.sh`
+应用 QueryPHP 脚本 `/data/codes/queryphp/build/pre-commit.sh`
 核心包 framework 脚本 `/data/codes/queryphp/vendor/hunzhiwange/framework/src/build/pre-commit.sh`
 
 ::: warning

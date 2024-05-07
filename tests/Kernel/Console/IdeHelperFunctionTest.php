@@ -39,7 +39,7 @@ final class IdeHelperFunctionTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelperFunction(),
                 [
-                    'command' => 'make:idehelper:function',
+                    'command' => 'make:ide:helper:function',
                     'dir' => $dirName,
                 ],
                 function ($container): void {
@@ -86,7 +86,7 @@ final class IdeHelperFunctionTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelperFunction(),
                 [
-                    'command' => 'make:idehelper:function',
+                    'command' => 'make:ide:helper:function',
                     'dir' => $dirName,
                 ],
                 function ($container): void {
@@ -112,7 +112,7 @@ final class IdeHelperFunctionTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelperFunction(),
                 [
-                    'command' => 'make:idehelper:function',
+                    'command' => 'make:ide:helper:function',
                     'dir' => $dirName,
                     '--cachepath' => $cachePath,
                 ],

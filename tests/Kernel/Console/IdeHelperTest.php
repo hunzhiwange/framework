@@ -39,7 +39,7 @@ final class IdeHelperTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelper(),
                 [
-                    'command' => 'make:idehelper',
+                    'command' => 'make:ide:helper',
                     'path' => DemoClass::class,
                 ],
                 function ($container): void {
@@ -82,7 +82,7 @@ final class IdeHelperTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelper(),
                 [
-                    'command' => 'make:idehelper',
+                    'command' => 'make:ide:helper',
                     'path' => DemoClass::class,
                     '--cachepath' => $cachePath,
                 ],
@@ -113,7 +113,7 @@ final class IdeHelperTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelper(),
                 [
-                    'command' => 'make:idehelper',
+                    'command' => 'make:ide:helper',
                     'path' => $classPath,
                 ],
                 function ($container): void {
@@ -138,7 +138,7 @@ final class IdeHelperTest extends TestCase
             $result = $this->runCommand(
                 new IdeHelper(),
                 [
-                    'command' => 'make:idehelper',
+                    'command' => 'make:ide:helper',
                     'path' => $classPath,
                 ],
                 function ($container): void {

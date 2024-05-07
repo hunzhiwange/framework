@@ -19,7 +19,7 @@ class IdeHelperFunction extends Command
     /**
      * 命令名字.
      */
-    protected string $name = 'make:idehelper:function';
+    protected string $name = 'make:ide:helper:function';
 
     /**
      * 命令行描述.

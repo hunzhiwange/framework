@@ -72,7 +72,7 @@ final class LoadI18nTest extends TestCase
         self::assertSame('en-US', $container['config']['i18n\\default']);
         self::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         self::assertFalse($app->isCachedI18n('en-US'));
-        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/i18n', $app->i18nPath());
 
         self::assertNull($bootstrap->handle($app));
 
@@ -130,7 +130,7 @@ EOT,
         self::assertSame('en-US', $container['config']['i18n\\default']);
         self::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         self::assertFalse($app->isCachedI18n('en-US'));
-        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/i18n', $app->i18nPath());
 
         mkdir($appPath.'/storage/bootstrap/i18n', 0o777, true);
         file_put_contents($appPath.'/storage/bootstrap/i18n/en-US.php', file_get_contents($appPath.'/assert/en-US.php'));

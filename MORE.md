@@ -28,8 +28,8 @@ $php vendor/bin/phinx migrate
 ```
 $cd /data/codes/queryphp
 $php leevel make:docwithin vendor/hunzhiwange/framework/tests
-$php leevel make:idehelper Leevel\\Cache\\ICache
-$php leevel make:idehelper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
+$php leevel make:ide:helper Leevel\\Cache\\ICache
+$php leevel make:ide:helper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
 ```
 
 ## Unified Code Style

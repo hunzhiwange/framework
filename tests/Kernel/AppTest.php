@@ -242,8 +242,8 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
-        self::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
+        self::assertSame($appPath.'/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
     }
 
     #[Api([
@@ -254,8 +254,8 @@ final class AppTest extends TestCase
         $app = $this->createApp();
         $appPath = __DIR__.'/app';
 
-        self::assertSame($appPath.'/assets/i18n', $app->i18nPath());
-        self::assertSame($appPath.'/assets/i18n/foobar', $app->i18nPath('foobar'));
+        self::assertSame($appPath.'/i18n', $app->i18nPath());
+        self::assertSame($appPath.'/i18n/foobar', $app->i18nPath('foobar'));
 
         $app->setI18nPath(__DIR__.'/app/i18nFoo');
 
