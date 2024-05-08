@@ -10,6 +10,6 @@ namespace Leevel\Database\Ddd;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::TARGET_FUNCTION)]
 class Struct
 {
-    public function __construct(...$args) // @phpstan-ignore-line
+    public function __construct(array $struct) // @phpstan-ignore-line
     {}
 }
