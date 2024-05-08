@@ -143,7 +143,7 @@ class App implements IApp
 
     public function themesPath(string $path = ''): string
     {
-        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'assets/themes').
+        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'themes').
             $this->normalizePath($path);
     }
 

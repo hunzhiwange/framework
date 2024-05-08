@@ -24,7 +24,6 @@ class DirectoryDoc
 
 ```
 .
-├── assets 资源目录
 │── app （默认应用）
 │   ├── Domain 领域模型层（Domain Model）
 │   │   └── Entity 实体 (Entity)

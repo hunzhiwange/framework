@@ -49,7 +49,7 @@ composer.json 可以扩展目录
             ],
             "i18n-paths": {
                 "exception": [
-                    "assets/exceptions"
+                    "themes/exceptions"
                 ],
                 "app": [
                     "app"

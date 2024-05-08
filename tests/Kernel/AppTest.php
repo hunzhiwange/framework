@@ -809,7 +809,7 @@ EOT,
     public function testSetThemesPath(): void
     {
         $app = $this->createApp();
-        self::assertSame(__DIR__.'/app/assets/themes', $app->themesPath());
+        self::assertSame(__DIR__.'/app/themes', $app->themesPath());
         $app->setThemesPath(__DIR__.'/hello');
         self::assertSame(__DIR__.'/hello', $app->themesPath());
     }

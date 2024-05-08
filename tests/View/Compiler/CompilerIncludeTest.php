@@ -35,11 +35,11 @@ EOT,
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {% include file="assets/themes/header.html" %}
+            {% include file="themes/header.html" %}
             eot;
 
         $compiled = <<<'eot'
-            <?php echo $this->display('assets/themes/header', [], '.html'); ?>
+            <?php echo $this->display('themes/header', [], '.html'); ?>
             eot;
 
         self::assertSame($compiled, $parser->doCompile($source, null, true));
