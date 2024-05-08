@@ -7,7 +7,7 @@ namespace Leevel\Database\Ddd;
 /**
  * 实体结构属性.
  */
-#[\Attribute]
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class Struct
 {
     public function __construct(...$args) // @phpstan-ignore-line
