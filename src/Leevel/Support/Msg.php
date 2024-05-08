@@ -9,7 +9,7 @@ use Leevel\I18n\Gettext;
 /**
  * 消息属性.
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS_CONSTANT)]
 readonly class Msg
 {
     private string $message;
