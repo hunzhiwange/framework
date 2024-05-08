@@ -103,17 +103,15 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'JSON 非关联数组调试',
+        'zh-CN:title' => 'JSON 非关联数组不支持调试',
         'zh-CN:description' => <<<'EOT'
-非关联数组结构会在尾部追加一个 `:trace` 用于调试。
+非关联数组结构会在不支持调试。
 
 **返回结构**
 
 ``` php
-$response = ["foo", "bar", [":trace" => []]];
+$response = ["foo", "bar"];
 ```
-
-非关联数组在尾部追加一个调试信息，将不会破坏返回接口的 JSON 结构。
 EOT,
     ])]
     public function testJsonForNotAssociativeArray(): void
@@ -133,11 +131,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"foo","bar",{":trace":{', $content);
-
-        self::assertStringContainsString('"php":{"version":', $content);
-
-        self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
+        self::assertStringContainsString('"foo","bar"', $content);
     }
 
     #[Api([
