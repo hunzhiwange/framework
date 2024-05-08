@@ -123,15 +123,12 @@ class Debug
         }
 
         if ($response instanceof JsonResponse) {
+            // 空数组或者非索引数组直接附加到数组 `:trace` 键上
+            // 索引数组不支持返回调试信息，防止破坏数据的完整性
             if ($this->config['json']
-                && \is_array($data = $this->jsonStringToArray($response->getContent()))) {
-                $jsonRenderer = $this->getJsonRenderer();
-                // 空数组或者非索引数组直接附加到数组 `:trace` 键上
-                if (empty($data) || array_values($data) !== $data) {
-                    $data[':trace'] = $jsonRenderer->render();
-                } else {
-                    $data[] = [':trace' => $jsonRenderer->render()];
-                }
+                && \is_array($data = $this->jsonStringToArray($response->getContent()))
+                && !array_is_list($data)) {
+                $data[':trace'] = $this->getJsonRenderer()->render();
                 $response->setData($data);
             }
         } elseif (!$response instanceof RedirectResponse) {
