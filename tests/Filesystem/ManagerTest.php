@@ -19,7 +19,7 @@ use Tests\TestCase;
     'zh-CN:description' => <<<'EOT'
 文件管理统一由文件组件完成，通常我们使用代理 `\Leevel\Filesystem\Proxy\Filesystem` 类进行静态调用。
 
-内置支持的 filesystem 驱动类型包括 local、zip、ftp、sftp，未来可能增加其他驱动。
+内置支持的 filesystem 驱动类型包括 local、zip、sftp，未来可能增加其他驱动。
 
 ::: tip
 文件系统底层基于 league/flysystem 开发，相关文档可以参考 <https://flysystem.thephpleague.com/docs/>。
@@ -131,17 +131,6 @@ final class ManagerTest extends TestCase
                     'zip' => [
                         'driver' => 'zip',
                         'path' => __DIR__.'/forManager2/filesystem.zip',
-                    ],
-                    'ftp' => [
-                        'driver' => 'ftp',
-                        'host' => 'ftp.example.com',
-                        'port' => 21,
-                        'username' => 'your-username',
-                        'password' => 'your-password',
-                        'root' => '',
-                        'passive' => true,
-                        'ssl' => false,
-                        'timeout' => 20,
                     ],
                     'sftp' => [
                         'driver' => 'sftp',
