@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel\Console;
 
+use Leevel\Config\IConfig;
 use Leevel\Console\Command;
 use Leevel\Kernel\IApp;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,11 +35,15 @@ class Server extends Command
     /**
      * 响应命令.
      */
-    public function handle(IApp $app): int
+    public function handle(IApp $app, IConfig $config): int
     {
         $this->app = $app;
+        $port = (int) $this->getOption('port');
+        if (!$port) {
+            $port = (int) $config->get('server\\build_in_port', 9527);
+        }
         // @phpstan-ignore-next-line
-        $this->line("<info>The QueryPHP server started:</info> <http://{$this->getOption('host')}:{$this->getOption('port')}>");
+        $this->line("<info>The QueryPHP server started:</info> <http://{$this->getOption('host')}:{$port}>");
         $this->table(['key', 'value'], [
             ['php', (string) $this->getOption('php')],
             ['server', $this->getServer()],
@@ -89,7 +94,7 @@ class Server extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The port to be listening on.',
-                '9527',
+                null,
             ],
             [
                 'server',
