@@ -48,7 +48,7 @@ class Server extends Command
             ['php', (string) $this->getOption('php')],
             ['server', $this->getServer()],
         ]);
-        passthru($this->normalizeCommand(), $status);
+        passthru($this->normalizeCommand($port), $status);
 
         return self::SUCCESS;
     }
@@ -56,13 +56,13 @@ class Server extends Command
     /**
      * 取得命令.
      */
-    protected function normalizeCommand(): string
+    protected function normalizeCommand(int $port): string
     {
         return sprintf(
             '%s -S %s:%d -t %s',
             escapeshellarg((string) $this->getOption('php')),
             (string) $this->getOption('host'),
-            (int) $this->getOption('port'),
+            $port,
             escapeshellarg($this->getServer())
         );
     }
