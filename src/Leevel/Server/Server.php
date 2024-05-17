@@ -8,6 +8,7 @@ use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Server\Process\Process;
+use Leevel\Support\Arr\Except;
 use Swoole\Coroutine\Http\Server as SwooleHttpServer;
 use Swoole\Coroutine\Server as SwooleServer;
 use Swoole\Process\Pool;
@@ -80,12 +81,7 @@ abstract class Server implements IServer
 
     public function getConfig(): array
     {
-        $config = $this->config;
-        if (isset($config['server'])) {
-            unset($config['server']);
-        }
-
-        return $config;
+        return Except::handle($this->config, ['server', 'build_in_port']);
     }
 
     /**
