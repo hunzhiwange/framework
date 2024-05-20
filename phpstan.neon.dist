@@ -49,6 +49,7 @@ parameters:
 		- '#Argument of an invalid type Swoole\\Table\|null supplied for foreach, only iterables are supported\.#'
 		- '#Constructor of class [\S\s]+ has an unused parameter [\S\s]+\.#'
 		- '#Parameter \$[\S\s]+ of method [\S\s]+\(\) has invalid type Swoole[\S\s]+\.#'
+		- '#[\S\s]+throws checked exception ValueError but it\''s missing from the PHPDoc @throws tag\.#'
 		- '#[\S\s]+Swoole[\S\s]+\.#'
 	exceptions:
 		uncheckedExceptionClasses:
