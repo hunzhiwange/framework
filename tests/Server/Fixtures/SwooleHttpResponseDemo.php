@@ -11,23 +11,31 @@ use Swoole\Http\Response;
  */
 class SwooleHttpResponseDemo extends Response
 {
-    public function header($key, $value, $ucwords = null): void
+    public function header(string $key, array|string $value, bool $format = true): bool
     {
         $GLOBALS['swoole.response']['header'][] = \func_get_args();
+
+        return true;
     }
 
-    public function status($http_code, $reason = null): void
+    public function status(int $http_code, ?string $reason = null): bool
     {
         $GLOBALS['swoole.response']['status'] = \func_get_args();
+
+        return true;
     }
 
-    public function write($content): void
+    public function write(string $content): bool
     {
         $GLOBALS['swoole.response']['write'] = \func_get_args();
+
+        return true;
     }
 
-    public function redirect($location, $http_code = null): void
+    public function redirect(string $location, int $http_code = 302): bool
     {
         $GLOBALS['swoole.response']['redirect'] = \func_get_args();
+
+        return true;
     }
 }

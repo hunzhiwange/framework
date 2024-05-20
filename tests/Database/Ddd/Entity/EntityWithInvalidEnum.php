@@ -25,7 +25,7 @@ class EntityWithInvalidEnum extends Entity
         'status' => [],
     ];
 
-    public const string STATUS_ENUM = [
+    public const array STATUS_ENUM = [
         'disable' => ['f'],
         'enable' => ['t'],
     ];

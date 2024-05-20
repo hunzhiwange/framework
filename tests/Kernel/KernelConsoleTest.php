@@ -68,10 +68,10 @@ final class KernelConsoleTest extends TestCase
 {[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\KernelConsole1::class)]}
 ```
 
-**Tests\Kernel\Commands\Test**
+**Tests\Kernel\Commands\Demo**
 
 ``` php
-{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Test::class)]}
+{[\Leevel\Kernel\Utils\Doc::getClassBody(\Tests\Kernel\Commands\Demo::class)]}
 ```
 
 **Tests\Kernel\Commands\Console\Foo**

@@ -48,4 +48,14 @@ abstract class TestCase extends TestCases
 {
     use BaseHelper;
     use Helper;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+    }
 }
