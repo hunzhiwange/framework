@@ -23,7 +23,7 @@ class Demo8
 hello
 world
 ``` php
-{["1"]}
+{[echo 1]}
 ```
 EOT,
         'note' => <<<'EOT'
