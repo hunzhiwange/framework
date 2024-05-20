@@ -47,6 +47,7 @@ parameters:
 		- '#Call to an undefined method Leevel\\Server\\ProcessManager::addBatch\(\)\.#'
 		- '#Call to an undefined method Leevel\\Server\\ProcessManager::add\(\)\.#'
 		- '#Argument of an invalid type Swoole\\Table\|null supplied for foreach, only iterables are supported\.#'
+		- '#Constructor of class [\S\s]+ has an unused parameter [\S\s]+\.#'
 		- '#Parameter \$[\S\s]+ of method [\S\s]+\(\) has invalid type Swoole[\S\s]+\.#'
 		- '#[\S\s]+Swoole[\S\s]+\.#'
 	exceptions:
