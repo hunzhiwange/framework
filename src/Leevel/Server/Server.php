@@ -9,6 +9,8 @@ use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Server\Process\Process;
 use Leevel\Support\Arr\Except;
+use Swoole\Coroutine;
+use Swoole\Coroutine\Context;
 use Swoole\Coroutine\Http\Server as SwooleHttpServer;
 use Swoole\Coroutine\Server as SwooleServer;
 use Swoole\Process\Pool;
@@ -63,8 +65,7 @@ abstract class Server implements IServer
         $this->config = array_merge($this->config, $config);
         // @todo 暂时没有用，以后可以接入一些事件
         $this->dispatch = $dispatch;
-        // 全局启用协程,启用后部分底层代码将采用协程方式运行
-        $this->container->instance(IContainer::ENABLED_COROUTINE, true);
+        $this->enableCoroutine();
     }
 
     /**
@@ -94,6 +95,18 @@ abstract class Server implements IServer
         }
 
         return $this->processStatisticTable;
+    }
+
+    /**
+     * 启用协程.
+     */
+    protected function enableCoroutine(): void
+    {
+        // 全局启用协程,启用后部分底层代码将采用协程方式运行
+        $this->container->instance(IContainer::ENABLED_COROUTINE, true);
+
+        // @phpstan-ignore-next-line
+        $this->container->setContextResolver(static fn (): Context => Coroutine::getContext());
     }
 
     /**

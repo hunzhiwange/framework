@@ -9,8 +9,6 @@ use Leevel\Di\Provider;
 use Leevel\Server\IServer;
 use Leevel\Server\Manager;
 use Leevel\Server\Server;
-use Swoole\Coroutine;
-use Swoole\Coroutine\Context;
 
 /**
  * 服务端服务提供者.
@@ -21,10 +19,6 @@ class Register extends Provider
     {
         $this->servers();
         $this->server();
-
-        if ($this->container->enabledCoroutine()) {
-            $this->setContextResolver();
-        }
     }
 
     public static function providers(): array
@@ -72,11 +66,5 @@ class Register extends Provider
                 static fn (IContainer $container): IServer => $container['servers']->connect(),
             )
         ;
-    }
-
-    protected function setContextResolver(): void
-    {
-        // @phpstan-ignore-next-line
-        $this->container->setContextResolver(static fn (): Context => Coroutine::getContext());
     }
 }

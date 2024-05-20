@@ -293,7 +293,7 @@ class Container implements IContainer, \ArrayAccess
 
     public function addContextKeys(string ...$contextKeys): void
     {
-        $this->contextKeys = [$this->contextKeys, ...$contextKeys];
+        $this->contextKeys = array_unique(array_merge($this->contextKeys, $contextKeys));
     }
 
     public function removeContextKeys(string ...$contextKeys): void
