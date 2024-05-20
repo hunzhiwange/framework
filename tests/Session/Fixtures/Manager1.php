@@ -11,7 +11,7 @@ class Manager1 extends Managers
 {
     private static ISession $connect;
 
-    public function connect($configs = null, bool $newConnect = false): ISession
+    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ISession
     {
         return static::$connect;
     }
