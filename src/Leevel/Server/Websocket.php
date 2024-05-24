@@ -48,7 +48,7 @@ class Websocket extends Http
 
         // 监听端口
         // https://wiki.swoole.com/#/coroutine/http_server
-        'port' => '9501',
+        'port' => 9527,
 
         // 是否启用 SSL/TLS 隧道加密
         // https://wiki.swoole.com/#/coroutine/http_server
