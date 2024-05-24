@@ -230,9 +230,6 @@ class Container implements IContainer, \ArrayAccess
                 $isStatic = true;
             }
         }
-        /*elseif (is_object($callback)) {
-            $callback = [$callback, '__invoke'];
-         }*/
 
         if (false === $isStatic && \is_array($callback)) {
             if (!\is_object($callback[0])) {
