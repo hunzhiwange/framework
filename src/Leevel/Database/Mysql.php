@@ -159,6 +159,9 @@ GROUP BY
         $data['comment'] = $column['Comment'];
         $data['primary_key'] = 'pri' === strtolower($column['Key']);
 
+        // 清理掉 bigint unsigned 等后边的 unsigned
+        $column['Type'] = trim(rtrim($column['Type'], 'unsigned'));
+
         if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matches)) {
             $data['type'] = $matches[1];
             // 从 MySQL8.0.17 版本开始，TINYINT, SMALLINT, MEDIUMINT, INT和BIGINT 类型的显示宽度将失效
