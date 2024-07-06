@@ -35,9 +35,9 @@ class Entity extends Make
 
           <info>php %command.full_name% name</info>
 
-        You can also by using the <comment>Job::Job</comment> to assign app and table:
+        You can also by using the <comment>job:job</comment> to assign app and table:
 
-          <info>php %command.full_name% Job::Job</info>
+          <info>php %command.full_name% job:job</info>
 
         You can also by using the <comment>--table</comment> config:
 
@@ -57,7 +57,7 @@ class Entity extends Make
 
         You can also by using the <comment>--connect</comment> config:
 
-        <info>php %command.full_name% name --connect=db_product</info>
+        <info>php %command.full_name% name --connect=common</info>
         EOF;
 
     /**
