@@ -159,22 +159,32 @@ GROUP BY
         $data['comment'] = $column['Comment'];
         $data['primary_key'] = 'pri' === strtolower($column['Key']);
 
-        // 清理掉 bigint unsigned 等后边的 unsigned
-        $data['type'] = trim(rtrim($column['Type'], 'unsigned'));
-
         if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matches)) {
             $data['type'] = $matches[1];
+            $decimalLength = 0;
             // 从 MySQL8.0.17 版本开始，TINYINT, SMALLINT, MEDIUMINT, INT和BIGINT 类型的显示宽度将失效
             if (\in_array($matches[1], ['tinyint', 'smallint', 'mediumint', 'int', 'bigint'], true)) {
                 $matches[2] = null;
-            } elseif (ctype_digit($matches[2])) {
+            } elseif ('decimal' === $matches[1]) {
+                [$matches[2], $decimalLength] = explode(',', $matches[2]);
+            }
+
+            if (isset($matches[2]) && ctype_digit($matches[2])) {
                 $matches[2] = (int) $matches[2];
             }
+
             $data['type_extra'] = $matches[2];
             $data['type_length'] = (int) $data['type_extra'];
+            $data['type_length_decimal'] = (int) $decimalLength;
         } else {
+            // 清理掉 `bigint unsigned` 等后边的 `unsigned`
+            if (strpos($column['Type'], 'unsigned')) {
+                $data['type'] = rtrim($column['Type'], ' unsigned');
+            }
+
             $data['type_extra'] = null;
             $data['type_length'] = 0;
+            $data['type_length_decimal'] = 0;
         }
 
         $data['auto_increment'] = str_contains($column['Extra'], 'auto_increment');

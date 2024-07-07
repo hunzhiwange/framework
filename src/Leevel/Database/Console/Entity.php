@@ -420,8 +420,9 @@ class Entity extends Make
             $fieldType = $this->parseColumnType($val['type']);
 
             if ('string' === $fieldType
-                && isset($val['type_length'])
-                && $val['type_length'] > 0) {
+                && !empty($val['type_length'])
+                // 排除掉 decimal 类型的字段
+                && empty($val['type_length_decimal'])) {
                 $structData[] = <<<EOT
                             self::COLUMN_VALIDATOR => [
                                 self::VALIDATOR_SCENES => [
@@ -567,6 +568,10 @@ class Entity extends Make
             $data['length'] = $column['type_length'];
         }
 
+        if ($column['type_length_decimal']) {
+            $data['length_decimal'] = $column['type_length_decimal'];
+        }
+
         return $data;
     }
 
@@ -626,6 +631,7 @@ class Entity extends Make
             ->connect($connect)
             ->getTableColumns($tableName = $this->getTableName(), true)
         ;
+
         if (empty($result['list'])) {
             throw new \Exception(sprintf('Table (%s) is not found or has no columns.', $tableName));
         }
