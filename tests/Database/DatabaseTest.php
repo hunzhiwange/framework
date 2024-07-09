@@ -1385,6 +1385,7 @@ EOT,
             "primary_key": true,
             "type_extra": null,
             "type_length": 0,
+            "type_length_decimal": 0,
             "auto_increment": true
         },
         "name": {
@@ -1398,6 +1399,7 @@ EOT,
             "primary_key": false,
             "type_extra": 64,
             "type_length": 64,
+            "type_length_decimal": 0,
             "auto_increment": false
         },
         "content": {
@@ -1411,6 +1413,7 @@ EOT,
             "primary_key": false,
             "type_extra": null,
             "type_length": 0,
+            "type_length_decimal": 0,
             "auto_increment": false
         },
         "create_at": {
@@ -1424,6 +1427,7 @@ EOT,
             "primary_key": false,
             "type_extra": null,
             "type_length": 0,
+            "type_length_decimal": 0,
             "auto_increment": false
         },
         "price": {
@@ -1435,8 +1439,9 @@ EOT,
             "extra": "",
             "comment": "价格",
             "primary_key": false,
-            "type_extra": "14,4",
+            "type_extra": 14,
             "type_length": 14,
+            "type_length_decimal": 4,
             "auto_increment": false
         },
         "enum": {
@@ -1450,6 +1455,7 @@ EOT,
             "primary_key": false,
             "type_extra": "'T','F'",
             "type_length": 0,
+            "type_length_decimal": 0,
             "auto_increment": false
         }
     },
