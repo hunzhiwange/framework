@@ -475,6 +475,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected static array $propertiesCachedFramework = [];
 
     /**
+     * 事件业务唯一标识.
+     */
+    protected static array $eventBusinessIdentification = [];
+
+    /**
      * 构造函数.
      */
     public function __construct(array $data = [], bool $fromStorage = false, bool $ignoreUndefinedProp = false)
@@ -1481,7 +1486,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public static function event(string $event, \Closure|\SplObserver|string $listener): void
+    public static function event(string $event, \Closure|\SplObserver|string $listener, ?string $businessIdentification = null): void
     {
         if (null === static::$dispatchFramework
             && static::lazyloadPlaceholder() && null === static::$dispatchFramework) {
@@ -1489,9 +1494,22 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         static::validateSupportEvent($event);
+
+        $event = "entity.{$event}:".static::class;
+
+        // 常驻服务动态注册对象，多次请求会出现重复
+        // 业务标识防止重复注册事件
+        if (isset($businessIdentification)) {
+            $businessIdentification = $event.':'.$businessIdentification;
+            if (isset(static::$eventBusinessIdentification[$businessIdentification])) {
+                return;
+            }
+            static::$eventBusinessIdentification[$businessIdentification] = true;
+        }
+
         // @phpstan-ignore-next-line
         static::$dispatchFramework->register(
-            "entity.{$event}:".static::class,
+            $event,
             $listener
         );
     }
