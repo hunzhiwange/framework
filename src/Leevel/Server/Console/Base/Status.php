@@ -45,13 +45,13 @@ abstract class Status extends Command
     {
         if ($this->getOption('all')) {
             $item = '$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11';
-            $nikename = [
+            $headers = [
                 'USER', 'PID', '%CPU', '%MEM', 'VSZ(kb)',
                 'TTY', 'STAT', 'START', 'TIME', 'COMMAND',
             ];
         } else {
             $item = '$1, $2, $3, $4, $8, $9, $10, $11';
-            $nikename = [
+            $headers = [
                 'USER', 'PID', '%CPU', '%MEM', 'STAT',
                 'START', 'TIME', 'COMMAND',
             ];
@@ -70,7 +70,7 @@ abstract class Status extends Command
             $v = explode(' ', $v);
         }
 
-        $this->table($nikename, $out);
+        $this->table($headers, $out);
     }
 
     /**
