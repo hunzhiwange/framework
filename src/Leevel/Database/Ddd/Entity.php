@@ -2331,10 +2331,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         $this->removeVirtualColumnData($saveData);
 
-        if (!$saveData) {
-            return $this;
-        }
-
         if ($this->conditionFramework) {
             $condition = array_merge($this->conditionFramework, $condition);
         }
@@ -2350,11 +2346,18 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 $this->handleEvent(self::BEFORE_SOFT_RESTORING_EVENT, $saveData, $condition);
             }
 
-            if (static::shouldVirtual()) {
-                $num = $this->virtualUpdate($condition, $saveData);
+            // 即使经历过事件处理，待保存的数据还是可能不存在
+            // 不存在的数据影响记录为 0
+            if ($saveData) {
+                if (static::shouldVirtual()) {
+                    $num = $this->virtualUpdate($condition, $saveData);
+                } else {
+                    $num = static::meta()->update($condition, $saveData);
+                }
             } else {
-                $num = static::meta()->update($condition, $saveData);
+                $num = 0;
             }
+
             $this->clearChanged();
             if ($hasVersion) {
                 $constantVersion = (string) static::entityConstant('VERSION');
