@@ -410,9 +410,9 @@ class Repository
     /**
      * 从数据库重新读取当前对象的属性.
      */
-    public function refreshEntity(Entity $entity): void
+    public function refreshEntity(Entity $entity, array|string $cols = '*'): void
     {
-        $entity->refresh();
+        $entity->refresh($cols);
     }
 
     /**

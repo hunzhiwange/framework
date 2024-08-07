@@ -1242,11 +1242,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     /**
      * 从数据库重新读取当前对象的属性.
+     *
+     * @todo 未来可考虑主从延迟
      */
-    public function refresh(): void
+    public function refresh(array|string $cols = '*'): void
     {
         $data = static::meta()
             ->select()
+            ->setColumns($cols)
             ->where($this->idCondition())
             ->findOne()
         ;

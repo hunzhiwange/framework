@@ -500,12 +500,12 @@ class UnitOfWork
      *
      * @throws \InvalidArgumentException
      */
-    public function refresh(Entity $entity): self
+    public function refresh(Entity $entity, array|string $cols = '*'): self
     {
         if (self::STATE_MANAGED !== $this->getEntityState($entity)) {
             throw new \InvalidArgumentException(sprintf('Entity `%s` was not managed.', $entity::class));
         }
-        $this->repository($entity)->refreshEntity($entity);
+        $this->repository($entity)->refreshEntity($entity, $cols);
 
         return $this;
     }
