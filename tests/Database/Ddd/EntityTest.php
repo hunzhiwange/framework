@@ -1272,6 +1272,28 @@ EOT,
     }
 
     #[Api([
+        'zh-CN:title' => 'refresh 支持指定字段',
+    ])]
+    public function testRefreshCols(): void
+    {
+        $post1 = new Post();
+        $post1->create()->flush();
+        $this->assertInstanceof(Post::class, $post1);
+        self::assertSame(1, $post1->id);
+        self::assertNull($post1->userId);
+        self::assertNull($post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
+
+        $post1->refresh(['id', 'title']);
+        self::assertSame(1, $post1->id);
+        self::assertNull($post1->userId);
+        self::assertSame('', $post1->title);
+        self::assertNull($post1->summary);
+        self::assertNull($post1->delete_at);
+    }
+
+    #[Api([
         'zh-CN:title' => 'refresh 从数据库重新读取当前对象的属性支持复合主键',
     ])]
     public function testRefreshWithCompositeId(): void
