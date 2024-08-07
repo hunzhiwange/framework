@@ -19,7 +19,7 @@ use Tests\TestCase;
     'zh-CN:title' => '身份验证',
     'path' => 'component/auth',
     'zh-CN:description' => <<<'EOT'
-QueryPHP 提供了一组简单的认证组件用于登陆验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
+QueryPHP 提供了一组简单的认证组件用于登录验证，通常我们使用代理 `\Leevel\Auth\Proxy\Auth` 类进行静态调用。
 
 内置支持的认证驱动类型包括 session、token和JWT，分别用于 web 和 api 的认证服务。
 
@@ -82,7 +82,7 @@ final class ManagerTest extends TestCase
 
 `$loginTime` 过期时间规则如下：
 
-  * null 表示默认登陆缓存时间
+  * null 表示默认登录缓存时间
   * 小与等于 0 表示永久缓存
   * 其它表示缓存多少时间，单位
 EOT,

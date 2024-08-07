@@ -76,7 +76,7 @@ composer.json 可以扩展目录
 |配置项|配置描述|
 |:-|:-|
 |app|应用配置|
-|auth|登陆验证|
+|auth|登录验证|
 |cache|缓存配置|
 |console|控制台配置|
 |cookie|Cookie 配置|

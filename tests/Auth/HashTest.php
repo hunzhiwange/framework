@@ -13,7 +13,7 @@ use Tests\TestCase;
     'zh-CN:title' => '身份验证哈希',
     'path' => 'component/auth/hash',
     'zh-CN:description' => <<<'EOT'
-密码哈希主要用于登陆验证密码，功能非常简单，仅提供密码加密方法 `password` 和校验方法 `verify`。
+密码哈希主要用于登录验证密码，功能非常简单，仅提供密码加密方法 `password` 和校验方法 `verify`。
 
 **password 原型**
 
