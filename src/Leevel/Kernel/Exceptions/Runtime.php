@@ -124,7 +124,8 @@ abstract class Runtime implements IRuntime
         try {
             /** @var ILog $log */
             $log = $this->app->container()->make(ILog::class);
-            $log->error($e->getMessage(), ['exception' => (string) $e]);
+            $exceptionMessage = str_replace(PHP_EOL, ' ', (string) $e);
+            $log->error($e->getMessage(), ['exception' => $exceptionMessage]);
         } catch (\Throwable) {
         }
     }
