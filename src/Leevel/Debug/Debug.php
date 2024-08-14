@@ -159,6 +159,14 @@ class Debug
     }
 
     /**
+     * 获取调试状态.
+     */
+    public function getDebugStatus(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
      * 添加一条消息.
      */
     public function message(mixed $message, string $label = 'info'): void
