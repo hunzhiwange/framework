@@ -7,8 +7,8 @@ namespace Leevel\Server\Process;
 use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Server\IServer;
 use Leevel\Support\Str\Camelize;
-use Swoole\Coroutine;
 use Swoole\Process as SwooleProcess;
+use Swoole\Timer;
 
 /**
  * 热重载.
@@ -43,14 +43,24 @@ class HotOverload extends Process
     protected array $hotOverloadWatch = [];
 
     /**
-     * 文件 MD5 值.
+     * 文件信息表.
      */
-    protected ?string $md5Hash = null;
+    protected array $fileTable = [];
 
     /**
      * 正在 reload.
      */
     protected bool $reloading = false;
+
+    /**
+     * 是否需要重启.
+     */
+    protected bool $shouldReload = false;
+
+    /**
+     * 是否为首次检测.
+     */
+    protected bool $firstCheckReady = false;
 
     /**
      * 构造函数.
@@ -73,15 +83,13 @@ class HotOverload extends Process
 
     public function handle(IServer $server): void
     {
-        // @phpstan-ignore-next-line
-        while (true) {
-            Coroutine::sleep($this->timeInterval / 1000);
+        Timer::tick($this->timeInterval, function () use ($server): void {
             if ($this->serverNeedReload()) {
                 $this->reload(function () use ($server): void {
                     $this->reloadWorkerServer($server);
                 });
             }
-        }
+        });
     }
 
     /**
@@ -100,10 +108,10 @@ class HotOverload extends Process
      */
     protected function serverNeedReload(): bool
     {
-        $newMd5Hash = $this->md5Hash();
+        $this->checkShouldReload();
         ++$this->count;
 
-        if ($this->md5Hash && $newMd5Hash !== $this->md5Hash) {
+        if ($this->shouldReload) {
             $this->count = 0;
             $this->reloading = true;
         }
@@ -112,34 +120,17 @@ class HotOverload extends Process
             return true;
         }
 
-        $this->md5Hash = $newMd5Hash;
-
         return false;
     }
 
-    /**
-     * 当前文件 MD5 值.
-     */
-    protected function md5Hash(): string
+    protected function checkShouldReload(): void
     {
-        $files = [];
-        foreach ($this->files() as $file) {
-            $files[] = md5_file($file);
-        }
-        sort($files);
+        $this->shouldReload = false;
 
-        return md5(json_encode($files, JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * 扫描文件.
-     */
-    protected function files(): array
-    {
-        $files = [];
         foreach ($this->hotOverloadWatch as $dir) {
             if (is_file($dir)) {
-                $files[] = $dir;
+                $file = new \SplFileInfo($dir);
+                $this->checkFileShouldReload($file);
 
                 continue;
             }
@@ -148,14 +139,44 @@ class HotOverload extends Process
                 continue;
             }
 
-            TraverseDirectory::handle($dir, true, static function (\DirectoryIterator $file) use (&$files): void {
-                if ($file->isFile() && \in_array($file->getExtension(), ['php'], true)) {
-                    $files[] = $file->getPath().'/'.$file->getFilename();
+            TraverseDirectory::handle(
+                $dir,
+                true,
+                function (\DirectoryIterator $file): void {
+                    if ($file->isFile()
+                        && \in_array($file->getExtension(), ['php'], true)) {
+                        $this->checkFileShouldReload($file);
+                    }
                 }
-            });
+            );
         }
 
-        return $files;
+        if (!$this->firstCheckReady) {
+            $this->firstCheckReady = true;
+        }
+    }
+
+    protected function checkFileShouldReload(\SplFileInfo $file): void
+    {
+        $inode = $file->getInode();
+        $time = $file->getMTime();
+
+        // 删除文件不会检测
+        if (isset($this->fileTable[$inode])) {
+            // 修改文件
+            $oldTime = $this->fileTable[$inode];
+            if ($oldTime !== $time) {
+                $this->fileTable[$inode] = $time;
+                $this->shouldReload = true;
+            }
+        } else {
+            // 新增文件
+            $this->fileTable[$inode] = $time;
+            // 第一次检测不重启
+            if ($this->firstCheckReady) {
+                $this->shouldReload = true;
+            }
+        }
     }
 
     /**
