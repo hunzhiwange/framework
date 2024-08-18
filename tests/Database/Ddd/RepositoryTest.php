@@ -552,7 +552,7 @@ final class RepositoryTest extends TestCase
 
         self::assertSame('SQL: [90] UPDATE `post` SET `post`.`title` = :named_param_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [18] :named_param_title | paramno=0 | name=[18] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
         self::assertSame([], $post->changed());
-        self::assertNull($repository->updateEntity($post));
+        self::assertSame(0, $repository->updateEntity($post));
     }
 
     #[Api([

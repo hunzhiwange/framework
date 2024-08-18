@@ -1133,16 +1133,16 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 数据持久化.
      *
-     * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 直接调用未做任何删除、更新和保存直接返回为0
+     * - 软删除返回影响行数 (没有属性需要更新将不会执行 SQL，返回结果为 0）
      * - 物理删除返回影响行数
-     * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 null）
+     * - 更新返回影响行数（没有属性需要更新将不会执行 SQL，返回结果为 0）
      * - 新增返回最进插入 ID
      */
-    public function flush(): mixed
+    public function flush(): int|string
     {
         if (!$this->flushFramework) {
-            // @todo 返回 0 统一格式
-            return null;
+            return 0;
         }
 
         try {

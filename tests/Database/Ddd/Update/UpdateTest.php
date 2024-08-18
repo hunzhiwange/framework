@@ -194,7 +194,10 @@ EOT,
     {
         $entity = new DemoUpdateAutoFillEntity(['id' => 5], true);
         $this->assertInstanceof(DemoUpdateAutoFillEntity::class, $entity->save());
-        self::assertNull($entity->flushData());
+        self::assertSame([
+            ['id' => 5],
+            [],
+        ], $entity->flushData());
     }
 
     public function testAutoFillWithCustomField(): void
@@ -396,7 +399,10 @@ EOT,
     {
         $entity = new DemoDatabaseEntity(['id' => 1], true);
         $this->assertInstanceof(DemoDatabaseEntity::class, $entity->save());
-        self::assertNull($entity->flushData());
+        self::assertSame([
+            ['id' => 1],
+            [],
+        ], $entity->flushData());
     }
 
     #[Api([
@@ -406,7 +412,10 @@ EOT,
     {
         $entity = new DemoDatabaseEntity(['id' => 1]);
         $this->assertInstanceof(DemoDatabaseEntity::class, $entity->update());
-        self::assertNull($entity->flushData());
+        self::assertSame([
+            ['id' => 1],
+            [],
+        ], $entity->flushData());
     }
 
     #[Api([
@@ -524,8 +533,11 @@ EOT,
 
         $entity = new CompositeId();
         $entity->update(['id1' => 2, 'id2' => 3]);
-        self::assertNull($entity->flushData());
-        self::assertNull($entity->flush());
+        self::assertSame([
+            ['id1' => 2, 'id2' => 3],
+            [],
+        ], $entity->flushData());
+        self::assertSame(0, $entity->flush());
     }
 
     protected function getDatabaseTable(): array
