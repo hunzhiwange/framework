@@ -483,14 +483,11 @@ abstract class Database implements IDatabase
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * - GitHub Actions 无法通过测试忽略
-     *
      * @codeCoverageIgnore
      */
     public function setSavepoints(bool $savepoints): void
     {
+        // GitHub Actions 无法通过测试忽略
         $this->transactionWithSavepoints = $savepoints;
     }
 
