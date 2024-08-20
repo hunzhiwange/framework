@@ -370,7 +370,7 @@ class Repository
     /**
      * 新增实体.
      */
-    public function createEntity(Entity $entity): mixed
+    public function createEntity(Entity $entity): int|string
     {
         return $entity->create()->flush();
     }
@@ -378,7 +378,7 @@ class Repository
     /**
      * 更新实体.
      */
-    public function updateEntity(Entity $entity): mixed
+    public function updateEntity(Entity $entity): int|string
     {
         return $entity->update()->flush();
     }
@@ -386,7 +386,7 @@ class Repository
     /**
      * 替换实体.
      */
-    public function replaceEntity(Entity $entity): mixed
+    public function replaceEntity(Entity $entity): int|string
     {
         return $entity->replace()->flush();
     }
@@ -394,7 +394,7 @@ class Repository
     /**
      * 响应删除.
      */
-    public function deleteEntity(Entity $entity, bool $forceDelete = false): mixed
+    public function deleteEntity(Entity $entity, bool $forceDelete = false): int|string
     {
         return $entity->delete($forceDelete)->flush();
     }
@@ -402,7 +402,7 @@ class Repository
     /**
      * 强制删除实体.
      */
-    public function forceDeleteEntity(Entity $entity): mixed
+    public function forceDeleteEntity(Entity $entity): int|string
     {
         return $entity->delete(true)->flush();
     }

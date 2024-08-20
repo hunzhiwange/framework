@@ -1367,7 +1367,7 @@ EOT,
     public function testFlushWithoutDataAndDoNothing(): void
     {
         $post1 = new Post();
-        self::assertNull($post1->flush());
+        self::assertSame(0, $post1->flush());
     }
 
     public function testFlushTwiceWithoutDataAndDoNothing(): void
@@ -1375,7 +1375,7 @@ EOT,
         $post1 = new Post();
         $post1->create();
         self::assertSame(1, $post1->flush());
-        self::assertNull($post1->flush());
+        self::assertSame(0, $post1->flush());
     }
 
     public function testReplaceAndThrowException(): void
@@ -2195,7 +2195,7 @@ EOT,
     {
         $demo = new DemoVirtualEntity(['id' => 1]);
         $demo->update();
-        self::assertNull($demo->flush());
+        self::assertSame(0, $demo->flush());
     }
 
     #[Api([
