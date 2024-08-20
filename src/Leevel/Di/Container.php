@@ -698,7 +698,19 @@ class Container implements IContainer, \ArrayAccess
             return $value;
         }
 
-        return $this->getContextRecursive($type, $name);
+        return $this->getContextValueRecursive($type, $name);
+    }
+
+    protected function getContextValueRecursive(string $type, string $name): mixed
+    {
+        $cid = 0;
+        while (($context = $this->getContext($name, false, $cid)) !== null) {
+            if (isset($context[$type][$name])) {
+                return $context[$type][$name];
+            }
+        }
+
+        return null;
     }
 
     protected function existsContextValue(string $type, string $name): bool
@@ -732,17 +744,5 @@ class Container implements IContainer, \ArrayAccess
         }
 
         return $this->defaultContext;
-    }
-
-    private function getContextRecursive(string $type, string $name): mixed
-    {
-        $cid = 0;
-        while (($context = $this->getContext($name, false, $cid)) !== null) {
-            if (isset($context[$type][$name])) {
-                return $context[$type][$name];
-            }
-        }
-
-        return null;
     }
 }
