@@ -43,7 +43,7 @@ class Sftp extends Filesystem implements IFilesystem
 
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
-        // 请执行 composer require league/flysystem-sftp`
+        // 请执行 `composer require league/flysystem-sftp`
         return new SftpAdapter(
             SftpConnectionProvider::fromArray($this->config),
             $this->config['root'],
