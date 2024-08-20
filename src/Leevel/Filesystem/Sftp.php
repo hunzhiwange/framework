@@ -41,13 +41,9 @@ class Sftp extends Filesystem implements IFilesystem
         'timeout' => 20,
     ];
 
-    /**
-     * {@inheritDoc}
-     *
-     * - 请执行 `composer require league/flysystem-sftp`.
-     */
     protected function makeFilesystemAdapter(): FilesystemAdapter
     {
+        // 请执行 composer require league/flysystem-sftp`
         return new SftpAdapter(
             SftpConnectionProvider::fromArray($this->config),
             $this->config['root'],

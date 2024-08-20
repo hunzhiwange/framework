@@ -23,10 +23,6 @@ class Zip extends Filesystem implements IFilesystem
     ];
 
     /**
-     * {@inheritDoc}
-     *
-     * - 请执行 `composer require league/flysystem-ziparchive`.
-     *
      * @throws \InvalidArgumentException
      */
     protected function makeFilesystemAdapter(): FilesystemAdapter
@@ -35,6 +31,7 @@ class Zip extends Filesystem implements IFilesystem
             throw new \InvalidArgumentException('The zip driver requires path config.');
         }
 
+        // 请执行 `composer require league/flysystem-ziparchive`
         return new ZipArchiveAdapter(new FilesystemZipArchiveProvider($this->config['path']));
     }
 }

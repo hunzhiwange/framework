@@ -21,10 +21,7 @@ abstract class Provider
     {
         $this->container = $container;
         $this->registerAlias();
-
-        if ($this->container->enabledCoroutine()) {
-            $this->registerContextKeys();
-        }
+        $this->registerContextKeys();
     }
 
     /**
