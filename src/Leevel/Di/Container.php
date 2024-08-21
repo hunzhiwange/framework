@@ -703,8 +703,8 @@ class Container implements IContainer, \ArrayAccess
 
     protected function getContextValueRecursive(string $type, string $name): mixed
     {
-        $cid = 0;
-        while (($context = $this->getContext($name, false, $cid)) !== null) {
+        $coroutineId = 0;
+        while (null !== ($context = $this->getContext($name, false, $coroutineId))) {
             if (isset($context[$type][$name])) {
                 return $context[$type][$name];
             }
@@ -730,7 +730,7 @@ class Container implements IContainer, \ArrayAccess
         $this->getContext(null, $defaultContext)[$type] = [];
     }
 
-    protected function getContext(?string $name = null, bool $defaultContext = false, int &$cid = 0): ?\ArrayObject
+    protected function getContext(?string $name = null, bool $defaultContext = false, int &$coroutineId = 0): ?\ArrayObject
     {
         if ($defaultContext) {
             return $this->defaultContext;
@@ -740,7 +740,7 @@ class Container implements IContainer, \ArrayAccess
             $contextResolver = $this->contextResolver;
 
             // @phpstan-ignore-next-line
-            return $contextResolver($cid);
+            return $contextResolver($coroutineId);
         }
 
         return $this->defaultContext;
