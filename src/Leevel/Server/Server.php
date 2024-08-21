@@ -106,7 +106,12 @@ abstract class Server implements IServer
         $this->container->instance(IContainer::ENABLED_COROUTINE, true);
 
         // @phpstan-ignore-next-line
-        $this->container->setContextResolver(static fn (): Context => Coroutine::getContext());
+        $this->container->setContextResolver(static function (int &$cid = 0): ?Context {
+            $context = Coroutine::getContext($cid);
+            $cid = Coroutine::getPcid($cid);
+
+            return $context;
+        });
     }
 
     /**

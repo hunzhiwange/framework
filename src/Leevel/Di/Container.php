@@ -298,6 +298,11 @@ class Container implements IContainer, \ArrayAccess
         $this->contextKeys = array_diff($this->contextKeys, $contextKeys);
     }
 
+    public function getContextKeys(): array
+    {
+        return $this->contextKeys;
+    }
+
     public function setContextResolver(?\Closure $contextResolver = null): void
     {
         $this->contextResolver = $contextResolver;
@@ -460,6 +465,9 @@ class Container implements IContainer, \ArrayAccess
 
     /**
      * 根据 class 名字创建实例.
+     *
+     * @throws ContainerInvalidArgumentException
+     * @throws ServiceNotFoundException
      */
     protected function getInjectionObject(string $className, array $args = []): null|object|string
     {
@@ -685,7 +693,24 @@ class Container implements IContainer, \ArrayAccess
 
     protected function getContextValue(string $type, string $name): mixed
     {
-        return $this->getContext($name)[$type][$name] ?? null;
+        $value = $this->getContext($name)[$type][$name] ?? null;
+        if (isset($value) || !$this->inContext($name)) {
+            return $value;
+        }
+
+        return $this->getContextValueRecursive($type, $name);
+    }
+
+    protected function getContextValueRecursive(string $type, string $name): mixed
+    {
+        $cid = 0;
+        while (($context = $this->getContext($name, false, $cid)) !== null) {
+            if (isset($context[$type][$name])) {
+                return $context[$type][$name];
+            }
+        }
+
+        return null;
     }
 
     protected function existsContextValue(string $type, string $name): bool
@@ -705,7 +730,7 @@ class Container implements IContainer, \ArrayAccess
         $this->getContext(null, $defaultContext)[$type] = [];
     }
 
-    protected function getContext(?string $name = null, bool $defaultContext = false): \ArrayObject
+    protected function getContext(?string $name = null, bool $defaultContext = false, int &$cid = 0): ?\ArrayObject
     {
         if ($defaultContext) {
             return $this->defaultContext;
@@ -715,7 +740,7 @@ class Container implements IContainer, \ArrayAccess
             $contextResolver = $this->contextResolver;
 
             // @phpstan-ignore-next-line
-            return $contextResolver();
+            return $contextResolver($cid);
         }
 
         return $this->defaultContext;
