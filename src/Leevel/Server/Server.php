@@ -7,6 +7,7 @@ namespace Leevel\Server;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Server\Coroutine as BaseCoroutine;
 use Leevel\Server\Process\Process;
 use Leevel\Support\Arr\Except;
 use Swoole\Coroutine;
@@ -105,12 +106,10 @@ abstract class Server implements IServer
         // 全局启用协程,启用后部分底层代码将采用协程方式运行
         $this->container->instance(IContainer::ENABLED_COROUTINE, true);
 
-        // @phpstan-ignore-next-line
-        $this->container->setContextResolver(static function (int &$coroutineId = 0): ?Context {
-            $context = Coroutine::getContext($coroutineId);
-            $coroutineId = Coroutine::getPcid($coroutineId);
+        $this->container->setContextResolver(static fn (): ?Context => Coroutine::getContext());
 
-            return $context;
+        $this->container->setParentContextResolver(static function (): void {
+            BaseCoroutine::parentContextResolver();
         });
     }
 

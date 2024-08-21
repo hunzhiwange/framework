@@ -100,7 +100,17 @@ interface IContainer extends ContainerInterface
     /**
      * 设置上下文解析回调.
      */
-    public function setContextResolver(?\Closure $contextResolver = null): void;
+    public static function setContextResolver(?\Closure $contextResolver = null): void;
+
+    /**
+     * 设置父级协程上下文解析到子协程回调.
+     */
+    public static function setParentContextResolver(?\Closure $contextResolver = null): void;
+
+    /**
+     * 父级协程上下文解析到子协程.
+     */
+    public static function parentContext(): void;
 
     /**
      * 是否处于上下文中.

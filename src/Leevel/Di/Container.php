@@ -27,7 +27,9 @@ class Container implements IContainer, \ArrayAccess
 
     protected array $contextKeys = [];
 
-    protected ?\Closure $contextResolver = null;
+    protected static ?\Closure $contextResolver = null;
+
+    protected static ?\Closure $parentContextResolver = null;
 
     /**
      * 是否已经初始引导.
@@ -303,14 +305,28 @@ class Container implements IContainer, \ArrayAccess
         return $this->contextKeys;
     }
 
-    public function setContextResolver(?\Closure $contextResolver = null): void
+    public static function setContextResolver(?\Closure $contextResolver = null): void
     {
-        $this->contextResolver = $contextResolver;
+        static::$contextResolver = $contextResolver;
+    }
+
+    public static function setParentContextResolver(?\Closure $parentContextResolver = null): void
+    {
+        static::$parentContextResolver = $parentContextResolver;
+    }
+
+    public static function parentContext(): void
+    {
+        if (!$parentContextResolver = static::$parentContextResolver) {
+            return;
+        }
+
+        $parentContextResolver();
     }
 
     public function inContext(?string $name = null): bool
     {
-        if (!$this->contextResolver) {
+        if (!static::$contextResolver) {
             return false;
         }
 
@@ -693,24 +709,7 @@ class Container implements IContainer, \ArrayAccess
 
     protected function getContextValue(string $type, string $name): mixed
     {
-        $value = $this->getContext($name)[$type][$name] ?? null;
-        if (isset($value) || !$this->inContext($name)) {
-            return $value;
-        }
-
-        return $this->getContextValueRecursive($type, $name);
-    }
-
-    protected function getContextValueRecursive(string $type, string $name): mixed
-    {
-        $coroutineId = 0;
-        while (null !== ($context = $this->getContext($name, false, $coroutineId))) {
-            if (isset($context[$type][$name])) {
-                return $context[$type][$name];
-            }
-        }
-
-        return null;
+        return $this->getContext($name)[$type][$name] ?? null;
     }
 
     protected function existsContextValue(string $type, string $name): bool
@@ -730,17 +729,23 @@ class Container implements IContainer, \ArrayAccess
         $this->getContext(null, $defaultContext)[$type] = [];
     }
 
-    protected function getContext(?string $name = null, bool $defaultContext = false, int &$coroutineId = 0): ?\ArrayObject
+    /**
+     * @throws \InvalidArgumentException
+     */
+    protected function getContext(?string $name = null, bool $defaultContext = false): \ArrayObject
     {
         if ($defaultContext) {
             return $this->defaultContext;
         }
 
         if ($this->inContext($name)) {
-            $contextResolver = $this->contextResolver;
+            $contextResolver = static::$contextResolver;
+            $context = $contextResolver();
+            if (!$context instanceof \ArrayObject) {
+                throw new \InvalidArgumentException('The context resolver did not return an \ArrayObject as expected.');
+            }
 
-            // @phpstan-ignore-next-line
-            return $contextResolver($coroutineId);
+            return $context;
         }
 
         return $this->defaultContext;

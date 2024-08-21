@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd;
 
 use Leevel\Database\Page;
+use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
 use Leevel\Support\Collection;
 use Swoole\Coroutine;
@@ -263,6 +264,8 @@ class Repository
         $wg->add();
         $count = 0;
         Coroutine::create(function () use ($wg, $condition, $column, &$count, &$exceptions): void {
+            Container::parentContext();
+
             try {
                 $count = $this->findCount($condition, $column);
             } catch (\Throwable $e) {
@@ -277,6 +280,8 @@ class Repository
         $wg->add();
         $page = null;
         Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, &$page, &$exceptions): void {
+            Container::parentContext();
+
             try {
                 $page = $this->condition($condition)->page($currentPage, $perPage, null, $config);
             } catch (\Throwable $e) {
