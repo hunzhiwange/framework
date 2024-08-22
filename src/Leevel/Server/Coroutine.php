@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace Leevel\Server;
 
-use Leevel\Di\Container;
-use Swoole\Coroutine as SwooleCoroutine;
+use Swoole\Coroutine as BaseCoroutine;
 
 /**
  * 协程管理.
  */
-class Coroutine extends SwooleCoroutine
+class Coroutine extends BaseCoroutine
 {
-    public static function create(callable $func, ...$param): false|int
+    public static function create(callable $func, mixed ...$param): false|int
     {
         $newFunc = static function () use ($func): void {
-            Container::parentContext();
+            static::parentContextResolver();
             $func();
         };
 
+        // @phpstan-ignore-next-line
         return parent::create($newFunc, ...$param);
     }
 
@@ -42,6 +42,7 @@ class Coroutine extends SwooleCoroutine
             return;
         }
 
+        // @phpstan-ignore-next-line
         foreach ($parentContext as $key => $value) {
             $currentContext[$key] = $value;
         }

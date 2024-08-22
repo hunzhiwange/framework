@@ -740,6 +740,8 @@ class Container implements IContainer, \ArrayAccess
 
         if ($this->inContext($name)) {
             $contextResolver = static::$contextResolver;
+
+            /** @phpstan-ignore-next-line */
             $context = $contextResolver();
             if (!$context instanceof \ArrayObject) {
                 throw new \InvalidArgumentException('The context resolver did not return an \ArrayObject as expected.');
