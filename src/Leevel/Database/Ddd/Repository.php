@@ -185,11 +185,19 @@ class Repository
     }
 
     /**
-     * 批量插入回调.
+     * 设置批量插入回调.
      */
-    public function insertAllBoot(\Closure $boot): void
+    public function setInsertAllBoot(?\Closure $boot = null): void
     {
         $this->insertAllBoot = $boot;
+    }
+
+    /**
+     * 获取批量插入回调.
+     */
+    public function getInsertAllBoot(): ?\Closure
+    {
+        return $this->insertAllBoot;
     }
 
     /**
@@ -206,7 +214,7 @@ class Repository
 
         if ($this->insertAllBoot) {
             $insertAllBoot = $this->insertAllBoot;
-            $insertAllBoot($data, $bind, $replace);
+            $insertAllBoot($this, $data, $bind, $replace);
         }
 
         return $this->select()->insertAll($data, $bind, $replace);

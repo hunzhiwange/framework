@@ -112,12 +112,12 @@ final class RepositoryTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => '批量插入回调 insertAllBoot',
+        'zh-CN:title' => '设置批量插入回调 setInsertAllBoot',
     ])]
-    public function testInsertAllBoot(): void
+    public function testSetInsertAllBoot(): void
     {
         $repository = new Repository(new Post());
-        $repository->insertAllBoot(static function (array &$data): void {
+        $repository->setInsertAllBoot(static function (Repository $repository, array &$data): void {
             $data[0]['title'] = 'new';
         });
         $repository->insertAll([[
@@ -286,7 +286,7 @@ final class RepositoryTest extends TestCase
         $dispatch = new Dispatch(new Container());
         $repository = new Repository(new Post(), $dispatch);
         $dispatch->register(Repository::INSERT_ALL_EVENT, static function (string $event, Repository $repository): void {
-            $repository->insertAllBoot(static function (array &$data): void {
+            $repository->setInsertAllBoot(static function (Repository $repository, array &$data): void {
                 $data[0]['title'] = 'new';
             });
         });
