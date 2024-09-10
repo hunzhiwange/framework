@@ -8,23 +8,43 @@ use Leevel\Support\Manager as Managers;
 
 /**
  * 认证管理器.
- *
- * @method static bool                  isLogin()                                      用户是否已经登录.
- * @method static array                 getLogin()                                     获取登录信息.
- * @method static string                login(array $data, ?int $loginTime = null)     登录写入数据.
- * @method static void                  logout()                                       登出.
- * @method static void                  setTokenName(string $tokenName)                设置认证名字.
- * @method static string                getTokenName()                                 取得认证名字.
- * @method static \Leevel\Di\IContainer container()                                    返回 IOC 容器.
- * @method static void                  disconnect(?string $connect = null)            删除连接.
- * @method static array                 getConnects()                                  取回所有连接.
- * @method static mixed                 getContainerConfig(?string $name = null)       获取容器配置值.
- * @method static void                  setContainerConfig(string $name, mixed $value) 设置容器配置值.
- * @method static void                  extend(string $connect, \Closure $callback)    扩展自定义连接.
- * @method static array                 normalizeConnectConfig(string $connect)        整理连接配置.
  */
-class Manager extends Managers
+class Manager extends Managers implements IAuth
 {
+    public function isLogin(): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, []);
+    }
+
+    public function getLogin(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, []);
+    }
+
+    public function login(array $data, ?int $loginTime = null): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, [$data, $loginTime]);
+    }
+
+    public function logout(): void
+    {
+        $this->__call(__FUNCTION__, []);
+    }
+
+    public function setTokenName(string $tokenName): void
+    {
+        $this->__call(__FUNCTION__, [$tokenName]);
+    }
+
+    public function getTokenName(): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, []);
+    }
+
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IAuth
     {
         return parent::connect($connect, $newConnect, ...$arguments);
