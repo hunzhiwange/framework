@@ -50,8 +50,8 @@ final class ViewTest extends TestCase
             return $manager;
         });
 
-        ProxyView::setVar('hello', 'world');
-        self::assertSame('world', ProxyView::getVar('hello'));
+        ProxyView::proxy()->setVar('hello', 'world');
+        self::assertSame('world', ProxyView::proxy()->getVar('hello'));
         self::assertSame('world', $manager->getVar('hello'));
     }
 
