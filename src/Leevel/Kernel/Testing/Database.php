@@ -28,7 +28,7 @@ trait Database
                     false
                 ]
                 eot;
-            Db::connect($connect)
+            Db::proxy()->connect($connect)
                 ->table($table)
                 ->truncate()
             ;
@@ -36,11 +36,11 @@ trait Database
             $this->assertSame(
                 sprintf($sql, $table),
                 $this->varJson(
-                    Db::connect($connect)->getRealLastSql()
+                    Db::proxy()->connect($connect)->getRealLastSql()
                 )
             );
 
-            Db::connect($connect)
+            Db::proxy()->connect($connect)
                 ->table($table)
                 ->truncate()
             ;

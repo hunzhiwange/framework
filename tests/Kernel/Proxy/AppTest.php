@@ -48,15 +48,15 @@ final class AppTest extends TestCase
         });
 
         $appPath = __DIR__.'/app';
-        self::assertSame($appPath, ProxyApp::path());
-        self::assertSame($appPath.'/foobar', ProxyApp::path('foobar'));
-        self::assertInstanceOf(Apps::class, ProxyApp::make('app'));
+        self::assertSame($appPath, ProxyApp::proxy()->path());
+        self::assertSame($appPath.'/foobar', ProxyApp::proxy()->path('foobar'));
+        self::assertInstanceOf(Apps::class, ProxyApp::proxy()->make('app'));
     }
 
     public function testProxyNotFound(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Method `notFound` is not exits.');
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined method Leevel\\Kernel\\App::notFound()');
 
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);
@@ -64,7 +64,7 @@ final class AppTest extends TestCase
             return $app;
         });
 
-        ProxyApp::notFound();
+        ProxyApp::proxy()->notFound();
     }
 
     public function testProxyTypeError(): void
@@ -77,7 +77,7 @@ final class AppTest extends TestCase
             return $app;
         });
 
-        ProxyApp::path(11);
+        ProxyApp::proxy()->path(11);
     }
 
     protected function createAppInstance(Container $container): Apps

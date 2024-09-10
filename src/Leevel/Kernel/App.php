@@ -6,7 +6,9 @@ namespace Leevel\Kernel;
 
 use Composer\Autoload\ClassLoader;
 use Leevel\Config\IConfig;
+use Leevel\Di\Container;
 use Leevel\Di\IContainer;
+use Leevel\Di\Provider;
 use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Http\Request;
 use Leevel\Log\Provider\Register as LogProvider;
@@ -348,6 +350,138 @@ class App implements IApp
     public function container(): IContainer
     {
         return $this->container;
+    }
+
+    public function bind(array|string $name, mixed $service = null, bool $share = false): self
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$name, $service, $share]);
+    }
+
+    public function instance(array|string $name, mixed $service = null): self
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$name, $service]);
+    }
+
+    public function singleton(array|string $name, mixed $service = null): self
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$name, $service]);
+    }
+
+    public function alias(array|string $alias, null|array|string $value = null): self
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$alias, $value]);
+    }
+
+    public function make(string $name, array $args = [], bool $throw = true): mixed
+    {
+        return $this->callContainer(__FUNCTION__, [$name, $args, $throw]);
+    }
+
+    public function call(array|callable|string $callback, array $args = []): mixed
+    {
+        return $this->callContainer(__FUNCTION__, [$callback, $args]);
+    }
+
+    public function remove(string $name): void
+    {
+        $this->callContainer(__FUNCTION__, [$name]);
+    }
+
+    public function exists(string $name): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$name]);
+    }
+
+    public function clear(): void
+    {
+        $this->callContainer(__FUNCTION__, []);
+    }
+
+    public function addContextKeys(string ...$contextKeys): void
+    {
+        $this->callContainer(__FUNCTION__, $contextKeys);
+    }
+
+    public function removeContextKeys(string ...$contextKeys): void
+    {
+        $this->callContainer(__FUNCTION__, $contextKeys);
+    }
+
+    public static function setContextResolver(?\Closure $contextResolver = null): void
+    {
+        Container::setContextResolver($contextResolver);
+    }
+
+    public static function setParentContextResolver(?\Closure $contextResolver = null): void
+    {
+        Container::setParentContextResolver($contextResolver);
+    }
+
+    public static function parentContext(): void
+    {
+        Container::parentContext();
+    }
+
+    public function inContext(?string $name = null): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$name]);
+    }
+
+    public function enabledCoroutine(): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, []);
+    }
+
+    public function callProviderBootstrap(Provider $provider): void
+    {
+        $this->callContainer(__FUNCTION__, [$provider]);
+    }
+
+    public function makeProvider(string $provider): Provider
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$provider]);
+    }
+
+    public function register(Provider|string $provider): Provider
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$provider]);
+    }
+
+    public function isBootstrap(): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, []);
+    }
+
+    public function registerProviders(array $providers, array $deferredProviders = [], array $deferredAlias = []): void
+    {
+        $this->callContainer(__FUNCTION__, [$providers, $deferredProviders, $deferredAlias]);
+    }
+
+    public function get(string $id)
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$id]);
+    }
+
+    public function has(string $id): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callContainer(__FUNCTION__, [$id]);
+    }
+
+    protected function callContainer(string $method, array $args): mixed
+    {
+        return $this->container->{$method}(...$args);
     }
 
     /**

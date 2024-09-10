@@ -9,7 +9,7 @@ use Leevel\Di\IContainer;
 /**
  * 应用接口.
  */
-interface IApp
+interface IApp extends IContainer
 {
     /**
      * 框架版本.

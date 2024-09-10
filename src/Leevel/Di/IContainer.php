@@ -38,11 +38,6 @@ interface IContainer extends ContainerInterface
     public const string SINGLETONS = 'singletons';
 
     /**
-     * 生成 IOC 容器.
-     */
-    public static function singletons(): self;
-
-    /**
      * 注册到容器.
      */
     public function bind(array|string $name, mixed $service = null, bool $share = false): self;

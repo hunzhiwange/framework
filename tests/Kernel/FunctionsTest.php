@@ -42,7 +42,7 @@ final class FunctionsTest extends TestCase
     public function testLeevel(): void
     {
         $this->createContainer();
-        self::assertSame(App::VERSION, \Leevel::version());
+        self::assertSame(App::VERSION, \Leevel::proxy()->version());
     }
 
     #[Api([
@@ -51,7 +51,7 @@ final class FunctionsTest extends TestCase
     public function testApp(): void
     {
         $this->createContainer();
-        self::assertSame(App::VERSION, Apps::version());
+        self::assertSame(App::VERSION, Apps::proxy()->version());
     }
 
     #[Api([
@@ -60,7 +60,7 @@ final class FunctionsTest extends TestCase
     public function testLeevelWithContainerMethod(): void
     {
         $this->createContainer();
-        self::assertNull(\Leevel::make('foo', throw: false));
+        self::assertNull(\Leevel::proxy()->make('foo', throw: false));
     }
 
     #[Api([
@@ -69,7 +69,7 @@ final class FunctionsTest extends TestCase
     public function testAppWithContainerMethod(): void
     {
         $this->createContainer();
-        self::assertNull(Apps::make('foo', throw: false));
+        self::assertNull(Apps::proxy()->make('foo', throw: false));
     }
 
     #[Api([
@@ -78,7 +78,7 @@ final class FunctionsTest extends TestCase
     public function testFunctionLang(): void
     {
         $this->createContainer();
-        self::assertNull(Apps::make('foo', throw: false));
+        self::assertNull(Apps::proxy()->make('foo', throw: false));
 
         $i18n = $this->createMock(II18n::class);
         $map = [
