@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel\Root;
-
 use Leevel\Kernel\Proxy\App as ProxyApp;
 
 /**
