@@ -119,9 +119,6 @@ class Redis extends Cache implements ICache
         $this->handle = null;
     }
 
-    /**
-     * @todo 是否返回 handle
-     */
     public function getHandle(): ?\Redis
     {
         return $this->handle;

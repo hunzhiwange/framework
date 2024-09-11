@@ -4,40 +4,94 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Leevel\Server\Pool\Pool;
 use Leevel\Support\Manager as Managers;
 use Swoole\Coroutine;
 
 /**
  * 缓存管理器.
- *
- * @method static void                  put($keys, $value = null, ?int $expire = null)                       批量插入.
- * @method static mixed                 remember(string $name, \Closure $dataGenerator, ?int $expire = null) 缓存存在读取否则重新设置.
- * @method static mixed                 get(string $name, $defaults = false)                                 获取缓存.
- * @method static void                  set(string $name, $data, ?int $expire = null)                        设置缓存.
- * @method static void                  delete(string $name)                                                 清除缓存.
- * @method static bool                  has(string $name)                                                    缓存是否存在.
- * @method static mixed                 increase(string $name, int $step = 1, ?int $expire = null)           自增.
- * @method static mixed                 decrease(string $name, int $step = 1, ?int $expire = null)           自减.
- * @method static int                   ttl(string $name)                                                    获取缓存剩余时间.
- * @method static mixed                 handle()                                                             返回缓存句柄.
- * @method static void                  close()                                                              关闭.
- * @method static void                  setKeyRegex(string $keyRegex)                                        设置缓存键值正则.
- * @method static \Leevel\Di\IContainer container()                                                          返回 IOC 容器.
- * @method static void                  disconnect(?string $connect = null)                                  删除连接.
- * @method static array                 getConnects()                                                        取回所有连接.
- * @method static string                getDefaultConnect()                                                  返回默认连接.
- * @method static void                  setDefaultConnect(string $name)                                      设置默认连接.
- * @method static mixed                 getContainerConfig(?string $name = null)                             获取容器配置值.
- * @method static void                  setContainerConfig(string $name, mixed $value)                       设置容器配置值.
- * @method static void                  extend(string $connect, \Closure $callback)                          扩展自定义连接.
- * @method static array                 normalizeConnectConfig(string $connect)                              整理连接配置.
  */
-class Manager extends Managers
+class Manager extends Managers implements ICache
 {
     /**
      * 缓存连接池.
      */
     protected array $pools = [];
+
+    public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
+    {
+        $this->__call(__FUNCTION__, [$keys, $value, $expire]);
+    }
+
+    public function remember(string $name, \Closure $dataGenerator, ?int $expire = null): mixed
+    {
+        return $this->__call(__FUNCTION__, [$name, $dataGenerator, $expire]);
+    }
+
+    public function get(string $name, mixed $defaults = false): mixed
+    {
+        return $this->__call(__FUNCTION__, [$name, $defaults]);
+    }
+
+    public function set(string $name, mixed $data, ?int $expire = null): void
+    {
+        $this->__call(__FUNCTION__, [$name, $data, $expire]);
+    }
+
+    public function delete(string $name): void
+    {
+        $this->__call(__FUNCTION__, [$name]);
+    }
+
+    public function has(string $name): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, [$name]);
+    }
+
+    public function increase(string $name, int $step = 1, ?int $expire = null): false|int
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, [$name, $step, $expire]);
+    }
+
+    public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, [$name, $step, $expire]);
+    }
+
+    public function ttl(string $name): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, [$name]);
+    }
+
+    public function close(): void
+    {
+        $this->__call(__FUNCTION__, []);
+    }
+
+    public function setKeyRegex(string $keyRegex): void
+    {
+        $this->__call(__FUNCTION__, [$keyRegex]);
+    }
+
+    public function getHandle(): ?object
+    {
+        // @phpstan-ignore-next-line
+        return $this->__call(__FUNCTION__, []);
+    }
+
+    public function release(): void
+    {
+        $this->__call(__FUNCTION__, []);
+    }
+
+    public function setPool(Pool $pool): void
+    {
+        $this->__call(__FUNCTION__, [$pool]);
+    }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ICache
     {

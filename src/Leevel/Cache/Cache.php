@@ -59,6 +59,11 @@ abstract class Cache implements ICache
         $this->keyRegex = $keyRegex;
     }
 
+    public function getHandle(): ?object
+    {
+        return null;
+    }
+
     /**
      * 编码数据.
      *

@@ -69,4 +69,11 @@ interface ICache extends IConnection
      * 设置缓存键值正则.
      */
     public function setKeyRegex(string $keyRegex): void;
+
+    /**
+     * 获取缓存服务句柄.
+     *
+     * @todo 是否返回 handle
+     */
+    public function getHandle(): ?object;
 }
