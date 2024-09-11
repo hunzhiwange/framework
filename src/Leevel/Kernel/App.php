@@ -352,25 +352,25 @@ class App implements IApp
         return $this->container;
     }
 
-    public function bind(array|string $name, mixed $service = null, bool $share = false): self
+    public function bind(array|string $name, mixed $service = null, bool $share = false): IContainer
     {
         // @phpstan-ignore-next-line
         return $this->callContainer(__FUNCTION__, [$name, $service, $share]);
     }
 
-    public function instance(array|string $name, mixed $service = null): self
+    public function instance(array|string $name, mixed $service = null): IContainer
     {
         // @phpstan-ignore-next-line
         return $this->callContainer(__FUNCTION__, [$name, $service]);
     }
 
-    public function singleton(array|string $name, mixed $service = null): self
+    public function singleton(array|string $name, mixed $service = null): IContainer
     {
         // @phpstan-ignore-next-line
         return $this->callContainer(__FUNCTION__, [$name, $service]);
     }
 
-    public function alias(array|string $alias, null|array|string $value = null): self
+    public function alias(array|string $alias, null|array|string $value = null): IContainer
     {
         // @phpstan-ignore-next-line
         return $this->callContainer(__FUNCTION__, [$alias, $value]);
