@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 use Leevel\Di\Container;
 use Leevel\I18n\I18n;
-use Leevel\Kernel\Proxy\App as ProxyApp;
-
-/**
- * 代理 app 别名.
- */
-class functions extends ProxyApp {}
 
 // @codeCoverageIgnoreStart
 if (!function_exists('__')) {
