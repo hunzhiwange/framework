@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Leevel\Server\Pool\Pool;
+use Leevel\Server\Pool\Pool as BasePool;
 use Leevel\Support\Manager as Managers;
 use Swoole\Coroutine;
 
@@ -88,7 +88,7 @@ class Manager extends Managers implements ICache
         $this->__call(__FUNCTION__, []);
     }
 
-    public function setPool(Pool $pool): void
+    public function setPool(BasePool $pool): void
     {
         $this->__call(__FUNCTION__, [$pool]);
     }
