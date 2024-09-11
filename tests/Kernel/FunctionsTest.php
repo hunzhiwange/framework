@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Kernel;
 
-use App as Apps;
 use Leevel\Di\Container;
 use Leevel\Http\Request;
 use Leevel\I18n\II18n;
 use Leevel\Kernel\App;
+use Leevel\Kernel\Root\App as Apps;
 use Leevel\Kernel\Utils\Api;
 use Tests\Kernel\Fixtures\DemoI18n;
 use Tests\TestCase;
