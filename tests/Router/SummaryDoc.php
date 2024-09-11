@@ -153,7 +153,7 @@ Restful 风格路由如果匹配成功，如果这个时候没有方法，系统
 我们可以通过 Request 中的 attributes 来访问参数中的 Restful 资源 ID。
 
 ``` php
-(int) \Leevel::make('request')->attributes->get(\Leevel\Router\IRouter::RESTFUL_ID);
+(int) \App::proxy()->make('request')->attributes->get(\Leevel\Router\IRouter::RESTFUL_ID);
 ```
 EOT,
     ])]

@@ -9,12 +9,7 @@ use Leevel\Kernel\Proxy\App as ProxyApp;
 /**
  * 代理 app 别名.
  */
-class App extends ProxyApp {}
-
-/**
- * 代理 app 别名.
- */
-class Leevel extends ProxyApp {}
+class functions extends ProxyApp {}
 
 // @codeCoverageIgnoreStart
 if (!function_exists('__')) {

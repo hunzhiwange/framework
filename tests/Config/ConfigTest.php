@@ -162,9 +162,7 @@ DEBUG_JAVASCRIPT = true
 获取环境配置
 
 ``` php
-\env('environment');
-\Leevel::env('environment');
-\App::env('environment');
+\App::proxy()->env('environment');
 ```
 EOT,
 ])]

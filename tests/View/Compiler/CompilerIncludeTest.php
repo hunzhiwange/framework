@@ -71,12 +71,12 @@ EOT,
         $parser = $this->createParser();
 
         $source = <<<'eot'
-            {{~ $headTpl = \Leevel::themesPath() . '/' . 'header.html' }}
+            {{~ $headTpl = \App::proxy()->themesPath() . '/' . 'header.html' }}
             {% include file="$headTpl" %}
             eot;
 
         $compiled = <<<'eot'
-            <?php $headTpl = \Leevel::themesPath() . '/' . 'header.html'; ?>
+            <?php $headTpl = \App::proxy()->themesPath() . '/' . 'header.html'; ?>
             <?php echo $this->display($headTpl); ?>
             eot;
 
