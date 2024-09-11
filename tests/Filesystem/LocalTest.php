@@ -17,7 +17,7 @@ final class LocalTest extends TestCase
         ]);
         $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
 
-        $local->write('hello.txt', 'foo');
+        $local->getFilesystem()->write('hello.txt', 'foo');
 
         $file = $path.'/hello.txt';
 

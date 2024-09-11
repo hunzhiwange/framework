@@ -19,7 +19,7 @@ final class SftpTest extends TestCase
         set_error_handler(static function ($type, $msg): void {});
         $sftp = new Sftp();
         $this->assertInstanceof(LeagueFilesystem::class, $sftp->getFilesystem());
-        $sftp->write('hello.txt', 'foo');
+        $sftp->getFilesystem()->write('hello.txt', 'foo');
         restore_error_handler();
     }
 }
