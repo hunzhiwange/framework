@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Leevel\Di\Container;
 use Leevel\I18n\I18n;
 
+require_once __DIR__.'/Root/App.php';
+
 // @codeCoverageIgnoreStart
 if (!function_exists('__')) {
     /** @codeCoverageIgnoreEnd */
