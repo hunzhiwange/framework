@@ -11,7 +11,7 @@ use Leevel\Server\Pool\IConnection;
 /**
  * 数据库接口.
  */
-interface IDatabase extends IConnection
+interface IDatabase extends IConnection, ISelect
 {
     /**
      * 断线重连尝试次数.

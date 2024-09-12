@@ -15,7 +15,7 @@ use Leevel\Support\Collection;
 /**
  * 数据库抽象层.
  */
-abstract class Database implements IDatabase, ISelect
+abstract class Database implements IDatabase
 {
     use Connection;
 
