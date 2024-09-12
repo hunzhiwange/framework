@@ -381,7 +381,7 @@ class Condition implements ICondition, IFlowControl
         return ['execute', $sql];
     }
 
-    public function forPage(int $page, int $perPage = 10): self
+    public function forPage(int $page, int $perPage = 10): ICondition
     {
         return $this->limit(($page - 1) * $perPage, $perPage);
     }
@@ -389,7 +389,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \InvalidArgumentException
      */
-    public function time(string $type = 'date'): self
+    public function time(string $type = 'date'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -404,7 +404,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function endTime(): self
+    public function endTime(): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -415,7 +415,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function reset(?string $config = null): self
+    public function reset(?string $config = null): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -430,7 +430,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function comment(string $comment): self
+    public function comment(string $comment): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -441,7 +441,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function prefix(string $prefix): self
+    public function prefix(string $prefix): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -452,7 +452,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function table(array|\Closure|ICondition|Select|string $table, array|string $cols = '*'): self
+    public function table(array|\Closure|ICondition|Select|string $table, array|string $cols = '*'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -465,7 +465,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function columns(array|string $cols = '*', ?string $table = null): self
+    public function columns(array|string $cols = '*', ?string $table = null): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -480,7 +480,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function setColumns(array|string $cols = '*', ?string $table = null): self
+    public function setColumns(array|string $cols = '*', ?string $table = null): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -496,7 +496,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function field(array|string $cols = '*', ?string $table = null): self
+    public function field(array|string $cols = '*', ?string $table = null): ICondition
     {
         return $this->setColumns($cols, $table);
     }
@@ -510,7 +510,7 @@ class Condition implements ICondition, IFlowControl
         return static::RAW_LEFT.'~~{#!'.static::$rawRandKey.$raw.static::$rawRandKey.'!#}~~'.static::RAW_RIGHT;
     }
 
-    public function middlewares(string ...$middlewares): self
+    public function middlewares(string ...$middlewares): ICondition
     {
         if (!$middlewares) {
             return $this;
@@ -530,7 +530,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function where(mixed ...$cond): self
+    public function where(mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -542,7 +542,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function orWhere(mixed ...$cond): self
+    public function orWhere(mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -554,7 +554,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function whereRaw(string $raw): self
+    public function whereRaw(string $raw): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -568,7 +568,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function orWhereRaw(string $raw): self
+    public function orWhereRaw(string $raw): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -582,7 +582,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function whereExists(mixed $exists): self
+    public function whereExists(mixed $exists): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -591,7 +591,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addConditions([':exists' => $exists]);
     }
 
-    public function whereNotExists(mixed $exists): self
+    public function whereNotExists(mixed $exists): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -600,67 +600,67 @@ class Condition implements ICondition, IFlowControl
         return $this->addConditions([':notexists' => $exists]);
     }
 
-    public function whereBetween(mixed ...$cond): self
+    public function whereBetween(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereBetween', $cond);
     }
 
-    public function whereNotBetween(mixed ...$cond): self
+    public function whereNotBetween(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereNotBetween', $cond);
     }
 
-    public function whereNull(mixed ...$cond): self
+    public function whereNull(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereNull', $cond);
     }
 
-    public function whereNotNull(mixed ...$cond): self
+    public function whereNotNull(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereNotNull', $cond);
     }
 
-    public function whereIn(mixed ...$cond): self
+    public function whereIn(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereIn', $cond);
     }
 
-    public function whereNotIn(mixed ...$cond): self
+    public function whereNotIn(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereNotIn', $cond);
     }
 
-    public function whereLike(mixed ...$cond): self
+    public function whereLike(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereLike', $cond);
     }
 
-    public function whereNotLike(mixed ...$cond): self
+    public function whereNotLike(mixed ...$cond): ICondition
     {
         return $this->callWhereSugar('whereNotLike', $cond);
     }
 
-    public function whereDate(mixed ...$cond): self
+    public function whereDate(mixed ...$cond): ICondition
     {
         return $this->callWhereTimeSugar('whereDate', $cond);
     }
 
-    public function whereDay(mixed ...$cond): self
+    public function whereDay(mixed ...$cond): ICondition
     {
         return $this->callWhereTimeSugar('whereDay', $cond);
     }
 
-    public function whereMonth(mixed ...$cond): self
+    public function whereMonth(mixed ...$cond): ICondition
     {
         return $this->callWhereTimeSugar('whereMonth', $cond);
     }
 
-    public function whereYear(mixed ...$cond): self
+    public function whereYear(mixed ...$cond): ICondition
     {
         return $this->callWhereTimeSugar('whereYear', $cond);
     }
 
-    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -690,7 +690,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \InvalidArgumentException
      */
-    public function forceIndex(array|string $indexes, string $type = 'FORCE'): self
+    public function forceIndex(array|string $indexes, string $type = 'FORCE'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -712,12 +712,12 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function ignoreIndex(array|string $indexes): self
+    public function ignoreIndex(array|string $indexes): ICondition
     {
         return $this->forceIndex($indexes, 'IGNORE');
     }
 
-    public function join(array|\Closure|ICondition|Select|string $table, array|string $cols, ...$cond): self
+    public function join(array|\Closure|ICondition|Select|string $table, array|string $cols, ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -726,7 +726,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    public function innerJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function innerJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -735,7 +735,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    public function leftJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function leftJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -744,7 +744,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addJoin('left join', $table, $cols, ...$cond);
     }
 
-    public function rightJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function rightJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -756,7 +756,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \RuntimeException
      */
-    public function fullJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function fullJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -770,7 +770,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addJoin('full join', $table, $cols, ...$cond); // @codeCoverageIgnore
     }
 
-    public function crossJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function crossJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -779,7 +779,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addJoin('cross join', $table, $cols, ...$cond);
     }
 
-    public function naturalJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
+    public function naturalJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -791,7 +791,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \InvalidArgumentException
      */
-    public function union(array|callable|ICondition|Select|string $selects, string $type = 'UNION'): self
+    public function union(array|callable|ICondition|Select|string $selects, string $type = 'UNION'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -812,7 +812,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function unionAll(array|callable|ICondition|Select|string $selects): self
+    public function unionAll(array|callable|ICondition|Select|string $selects): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -821,7 +821,7 @@ class Condition implements ICondition, IFlowControl
         return $this->union($selects, 'UNION ALL');
     }
 
-    public function groupBy(array|string $expression): self
+    public function groupBy(array|string $expression): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -844,7 +844,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function having(mixed ...$cond): self
+    public function having(mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -856,7 +856,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function orHaving(mixed ...$cond): self
+    public function orHaving(mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -868,7 +868,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function havingRaw(string $raw): self
+    public function havingRaw(string $raw): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -882,7 +882,7 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function orHavingRaw(string $raw): self
+    public function orHavingRaw(string $raw): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -896,67 +896,67 @@ class Condition implements ICondition, IFlowControl
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    public function havingBetween(mixed ...$cond): self
+    public function havingBetween(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingBetween', $cond);
     }
 
-    public function havingNotBetween(mixed ...$cond): self
+    public function havingNotBetween(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingNotBetween', $cond);
     }
 
-    public function havingNull(mixed ...$cond): self
+    public function havingNull(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingNull', $cond);
     }
 
-    public function havingNotNull(mixed ...$cond): self
+    public function havingNotNull(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingNotNull', $cond);
     }
 
-    public function havingIn(mixed ...$cond): self
+    public function havingIn(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingIn', $cond);
     }
 
-    public function havingNotIn(mixed ...$cond): self
+    public function havingNotIn(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingNotIn', $cond);
     }
 
-    public function havingLike(mixed ...$cond): self
+    public function havingLike(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingLike', $cond);
     }
 
-    public function havingNotLike(mixed ...$cond): self
+    public function havingNotLike(mixed ...$cond): ICondition
     {
         return $this->callHavingSugar('havingNotLike', $cond);
     }
 
-    public function havingDate(mixed ...$cond): self
+    public function havingDate(mixed ...$cond): ICondition
     {
         return $this->callHavingTimeSugar('havingDate', $cond);
     }
 
-    public function havingDay(mixed ...$cond): self
+    public function havingDay(mixed ...$cond): ICondition
     {
         return $this->callHavingTimeSugar('havingDay', $cond);
     }
 
-    public function havingMonth(mixed ...$cond): self
+    public function havingMonth(mixed ...$cond): ICondition
     {
         return $this->callHavingTimeSugar('havingMonth', $cond);
     }
 
-    public function havingYear(mixed ...$cond): self
+    public function havingYear(mixed ...$cond): ICondition
     {
         return $this->callHavingTimeSugar('havingYear', $cond);
     }
 
-    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1004,17 +1004,17 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function latest(string $field = 'create_at'): self
+    public function latest(string $field = 'create_at'): ICondition
     {
         return $this->orderBy($field, 'DESC');
     }
 
-    public function oldest(string $field = 'create_at'): self
+    public function oldest(string $field = 'create_at'): ICondition
     {
         return $this->orderBy($field, 'ASC');
     }
 
-    public function distinct(bool $flag = true): self
+    public function distinct(bool $flag = true): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1025,7 +1025,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function count(string $field = '*', string $alias = 'row_count'): self
+    public function count(string $field = '*', string $alias = 'row_count'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1034,7 +1034,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addAggregate('COUNT', $field, $alias);
     }
 
-    public function avg(string $field, string $alias = 'avg_value'): self
+    public function avg(string $field, string $alias = 'avg_value'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1043,7 +1043,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addAggregate('AVG', $field, $alias);
     }
 
-    public function max(string $field, string $alias = 'max_value'): self
+    public function max(string $field, string $alias = 'max_value'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1052,7 +1052,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addAggregate('MAX', $field, $alias);
     }
 
-    public function min(string $field, string $alias = 'min_value'): self
+    public function min(string $field, string $alias = 'min_value'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1061,7 +1061,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addAggregate('MIN', $field, $alias);
     }
 
-    public function sum(string $field, string $alias = 'sum_value'): self
+    public function sum(string $field, string $alias = 'sum_value'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1070,7 +1070,7 @@ class Condition implements ICondition, IFlowControl
         return $this->addAggregate('SUM', $field, $alias);
     }
 
-    public function one(): self
+    public function one(): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1083,7 +1083,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function all(): self
+    public function all(): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1100,7 +1100,7 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function top(int $count = 30): self
+    public function top(int $count = 30): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1109,7 +1109,7 @@ class Condition implements ICondition, IFlowControl
         return $this->limit(0, $count);
     }
 
-    public function limit(int $offset = 0, int $count = 0): self
+    public function limit(int $offset = 0, int $count = 0): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1129,7 +1129,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \RuntimeException
      */
-    public function forUpdate(bool $flag = true): self
+    public function forUpdate(bool $flag = true): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1147,7 +1147,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * @throws \RuntimeException
      */
-    public function lockShare(bool $flag = true): self
+    public function lockShare(bool $flag = true): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1162,14 +1162,14 @@ class Condition implements ICondition, IFlowControl
         return $this;
     }
 
-    public function resetBindParams(array $bindParams = []): self
+    public function resetBindParams(array $bindParams = []): ICondition
     {
         $this->bindParams = $bindParams;
 
         return $this;
     }
 
-    public function setBindParamsPrefix(string $bindParamsPrefix): self
+    public function setBindParamsPrefix(string $bindParamsPrefix): ICondition
     {
         $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
 
@@ -1352,7 +1352,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 调用 where 语法糖.
      */
-    protected function callWhereSugar(string $method, array $args): self
+    protected function callWhereSugar(string $method, array $args): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1374,7 +1374,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 调用 where 时间语法糖.
      */
-    protected function callWhereTimeSugar(string $method, array $args): self
+    protected function callWhereTimeSugar(string $method, array $args): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1390,7 +1390,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 调用 having 语法糖.
      */
-    protected function callHavingSugar(string $method, array $args): self
+    protected function callHavingSugar(string $method, array $args): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1412,7 +1412,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 调用 having 时间语法糖.
      */
-    protected function callHavingTimeSugar(string $method, array $args): self
+    protected function callHavingTimeSugar(string $method, array $args): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -2016,7 +2016,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 别名条件.
      */
-    protected function aliasCondition(string $conditionType, mixed $cond): self
+    protected function aliasCondition(string $conditionType, mixed $cond): ICondition
     {
         if (!\is_array($cond)) {
             $args = \func_get_args();
@@ -2035,7 +2035,7 @@ class Condition implements ICondition, IFlowControl
      *
      * @todo 代码复杂度过高，需要重构
      */
-    protected function aliaTypeAndLogic(string $type, string $logic, mixed $cond): self
+    protected function aliaTypeAndLogic(string $type, string $logic, mixed $cond): ICondition
     {
         $this->setTypeAndLogic($type, $logic);
 
@@ -2059,7 +2059,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 组装条件.
      */
-    protected function addConditions(array|string $fieldOrCond, mixed $operator = null, mixed $value = null): self
+    protected function addConditions(array|string $fieldOrCond, mixed $operator = null, mixed $value = null): ICondition
     {
         // 整理多个参数到二维数组
         if (!\is_array($fieldOrCond)) {
@@ -2285,7 +2285,7 @@ class Condition implements ICondition, IFlowControl
      *
      * @throws \InvalidArgumentException
      */
-    protected function addJoin(string $joinType, array|\Closure|ICondition|Select|string $names, array|string $cols, mixed $cond = null): self
+    protected function addJoin(string $joinType, array|\Closure|ICondition|Select|string $names, array|string $cols, mixed $cond = null): ICondition
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (\count($this->configs['union'])) {
@@ -2444,7 +2444,7 @@ class Condition implements ICondition, IFlowControl
     /**
      * 添加一个集合查询.
      */
-    protected function addAggregate(string $type, string $field, string $alias): self
+    protected function addAggregate(string $type, string $field, string $alias): ICondition
     {
         $this->configs['columns'] = [];
         $tableName = $this->getTable();

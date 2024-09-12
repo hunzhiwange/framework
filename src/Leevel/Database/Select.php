@@ -134,377 +134,377 @@ class Select implements ISelect, IFlowControl
         throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
     }
 
-    public function forPage(int $page, int $perPage = 10): self
+    public function forPage(int $page, int $perPage = 10): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $page, $perPage);
     }
 
-    public function time(string $type = 'date'): self
+    public function time(string $type = 'date'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $type);
     }
 
-    public function endTime(): self
+    public function endTime(): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function reset(?string $config = null): self
+    public function reset(?string $config = null): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $config);
     }
 
-    public function comment(string $comment): self
+    public function comment(string $comment): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $comment);
     }
 
-    public function prefix(string $prefix): self
+    public function prefix(string $prefix): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $prefix);
     }
 
-    public function table(array|\Closure|ICondition|self|string $table, array|string $cols = '*'): self
+    public function table(array|\Closure|ICondition|self|string $table, array|string $cols = '*'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols);
     }
 
-    public function columns(array|string $cols = '*', ?string $table = null): self
+    public function columns(array|string $cols = '*', ?string $table = null): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function setColumns(array|string $cols = '*', ?string $table = null): self
+    public function setColumns(array|string $cols = '*', ?string $table = null): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function field(array|string $cols = '*', ?string $table = null): self
+    public function field(array|string $cols = '*', ?string $table = null): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function middlewares(string ...$middlewares): self
+    public function middlewares(string ...$middlewares): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$middlewares);
     }
 
-    public function where(mixed ...$cond): self
+    public function where(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orWhere(mixed ...$cond): self
+    public function orWhere(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereRaw(string $raw): self
+    public function whereRaw(string $raw): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function orWhereRaw(string $raw): self
+    public function orWhereRaw(string $raw): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function whereExists(mixed $exists): self
+    public function whereExists(mixed $exists): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $exists);
     }
 
-    public function whereNotExists(mixed $exists): self
+    public function whereNotExists(mixed $exists): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $exists);
     }
 
-    public function whereBetween(mixed ...$cond): self
+    public function whereBetween(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotBetween(mixed ...$cond): self
+    public function whereNotBetween(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNull(mixed ...$cond): self
+    public function whereNull(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotNull(mixed ...$cond): self
+    public function whereNotNull(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereIn(mixed ...$cond): self
+    public function whereIn(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotIn(mixed ...$cond): self
+    public function whereNotIn(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereLike(mixed ...$cond): self
+    public function whereLike(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotLike(mixed ...$cond): self
+    public function whereNotLike(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereDate(mixed ...$cond): self
+    public function whereDate(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereDay(mixed ...$cond): self
+    public function whereDay(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereMonth(mixed ...$cond): self
+    public function whereMonth(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereYear(mixed ...$cond): self
+    public function whereYear(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $names, $value, $dataType);
     }
 
-    public function forceIndex(array|string $indexes, string $type = 'FORCE'): self
+    public function forceIndex(array|string $indexes, string $type = 'FORCE'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $indexes, $type);
     }
 
-    public function ignoreIndex(array|string $indexes): self
+    public function ignoreIndex(array|string $indexes): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $indexes);
     }
 
-    public function join(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function join(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function innerJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function innerJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function leftJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function leftJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function rightJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function rightJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function fullJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function fullJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function crossJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function crossJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function naturalJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
+    public function naturalJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function union(array|callable|ICondition|self|string $selects, string $type = 'UNION'): self
+    public function union(array|callable|ICondition|self|string $selects, string $type = 'UNION'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $selects, $type);
     }
 
-    public function unionAll(array|callable|ICondition|self|string $selects): self
+    public function unionAll(array|callable|ICondition|self|string $selects): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $selects);
     }
 
-    public function groupBy(array|string $expression): self
+    public function groupBy(array|string $expression): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $expression);
     }
 
-    public function having(mixed ...$cond): self
+    public function having(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orHaving(mixed ...$cond): self
+    public function orHaving(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingRaw(string $raw): self
+    public function havingRaw(string $raw): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function orHavingRaw(string $raw): self
+    public function orHavingRaw(string $raw): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function havingBetween(mixed ...$cond): self
+    public function havingBetween(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotBetween(mixed ...$cond): self
+    public function havingNotBetween(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNull(mixed ...$cond): self
+    public function havingNull(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotNull(mixed ...$cond): self
+    public function havingNotNull(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingIn(mixed ...$cond): self
+    public function havingIn(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotIn(mixed ...$cond): self
+    public function havingNotIn(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingLike(mixed ...$cond): self
+    public function havingLike(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotLike(mixed ...$cond): self
+    public function havingNotLike(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingDate(mixed ...$cond): self
+    public function havingDate(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingDay(mixed ...$cond): self
+    public function havingDay(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingMonth(mixed ...$cond): self
+    public function havingMonth(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingYear(mixed ...$cond): self
+    public function havingYear(mixed ...$cond): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $expression, $orderDefault);
     }
 
-    public function latest(string $field = 'create_at'): self
+    public function latest(string $field = 'create_at'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field);
     }
 
-    public function oldest(string $field = 'create_at'): self
+    public function oldest(string $field = 'create_at'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field);
     }
 
-    public function distinct(bool $flag = true): self
+    public function distinct(bool $flag = true): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function count(string $field = '*', string $alias = 'row_count'): self
+    public function count(string $field = '*', string $alias = 'row_count'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function avg(string $field, string $alias = 'avg_value'): self
+    public function avg(string $field, string $alias = 'avg_value'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function max(string $field, string $alias = 'max_value'): self
+    public function max(string $field, string $alias = 'max_value'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function min(string $field, string $alias = 'min_value'): self
+    public function min(string $field, string $alias = 'min_value'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function sum(string $field, string $alias = 'sum_value'): self
+    public function sum(string $field, string $alias = 'sum_value'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function one(): self
+    public function one(): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function all(): self
+    public function all(): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function top(int $count = 30): self
+    public function top(int $count = 30): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $count);
     }
 
-    public function limit(int $offset = 0, int $count = 0): self
+    public function limit(int $offset = 0, int $count = 0): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $offset, $count);
     }
 
-    public function forUpdate(bool $flag = true): self
+    public function forUpdate(bool $flag = true): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function lockShare(bool $flag = true): self
+    public function lockShare(bool $flag = true): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function resetBindParams(array $bindParams = []): self
+    public function resetBindParams(array $bindParams = []): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $bindParams);
     }
 
-    public function setBindParamsPrefix(string $bindParamsPrefix): self
+    public function setBindParamsPrefix(string $bindParamsPrefix): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $bindParamsPrefix);
     }
@@ -537,36 +537,24 @@ class Select implements ISelect, IFlowControl
         return $this->callConditionMethod(__FUNCTION__);
     }
 
-    /**
-     * 查询对象.
-     */
     public function databaseCondition(): Condition
     {
         return $this->condition;
     }
 
-    /**
-     * 返回数据库连接对象.
-     */
     public function databaseConnect(): IDatabase
     {
         return $this->connect;
     }
 
-    /**
-     * 设置是否查询主服务器.
-     */
-    public function master(bool $master = false): self
+    public function master(bool $master = false): ISelect
     {
         $this->queryParams['master'] = $master;
 
         return $this;
     }
 
-    /**
-     * 设置以某种包装返会结果.
-     */
-    public function asSome(?\Closure $asSome = null, array $args = []): self
+    public function asSome(?\Closure $asSome = null, array $args = []): ISelect
     {
         $this->queryParams['as_some'] = $asSome;
         $this->queryParams['as_args'] = $args;
@@ -574,10 +562,7 @@ class Select implements ISelect, IFlowControl
         return $this;
     }
 
-    /**
-     * 设置返会结果为数组.
-     */
-    public function asArray(?\Closure $asArray = null): self
+    public function asArray(?\Closure $asArray = null): ISelect
     {
         $this->queryParams['as_some'] = static fn (array $value): array => $asArray ? $asArray($value) : $value;
         $this->queryParams['as_args'] = [];
@@ -586,10 +571,7 @@ class Select implements ISelect, IFlowControl
         return $this;
     }
 
-    /**
-     * 设置是否以集合返回.
-     */
-    public function asCollection(bool $asCollection = true, array $valueTypes = []): self
+    public function asCollection(bool $asCollection = true, array $valueTypes = []): ISelect
     {
         $this->queryParams['as_collection'] = $asCollection;
         $this->queryParams['as_collection_value_types'] = $asCollection ? $valueTypes : [];
@@ -597,10 +579,7 @@ class Select implements ISelect, IFlowControl
         return $this;
     }
 
-    /**
-     * 原生 SQL 查询数据.
-     */
-    public function select(null|callable|self|string $data = null, array $bind = []): mixed
+    public function select(null|callable|ISelect|string $data = null, array $bind = []): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {
@@ -621,9 +600,6 @@ class Select implements ISelect, IFlowControl
         return $this->runNativeSql(...['query', $data, $bind]);
     }
 
-    /**
-     * 插入数据 insert (支持原生 SQL).
-     */
     public function insert(array|string $data, array $bind = [], array|bool $replace = false): int|string
     {
         // @phpstan-ignore-next-line
@@ -636,9 +612,6 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 批量插入数据 insertAll.
-     */
     public function insertAll(array $data, array $bind = [], array|bool $replace = false): int|string
     {
         // @phpstan-ignore-next-line
@@ -651,9 +624,6 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 更新数据 update (支持原生 SQL).
-     */
     public function update(array|string $data, array $bind = []): int
     {
         // @phpstan-ignore-next-line
@@ -666,33 +636,21 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 更新某个字段的值.
-     */
     public function updateColumn(string $column, mixed $value, array $bind = []): int
     {
         return $this->update([$column => $value], $bind);
     }
 
-    /**
-     * 字段递增.
-     */
     public function updateIncrease(string $column, int $step = 1, array $bind = []): int
     {
         return $this->updateColumn($column, Condition::raw('['.$column.']+'.$step), $bind);
     }
 
-    /**
-     * 字段减少.
-     */
     public function updateDecrease(string $column, int $step = 1, array $bind = []): int
     {
         return $this->updateColumn($column, Condition::raw('['.$column.']-'.$step), $bind);
     }
 
-    /**
-     * 删除数据 delete (支持原生 SQL).
-     */
     public function delete(?string $data = null, array $bind = []): int
     {
         // @phpstan-ignore-next-line
@@ -705,9 +663,6 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 清空表重置自增 ID.
-     */
     public function truncate(): array|int
     {
         // @phpstan-ignore-next-line
@@ -720,9 +675,6 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 返回一条记录.
-     */
     public function findOne(): mixed
     {
         $this->condition->one();
@@ -730,9 +682,6 @@ class Select implements ISelect, IFlowControl
         return $this->queryOne();
     }
 
-    /**
-     * 以数组返回所有记录.
-     */
     public function findArray(): array
     {
         $this->condition->all();
@@ -741,9 +690,6 @@ class Select implements ISelect, IFlowControl
         return $this->asCollection(false)->queryAll();
     }
 
-    /**
-     * 以数组返回所有记录（每一项也为数组）.
-     */
     public function findAsArray(): array
     {
         $this->condition->all();
@@ -756,9 +702,6 @@ class Select implements ISelect, IFlowControl
         ;
     }
 
-    /**
-     * 以集合返回所有记录.
-     */
     public function findCollection(): Collection|EntityCollection
     {
         $this->condition->all();
@@ -767,9 +710,6 @@ class Select implements ISelect, IFlowControl
         return $this->asCollection()->queryAll();
     }
 
-    /**
-     * 返回所有记录.
-     */
     public function findAll(): array|Collection|EntityCollection
     {
         $this->condition->all();
@@ -777,9 +717,6 @@ class Select implements ISelect, IFlowControl
         return $this->queryAll();
     }
 
-    /**
-     * 返回最后几条记录.
-     */
     public function find(?int $num = null): array|Collection|EntityCollection
     {
         if (null !== $num) {
@@ -789,9 +726,6 @@ class Select implements ISelect, IFlowControl
         return $this->queryAll();
     }
 
-    /**
-     * 返回一个字段的值.
-     */
     public function value(string $field): mixed
     {
         $this
@@ -808,9 +742,6 @@ class Select implements ISelect, IFlowControl
         return $result[$field] ?? null;
     }
 
-    /**
-     * 返回一列数据.
-     */
     public function list(mixed $fieldValue, ?string $fieldKey = null): array
     {
         // 纵然有弱水三千，我也只取一瓢
@@ -851,9 +782,6 @@ class Select implements ISelect, IFlowControl
         return $result;
     }
 
-    /**
-     * 数据分块处理.
-     */
     public function chunk(int $count, \Closure $chunk): void
     {
         $result = (array) $this
@@ -875,9 +803,6 @@ class Select implements ISelect, IFlowControl
         }
     }
 
-    /**
-     * 数据分块处理依次回调.
-     */
     public function each(int $count, \Closure $each): void
     {
         $this->chunk($count, static function ($result, $page) use ($each) {
@@ -889,49 +814,31 @@ class Select implements ISelect, IFlowControl
         });
     }
 
-    /**
-     * 总记录数.
-     */
     public function findCount(string $field = '*', string $alias = 'row_count'): int
     {
         return (int) $this->findAggregateResult('count', $field, $alias);
     }
 
-    /**
-     * 平均数.
-     */
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
     {
         return $this->findAggregateResult('avg', $field, $alias);
     }
 
-    /**
-     * 最大值.
-     */
     public function findMax(string $field, string $alias = 'max_value'): mixed
     {
         return $this->findAggregateResult('max', $field, $alias);
     }
 
-    /**
-     * 最小值.
-     */
     public function findMin(string $field, string $alias = 'min_value'): mixed
     {
         return $this->findAggregateResult('min', $field, $alias);
     }
 
-    /**
-     * 合计.
-     */
     public function findSum(string $field, string $alias = 'sum_value'): mixed
     {
         return $this->findAggregateResult('sum', $field, $alias);
     }
 
-    /**
-     * 分页查询.
-     */
     public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
     {
         $page = new Page($currentPage, $perPage, $count, $config);
@@ -944,33 +851,38 @@ class Select implements ISelect, IFlowControl
         return $page;
     }
 
-    /**
-     * 创建一个无限数据的分页查询.
-     */
     public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
     {
         return $this->page($currentPage, $perPage, Page::MACRO, $config);
     }
 
-    /**
-     * 创建一个只有上下页的分页查询.
-     */
     public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
     {
         return $this->page($currentPage, $perPage, null, $config);
     }
 
-    /**
-     * 设置查询缓存.
-     */
-    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
+    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): ISelect
     {
         $this->queryParams['cache'] = [$name, $expire, $cache];
 
         return $this;
     }
 
-    protected function callConditionMethodChain(string $method, mixed ...$args): self
+    public function queryOne(): mixed
+    {
+        $data = $this->queryBaseData();
+        if (null === $this->queryParams['as_some']) {
+            $data = $this->queryDefaultOne($data);
+        } else {
+            $data = $this->querySomeOne($data);
+        }
+
+        $this->condition->resetBindParams();
+
+        return $data;
+    }
+
+    protected function callConditionMethodChain(string $method, mixed ...$args): ISelect
     {
         $this->condition->{$method}(...$args);
 
@@ -988,23 +900,6 @@ class Select implements ISelect, IFlowControl
     protected function initConfig(): void
     {
         $this->queryParams = static::$queryParamsDefault;
-    }
-
-    /**
-     * 查询单条记录获得结果.
-     */
-    protected function queryOne(): mixed
-    {
-        $data = $this->queryBaseData();
-        if (null === $this->queryParams['as_some']) {
-            $data = $this->queryDefaultOne($data);
-        } else {
-            $data = $this->querySomeOne($data);
-        }
-
-        $this->condition->resetBindParams();
-
-        return $data;
     }
 
     /**
