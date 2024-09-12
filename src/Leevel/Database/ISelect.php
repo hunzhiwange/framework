@@ -188,4 +188,9 @@ interface ISelect extends ICondition, IFlowControl
      * 查询单条记录获得结果.
      */
     public function queryOne(): mixed;
+
+    /**
+     * 查询多条记录获得结果.
+     */
+    public function queryAll(): array|Collection|EntityCollection;
 }

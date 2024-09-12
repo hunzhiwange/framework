@@ -882,6 +882,20 @@ class Select implements ISelect, IFlowControl
         return $data;
     }
 
+    public function queryAll(): array|Collection|EntityCollection
+    {
+        $data = $this->queryBaseData();
+        if (null === $this->queryParams['as_some']) {
+            $data = $this->queryDefaultAll($data);
+        } else {
+            $data = $this->querySomeAll($data);
+        }
+
+        $this->condition->resetBindParams();
+
+        return $data;
+    }
+
     protected function callConditionMethodChain(string $method, mixed ...$args): ISelect
     {
         $this->condition->{$method}(...$args);
@@ -900,23 +914,6 @@ class Select implements ISelect, IFlowControl
     protected function initConfig(): void
     {
         $this->queryParams = static::$queryParamsDefault;
-    }
-
-    /**
-     * 查询多条记录获得结果.
-     */
-    protected function queryAll(): array|Collection|EntityCollection
-    {
-        $data = $this->queryBaseData();
-        if (null === $this->queryParams['as_some']) {
-            $data = $this->queryDefaultAll($data);
-        } else {
-            $data = $this->querySomeAll($data);
-        }
-
-        $this->condition->resetBindParams();
-
-        return $data;
     }
 
     protected function bindParamsTypeForHuman(array &$bindParams): void
