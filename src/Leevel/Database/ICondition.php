@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
+use Leevel\Support\IFlowControl;
+
 /**
  * 条件构造器接口.
  */
-interface ICondition
+interface ICondition extends IFlowControl
 {
     /**
      * 根据分页设置条件.

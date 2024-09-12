@@ -13,127 +13,43 @@ use Leevel\Support\Arr\Normalize;
 /**
  * 数据库抽象层.
  *
- * @method static \Leevel\Database\Condition                                             databaseCondition()                                                                                                        查询对象.
- * @method static \Leevel\Database\IDatabase                                             databaseConnect()                                                                                                          返回数据库连接对象.
- * @method static \Leevel\Database\Select                                                master(bool $master = false)                                                                                               设置是否查询主服务器.
- * @method static \Leevel\Database\Select                                                asSome(?\Closure $asSome = null, array $args = [])                                                                         设置以某种包装返会结果.
- * @method static \Leevel\Database\Select                                                asArray(?\Closure $asArray = null)                                                                                         设置返会结果为数组.
- * @method static \Leevel\Database\Select                                                asCollection(bool $asCollection = true, array $valueTypes = [])                                                            设置是否以集合返回.
- * @method static mixed                                                                  select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = [])                                        原生 SQL 查询数据.
- * @method static int|string                                                             insert(array|string $data, array $bind = [], array|bool $replace = false)                                                  插入数据 insert (支持原生 SQL).
- * @method static int|string                                                             insertAll(array $data, array $bind = [], array|bool $replace = false)                                                      批量插入数据 insertAll.
- * @method static int                                                                    update(array|string $data, array $bind = [])                                                                               更新数据 update (支持原生 SQL).
- * @method static int                                                                    updateColumn(string $column, mixed $value, array $bind = [])                                                               更新某个字段的值
- * @method static int                                                                    updateIncrease(string $column, int $step = 1, array $bind = [])                                                            字段递增.
- * @method static int                                                                    updateDecrease(string $column, int $step = 1, array $bind = [])                                                            字段减少.
- * @method static int                                                                    delete(?string $data = null, array $bind = [])                                                                             删除数据 delete (支持原生 SQL).
- * @method static array|int                                                              truncate()                                                                                                                 清空表重置自增 ID.
- * @method static mixed                                                                  findOne()                                                                                                                  返回一条记录.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array findAll()                                                                                                                  返回所有记录.
- * @method static array                                                                  findArray()                                                                                                                以数组返回所有记录.
- * @method static array                                                                  findAsArray()                                                                                                              以数组返回所有记录（每一项也为数组）.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection       findCollection()                                                                                                           以集合返回所有记录.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array find(?int $num = null)                                                                                                     返回最后几条记录.
- * @method static mixed                                                                  value(string $field)                                                                                                       返回一个字段的值
- * @method static array                                                                  list(mixed $fieldValue, ?string $fieldKey = null)                                                                          返回一列数据.
- * @method static void                                                                   chunk(int $count, \Closure $chunk)                                                                                         数据分块处理.
- * @method static void                                                                   each(int $count, \Closure $each)                                                                                           数据分块处理依次回调.
- * @method static int                                                                    findCount(string $field = '*', string $alias = 'row_count')                                                                总记录数.
- * @method static mixed                                                                  findAvg(string $field, string $alias = 'avg_value')                                                                        平均数.
- * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                                                        最大值.
- * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                                                        最小值.
- * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                                                        合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [])                                          分页查询.
- * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                                                         创建一个无限数据的分页查询.
- * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])                                                      创建一个只有上下页的分页查询.
- * @method static int                                                                    pageCount(string $cols = '*')                                                                                              取得分页查询记录数量.
- * @method static string                                                                 makeSql(bool $withLogicGroup = false)                                                                                      获得查询字符串.
- * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)                                              设置查询缓存.
- * @method static \Leevel\Database\Select                                                forPage(int $page, int $perPage = 10)                                                                                      根据分页设置条件.
- * @method static \Leevel\Database\Select                                                time(string $type = 'date')                                                                                                时间控制语句开始.
- * @method static \Leevel\Database\Select                                                endTime()                                                                                                                  时间控制语句结束.
- * @method static \Leevel\Database\Select                                                reset(?string $config = null)                                                                                              重置查询条件.
- * @method static \Leevel\Database\Select                                                comment(string $comment)                                                                                                   查询注释.
- * @method static \Leevel\Database\Select                                                prefix(string $prefix)                                                                                                     prefix 查询.
- * @method static \Leevel\Database\Select                                                table(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols = '*')           添加一个要查询的表及其要查询的字段.
- * @method static string                                                                 getAlias()                                                                                                                 获取表别名.
- * @method static \Leevel\Database\Select                                                columns(array|string $cols = '*', ?string $table = null)                                                                   添加字段.
- * @method static \Leevel\Database\Select                                                setColumns(array|string $cols = '*', ?string $table = null)                                                                设置字段.
- * @method static \Leevel\Database\Select                                                field(array|string $cols = '*', ?string $table = null)                                                                     设置字段别名方法.
- * @method static string                                                                 raw(string $raw)                                                                                                           原生查询.
- * @method static \Leevel\Database\Condition                                             middlewares(string ...$middlewares)                                                                                        查询中间件.
- * @method static array                                                                  registerMiddlewares(array $middlewares, bool $force = false)                                                               注册查询中间件.
- * @method static \Leevel\Database\Select                                                where(...$cond)                                                                                                            where 查询条件.
- * @method static \Leevel\Database\Select                                                orWhere(...$cond)                                                                                                          orWhere 查询条件.
- * @method static \Leevel\Database\Select                                                whereRaw(string $raw)                                                                                                      Where 原生查询.
- * @method static \Leevel\Database\Select                                                orWhereRaw(string $raw)                                                                                                    Where 原生 OR 查询.
- * @method static \Leevel\Database\Select                                                whereExists($exists)                                                                                                       exists 方法支持
- * @method static \Leevel\Database\Select                                                whereNotExists($exists)                                                                                                    not exists 方法支持
- * @method static \Leevel\Database\Select                                                whereBetween(...$cond)                                                                                                     whereBetween 查询条件.
- * @method static \Leevel\Database\Select                                                whereNotBetween(...$cond)                                                                                                  whereNotBetween 查询条件.
- * @method static \Leevel\Database\Select                                                whereNull(...$cond)                                                                                                        whereNull 查询条件.
- * @method static \Leevel\Database\Select                                                whereNotNull(...$cond)                                                                                                     whereNotNull 查询条件.
- * @method static \Leevel\Database\Select                                                whereIn(...$cond)                                                                                                          whereIn 查询条件.
- * @method static \Leevel\Database\Select                                                whereNotIn(...$cond)                                                                                                       whereNotIn 查询条件.
- * @method static \Leevel\Database\Select                                                whereLike(...$cond)                                                                                                        whereLike 查询条件.
- * @method static \Leevel\Database\Select                                                whereNotLike(...$cond)                                                                                                     whereNotLike 查询条件.
- * @method static \Leevel\Database\Select                                                whereDate(...$cond)                                                                                                        whereDate 查询条件.
- * @method static \Leevel\Database\Select                                                whereDay(...$cond)                                                                                                         whereDay 查询条件.
- * @method static \Leevel\Database\Select                                                whereMonth(...$cond)                                                                                                       whereMonth 查询条件.
- * @method static \Leevel\Database\Select                                                whereYear(...$cond)                                                                                                        whereYear 查询条件.
- * @method static \Leevel\Database\Select                                                bind(mixed $names, mixed $value = null, ?int $dataType = null)                                                             参数绑定支持.
- * @method static \Leevel\Database\Select                                                forceIndex(array|string $indexes, string $type = 'FORCE')                                                                  index 强制索引（或者忽略索引）.
- * @method static \Leevel\Database\Select                                                ignoreIndex(array|string $indexes)                                                                                         index 忽略索引.
- * @method static \Leevel\Database\Select                                                join(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)        join 查询.
- * @method static \Leevel\Database\Select                                                innerJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)   innerJoin 查询.
- * @method static \Leevel\Database\Select                                                leftJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)    leftJoin 查询.
- * @method static \Leevel\Database\Select                                                rightJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)   rightJoin 查询.
- * @method static \Leevel\Database\Select                                                fullJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)    fullJoin 查询.
- * @method static \Leevel\Database\Select                                                crossJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond)   crossJoin 查询.
- * @method static \Leevel\Database\Select                                                naturalJoin(array|\Closure|\Leevel\Database\Condition|\Leevel\Database\Select|string $table, array|string $cols, ...$cond) naturalJoin 查询.
- * @method static \Leevel\Database\Select                                                union(array|callable|\Leevel\Database\Condition|\Leevel\Database\Select|string $selects, string $type = 'UNION')           添加一个 UNION 查询.
- * @method static \Leevel\Database\Select                                                unionAll(array|callable|\Leevel\Database\Condition|\Leevel\Database\Select|string $selects)                                添加一个 UNION ALL 查询.
- * @method static \Leevel\Database\Select                                                groupBy(array|string $expression)                                                                                          指定 GROUP BY 子句.
- * @method static \Leevel\Database\Select                                                having(...$cond)                                                                                                           添加一个 HAVING 条件.
- * @method static \Leevel\Database\Select                                                orHaving(...$cond)                                                                                                         orHaving 查询条件.
- * @method static \Leevel\Database\Select                                                havingRaw(string $raw)                                                                                                     having 原生查询.
- * @method static \Leevel\Database\Select                                                orHavingRaw(string $raw)                                                                                                   having 原生 OR 查询.
- * @method static \Leevel\Database\Select                                                havingBetween(...$cond)                                                                                                    havingBetween 查询条件.
- * @method static \Leevel\Database\Select                                                havingNotBetween(...$cond)                                                                                                 havingNotBetween 查询条件.
- * @method static \Leevel\Database\Select                                                havingNull(...$cond)                                                                                                       havingNull 查询条件.
- * @method static \Leevel\Database\Select                                                havingNotNull(...$cond)                                                                                                    havingNotNull 查询条件.
- * @method static \Leevel\Database\Select                                                havingIn(...$cond)                                                                                                         havingIn 查询条件.
- * @method static \Leevel\Database\Select                                                havingNotIn(...$cond)                                                                                                      havingNotIn 查询条件.
- * @method static \Leevel\Database\Select                                                havingLike(...$cond)                                                                                                       havingLike 查询条件.
- * @method static \Leevel\Database\Select                                                havingNotLike(...$cond)                                                                                                    havingNotLike 查询条件.
- * @method static \Leevel\Database\Select                                                havingDate(...$cond)                                                                                                       havingDate 查询条件.
- * @method static \Leevel\Database\Select                                                havingDay(...$cond)                                                                                                        havingDay 查询条件.
- * @method static \Leevel\Database\Select                                                havingMonth(...$cond)                                                                                                      havingMonth 查询条件.
- * @method static \Leevel\Database\Select                                                havingYear(...$cond)                                                                                                       havingYear 查询条件.
- * @method static \Leevel\Database\Select                                                orderBy(array|string $expression, string $orderDefault = 'ASC')                                                            添加排序.
- * @method static \Leevel\Database\Select                                                latest(string $field = 'create_at')                                                                                        最近排序数据.
- * @method static \Leevel\Database\Select                                                oldest(string $field = 'create_at')                                                                                        最早排序数据.
- * @method static \Leevel\Database\Select                                                distinct(bool $flag = true)                                                                                                创建一个 SELECT DISTINCT 查询.
- * @method static \Leevel\Database\Select                                                count(string $field = '*', string $alias = 'row_count')                                                                    总记录数.
- * @method static \Leevel\Database\Select                                                avg(string $field, string $alias = 'avg_value')                                                                            平均数.
- * @method static \Leevel\Database\Select                                                max(string $field, string $alias = 'max_value')                                                                            最大值.
- * @method static \Leevel\Database\Select                                                min(string $field, string $alias = 'min_value')                                                                            最小值.
- * @method static \Leevel\Database\Select                                                sum(string $field, string $alias = 'sum_value')                                                                            合计
- * @method static \Leevel\Database\Select                                                one()                                                                                                                      指示仅查询第一个符合条件的记录.
- * @method static \Leevel\Database\Select                                                all()                                                                                                                      指示查询所有符合条件的记录.
- * @method static \Leevel\Database\Select                                                top(int $count = 30)                                                                                                       查询几条记录.
- * @method static \Leevel\Database\Select                                                limit(int $offset = 0, int $count = 0)                                                                                     limit 限制条数.
- * @method static \Leevel\Database\Select                                                forUpdate(bool $flag = true)                                                                                               排它锁 FOR UPDATE 查询.
- * @method static \Leevel\Database\Select                                                lockShare(bool $flag = true)                                                                                               共享锁 LOCK SHARE 查询.
- * @method static array                                                                  getBindParams()                                                                                                            返回参数绑定.                                                                                                        返回参数绑定.
- * @method static void                                                                   resetBindParams(array $bindParams = [])                                                                                    重置参数绑定.
- * @method static void                                                                   setBindParamsPrefix(string $bindParamsPrefix)                                                                              设置参数绑定前缀.
- * @method static \Leevel\Database\Select                                                if(mixed $value = false)                                                                                                   条件语句 if.
- * @method static \Leevel\Database\Select                                                elif(mixed $value = false)                                                                                                 条件语句 elif.
- * @method static \Leevel\Database\Select                                                else()                                                                                                                     条件语句 else.
- * @method static \Leevel\Database\Select                                                fi()                                                                                                                       条件语句 fi.
+ * @method static \Leevel\Database\Condition                                             databaseCondition()                                                                 查询对象.
+ * @method static \Leevel\Database\IDatabase                                             databaseConnect()                                                                   返回数据库连接对象.
+ * @method static \Leevel\Database\Select                                                master(bool $master = false)                                                        设置是否查询主服务器.
+ * @method static \Leevel\Database\Select                                                asSome(?\Closure $asSome = null, array $args = [])                                  设置以某种包装返会结果.
+ * @method static \Leevel\Database\Select                                                asArray(?\Closure $asArray = null)                                                  设置返会结果为数组.
+ * @method static \Leevel\Database\Select                                                asCollection(bool $asCollection = true, array $valueTypes = [])                     设置是否以集合返回.
+ * @method static mixed                                                                  select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = []) 原生 SQL 查询数据.
+ * @method static int|string                                                             insert(array|string $data, array $bind = [], array|bool $replace = false)           插入数据 insert (支持原生 SQL).
+ * @method static int|string                                                             insertAll(array $data, array $bind = [], array|bool $replace = false)               批量插入数据 insertAll.
+ * @method static int                                                                    update(array|string $data, array $bind = [])                                        更新数据 update (支持原生 SQL).
+ * @method static int                                                                    updateColumn(string $column, mixed $value, array $bind = [])                        更新某个字段的值
+ * @method static int                                                                    updateIncrease(string $column, int $step = 1, array $bind = [])                     字段递增.
+ * @method static int                                                                    updateDecrease(string $column, int $step = 1, array $bind = [])                     字段减少.
+ * @method static int                                                                    delete(?string $data = null, array $bind = [])                                      删除数据 delete (支持原生 SQL).
+ * @method static array|int                                                              truncate()                                                                          清空表重置自增 ID.
+ * @method static mixed                                                                  findOne()                                                                           返回一条记录.
+ * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array findAll()                                                                           返回所有记录.
+ * @method static array                                                                  findArray()                                                                         以数组返回所有记录.
+ * @method static array                                                                  findAsArray()                                                                       以数组返回所有记录（每一项也为数组）.
+ * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection       findCollection()                                                                    以集合返回所有记录.
+ * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array find(?int $num = null)                                                              返回最后几条记录.
+ * @method static mixed                                                                  value(string $field)                                                                返回一个字段的值
+ * @method static array                                                                  list(mixed $fieldValue, ?string $fieldKey = null)                                   返回一列数据.
+ * @method static void                                                                   chunk(int $count, \Closure $chunk)                                                  数据分块处理.
+ * @method static void                                                                   each(int $count, \Closure $each)                                                    数据分块处理依次回调.
+ * @method static int                                                                    findCount(string $field = '*', string $alias = 'row_count')                         总记录数.
+ * @method static mixed                                                                  findAvg(string $field, string $alias = 'avg_value')                                 平均数.
+ * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                 最大值.
+ * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                 最小值.
+ * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                 合计.
+ * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [])   分页查询.
+ * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                  创建一个无限数据的分页查询.
+ * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])               创建一个只有上下页的分页查询.
+ * @method static int                                                                    pageCount(string $cols = '*')                                                       取得分页查询记录数量.                                                                                    获得查询字符串.
+ * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)       设置查询缓存.                                                                                                                   条件语句 fi.
  */
-abstract class Database implements IDatabase
+abstract class Database implements IDatabase, ISelect
 {
     use Connection;
 
@@ -258,12 +174,427 @@ abstract class Database implements IDatabase
         $this->close();
     }
 
-    /**
-     * 实现魔术方法 __call.
-     */
-    public function __call(string $method, array $args): mixed
+    public function forPage(int $page, int $perPage = 10): Select
     {
-        return $this->databaseSelect()->{$method}(...$args);
+        return $this->callSelectMethodChain(__FUNCTION__, $page, $perPage);
+    }
+
+    public function time(string $type = 'date'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $type);
+    }
+
+    public function endTime(): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__);
+    }
+
+    public function reset(?string $config = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $config);
+    }
+
+    public function comment(string $comment): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $comment);
+    }
+
+    public function prefix(string $prefix): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $prefix);
+    }
+
+    public function table(array|\Closure|ICondition|self|string $table, array|string $cols = '*'): Select
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols);
+    }
+
+    public function columns(array|string $cols = '*', ?string $table = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $cols, $table);
+    }
+
+    public function setColumns(array|string $cols = '*', ?string $table = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $cols, $table);
+    }
+
+    public function field(array|string $cols = '*', ?string $table = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $cols, $table);
+    }
+
+    public function middlewares(string ...$middlewares): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$middlewares);
+    }
+
+    public function where(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function orWhere(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereRaw(string $raw): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $raw);
+    }
+
+    public function orWhereRaw(string $raw): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $raw);
+    }
+
+    public function whereExists(mixed $exists): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $exists);
+    }
+
+    public function whereNotExists(mixed $exists): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $exists);
+    }
+
+    public function whereBetween(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereNotBetween(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereNull(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereNotNull(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereIn(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereNotIn(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereLike(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereNotLike(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereDate(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereDay(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereMonth(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function whereYear(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $names, $value, $dataType);
+    }
+
+    public function forceIndex(array|string $indexes, string $type = 'FORCE'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $indexes, $type);
+    }
+
+    public function ignoreIndex(array|string $indexes): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $indexes);
+    }
+
+    public function join(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function innerJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function leftJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function rightJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function fullJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function crossJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function naturalJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $table, $cols, ...$cond);
+    }
+
+    public function union(array|callable|ICondition|self|string $selects, string $type = 'UNION'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $selects, $type);
+    }
+
+    public function unionAll(array|callable|ICondition|self|string $selects): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $selects);
+    }
+
+    public function groupBy(array|string $expression): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $expression);
+    }
+
+    public function having(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function orHaving(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingRaw(string $raw): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $raw);
+    }
+
+    public function orHavingRaw(string $raw): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $raw);
+    }
+
+    public function havingBetween(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingNotBetween(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingNull(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingNotNull(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingIn(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingNotIn(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingLike(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingNotLike(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingDate(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingDay(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingMonth(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function havingYear(mixed ...$cond): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, ...$cond);
+    }
+
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $expression, $orderDefault);
+    }
+
+    public function latest(string $field = 'create_at'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field);
+    }
+
+    public function oldest(string $field = 'create_at'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field);
+    }
+
+    public function distinct(bool $flag = true): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $flag);
+    }
+
+    public function count(string $field = '*', string $alias = 'row_count'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field, $alias);
+    }
+
+    public function avg(string $field, string $alias = 'avg_value'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field, $alias);
+    }
+
+    public function max(string $field, string $alias = 'max_value'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field, $alias);
+    }
+
+    public function min(string $field, string $alias = 'min_value'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field, $alias);
+    }
+
+    public function sum(string $field, string $alias = 'sum_value'): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $field, $alias);
+    }
+
+    public function one(): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__);
+    }
+
+    public function all(): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__);
+    }
+
+    public function top(int $count = 30): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $count);
+    }
+
+    public function limit(int $offset = 0, int $count = 0): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $offset, $count);
+    }
+
+    public function forUpdate(bool $flag = true): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $flag);
+    }
+
+    public function lockShare(bool $flag = true): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $flag);
+    }
+
+    public function resetBindParams(array $bindParams = []): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $bindParams);
+    }
+
+    public function setBindParamsPrefix(string $bindParamsPrefix): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $bindParamsPrefix);
+    }
+
+    public function if(mixed $condition): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $condition);
+    }
+
+    public function elif(mixed $condition): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $condition);
+    }
+
+    public function else(): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__);
+    }
+
+    public function fi(): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__);
+    }
+
+    public function getAlias(): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public static function raw(string $raw): string
+    {
+        return Select::raw($raw);
+    }
+
+    public static function registerMiddlewares(array $middlewares, bool $force = false): array
+    {
+        return Select::registerMiddlewares($middlewares, $force);
+    }
+
+    public function makeSql(bool $withLogicGroup = false): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $withLogicGroup);
+    }
+
+    public function getBindParams(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
     }
 
     public function getContainer(): IContainer
@@ -600,6 +931,16 @@ abstract class Database implements IDatabase
         if (!empty($config['separate']) && !empty($config['slave'])) {
             $this->slavePdo = $this->createSlaveConnection($config);
         }
+    }
+
+    protected function callSelectMethodChain(string $method, mixed ...$args): Select
+    {
+        return $this->databaseSelect()->{$method}(...$args);
+    }
+
+    protected function callSelectMethod(string $method, mixed ...$args): mixed
+    {
+        return $this->databaseSelect()->{$method}(...$args);
     }
 
     protected function getMasterPdo(): \PDO

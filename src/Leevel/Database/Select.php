@@ -15,7 +15,7 @@ use Leevel\Support\Str\UnCamelize;
 /**
  * 数据库查询器.
  */
-class Select implements ICondition, IFlowControl
+class Select implements ISelect, IFlowControl
 {
     use FlowControl;
 
