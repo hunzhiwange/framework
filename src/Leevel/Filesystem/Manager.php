@@ -15,7 +15,7 @@ class Manager extends Managers implements IFilesystem
     public function getFilesystem(): LeagueFilesystem
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IFilesystem

@@ -43,14 +43,6 @@ abstract class Manager
     }
 
     /**
-     * 实现魔术方法 __call.
-     */
-    public function __call(string $method, array $args): mixed
-    {
-        return $this->connect()->{$method}(...$args);
-    }
-
-    /**
      * 返回 IOC 容器.
      */
     public function container(): IContainer
@@ -191,6 +183,14 @@ abstract class Manager
         }
 
         return $configs;
+    }
+
+    /**
+     * 调用连接对象方法.
+     */
+    protected function callConnectMethod(string $method, mixed ...$args): mixed
+    {
+        return $this->connect()->{$method}(...$args);
     }
 
     /**

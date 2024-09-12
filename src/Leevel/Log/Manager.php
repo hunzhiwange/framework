@@ -15,52 +15,52 @@ class Manager extends Managers implements ILog
     public function getMonolog(): Logger
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function emergency(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function alert(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function critical(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function error(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function warning(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function notice(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function info(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function debug(string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $message, $context);
     }
 
     public function log($level, string|\Stringable $message, array $context = []): void
     {
-        $this->__call(__FUNCTION__, [$level, $message, $context]);
+        $this->callConnectMethod(__FUNCTION__, $level, $message, $context);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ILog

@@ -18,25 +18,25 @@ class Manager extends Managers implements IServer
     public function start(): void
     {
         // @phpstan-ignore-next-line
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function getServer(): SwooleHttpServer|SwooleServer
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function getConfig(): array
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function getProcessStatisticTable(): Table
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IServer

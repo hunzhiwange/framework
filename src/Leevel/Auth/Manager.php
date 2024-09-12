@@ -14,35 +14,35 @@ class Manager extends Managers implements IAuth
     public function isLogin(): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function getLogin(): array
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function login(array $data, ?int $loginTime = null): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$data, $loginTime]);
+        return $this->callConnectMethod(__FUNCTION__, $data, $loginTime);
     }
 
     public function logout(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setTokenName(string $tokenName): void
     {
-        $this->__call(__FUNCTION__, [$tokenName]);
+        $this->callConnectMethod(__FUNCTION__, $tokenName);
     }
 
     public function getTokenName(): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IAuth

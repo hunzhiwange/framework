@@ -13,185 +13,185 @@ class Manager extends Managers implements ISession
 {
     public function start(?string $sessionId = null): void
     {
-        $this->__call(__FUNCTION__, [$sessionId]);
+        $this->callConnectMethod(__FUNCTION__, $sessionId);
     }
 
     public function save(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setExpire(?int $expire = null): void
     {
-        $this->__call(__FUNCTION__, [$expire]);
+        $this->callConnectMethod(__FUNCTION__, $expire);
     }
 
     public function all(): array
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function set(string $name, mixed $value): void
     {
-        $this->__call(__FUNCTION__, [$name, $value]);
+        $this->callConnectMethod(__FUNCTION__, $name, $value);
     }
 
     public function put(array|string $keys, mixed $value = null): void
     {
-        $this->__call(__FUNCTION__, [$keys, $value]);
+        $this->callConnectMethod(__FUNCTION__, $keys, $value);
     }
 
     public function get(string $name, mixed $defaults = null): mixed
     {
-        return $this->__call(__FUNCTION__, [$name, $defaults]);
+        return $this->callConnectMethod(__FUNCTION__, $name, $defaults);
     }
 
     public function delete(string $name): void
     {
-        $this->__call(__FUNCTION__, [$name]);
+        $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function has(string $name): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$name]);
+        return $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function clear(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function flash(string $key, mixed $value): void
     {
-        $this->__call(__FUNCTION__, [$key, $value]);
+        $this->callConnectMethod(__FUNCTION__, $key, $value);
     }
 
     public function flashs(array $flash): void
     {
-        $this->__call(__FUNCTION__, [$flash]);
+        $this->callConnectMethod(__FUNCTION__, $flash);
     }
 
     public function nowFlash(string $key, mixed $value): void
     {
-        $this->__call(__FUNCTION__, [$key, $value]);
+        $this->callConnectMethod(__FUNCTION__, $key, $value);
     }
 
     public function rebuildFlash(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function keepFlash(array $keys): void
     {
-        $this->__call(__FUNCTION__, [$keys]);
+        $this->callConnectMethod(__FUNCTION__, $keys);
     }
 
     public function getFlash(string $key, mixed $defaults = null): mixed
     {
-        return $this->__call(__FUNCTION__, [$key, $defaults]);
+        return $this->callConnectMethod(__FUNCTION__, $key, $defaults);
     }
 
     public function deleteFlash(array $keys): void
     {
-        $this->__call(__FUNCTION__, [$keys]);
+        $this->callConnectMethod(__FUNCTION__, $keys);
     }
 
     public function clearFlash(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function unregisterFlash(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function prevUrl(): ?string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setPrevUrl(string $url): void
     {
-        $this->__call(__FUNCTION__, [$url]);
+        $this->callConnectMethod(__FUNCTION__, $url);
     }
 
     public function destroySession(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function isStart(): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setName(string $name): void
     {
-        $this->__call(__FUNCTION__, [$name]);
+        $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function getName(): ?string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setId(?string $id = null): void
     {
-        $this->__call(__FUNCTION__, [$id]);
+        $this->callConnectMethod(__FUNCTION__, $id);
     }
 
     public function getId(): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function regenerateId(): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function open(string $savePath, string $sessionName): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$savePath, $sessionName]);
+        return $this->callConnectMethod(__FUNCTION__, $savePath, $sessionName);
     }
 
     public function close(): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function read(string $sessionId): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$sessionId]);
+        return $this->callConnectMethod(__FUNCTION__, $sessionId);
     }
 
     public function write(string $sessionId, string $sessionData): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$sessionId, $sessionData]);
+        return $this->callConnectMethod(__FUNCTION__, $sessionId, $sessionData);
     }
 
     public function destroy(string $sessionId): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$sessionId]);
+        return $this->callConnectMethod(__FUNCTION__, $sessionId);
     }
 
     public function gc(int $maxLifetime): int
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$maxLifetime]);
+        return $this->callConnectMethod(__FUNCTION__, $maxLifetime);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ISession

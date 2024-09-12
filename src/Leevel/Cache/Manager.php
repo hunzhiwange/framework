@@ -20,77 +20,77 @@ class Manager extends Managers implements ICache
 
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
-        $this->__call(__FUNCTION__, [$keys, $value, $expire]);
+        $this->callConnectMethod(__FUNCTION__, $keys, $value, $expire);
     }
 
     public function remember(string $name, \Closure $dataGenerator, ?int $expire = null): mixed
     {
-        return $this->__call(__FUNCTION__, [$name, $dataGenerator, $expire]);
+        return $this->callConnectMethod(__FUNCTION__, $name, $dataGenerator, $expire);
     }
 
     public function get(string $name, mixed $defaults = false): mixed
     {
-        return $this->__call(__FUNCTION__, [$name, $defaults]);
+        return $this->callConnectMethod(__FUNCTION__, $name, $defaults);
     }
 
     public function set(string $name, mixed $data, ?int $expire = null): void
     {
-        $this->__call(__FUNCTION__, [$name, $data, $expire]);
+        $this->callConnectMethod(__FUNCTION__, $name, $data, $expire);
     }
 
     public function delete(string $name): void
     {
-        $this->__call(__FUNCTION__, [$name]);
+        $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function has(string $name): bool
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$name]);
+        return $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function increase(string $name, int $step = 1, ?int $expire = null): false|int
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$name, $step, $expire]);
+        return $this->callConnectMethod(__FUNCTION__, $name, $step, $expire);
     }
 
     public function decrease(string $name, int $step = 1, ?int $expire = null): false|int
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$name, $step, $expire]);
+        return $this->callConnectMethod(__FUNCTION__, $name, $step, $expire);
     }
 
     public function ttl(string $name): int
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$name]);
+        return $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function close(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setKeyRegex(string $keyRegex): void
     {
-        $this->__call(__FUNCTION__, [$keyRegex]);
+        $this->callConnectMethod(__FUNCTION__, $keyRegex);
     }
 
     public function getHandle(): ?object
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, []);
+        return $this->callConnectMethod(__FUNCTION__);
     }
 
     public function release(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function setPool(BasePool $pool): void
     {
-        $this->__call(__FUNCTION__, [$pool]);
+        $this->callConnectMethod(__FUNCTION__, $pool);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ICache

@@ -15,27 +15,27 @@ class Manager extends Managers implements IView
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         // @phpstan-ignore-next-line
-        return $this->__call(__FUNCTION__, [$file, $vars, $ext]);
+        return $this->callConnectMethod(__FUNCTION__, $file, $vars, $ext);
     }
 
     public function setVar(array|string $name, mixed $value = null): void
     {
-        $this->__call(__FUNCTION__, [$name, $value]);
+        $this->callConnectMethod(__FUNCTION__, $name, $value);
     }
 
     public function getVar(?string $name = null): mixed
     {
-        return $this->__call(__FUNCTION__, [$name]);
+        return $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function deleteVar(array $name): void
     {
-        $this->__call(__FUNCTION__, [$name]);
+        $this->callConnectMethod(__FUNCTION__, $name);
     }
 
     public function clearVar(): void
     {
-        $this->__call(__FUNCTION__, []);
+        $this->callConnectMethod(__FUNCTION__);
     }
 
     public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IView
