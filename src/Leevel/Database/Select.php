@@ -73,17 +73,6 @@ class Select implements ICondition, IFlowControl
      */
     public function __call(string $method, array $args): mixed
     {
-        // try {
-        //     $this->condition->{$method}(...$args);
-        //
-        //     return $this;
-        // } catch (ConditionErrorException) {
-        //     if (method_exists($this->connect, $method)
-        //         && \is_callable([$this->connect, $method])) {
-        //         return $this->connect->{$method}(...$args);
-        //     }
-        // }
-
         if (\is_callable([$this->connect, $method])) {
             return $this->connect->{$method}(...$args);
         }
@@ -197,17 +186,17 @@ class Select implements ICondition, IFlowControl
 
     public function middlewares(string ...$middlewares): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $middlewares);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$middlewares);
     }
 
     public function where(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function orWhere(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereRaw(string $raw): self
@@ -232,62 +221,62 @@ class Select implements ICondition, IFlowControl
 
     public function whereBetween(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereNotBetween(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereNull(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereNotNull(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereIn(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereNotIn(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereLike(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereNotLike(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereDate(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereDay(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereMonth(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function whereYear(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
@@ -357,12 +346,12 @@ class Select implements ICondition, IFlowControl
 
     public function having(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function orHaving(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingRaw(string $raw): self
@@ -377,62 +366,62 @@ class Select implements ICondition, IFlowControl
 
     public function havingBetween(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingNotBetween(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingNull(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingNotNull(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingIn(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingNotIn(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingLike(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingNotLike(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingDate(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingDay(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingMonth(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function havingYear(mixed ...$cond): self
     {
-        return $this->callConditionMethodChain(__FUNCTION__, $cond);
+        return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
     public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
