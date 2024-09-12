@@ -11,7 +11,7 @@ use Leevel\Support\Pipeline;
 /**
  * 条件构造器.
  */
-class Condition
+class Condition implements ICondition
 {
     use FlowControl;
 
@@ -380,17 +380,12 @@ class Condition
         return ['execute', $sql];
     }
 
-    /**
-     * 根据分页设置条件.
-     */
     public function forPage(int $page, int $perPage = 10): self
     {
         return $this->limit(($page - 1) * $perPage, $perPage);
     }
 
     /**
-     * 时间控制语句开始.
-     *
      * @throws \InvalidArgumentException
      */
     public function time(string $type = 'date'): self
@@ -408,9 +403,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 时间控制语句结束.
-     */
     public function endTime(): self
     {
         if ($this->checkFlowControl()) {
@@ -422,9 +414,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 重置查询条件.
-     */
     public function reset(?string $config = null): self
     {
         if ($this->checkFlowControl()) {
@@ -440,9 +429,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 查询注释.
-     */
     public function comment(string $comment): self
     {
         if ($this->checkFlowControl()) {
@@ -454,9 +440,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * prefix 查询.
-     */
     public function prefix(string $prefix): self
     {
         if ($this->checkFlowControl()) {
@@ -468,10 +451,7 @@ class Condition
         return $this;
     }
 
-    /**
-     * 添加一个要查询的表及其要查询的字段.
-     */
-    public function table(array|\Closure|self|Select|string $table, array|string $cols = '*'): self
+    public function table(array|\Closure|ICondition|Select|string $table, array|string $cols = '*'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -484,17 +464,11 @@ class Condition
         return $this;
     }
 
-    /**
-     * 获取表别名.
-     */
     public function getAlias(): string
     {
         return $this->alias;
     }
 
-    /**
-     * 添加字段.
-     */
     public function columns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
@@ -510,9 +484,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 设置字段.
-     */
     public function setColumns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
@@ -529,17 +500,11 @@ class Condition
         return $this;
     }
 
-    /**
-     * 设置字段别名方法.
-     */
     public function field(array|string $cols = '*', ?string $table = null): self
     {
         return $this->setColumns($cols, $table);
     }
 
-    /**
-     * 原生查询.
-     */
     public static function raw(string $raw): string
     {
         if (!isset(static::$rawRandKey)) {
@@ -549,9 +514,6 @@ class Condition
         return static::RAW_LEFT.'~~{#!'.static::$rawRandKey.$raw.static::$rawRandKey.'!#}~~'.static::RAW_RIGHT;
     }
 
-    /**
-     * 查询中间件.
-     */
     public function middlewares(string ...$middlewares): self
     {
         if (!$middlewares) {
@@ -573,8 +535,6 @@ class Condition
     }
 
     /**
-     * 注册查询中间件.
-     *
      * @throws \InvalidArgumentException
      */
     public static function registerMiddlewares(array $middlewares, bool $force = false): array
@@ -641,10 +601,7 @@ class Condition
         return [$terminateMiddlewares, $handleMiddlewares];
     }
 
-    /**
-     * where 查询条件.
-     */
-    public function where(...$cond): self
+    public function where(mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -656,10 +613,7 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * orWhere 查询条件.
-     */
-    public function orWhere(...$cond): self
+    public function orWhere(mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -671,9 +625,6 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * Where 原生查询.
-     */
     public function whereRaw(string $raw): self
     {
         if ($this->checkFlowControl()) {
@@ -688,9 +639,6 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * Where 原生 OR 查询.
-     */
     public function orWhereRaw(string $raw): self
     {
         if ($this->checkFlowControl()) {
@@ -705,9 +653,6 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * exists 方法支持
-     */
     public function whereExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
@@ -717,9 +662,6 @@ class Condition
         return $this->addConditions([':exists' => $exists]);
     }
 
-    /**
-     * not exists 方法支持
-     */
     public function whereNotExists(mixed $exists): self
     {
         if ($this->checkFlowControl()) {
@@ -729,105 +671,66 @@ class Condition
         return $this->addConditions([':notexists' => $exists]);
     }
 
-    /**
-     * whereBetween 查询条件.
-     */
-    public function whereBetween(...$cond): self
+    public function whereBetween(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereBetween', $cond);
     }
 
-    /**
-     * whereNotBetween 查询条件.
-     */
-    public function whereNotBetween(...$cond): self
+    public function whereNotBetween(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereNotBetween', $cond);
     }
 
-    /**
-     * whereNull 查询条件.
-     */
-    public function whereNull(...$cond): self
+    public function whereNull(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereNull', $cond);
     }
 
-    /**
-     * whereNotNull 查询条件.
-     */
-    public function whereNotNull(...$cond): self
+    public function whereNotNull(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereNotNull', $cond);
     }
 
-    /**
-     * whereIn 查询条件.
-     */
-    public function whereIn(...$cond): self
+    public function whereIn(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereIn', $cond);
     }
 
-    /**
-     * whereNotIn 查询条件.
-     */
-    public function whereNotIn(...$cond): self
+    public function whereNotIn(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereNotIn', $cond);
     }
 
-    /**
-     * whereLike 查询条件.
-     */
-    public function whereLike(...$cond): self
+    public function whereLike(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereLike', $cond);
     }
 
-    /**
-     * whereNotLike 查询条件.
-     */
-    public function whereNotLike(...$cond): self
+    public function whereNotLike(mixed ...$cond): self
     {
         return $this->callWhereSugar('whereNotLike', $cond);
     }
 
-    /**
-     * whereDate 查询条件.
-     */
-    public function whereDate(...$cond): self
+    public function whereDate(mixed ...$cond): self
     {
         return $this->callWhereTimeSugar('whereDate', $cond);
     }
 
-    /**
-     * whereDay 查询条件.
-     */
-    public function whereDay(...$cond): self
+    public function whereDay(mixed ...$cond): self
     {
         return $this->callWhereTimeSugar('whereDay', $cond);
     }
 
-    /**
-     * whereMonth 查询条件.
-     */
-    public function whereMonth(...$cond): self
+    public function whereMonth(mixed ...$cond): self
     {
         return $this->callWhereTimeSugar('whereMonth', $cond);
     }
 
-    /**
-     * whereYear 查询条件.
-     */
-    public function whereYear(...$cond): self
+    public function whereYear(mixed ...$cond): self
     {
         return $this->callWhereTimeSugar('whereYear', $cond);
     }
 
-    /**
-     * 参数绑定支持.
-     */
     public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
     {
         if ($this->checkFlowControl()) {
@@ -856,8 +759,6 @@ class Condition
     }
 
     /**
-     * index 强制索引（或者忽略索引）.
-     *
      * @throws \InvalidArgumentException
      */
     public function forceIndex(array|string $indexes, string $type = 'FORCE'): self
@@ -882,18 +783,12 @@ class Condition
         return $this;
     }
 
-    /**
-     * index 忽略索引.
-     */
-    public function ignoreIndex(array|string $indexs): self
+    public function ignoreIndex(array|string $indexes): self
     {
-        return $this->forceIndex($indexs, 'IGNORE');
+        return $this->forceIndex($indexes, 'IGNORE');
     }
 
-    /**
-     * join 查询.
-     */
-    public function join(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function join(array|\Closure|ICondition|Select|string $table, array|string $cols, ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -902,10 +797,7 @@ class Condition
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    /**
-     * innerJoin 查询.
-     */
-    public function innerJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function innerJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -914,10 +806,7 @@ class Condition
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    /**
-     * leftJoin 查询.
-     */
-    public function leftJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function leftJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -926,10 +815,7 @@ class Condition
         return $this->addJoin('left join', $table, $cols, ...$cond);
     }
 
-    /**
-     * rightJoin 查询.
-     */
-    public function rightJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function rightJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -939,11 +825,9 @@ class Condition
     }
 
     /**
-     * fullJoin 查询.
-     *
      * @throws \RuntimeException
      */
-    public function fullJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function fullJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -957,10 +841,7 @@ class Condition
         return $this->addJoin('full join', $table, $cols, ...$cond); // @codeCoverageIgnore
     }
 
-    /**
-     * crossJoin 查询.
-     */
-    public function crossJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function crossJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -969,10 +850,7 @@ class Condition
         return $this->addJoin('cross join', $table, $cols, ...$cond);
     }
 
-    /**
-     * naturalJoin 查询.
-     */
-    public function naturalJoin(array|\Closure|self|Select|string $table, array|string $cols, ...$cond): self
+    public function naturalJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -982,11 +860,9 @@ class Condition
     }
 
     /**
-     * 添加一个 UNION 查询.
-     *
      * @throws \InvalidArgumentException
      */
-    public function union(array|callable|self|Select|string $selects, string $type = 'UNION'): self
+    public function union(array|callable|ICondition|Select|string $selects, string $type = 'UNION'): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1007,10 +883,7 @@ class Condition
         return $this;
     }
 
-    /**
-     * 添加一个 UNION ALL 查询.
-     */
-    public function unionAll(array|callable|self|Select|string $selects): self
+    public function unionAll(array|callable|ICondition|Select|string $selects): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1019,9 +892,6 @@ class Condition
         return $this->union($selects, 'UNION ALL');
     }
 
-    /**
-     * 指定 GROUP BY 子句.
-     */
     public function groupBy(array|string $expression): self
     {
         if ($this->checkFlowControl()) {
@@ -1045,12 +915,7 @@ class Condition
         return $this;
     }
 
-    /**
-     * 添加一个 HAVING 条件.
-     *
-     * - 参数规范参考 where()方法.
-     */
-    public function having(...$cond): self
+    public function having(mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1062,10 +927,7 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * orHaving 查询条件.
-     */
-    public function orHaving(...$cond): self
+    public function orHaving(mixed ...$cond): self
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -1077,9 +939,6 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * having 原生查询.
-     */
     public function havingRaw(string $raw): self
     {
         if ($this->checkFlowControl()) {
@@ -1094,9 +953,6 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * having 原生 OR 查询.
-     */
     public function orHavingRaw(string $raw): self
     {
         if ($this->checkFlowControl()) {
@@ -1111,105 +967,66 @@ class Condition
         return $this->aliaTypeAndLogic(...$cond);
     }
 
-    /**
-     * havingBetween 查询条件.
-     */
-    public function havingBetween(...$cond): self
+    public function havingBetween(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingBetween', $cond);
     }
 
-    /**
-     * havingNotBetween 查询条件.
-     */
-    public function havingNotBetween(...$cond): self
+    public function havingNotBetween(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingNotBetween', $cond);
     }
 
-    /**
-     * havingNull 查询条件.
-     */
-    public function havingNull(...$cond): self
+    public function havingNull(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingNull', $cond);
     }
 
-    /**
-     * havingNotNull 查询条件.
-     */
-    public function havingNotNull(...$cond): self
+    public function havingNotNull(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingNotNull', $cond);
     }
 
-    /**
-     * havingIn 查询条件.
-     */
-    public function havingIn(...$cond): self
+    public function havingIn(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingIn', $cond);
     }
 
-    /**
-     * havingNotIn 查询条件.
-     */
-    public function havingNotIn(...$cond): self
+    public function havingNotIn(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingNotIn', $cond);
     }
 
-    /**
-     * havingLike 查询条件.
-     */
-    public function havingLike(...$cond): self
+    public function havingLike(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingLike', $cond);
     }
 
-    /**
-     * havingNotLike 查询条件.
-     */
-    public function havingNotLike(...$cond): self
+    public function havingNotLike(mixed ...$cond): self
     {
         return $this->callHavingSugar('havingNotLike', $cond);
     }
 
-    /**
-     * havingDate 查询条件.
-     */
-    public function havingDate(...$cond): self
+    public function havingDate(mixed ...$cond): self
     {
         return $this->callHavingTimeSugar('havingDate', $cond);
     }
 
-    /**
-     * havingDay 查询条件.
-     */
-    public function havingDay(...$cond): self
+    public function havingDay(mixed ...$cond): self
     {
         return $this->callHavingTimeSugar('havingDay', $cond);
     }
 
-    /**
-     * havingMonth 查询条件.
-     */
-    public function havingMonth(...$cond): self
+    public function havingMonth(mixed ...$cond): self
     {
         return $this->callHavingTimeSugar('havingMonth', $cond);
     }
 
-    /**
-     * havingYear 查询条件.
-     */
-    public function havingYear(...$cond): self
+    public function havingYear(mixed ...$cond): self
     {
         return $this->callHavingTimeSugar('havingYear', $cond);
     }
 
-    /**
-     * 添加排序.
-     */
     public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
     {
         if ($this->checkFlowControl()) {
@@ -1258,25 +1075,16 @@ class Condition
         return $this;
     }
 
-    /**
-     * 最近排序数据.
-     */
     public function latest(string $field = 'create_at'): self
     {
         return $this->orderBy($field, 'DESC');
     }
 
-    /**
-     * 最早排序数据.
-     */
     public function oldest(string $field = 'create_at'): self
     {
         return $this->orderBy($field, 'ASC');
     }
 
-    /**
-     * 创建一个 SELECT DISTINCT 查询.
-     */
     public function distinct(bool $flag = true): self
     {
         if ($this->checkFlowControl()) {
@@ -1288,9 +1096,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 总记录数.
-     */
     public function count(string $field = '*', string $alias = 'row_count'): self
     {
         if ($this->checkFlowControl()) {
@@ -1300,9 +1105,6 @@ class Condition
         return $this->addAggregate('COUNT', $field, $alias);
     }
 
-    /**
-     * 平均数.
-     */
     public function avg(string $field, string $alias = 'avg_value'): self
     {
         if ($this->checkFlowControl()) {
@@ -1312,9 +1114,6 @@ class Condition
         return $this->addAggregate('AVG', $field, $alias);
     }
 
-    /**
-     * 最大值.
-     */
     public function max(string $field, string $alias = 'max_value'): self
     {
         if ($this->checkFlowControl()) {
@@ -1324,9 +1123,6 @@ class Condition
         return $this->addAggregate('MAX', $field, $alias);
     }
 
-    /**
-     * 最小值.
-     */
     public function min(string $field, string $alias = 'min_value'): self
     {
         if ($this->checkFlowControl()) {
@@ -1336,9 +1132,6 @@ class Condition
         return $this->addAggregate('MIN', $field, $alias);
     }
 
-    /**
-     * 合计
-     */
     public function sum(string $field, string $alias = 'sum_value'): self
     {
         if ($this->checkFlowControl()) {
@@ -1348,9 +1141,6 @@ class Condition
         return $this->addAggregate('SUM', $field, $alias);
     }
 
-    /**
-     * 指示仅查询第一个符合条件的记录.
-     */
     public function one(): self
     {
         if ($this->checkFlowControl()) {
@@ -1364,9 +1154,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 指示查询所有符合条件的记录.
-     */
     public function all(): self
     {
         if ($this->checkFlowControl()) {
@@ -1384,9 +1171,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 查询几条记录.
-     */
     public function top(int $count = 30): self
     {
         if ($this->checkFlowControl()) {
@@ -1396,9 +1180,6 @@ class Condition
         return $this->limit(0, $count);
     }
 
-    /**
-     * limit 限制条数.
-     */
     public function limit(int $offset = 0, int $count = 0): self
     {
         if ($this->checkFlowControl()) {
@@ -1417,8 +1198,6 @@ class Condition
     }
 
     /**
-     * 排它锁 FOR UPDATE 查询.
-     *
      * @throws \RuntimeException
      */
     public function forUpdate(bool $flag = true): self
@@ -1437,8 +1216,6 @@ class Condition
     }
 
     /**
-     * 共享锁 LOCK SHARE 查询.
-     *
      * @throws \RuntimeException
      */
     public function lockShare(bool $flag = true): self
@@ -1456,9 +1233,6 @@ class Condition
         return $this;
     }
 
-    /**
-     * 获得查询字符串.
-     */
     public function makeSql(bool $withLogicGroup = false): string
     {
         $sql = [];
@@ -1500,25 +1274,16 @@ class Condition
         return $result;
     }
 
-    /**
-     * 返回参数绑定.
-     */
     public function getBindParams(): array
     {
         return $this->bindParams;
     }
 
-    /**
-     * 重置参数绑定.
-     */
     public function resetBindParams(array $bindParams = []): void
     {
         $this->bindParams = $bindParams;
     }
 
-    /**
-     * 设置参数绑定前缀.
-     */
     public function setBindParamsPrefix(string $bindParamsPrefix): void
     {
         $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
@@ -2324,7 +2089,7 @@ class Condition
         return $keys !== array_keys($keys);
     }
 
-    protected function addConditionsEach(array|\Closure|self|float|int|Select|string $cond, ?string $key = null): void
+    protected function addConditionsEach(array|\Closure|float|ICondition|int|Select|string $cond, ?string $key = null): void
     {
         match ($key) {
             ':string', ':stringSimple' => $this->addConditionsString($key, $cond),
@@ -2371,7 +2136,7 @@ class Condition
     /**
      * @throws \InvalidArgumentException
      */
-    protected function addConditionsExists(string $key, \Closure|self|Select|string $cond): void
+    protected function addConditionsExists(string $key, \Closure|ICondition|Select|string $cond): void
     {
         // having 不支持 [not] exists
         if ('having' === $this->getTypeAndLogic()[0]) {
@@ -2515,7 +2280,7 @@ class Condition
      *
      * @throws \InvalidArgumentException
      */
-    protected function addJoin(string $joinType, array|\Closure|self|Select|string $names, array|string $cols, mixed $cond = null): self
+    protected function addJoin(string $joinType, array|\Closure|ICondition|Select|string $names, array|string $cols, mixed $cond = null): self
     {
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (\count($this->configs['union'])) {

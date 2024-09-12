@@ -6,8 +6,6 @@ namespace Leevel\Support;
 
 /**
  * 流程控制复用.
- *
- * - 灵感来源于做禅道二次开发，里面有这样的用法
  */
 trait FlowControl
 {
