@@ -30,30 +30,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 调试器.
- *
- * @method static \DebugBar\DebugBar                             addCollector(\DebugBar\DataCollector\DataCollectorInterface $collector)                                               添加数据收集器.
- * @method static bool                                           hasCollector(string $name)                                                                                            检查是否已添加数据收集器.
- * @method static \DebugBar\DataCollector\DataCollectorInterface getCollector(string $name)                                                                                            返回数据收集器.
- * @method static array                                          getCollectors()                                                                                                       返回所有数据收集器的数组.
- * @method static \DebugBar\DebugBar                             setRequestIdGenerator(\DebugBar\RequestIdGeneratorInterface $generator)                                               设置请求 ID 生成器.
- * @method static \DebugBar\RequestIdGeneratorInterface          getRequestIdGenerator()                                                                                               返回请求 ID 生成器.
- * @method static string                                         getCurrentRequestId()                                                                                                 返回当前请求的 ID.
- * @method static \DebugBar\DebugBar                             setStorage(?\DebugBar\Storage\StorageInterface $storage = null)                                                       设置用于存储收集数据的存储后端.
- * @method static \DebugBar\Storage\StorageInterface             getStorage()                                                                                                          返回用于存储收集数据的存储后端.
- * @method static bool                                           isDataPersisted()                                                                                                     检查是否保持数据.
- * @method static \DebugBar\DebugBar                             setHttpDriver(\DebugBar\HttpDriverInterface $driver)                                                                  设置 HTTP 驱动.
- * @method static \DebugBar\HttpDriverInterface                  getHttpDriver()                                                                                                       返回 HTTP 驱动.
- * @method static array                                          collect()                                                                                                             从收集器收集数据.
- * @method static array                                          getData()                                                                                                             返回收集的数据.
- * @method static array                                          getDataAsHeaders(string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096, int $maxTotalHeaderLength = 250000) 返回包含数据的 HTTP 头数组.
- * @method static \DebugBar\DebugBar                             sendDataInHeaders(?bool $useOpenHandler = null, string $headerName = 'phpdebugbar', int $maxHeaderLength = 4096)      通过 HTTP 头数组发送数据.
- * @method static \DebugBar\DebugBar                             stackData()                                                                                                           将数据存在 session 中.
- * @method static bool                                           hasStackedData()                                                                                                      检查 session 中是否存在数据.
- * @method static array                                          getStackedData(bool $delete = true)                                                                                   返回 session 中保存的数据.
- * @method static \DebugBar\DebugBar                             setStackDataSessionNamespace(string $ns)                                                                              设置 session 中保存数据的 key.
- * @method static string                                         getStackDataSessionNamespace()                                                                                        获取 session 中保存数据的 key.
- * @method static \DebugBar\DebugBar                             setStackAlwaysUseSessionStorage(bool $enabled = true)                                                                 设置是否仅使用 session 来保存数据，即使已启用存储.
- * @method static bool                                           isStackAlwaysUseSessionStorage()                                                                                      检查 session 是否始终用于保存数据，即使已启用存储.
  */
 class Debug
 {
@@ -87,8 +63,6 @@ class Debug
 
     /**
      * 构造函数.
-     *
-     * - I actually copied a lot of ideas from laravel-debugbar app.
      */
     public function __construct(IContainer $container, array $config = [])
     {
@@ -98,11 +72,11 @@ class Debug
     }
 
     /**
-     * 实现魔术方法 __call.
+     * 获取 DebugBar.
      */
-    public function __call(string $method, array $args): mixed
+    public function getDebugBar(): DebugBar
     {
-        return $this->debugBar->{$method}(...$args);
+        return $this->debugBar;
     }
 
     /**
@@ -315,23 +289,23 @@ class Debug
         }
 
         $this->isBootstrap = true;
-        $this->addCollector(new PhpInfoCollector());
-        $this->addCollector(new MessagesCollector());
-        $this->addCollector(new RequestDataCollector());
-        $this->addCollector(new TimeDataCollector());
-        $this->addCollector(new MemoryCollector());
-        $this->addCollector(new ExceptionsCollector());
-        $this->addCollector(new ConfigCollector());
+        $this->getDebugBar()->addCollector(new PhpInfoCollector());
+        $this->getDebugBar()->addCollector(new MessagesCollector());
+        $this->getDebugBar()->addCollector(new RequestDataCollector());
+        $this->getDebugBar()->addCollector(new TimeDataCollector());
+        $this->getDebugBar()->addCollector(new MemoryCollector());
+        $this->getDebugBar()->addCollector(new ExceptionsCollector());
+        $this->getDebugBar()->addCollector(new ConfigCollector());
 
         /** @var IApp $app */
         $app = $this->container->make('app');
-        $this->addCollector(new LeevelCollector($app));
+        $this->getDebugBar()->addCollector(new LeevelCollector($app));
 
         /** @var ISession $session */
         $session = $this->container->make('session');
-        $this->addCollector(new SessionCollector($session));
-        $this->addCollector(new FilesCollector());
-        $this->addCollector(new LogsCollector());
+        $this->getDebugBar()->addCollector(new SessionCollector($session));
+        $this->getDebugBar()->addCollector(new FilesCollector());
+        $this->getDebugBar()->addCollector(new LogsCollector());
         $this->initData();
         $this->databaseEventDispatch();
         $this->logEventDispatch();
