@@ -6,13 +6,12 @@ namespace Leevel\Database;
 
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
-use Leevel\Support\IFlowControl;
 use Leevel\Support\Pipeline;
 
 /**
  * 条件构造器.
  */
-class Condition implements ICondition, IFlowControl
+class Condition implements ICondition
 {
     use FlowControl;
 

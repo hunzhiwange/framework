@@ -8,17 +8,13 @@ use Leevel\Cache\ICache;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Collection;
-use Leevel\Support\FlowControl;
-use Leevel\Support\IFlowControl;
 use Leevel\Support\Str\UnCamelize;
 
 /**
  * 数据库查询器.
  */
-class Select implements ISelect, IFlowControl
+class Select implements ISelect
 {
-    use FlowControl;
-
     /**
      * 数据库连接.
      */
@@ -535,6 +531,26 @@ class Select implements ISelect, IFlowControl
     {
         // @phpstan-ignore-next-line
         return $this->callConditionMethod(__FUNCTION__);
+    }
+
+    public function if(mixed $condition): ISelect
+    {
+        return $this->callConditionMethodChain(__FUNCTION__, $condition);
+    }
+
+    public function elif(mixed $condition): ISelect
+    {
+        return $this->callConditionMethodChain(__FUNCTION__, $condition);
+    }
+
+    public function else(): ISelect
+    {
+        return $this->callConditionMethodChain(__FUNCTION__);
+    }
+
+    public function fi(): ISelect
+    {
+        return $this->callConditionMethodChain(__FUNCTION__);
     }
 
     public function databaseCondition(): Condition

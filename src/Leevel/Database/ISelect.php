@@ -7,12 +7,11 @@ namespace Leevel\Database;
 use Leevel\Cache\ICache;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Collection;
-use Leevel\Support\IFlowControl;
 
 /**
  * 数据库查询器接口.
  */
-interface ISelect extends ICondition, IFlowControl
+interface ISelect extends ICondition
 {
     /**
      * 查询对象.

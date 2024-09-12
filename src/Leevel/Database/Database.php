@@ -5,49 +5,15 @@ declare(strict_types=1);
 namespace Leevel\Database;
 
 use Leevel\Cache\ICache;
+use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
 use Leevel\Server\Pool\Connection;
 use Leevel\Support\Arr\Normalize;
+use Leevel\Support\Collection;
 
 /**
  * 数据库抽象层.
- *
- * @method static \Leevel\Database\Condition                                             databaseCondition()                                                                 查询对象.
- * @method static \Leevel\Database\IDatabase                                             databaseConnect()                                                                   返回数据库连接对象.
- * @method static \Leevel\Database\Select                                                master(bool $master = false)                                                        设置是否查询主服务器.
- * @method static \Leevel\Database\Select                                                asSome(?\Closure $asSome = null, array $args = [])                                  设置以某种包装返会结果.
- * @method static \Leevel\Database\Select                                                asArray(?\Closure $asArray = null)                                                  设置返会结果为数组.
- * @method static \Leevel\Database\Select                                                asCollection(bool $asCollection = true, array $valueTypes = [])                     设置是否以集合返回.
- * @method static mixed                                                                  select(null|callable|\Leevel\Database\Select|string $data = null, array $bind = []) 原生 SQL 查询数据.
- * @method static int|string                                                             insert(array|string $data, array $bind = [], array|bool $replace = false)           插入数据 insert (支持原生 SQL).
- * @method static int|string                                                             insertAll(array $data, array $bind = [], array|bool $replace = false)               批量插入数据 insertAll.
- * @method static int                                                                    update(array|string $data, array $bind = [])                                        更新数据 update (支持原生 SQL).
- * @method static int                                                                    updateColumn(string $column, mixed $value, array $bind = [])                        更新某个字段的值
- * @method static int                                                                    updateIncrease(string $column, int $step = 1, array $bind = [])                     字段递增.
- * @method static int                                                                    updateDecrease(string $column, int $step = 1, array $bind = [])                     字段减少.
- * @method static int                                                                    delete(?string $data = null, array $bind = [])                                      删除数据 delete (支持原生 SQL).
- * @method static array|int                                                              truncate()                                                                          清空表重置自增 ID.
- * @method static mixed                                                                  findOne()                                                                           返回一条记录.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array findAll()                                                                           返回所有记录.
- * @method static array                                                                  findArray()                                                                         以数组返回所有记录.
- * @method static array                                                                  findAsArray()                                                                       以数组返回所有记录（每一项也为数组）.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection       findCollection()                                                                    以集合返回所有记录.
- * @method static \Leevel\Database\Ddd\EntityCollection|\Leevel\Support\Collection|array find(?int $num = null)                                                              返回最后几条记录.
- * @method static mixed                                                                  value(string $field)                                                                返回一个字段的值
- * @method static array                                                                  list(mixed $fieldValue, ?string $fieldKey = null)                                   返回一列数据.
- * @method static void                                                                   chunk(int $count, \Closure $chunk)                                                  数据分块处理.
- * @method static void                                                                   each(int $count, \Closure $each)                                                    数据分块处理依次回调.
- * @method static int                                                                    findCount(string $field = '*', string $alias = 'row_count')                         总记录数.
- * @method static mixed                                                                  findAvg(string $field, string $alias = 'avg_value')                                 平均数.
- * @method static mixed                                                                  findMax(string $field, string $alias = 'max_value')                                 最大值.
- * @method static mixed                                                                  findMin(string $field, string $alias = 'min_value')                                 最小值.
- * @method static mixed                                                                  findSum(string $field, string $alias = 'sum_value')                                 合计.
- * @method static \Leevel\Database\Page                                                  page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [])   分页查询.
- * @method static \Leevel\Database\Page                                                  pageMacro(int $currentPage, int $perPage = 10, array $config = [])                  创建一个无限数据的分页查询.
- * @method static \Leevel\Database\Page                                                  pagePrevNext(int $currentPage, int $perPage = 10, array $config = [])               创建一个只有上下页的分页查询.
- * @method static int                                                                    pageCount(string $cols = '*')                                                       取得分页查询记录数量.                                                                                    获得查询字符串.
- * @method static \Leevel\Database\Select                                                cache(string $name, ?int $expire = null, ?\Leevel\Cache\ICache $cache = null)       设置查询缓存.                                                                                                                   条件语句 fi.
  */
 abstract class Database implements IDatabase, ISelect
 {
@@ -592,6 +558,212 @@ abstract class Database implements IDatabase, ISelect
     }
 
     public function getBindParams(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function databaseCondition(): Condition
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function databaseConnect(): IDatabase
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function master(bool $master = false): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $master);
+    }
+
+    public function asSome(?\Closure $asSome = null, array $args = []): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $asSome, $args);
+    }
+
+    public function asArray(?\Closure $asArray = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $asArray);
+    }
+
+    public function asCollection(bool $asCollection = true, array $valueTypes = []): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $asCollection, $valueTypes);
+    }
+
+    public function select(null|callable|ISelect|string $data = null, array $bind = []): mixed
+    {
+        return $this->callSelectMethod(__FUNCTION__, $data, $bind);
+    }
+
+    public function insert(array|string $data, array $bind = [], array|bool $replace = false): int|string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $data, $bind, $replace);
+    }
+
+    public function insertAll(array $data, array $bind = [], array|bool $replace = false): int|string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $data, $bind, $replace);
+    }
+
+    public function update(array|string $data, array $bind = []): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $data, $bind);
+    }
+
+    public function updateColumn(string $column, mixed $value, array $bind = []): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $column, $value, $bind);
+    }
+
+    public function updateIncrease(string $column, int $step = 1, array $bind = []): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $column, $step, $bind);
+    }
+
+    public function updateDecrease(string $column, int $step = 1, array $bind = []): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $column, $step, $bind);
+    }
+
+    public function delete(?string $data = null, array $bind = []): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $data, $bind);
+    }
+
+    public function truncate(): array|int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function findOne(): mixed
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function findArray(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function findAsArray(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function findCollection(): Collection|EntityCollection
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function findAll(): array|Collection|EntityCollection
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function find(?int $num = null): array|Collection|EntityCollection
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $num);
+    }
+
+    public function value(string $field): mixed
+    {
+        return $this->callSelectMethod(__FUNCTION__, $field);
+    }
+
+    public function list(mixed $fieldValue, ?string $fieldKey = null): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey);
+    }
+
+    public function chunk(int $count, \Closure $chunk): void
+    {
+        $this->callSelectMethod(__FUNCTION__, $count, $chunk);
+    }
+
+    public function each(int $count, \Closure $each): void
+    {
+        $this->callSelectMethod(__FUNCTION__, $count, $each);
+    }
+
+    public function findCount(string $field = '*', string $alias = 'row_count'): int
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+    }
+
+    public function findAvg(string $field, string $alias = 'avg_value'): mixed
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+    }
+
+    public function findMax(string $field, string $alias = 'max_value'): mixed
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+    }
+
+    public function findMin(string $field, string $alias = 'min_value'): mixed
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+    }
+
+    public function findSum(string $field, string $alias = 'sum_value'): mixed
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+    }
+
+    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config);
+    }
+
+    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+    }
+
+    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+    }
+
+    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): ISelect
+    {
+        return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
+    }
+
+    public function queryOne(): mixed
+    {
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
+    public function queryAll(): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__);
