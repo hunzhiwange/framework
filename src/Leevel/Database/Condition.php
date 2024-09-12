@@ -6,12 +6,13 @@ namespace Leevel\Database;
 
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
+use Leevel\Support\IFlowControl;
 use Leevel\Support\Pipeline;
 
 /**
  * 条件构造器.
  */
-class Condition implements ICondition
+class Condition implements ICondition, IFlowControl
 {
     use FlowControl;
 
@@ -464,11 +465,6 @@ class Condition implements ICondition
         return $this;
     }
 
-    public function getAlias(): string
-    {
-        return $this->alias;
-    }
-
     public function columns(array|string $cols = '*', ?string $table = null): self
     {
         if ($this->checkFlowControl()) {
@@ -532,73 +528,6 @@ class Condition implements ICondition
         });
 
         return $this;
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array
-    {
-        $handleMiddlewares = $terminateMiddlewares = [];
-        foreach ($middlewares as $v) {
-            if (!\is_string($v)) {
-                throw new \InvalidArgumentException('Condition middleware must be string.');
-            }
-
-            if (!$force && isset(static::$middlewares[$v])) {
-                $handleMiddleware = static::$middlewares[$v]['handle'] ?? null;
-                if ($handleMiddleware && !\in_array($handleMiddleware, $handleMiddlewares, true)) {
-                    $handleMiddlewares[] = $handleMiddleware;
-                }
-
-                $terminateMiddleware = static::$middlewares[$v]['terminate'] ?? null;
-                if ($terminateMiddleware && !\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
-                    $terminateMiddlewares[] = $terminateMiddleware;
-                }
-
-                continue;
-            }
-
-            if (isset(static::$middlewares[$v]['handle'])) {
-                unset(static::$middlewares[$v]['handle']);
-            }
-
-            if (isset(static::$middlewares[$v]['terminate'])) {
-                unset(static::$middlewares[$v]['terminate']);
-            }
-
-            $validMiddleware = false;
-
-            try {
-                $_ = new \ReflectionMethod($v, 'handle');
-                if ($_->isPublic()) {
-                    static::$middlewares[$v]['handle'] = $handleMiddleware = $v.'@handle';
-                    if (!\in_array($handleMiddleware, $handleMiddlewares, true)) {
-                        $handleMiddlewares[] = $handleMiddleware;
-                    }
-                    $validMiddleware = true;
-                }
-            } catch (\ReflectionException) {
-            }
-
-            try {
-                $_ = new \ReflectionMethod($v, 'terminate');
-                if ($_->isPublic()) {
-                    static::$middlewares[$v]['terminate'] = $terminateMiddleware = $v.'@terminate';
-                    if (!\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
-                        $terminateMiddlewares[] = $terminateMiddleware;
-                    }
-                    $validMiddleware = true;
-                }
-            } catch (\ReflectionException) {
-            }
-
-            if (!$validMiddleware) {
-                throw new \InvalidArgumentException(sprintf('Condition middleware %s was invalid.', $v));
-            }
-        }
-
-        return [$terminateMiddlewares, $handleMiddlewares];
     }
 
     public function where(mixed ...$cond): self
@@ -1233,6 +1162,92 @@ class Condition implements ICondition
         return $this;
     }
 
+    public function resetBindParams(array $bindParams = []): self
+    {
+        $this->bindParams = $bindParams;
+
+        return $this;
+    }
+
+    public function setBindParamsPrefix(string $bindParamsPrefix): self
+    {
+        $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
+
+        return $this;
+    }
+
+    public function getAlias(): string
+    {
+        return $this->alias;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    public static function registerMiddlewares(array $middlewares, bool $force = false): array
+    {
+        $handleMiddlewares = $terminateMiddlewares = [];
+        foreach ($middlewares as $v) {
+            if (!\is_string($v)) {
+                throw new \InvalidArgumentException('Condition middleware must be string.');
+            }
+
+            if (!$force && isset(static::$middlewares[$v])) {
+                $handleMiddleware = static::$middlewares[$v]['handle'] ?? null;
+                if ($handleMiddleware && !\in_array($handleMiddleware, $handleMiddlewares, true)) {
+                    $handleMiddlewares[] = $handleMiddleware;
+                }
+
+                $terminateMiddleware = static::$middlewares[$v]['terminate'] ?? null;
+                if ($terminateMiddleware && !\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                    $terminateMiddlewares[] = $terminateMiddleware;
+                }
+
+                continue;
+            }
+
+            if (isset(static::$middlewares[$v]['handle'])) {
+                unset(static::$middlewares[$v]['handle']);
+            }
+
+            if (isset(static::$middlewares[$v]['terminate'])) {
+                unset(static::$middlewares[$v]['terminate']);
+            }
+
+            $validMiddleware = false;
+
+            try {
+                $_ = new \ReflectionMethod($v, 'handle');
+                if ($_->isPublic()) {
+                    static::$middlewares[$v]['handle'] = $handleMiddleware = $v.'@handle';
+                    if (!\in_array($handleMiddleware, $handleMiddlewares, true)) {
+                        $handleMiddlewares[] = $handleMiddleware;
+                    }
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            try {
+                $_ = new \ReflectionMethod($v, 'terminate');
+                if ($_->isPublic()) {
+                    static::$middlewares[$v]['terminate'] = $terminateMiddleware = $v.'@terminate';
+                    if (!\in_array($terminateMiddleware, $terminateMiddlewares, true)) {
+                        $terminateMiddlewares[] = $terminateMiddleware;
+                    }
+                    $validMiddleware = true;
+                }
+            } catch (\ReflectionException) {
+            }
+
+            if (!$validMiddleware) {
+                throw new \InvalidArgumentException(sprintf('Condition middleware %s was invalid.', $v));
+            }
+        }
+
+        return [$terminateMiddlewares, $handleMiddlewares];
+    }
+
     public function makeSql(bool $withLogicGroup = false): string
     {
         $sql = [];
@@ -1277,16 +1292,6 @@ class Condition implements ICondition
     public function getBindParams(): array
     {
         return $this->bindParams;
-    }
-
-    public function resetBindParams(array $bindParams = []): void
-    {
-        $this->bindParams = $bindParams;
-    }
-
-    public function setBindParamsPrefix(string $bindParamsPrefix): void
-    {
-        $this->bindParamsPrefix = $bindParamsPrefix ? $bindParamsPrefix.'_' : '';
     }
 
     /**

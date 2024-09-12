@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Leevel\Support\IFlowControl;
-
 /**
  * 条件构造器接口.
  */
-interface ICondition extends IFlowControl
+interface ICondition
 {
     /**
      * 根据分页设置条件.
@@ -47,11 +45,6 @@ interface ICondition extends IFlowControl
     public function table(array|\Closure|Select|self|string $table, array|string $cols = '*'): self;
 
     /**
-     * 获取表别名.
-     */
-    public function getAlias(): string;
-
-    /**
      * 添加字段.
      */
     public function columns(array|string $cols = '*', ?string $table = null): self;
@@ -67,21 +60,9 @@ interface ICondition extends IFlowControl
     public function field(array|string $cols = '*', ?string $table = null): self;
 
     /**
-     * 原生查询.
-     */
-    public static function raw(string $raw): string;
-
-    /**
      * 查询中间件.
      */
     public function middlewares(string ...$middlewares): self;
-
-    /**
-     * 注册查询中间件.
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array;
 
     /**
      * where 查询条件.
@@ -180,8 +161,6 @@ interface ICondition extends IFlowControl
 
     /**
      * index 强制索引（或者忽略索引）.
-     *
-     * @throws \InvalidArgumentException
      */
     public function forceIndex(array|string $indexes, string $type = 'FORCE'): self;
 
@@ -212,8 +191,6 @@ interface ICondition extends IFlowControl
 
     /**
      * fullJoin 查询.
-     *
-     * @throws \RuntimeException
      */
     public function fullJoin(array|\Closure|Select|self|string $table, array|string $cols, mixed ...$cond): self;
 
@@ -229,8 +206,6 @@ interface ICondition extends IFlowControl
 
     /**
      * 添加一个 UNION 查询.
-     *
-     * @throws \InvalidArgumentException
      */
     public function union(array|callable|Select|self|string $selects, string $type = 'UNION'): self;
 
@@ -393,17 +368,40 @@ interface ICondition extends IFlowControl
 
     /**
      * 排它锁 FOR UPDATE 查询.
-     *
-     * @throws \RuntimeException
      */
     public function forUpdate(bool $flag = true): self;
 
     /**
      * 共享锁 LOCK SHARE 查询.
-     *
-     * @throws \RuntimeException
      */
     public function lockShare(bool $flag = true): self;
+
+    /**
+     * 重置参数绑定.
+     */
+    public function resetBindParams(array $bindParams = []): self;
+
+    /**
+     * 设置参数绑定前缀.
+     */
+    public function setBindParamsPrefix(string $bindParamsPrefix): self;
+
+    /**
+     * 获取表别名.
+     */
+    public function getAlias(): string;
+
+    /**
+     * 原生查询.
+     */
+    public static function raw(string $raw): string;
+
+    /**
+     * 注册查询中间件.
+     *
+     * @todo 命名很怪，也可以改为非工有函数
+     */
+    public static function registerMiddlewares(array $middlewares, bool $force = false): array;
 
     /**
      * 获得查询字符串.
@@ -414,14 +412,4 @@ interface ICondition extends IFlowControl
      * 返回参数绑定.
      */
     public function getBindParams(): array;
-
-    /**
-     * 重置参数绑定.
-     */
-    public function resetBindParams(array $bindParams = []): void;
-
-    /**
-     * 设置参数绑定前缀.
-     */
-    public function setBindParamsPrefix(string $bindParamsPrefix): void;
 }
