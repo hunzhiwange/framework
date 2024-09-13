@@ -140,7 +140,7 @@ abstract class Database implements IDatabase
         $this->close();
     }
 
-    public function forPage(int $page, int $perPage = 10): Select
+    public function forPage(int $page, int $perPage = 10): ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $page, $perPage);
     }
@@ -543,7 +543,7 @@ abstract class Database implements IDatabase
 
     public static function raw(string $raw): string
     {
-        return Select::raw($raw);
+        return Condition::raw($raw);
     }
 
     public function makeSql(bool $withLogicGroup = false): string
@@ -708,25 +708,21 @@ abstract class Database implements IDatabase
 
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
     {
-        // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
     public function findMax(string $field, string $alias = 'max_value'): mixed
     {
-        // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
     public function findMin(string $field, string $alias = 'min_value'): mixed
     {
-        // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
     public function findSum(string $field, string $alias = 'sum_value'): mixed
     {
-        // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
@@ -779,7 +775,7 @@ abstract class Database implements IDatabase
         return $this->cache;
     }
 
-    public function databaseSelect(): Select
+    public function databaseSelect(): ISelect
     {
         return new Select($this);
     }
@@ -1100,7 +1096,7 @@ abstract class Database implements IDatabase
         }
     }
 
-    protected function callSelectMethodChain(string $method, mixed ...$args): Select
+    protected function callSelectMethodChain(string $method, mixed ...$args): ISelect
     {
         return $this->databaseSelect()->{$method}(...$args);
     }
