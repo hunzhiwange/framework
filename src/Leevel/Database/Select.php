@@ -68,9 +68,9 @@ class Select implements ISelect
      */
     public function __call(string $method, array $args): mixed
     {
-        // if (\is_callable([$this->connect, $method])) {
-        //     return $this->connect->{$method}(...$args);
-        // }
+        if (\is_callable([$this->connect, $method])) {
+            return $this->connect->{$method}(...$args);
+        }
 
         throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
     }
