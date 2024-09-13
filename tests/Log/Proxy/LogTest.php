@@ -53,7 +53,7 @@ final class LogTest extends TestCase
 
         $filePath = __DIR__.'/cache/development.info/'.ILog::DEFAULT_MESSAGE_CATEGORY.'-'.date('Y-m-d').'.log';
         self::assertFileDoesNotExist($filePath);
-        Log::info('foo', ['bar']);
+        Log::proxy()->info('foo', ['bar']);
         self::assertFileExists($filePath);
         Helper::deleteDirectory(__DIR__.'/cache');
     }

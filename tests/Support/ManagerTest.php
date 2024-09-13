@@ -323,8 +323,26 @@ EOT,
     }
 }
 
-class Test1 extends Manager
+class Test1 extends Manager implements IConnect
 {
+    public function config(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callConnectMethod(__FUNCTION__);
+    }
+
+    public function foo(): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callConnectMethod(__FUNCTION__);
+    }
+
+    public function bar(string $arg1): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callConnectMethod(__FUNCTION__, $arg1);
+    }
+
     protected function getConfigNamespace(): string
     {
         return 'test1';
@@ -357,7 +375,7 @@ interface IConnect
 
 class Foo implements IConnect
 {
-    protected $config = [];
+    protected array $config = [];
 
     public function __construct(array $config)
     {
@@ -382,7 +400,7 @@ class Foo implements IConnect
 
 class Bar implements IConnect
 {
-    protected $config = [];
+    protected array $config = [];
 
     public function __construct(array $config)
     {
@@ -407,7 +425,7 @@ class Bar implements IConnect
 
 class FooExtend implements IConnect
 {
-    protected $config = [];
+    protected array $config = [];
 
     public function __construct(array $config)
     {

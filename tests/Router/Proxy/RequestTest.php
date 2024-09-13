@@ -48,10 +48,10 @@ final class RequestTest extends TestCase
         });
 
         self::assertInstanceOf(SymfonyRequest::class, $request);
-        self::assertSame('bar', ProxyRequest::get('foo'));
-        self::assertTrue(ProxyRequest::exists(['foo']));
-        self::assertTrue(ProxyRequest::exists(['foo', 'hello']));
-        self::assertFalse(ProxyRequest::exists(['notFound']));
+        self::assertSame('bar', ProxyRequest::proxy()->get('foo'));
+        self::assertTrue(ProxyRequest::proxy()->exists(['foo']));
+        self::assertTrue(ProxyRequest::proxy()->exists(['foo', 'hello']));
+        self::assertFalse(ProxyRequest::proxy()->exists(['notFound']));
     }
 
     protected function createRequest(): Request

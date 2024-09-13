@@ -30,12 +30,12 @@ final class I18nTest extends TestCase
             return new I18n('zh-CN');
         });
 
-        self::assertSame('zh-CN', ProxyI18n::getI18n());
+        self::assertSame('zh-CN', ProxyI18n::proxy()->getI18n());
         self::assertSame([
             'zh-CN' => [],
-        ], ProxyI18n::all());
-        self::assertSame('中国语言', ProxyI18n::gettext('中国语言'));
-        self::assertSame('中国人语言', ProxyI18n::gettext('中国%s语言', '人'));
+        ], ProxyI18n::proxy()->all());
+        self::assertSame('中国语言', ProxyI18n::proxy()->gettext('中国语言'));
+        self::assertSame('中国人语言', ProxyI18n::proxy()->gettext('中国%s语言', '人'));
     }
 
     protected function createContainer(): Container

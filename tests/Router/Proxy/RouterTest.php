@@ -61,7 +61,7 @@ final class RouterTest extends TestCase
             return $router;
         });
 
-        $result = ProxyRouter::dispatch($request);
+        $result = ProxyRouter::proxy()->dispatch($request);
         $this->assertInstanceof(Response::class, $result);
         self::assertSame('hello my home', $result->getContent());
     }

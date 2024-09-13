@@ -57,14 +57,14 @@ final class EncryptionTest extends TestCase
         });
 
         $sourceMessage = '123456';
-        $encodeMessage = ProxyEncryption::encrypt($sourceMessage);
+        $encodeMessage = ProxyEncryption::proxy()->encrypt($sourceMessage);
         self::assertFalse($sourceMessage === $encodeMessage);
         self::assertSame(
-            ProxyEncryption::decrypt($encodeMessage),
+            ProxyEncryption::proxy()->decrypt($encodeMessage),
             $sourceMessage
         );
         self::assertSame(
-            ProxyEncryption::decrypt($encodeMessage.'foo'),
+            ProxyEncryption::proxy()->decrypt($encodeMessage.'foo'),
             false
         );
         self::assertSame(

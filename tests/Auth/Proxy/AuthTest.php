@@ -45,8 +45,8 @@ final class AuthTest extends TestCase
         $container->singleton('auths', static function () use ($manager): Manager {
             return $manager;
         });
-        self::assertFalse(Auth::isLogin());
-        self::assertSame([], Auth::getLogin());
+        self::assertFalse(Auth::proxy()->isLogin());
+        self::assertSame([], Auth::proxy()->getLogin());
     }
 
     protected function createManager(Container $container): Manager

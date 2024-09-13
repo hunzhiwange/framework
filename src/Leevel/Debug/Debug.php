@@ -406,7 +406,7 @@ class Debug
     protected function getTimeDataCollector(): TimeDataCollector
     {
         // @phpstan-ignore-next-line
-        return $this->getCollector('time');
+        return $this->getDebugBar()->getCollector('time');
     }
 
     /**
@@ -415,7 +415,7 @@ class Debug
     protected function getMessagesCollector(): MessagesCollector
     {
         // @phpstan-ignore-next-line
-        return $this->getCollector('messages');
+        return $this->getDebugBar()->getCollector('messages');
     }
 
     /**
@@ -424,7 +424,7 @@ class Debug
     protected function getExceptionsCollector(): ExceptionsCollector
     {
         // @phpstan-ignore-next-line
-        return $this->getCollector('exceptions');
+        return $this->getDebugBar()->getCollector('exceptions');
     }
 
     /**
@@ -433,7 +433,7 @@ class Debug
     protected function getConfigCollector(): ConfigCollector
     {
         // @phpstan-ignore-next-line
-        return $this->getCollector('config');
+        return $this->getDebugBar()->getCollector('config');
     }
 
     /**
@@ -442,6 +442,6 @@ class Debug
     protected function getLogsCollector(): LogsCollector
     {
         // @phpstan-ignore-next-line
-        return $this->getCollector('logs');
+        return $this->getDebugBar()->getCollector('logs');
     }
 }

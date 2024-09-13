@@ -64,8 +64,7 @@ final class ResponseTest extends TestCase
             return $factory;
         });
 
-        $response = ProxyResponse::make('hello');
-
+        $response = ProxyResponse::proxy()->make('hello');
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
 
@@ -75,8 +74,7 @@ final class ResponseTest extends TestCase
         unset($headers['date']);
         self::assertSame(['cache-control' => ['no-cache, private']], $headers);
 
-        $response = ProxyResponse::json();
-
+        $response = ProxyResponse::proxy()->json();
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(Response::class, $response);
         $this->assertInstanceof(JsonResponse::class, $response);

@@ -62,12 +62,12 @@ final class DebugTest extends TestCase
             return $debug;
         });
 
-        self::assertFalse(ProxyDebug::isBootstrap());
-        ProxyDebug::bootstrap();
-        self::assertTrue(ProxyDebug::isBootstrap());
+        self::assertFalse(ProxyDebug::proxy()->isBootstrap());
+        ProxyDebug::proxy()->bootstrap();
+        self::assertTrue(ProxyDebug::proxy()->isBootstrap());
         $request = new Request();
         $response = new JsonResponse(['foo' => 'bar']);
-        ProxyDebug::handle($request, $response);
+        ProxyDebug::proxy()->handle($request, $response);
         $content = $response->getContent();
         self::assertStringContainsString('{"foo":"bar",":trace":', $content);
         self::assertStringContainsString('"php":{"version":', $content);
@@ -82,19 +82,12 @@ final class DebugTest extends TestCase
     protected function createApplication(Container $container): App
     {
         $app = new App($container, '');
-
         $container->instance('app', $app);
-
         $container->instance('session', $this->createSession());
-
         $container->instance('log', $this->createLog());
-
         $container->instance('config', $this->createConfig());
-
         $eventDispatch = $this->createMock(IDispatch::class);
-
         self::assertNull($eventDispatch->handle('event'));
-
         $container->singleton(IDispatch::class, $eventDispatch);
 
         return $app;

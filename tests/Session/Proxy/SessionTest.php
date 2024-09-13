@@ -64,25 +64,25 @@ final class SessionTest extends TestCase
             return $manager;
         });
 
-        self::assertFalse(Session::isStart());
-        self::assertSame('', Session::getId());
-        self::assertSame('UID', Session::getName());
+        self::assertFalse(Session::proxy()->isStart());
+        self::assertSame('', Session::proxy()->getId());
+        self::assertSame('UID', Session::proxy()->getName());
 
-        Session::start();
-        self::assertTrue(Session::isStart());
+        Session::proxy()->start();
+        self::assertTrue(Session::proxy()->isStart());
 
-        Session::set('hello', 'world');
-        self::assertSame(['hello' => 'world'], Session::all());
-        self::assertTrue(Session::has('hello'));
-        self::assertSame('world', Session::get('hello'));
+        Session::proxy()->set('hello', 'world');
+        self::assertSame(['hello' => 'world'], Session::proxy()->all());
+        self::assertTrue(Session::proxy()->has('hello'));
+        self::assertSame('world', Session::proxy()->get('hello'));
 
-        Session::delete('hello');
-        self::assertSame([], Session::all());
-        self::assertFalse(Session::has('hello'));
-        self::assertNull(Session::get('hello'));
+        Session::proxy()->delete('hello');
+        self::assertSame([], Session::proxy()->all());
+        self::assertFalse(Session::proxy()->has('hello'));
+        self::assertNull(Session::proxy()->get('hello'));
 
-        Session::start();
-        self::assertTrue(Session::isStart());
+        Session::proxy()->start();
+        self::assertTrue(Session::proxy()->isStart());
     }
 
     protected function createManager(Container $container): Manager

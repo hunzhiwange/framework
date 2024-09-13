@@ -65,8 +65,8 @@ final class EventTest extends TestCase
             unset($_SERVER['event_name']);
         }
 
-        Event::register('event1', Listener1::class);
-        Event::handle('event1');
+        Event::proxy()->register('event1', Listener1::class);
+        Event::proxy()->handle('event1');
 
         self::assertSame($_SERVER['test'], 'hello');
         self::assertSame($_SERVER['event_name'], 'event1');

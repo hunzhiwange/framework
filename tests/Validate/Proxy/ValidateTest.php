@@ -88,7 +88,7 @@ final class ValidateTest extends TestCase
             return $validateFactory;
         });
 
-        $validate = ProxyValidate::make(
+        $validate = ProxyValidate::proxy()->make(
             [
                 'name' => '小牛哥',
             ],

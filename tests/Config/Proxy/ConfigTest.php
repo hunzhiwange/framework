@@ -66,31 +66,31 @@ final class ConfigTest extends TestCase
             return $config;
         });
 
-        self::assertSame('testing', ProxyConfig::get('app\\environment'));
-        self::assertSame('testing', ProxyConfig::get('environment'), 'Default namespace is app, so it equal app\\testing.');
-        self::assertNull(ProxyConfig::get('hello'), 'The default namespace is app, so it equal app\\hello');
-        self::assertNull(ProxyConfig::get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
-        self::assertSame(ProxyConfig::get('hello\\'), 'world');
-        self::assertSame(ProxyConfig::get('hello\\*'), 'world');
+        self::assertSame('testing', ProxyConfig::proxy()->get('app\\environment'));
+        self::assertSame('testing', ProxyConfig::proxy()->get('environment'), 'Default namespace is app, so it equal app\\testing.');
+        self::assertNull(ProxyConfig::proxy()->get('hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertNull(ProxyConfig::proxy()->get('app\\hello'), 'The default namespace is app, so it equal app\\hello');
+        self::assertSame(ProxyConfig::proxy()->get('hello\\'), 'world');
+        self::assertSame(ProxyConfig::proxy()->get('hello\\*'), 'world');
 
         self::assertSame([
             'environment' => 'testing',
             'debug' => true,
-        ], ProxyConfig::get('app\\'));
+        ], ProxyConfig::proxy()->get('app\\'));
 
         self::assertSame([
             'environment' => 'testing',
             'debug' => true,
-        ], ProxyConfig::get('app\\*'));
+        ], ProxyConfig::proxy()->get('app\\*'));
 
         self::assertFalse([
             'environment' => 'testing',
             'debug' => true,
-        ] === ProxyConfig::get('app'), 'The default namespace is app, so it equal app\\app');
+        ] === ProxyConfig::proxy()->get('app'), 'The default namespace is app, so it equal app\\app');
 
         // namespace\sub.sub1.sub2
-        self::assertSame(ProxyConfig::get('cache\\time_preset.foo'), 'bar');
-        self::assertNull(ProxyConfig::get('cache\\time_preset.foo2'));
+        self::assertSame(ProxyConfig::proxy()->get('cache\\time_preset.foo'), 'bar');
+        self::assertNull(ProxyConfig::proxy()->get('cache\\time_preset.foo2'));
     }
 
     protected function createConfig(): Config

@@ -10,23 +10,15 @@ namespace Leevel\Debug;
 class JsonRenderer
 {
     /**
-     * debug 管理.
-     */
-    protected Debug $debugBar;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Debug $debugBar)
-    {
-        $this->debugBar = $debugBar;
-    }
+    public function __construct(protected Debug $debug) {}
 
     /**
      * 渲染数据.
      */
     public function render(): array
     {
-        return $this->debugBar->getData();
+        return $this->debug->getDebugBar()->getData();
     }
 }

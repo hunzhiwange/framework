@@ -49,10 +49,10 @@ final class CacheTest extends TestCase
             return $manager;
         });
 
-        Cache::set('manager-foo', 'bar');
-        self::assertSame('bar', Cache::get('manager-foo'));
-        Cache::delete('manager-foo');
-        self::assertFalse(Cache::get('manager-foo'));
+        Cache::proxy()->set('manager-foo', 'bar');
+        self::assertSame('bar', Cache::proxy()->get('manager-foo'));
+        Cache::proxy()->delete('manager-foo');
+        self::assertFalse(Cache::proxy()->get('manager-foo'));
     }
 
     protected function createManager(Container $container): Manager

@@ -10,24 +10,16 @@ namespace Leevel\Debug;
 class ConsoleRenderer
 {
     /**
-     * debug 管理.
-     */
-    protected Debug $debugBar;
-
-    /**
      * 构造函数.
      */
-    public function __construct(Debug $debugBar)
-    {
-        $this->debugBar = $debugBar;
-    }
+    public function __construct(protected Debug $debug) {}
 
     /**
      * 渲染数据.
      */
     public function render(): string
     {
-        return $this->console($this->debugBar->getData());
+        return $this->console($this->debug->getDebugBar()->getData());
     }
 
     /**
