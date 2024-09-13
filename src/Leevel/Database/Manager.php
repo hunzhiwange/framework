@@ -833,6 +833,7 @@ class Manager extends Managers implements IDatabase
 
     protected function callSelectMethodChain(string $method, mixed ...$args): ISelect
     {
+        // @phpstan-ignore-next-line
         return $this->callConnectMethod($method, ...$args);
     }
 
