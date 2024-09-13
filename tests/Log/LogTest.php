@@ -55,17 +55,17 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Log\Proxy\Log::emergency(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::alert(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::critical(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::error(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::warning(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::notice(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::info(string|\Stringable $message, array $context = []): void;
-\Leevel\Log\Proxy\Log::debug(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->emergency(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->alert(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->critical(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->error(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->warning(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->notice(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->info(string|\Stringable $message, array $context = []): void;
+\Leevel\Log\Proxy\Log::proxy()->debug(string|\Stringable $message, array $context = []): void;
 ```
 
 ## log 配置

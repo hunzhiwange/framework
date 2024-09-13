@@ -40,11 +40,11 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Cache\Proxy\Cache::set(string $name, $data, ?int $expire = null): void;
-\Leevel\Cache\Proxy\Cache::get(string $name, $defaults = false, ?int $expire = null);
+\Leevel\Cache\Proxy\Cache::proxy()->set(string $name, $data, ?int $expire = null): void;
+\Leevel\Cache\Proxy\Cache::proxy()->get(string $name, $defaults = false, ?int $expire = null);
 ```
 
 ## 缓存配置

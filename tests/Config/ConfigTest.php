@@ -37,11 +37,11 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Config\Proxy\Config::set($name, $value = null): void;
-\Leevel\Config\Proxy\Config::get(string $name = 'app\\', $defaults = null);
+\Leevel\Config\Proxy\Config::proxy()->set($name, $value = null): void;
+\Leevel\Config\Proxy\Config::proxy()->get(string $name = 'app\\', $defaults = null);
 ```
 
 ## 配置目录

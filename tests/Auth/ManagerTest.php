@@ -45,10 +45,10 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Auth\Proxy\Auth::login(array $data, ?int $loginTime = null): void;
+\Leevel\Auth\Proxy\Auth::proxy()->login(array $data, ?int $loginTime = null): void;
 ```
 
 ## auth 配置

@@ -47,10 +47,10 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Filesystem\Proxy\Filesystem::write(string $path, string $contents, array $config = []): bool;
+\Leevel\Filesystem\Proxy\Filesystem::proxy()->getFilesystem()->write(string $path, string $contents, array $config = []): bool;
 ```
 
 ## filesystem 配置

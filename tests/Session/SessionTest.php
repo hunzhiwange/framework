@@ -42,11 +42,11 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Session\Proxy\Session::set(string $name, $value): void;
-\Leevel\Session\Proxy\Session::get(string $name, $value = null);
+\Leevel\Session\Proxy\Session::proxy()->set(string $name, $value): void;
+\Leevel\Session\Proxy\Session::proxy()->get(string $name, $value = null);
 ```
 
 ## session 配置

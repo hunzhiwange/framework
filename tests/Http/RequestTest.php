@@ -38,11 +38,11 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Router\Proxy\Request::get(string $key, $default = null);
-\Leevel\Router\Proxy\Request::all(): array;
+\Leevel\Router\Proxy\Request::proxy()->get(string $key, $default = null);
+\Leevel\Router\Proxy\Request::proxy()->all(): array;
 ```
 
 ::: warning 注意

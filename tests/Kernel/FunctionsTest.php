@@ -37,7 +37,7 @@ final class FunctionsTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'App 应用静态代理别名类调用应用',
+        'zh-CN:title' => 'App 应用代理别名类调用应用',
     ])]
     public function testApp(): void
     {
@@ -46,7 +46,7 @@ final class FunctionsTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'App 应用静态代理别名类调用 IOC 容器',
+        'zh-CN:title' => 'App 应用代理别名类调用 IOC 容器',
     ])]
     public function testAppWithContainerMethod(): void
     {

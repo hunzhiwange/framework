@@ -43,10 +43,10 @@ class Demo
 }
 ```
 
-使用静态代理
+使用代理
 
 ``` php
-\Leevel\Router\Proxy\View::setVar(array|string $name, mixed $value = null): void;
+\Leevel\Router\Proxy\View::proxy()->setVar(array|string $name, mixed $value = null): void;
 ```
 
 ## view 配置
