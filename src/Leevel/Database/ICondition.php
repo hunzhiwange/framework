@@ -44,7 +44,7 @@ interface ICondition extends IFlowControl
     /**
      * 添加一个要查询的表及其要查询的字段.
      */
-    public function table(array|\Closure|self|ISelect|string $table, array|string $cols = '*'): self;
+    public function table(array|\Closure|ISelect|self|string $table, array|string $cols = '*'): self;
 
     /**
      * 添加字段.
@@ -174,47 +174,47 @@ interface ICondition extends IFlowControl
     /**
      * join 查询.
      */
-    public function join(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function join(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * innerJoin 查询.
      */
-    public function innerJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function innerJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * leftJoin 查询.
      */
-    public function leftJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function leftJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * rightJoin 查询.
      */
-    public function rightJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function rightJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * fullJoin 查询.
      */
-    public function fullJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function fullJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * crossJoin 查询.
      */
-    public function crossJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function crossJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * naturalJoin 查询.
      */
-    public function naturalJoin(array|\Closure|self|ISelect|string $table, array|string $cols, mixed ...$cond): self;
+    public function naturalJoin(array|\Closure|ISelect|self|string $table, array|string $cols, mixed ...$cond): self;
 
     /**
      * 添加一个 UNION 查询.
      */
-    public function union(array|callable|self|ISelect|string $selects, string $type = 'UNION'): self;
+    public function union(array|callable|ISelect|self|string $selects, string $type = 'UNION'): self;
 
     /**
      * 添加一个 UNION ALL 查询.
      */
-    public function unionAll(array|callable|self|ISelect|string $selects): self;
+    public function unionAll(array|callable|ISelect|self|string $selects): self;
 
     /**
      * 指定 GROUP BY 子句.
@@ -397,13 +397,6 @@ interface ICondition extends IFlowControl
      * 原生查询.
      */
     public static function raw(string $raw): string;
-
-    /**
-     * 注册查询中间件.
-     *
-     * @todo 命名很怪，也可以改为非工有函数
-     */
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array;
 
     /**
      * 获得查询字符串.

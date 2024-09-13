@@ -546,11 +546,6 @@ abstract class Database implements IDatabase
         return Select::raw($raw);
     }
 
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array
-    {
-        return Select::registerMiddlewares($middlewares, $force);
-    }
-
     public function makeSql(bool $withLogicGroup = false): string
     {
         // @phpstan-ignore-next-line

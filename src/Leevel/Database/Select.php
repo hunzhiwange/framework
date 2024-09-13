@@ -516,11 +516,6 @@ class Select implements ISelect
         return Condition::raw($raw);
     }
 
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array
-    {
-        return Condition::registerMiddlewares($middlewares, $force);
-    }
-
     public function makeSql(bool $withLogicGroup = false): string
     {
         // @phpstan-ignore-next-line

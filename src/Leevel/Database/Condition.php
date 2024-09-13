@@ -515,7 +515,7 @@ class Condition implements ICondition
             return $this;
         }
 
-        [$terminateMiddlewares, $handleMiddlewares] = static::registerMiddlewares($middlewares);
+        [$terminateMiddlewares, $handleMiddlewares] = static::parseQueryMiddlewares($middlewares);
         $this->terminateMiddlewares += $terminateMiddlewares;
 
         if (!$handleMiddlewares) {
@@ -1180,10 +1180,58 @@ class Condition implements ICondition
         return $this->alias;
     }
 
+    public function makeSql(bool $withLogicGroup = false): string
+    {
+        $sql = [];
+        $sql['comment'] = $this->parseComment();
+        $sql['select'] = 'SELECT';
+
+        foreach (array_keys($this->configs) as $config) {
+            $config = (string) $config;
+            if ('from' === $config) {
+                $sql['from'] = '';
+            } elseif (\in_array($config, ['comment', 'union'], true)) {
+                continue;
+            } elseif (method_exists($this, $method = 'parse'.ucfirst($config))) {
+                $sql[$config] = $this->{$method}();
+            }
+        }
+
+        $sql['from'] = $this->parseFrom();
+        $sql['union'] = $this->parseUnion();
+
+        // 执行扩展中间件
+        if ($extendMiddlewares = $this->terminateMiddlewares) {
+            $sql = $this->parseTerminateMiddlewares($extendMiddlewares, $sql);
+        }
+
+        // 删除空元素
+        foreach ($sql as $offset => $config) {
+            if ('' === trim($config)) {
+                unset($sql[$offset]);
+            }
+        }
+
+        $result = trim(implode(' ', $sql));
+
+        if ($withLogicGroup) {
+            return '('.$result.')';
+        }
+
+        return $result;
+    }
+
+    public function getBindParams(): array
+    {
+        return $this->bindParams;
+    }
+
     /**
+     * 分析查询中间件.
+     *
      * @throws \InvalidArgumentException
      */
-    public static function registerMiddlewares(array $middlewares, bool $force = false): array
+    protected static function parseQueryMiddlewares(array $middlewares, bool $force = false): array
     {
         $handleMiddlewares = $terminateMiddlewares = [];
         foreach ($middlewares as $v) {
@@ -1245,52 +1293,6 @@ class Condition implements ICondition
         }
 
         return [$terminateMiddlewares, $handleMiddlewares];
-    }
-
-    public function makeSql(bool $withLogicGroup = false): string
-    {
-        $sql = [];
-        $sql['comment'] = $this->parseComment();
-        $sql['select'] = 'SELECT';
-
-        foreach (array_keys($this->configs) as $config) {
-            $config = (string) $config;
-            if ('from' === $config) {
-                $sql['from'] = '';
-            } elseif (\in_array($config, ['comment', 'union'], true)) {
-                continue;
-            } elseif (method_exists($this, $method = 'parse'.ucfirst($config))) {
-                $sql[$config] = $this->{$method}();
-            }
-        }
-
-        $sql['from'] = $this->parseFrom();
-        $sql['union'] = $this->parseUnion();
-
-        // 执行扩展中间件
-        if ($extendMiddlewares = $this->terminateMiddlewares) {
-            $sql = $this->parseTerminateMiddlewares($extendMiddlewares, $sql);
-        }
-
-        // 删除空元素
-        foreach ($sql as $offset => $config) {
-            if ('' === trim($config)) {
-                unset($sql[$offset]);
-            }
-        }
-
-        $result = trim(implode(' ', $sql));
-
-        if ($withLogicGroup) {
-            return '('.$result.')';
-        }
-
-        return $result;
-    }
-
-    public function getBindParams(): array
-    {
-        return $this->bindParams;
     }
 
     /**

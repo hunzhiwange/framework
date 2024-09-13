@@ -27,7 +27,7 @@ trait FlowControl
     /**
      * 条件语句 if.
      */
-    public function if(mixed $condition): self
+    public function if(mixed $condition): static
     {
         $parentLevel = $this->flowControlLevel;
         ++$this->flowControlLevel;
@@ -60,7 +60,7 @@ trait FlowControl
     /**
      * 条件语句 elif.
      */
-    public function elif(mixed $condition): self
+    public function elif(mixed $condition): static
     {
         if (!$this->lastFlowControlMatched[$this->flowControlLevel] && $condition) {
             $this->lastFlowControlMatched[$this->flowControlLevel] = true;
@@ -75,7 +75,7 @@ trait FlowControl
     /**
      * 条件语句 else.
      */
-    public function else(): self
+    public function else(): static
     {
         $this->lastFlowControlMatched[$this->flowControlLevel] = $this->elseFlowControlMatched[$this->flowControlLevel];
 
@@ -85,7 +85,7 @@ trait FlowControl
     /**
      * 条件语句 fi.
      */
-    public function fi(): self
+    public function fi(): static
     {
         if (isset($this->lastFlowControlMatched[$this->flowControlLevel])) {
             unset($this->lastFlowControlMatched[$this->flowControlLevel]);

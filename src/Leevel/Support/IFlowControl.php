@@ -12,20 +12,20 @@ interface IFlowControl
     /**
      * 条件语句 if.
      */
-    public function if(mixed $condition): self;
+    public function if(mixed $condition): static;
 
     /**
      * 条件语句 elif.
      */
-    public function elif(mixed $condition): self;
+    public function elif(mixed $condition): static;
 
     /**
      * 条件语句 else.
      */
-    public function else(): self;
+    public function else(): static;
 
     /**
      * 条件语句 fi.
      */
-    public function fi(): self;
+    public function fi(): static;
 }
