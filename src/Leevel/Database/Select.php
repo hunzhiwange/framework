@@ -7,12 +7,14 @@ namespace Leevel\Database;
 use Leevel\Cache\ICache;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
+use Leevel\Di\IContainer;
+use Leevel\Server\Pool\Pool as BasePool;
 use Leevel\Support\Collection;
 
 /**
  * 数据库查询器.
  */
-class Select implements ISelect
+class Select implements IDatabase
 {
     /**
      * 数据库连接.
@@ -68,11 +70,175 @@ class Select implements ISelect
      */
     public function __call(string $method, array $args): mixed
     {
-        if (\is_callable([$this->connect, $method])) {
-            return $this->connect->{$method}(...$args);
-        }
-
         throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
+    }
+
+    public function getContainer(): IContainer
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function setCache(?ICache $cache): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__, $cache);
+    }
+
+    public function getCache(): ?ICache
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function databaseSelect(): self
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function getPdo(bool $master = false): \PDO
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $master);
+    }
+
+    public function query(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): mixed
+    {
+        return $this->callDatabaseMethod(__FUNCTION__, $sql, $bindParams, $master, $cacheName, $cacheExpire, $cache);
+    }
+
+    public function procedure(string $sql, array $bindParams = [], bool $master = false, ?string $cacheName = null, ?int $cacheExpire = null, ?ICache $cache = null): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $sql, $bindParams, $master, $cacheName, $cacheExpire, $cache);
+    }
+
+    public function execute(string $sql, array $bindParams = [], bool $master = false, bool $insert = false): int|string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $sql, $bindParams, $master, $insert);
+    }
+
+    public function cursor(string $sql, array $bindParams = [], bool $master = false): \Generator
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $sql, $bindParams, $master);
+    }
+
+    public function prepare(string $sql, array $bindParams = [], bool $master = false): \PDOStatement
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $sql, $bindParams, $master);
+    }
+
+    public function transaction(\Closure $action): mixed
+    {
+        return $this->callDatabaseMethod(__FUNCTION__, $action);
+    }
+
+    public function beginTransaction(): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function inTransaction(): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function commit(): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function rollBack(): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function setSavepoints(bool $savepoints): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__, $savepoints);
+    }
+
+    public function hasSavepoints(): bool
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function getLastSql(): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function setRealLastSql(array $realLastSql): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__, $realLastSql);
+    }
+
+    public function getRealLastSql(): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function close(): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public static function getRawSql(string $sql, array $bindParams): string
+    {
+        return Database::getRawSql($sql, $bindParams);
+    }
+
+    public function parseDsn(array $config): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $config);
+    }
+
+    public function getTableNames(string $dbName, bool $master = false): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $dbName, $master);
+    }
+
+    public function getTableColumns(string $tableName, bool $master = false): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $tableName, $master);
+    }
+
+    public function getUniqueIndex(string $tableName, bool $master = false): array
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $tableName, $master);
+    }
+
+    public function identifierColumn(string $name): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $name);
+    }
+
+    public function limitCount(?int $limitCount = null, ?int $limitOffset = null): string
+    {
+        // @phpstan-ignore-next-line
+        return $this->callDatabaseMethod(__FUNCTION__, $limitCount, $limitOffset);
+    }
+
+    public function release(): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__);
+    }
+
+    public function setPool(BasePool $pool): void
+    {
+        $this->callDatabaseMethod(__FUNCTION__, $pool);
     }
 
     public function forPage(int $page, int $perPage = 10): self
@@ -852,6 +1018,11 @@ class Select implements ISelect
         return $data;
     }
 
+    protected function callDatabaseMethod(string $method, mixed ...$args): mixed
+    {
+        return $this->connect->{$method}(...$args);
+    }
+
     protected function callConditionMethodChain(string $method, mixed ...$args): self
     {
         $this->condition->{$method}(...$args);
@@ -959,7 +1130,7 @@ class Select implements ISelect
     protected function runNativeSql(string $type, string $data, array $bindParams = [], bool $insert = false): mixed
     {
         $args = [$data, $bindParams, $this->queryParams['master']];
-        $this->setRealLastSql($args);
+        $this->setDatabaseRealLastSql($args);
         if (\in_array($type, ['query', 'procedure'], true)) {
             $args = array_merge($args, $this->queryParams['cache']);
         } elseif ('execute' === $type) {
@@ -972,7 +1143,7 @@ class Select implements ISelect
     /**
      *  设置最近一次真实查询的 SQL 语句.
      */
-    protected function setRealLastSql(array $args): void
+    protected function setDatabaseRealLastSql(array $args): void
     {
         $newArgs = $args;
         $this->bindParamsTypeForHuman($newArgs[1]);
@@ -1023,7 +1194,7 @@ class Select implements ISelect
             $this->queryParams['master'],
         ];
 
-        $this->setRealLastSql($args);
+        $this->setDatabaseRealLastSql($args);
 
         return (array) $this->connect->query(...$args, ...$this->queryParams['cache']);
     }
