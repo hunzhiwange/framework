@@ -14,7 +14,7 @@ use Leevel\Support\Collection;
 /**
  * 数据库查询器.
  */
-class Select implements IDatabase
+class Select implements ISelect
 {
     /**
      * 数据库连接.

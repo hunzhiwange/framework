@@ -11,7 +11,7 @@ use Leevel\Support\Collection;
 /**
  * 数据库查询器接口.
  */
-interface ISelect extends ICondition
+interface ISelect extends ICondition, IBaseDatabase
 {
     public function forPage(int $page, int $perPage = 10): Select;
 
