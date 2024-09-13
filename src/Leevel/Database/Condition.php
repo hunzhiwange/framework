@@ -451,7 +451,7 @@ class Condition implements ICondition
         return $this;
     }
 
-    public function table(array|\Closure|ICondition|Select|string $table, array|string $cols = '*'): ICondition
+    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -716,7 +716,7 @@ class Condition implements ICondition
         return $this->forceIndex($indexes, 'IGNORE');
     }
 
-    public function join(array|\Closure|ICondition|Select|string $table, array|string $cols, ...$cond): ICondition
+    public function join(array|\Closure|ICondition|ISelect|string $table, array|string $cols, ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -725,7 +725,7 @@ class Condition implements ICondition
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    public function innerJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function innerJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -734,7 +734,7 @@ class Condition implements ICondition
         return $this->addJoin('inner join', $table, $cols, ...$cond);
     }
 
-    public function leftJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function leftJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -743,7 +743,7 @@ class Condition implements ICondition
         return $this->addJoin('left join', $table, $cols, ...$cond);
     }
 
-    public function rightJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function rightJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -755,7 +755,7 @@ class Condition implements ICondition
     /**
      * @throws \RuntimeException
      */
-    public function fullJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function fullJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -769,7 +769,7 @@ class Condition implements ICondition
         return $this->addJoin('full join', $table, $cols, ...$cond); // @codeCoverageIgnore
     }
 
-    public function crossJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function crossJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -778,7 +778,7 @@ class Condition implements ICondition
         return $this->addJoin('cross join', $table, $cols, ...$cond);
     }
 
-    public function naturalJoin(array|\Closure|ICondition|Select|string $table, array|string $cols, mixed ...$cond): ICondition
+    public function naturalJoin(array|\Closure|ICondition|ISelect|string $table, array|string $cols, mixed ...$cond): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -790,7 +790,7 @@ class Condition implements ICondition
     /**
      * @throws \InvalidArgumentException
      */
-    public function union(array|callable|ICondition|Select|string $selects, string $type = 'UNION'): ICondition
+    public function union(array|callable|ICondition|ISelect|string $selects, string $type = 'UNION'): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;
@@ -811,7 +811,7 @@ class Condition implements ICondition
         return $this;
     }
 
-    public function unionAll(array|callable|ICondition|Select|string $selects): ICondition
+    public function unionAll(array|callable|ICondition|ISelect|string $selects): ICondition
     {
         if ($this->checkFlowControl()) {
             return $this;

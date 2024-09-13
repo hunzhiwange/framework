@@ -160,7 +160,7 @@ class Select implements ISelect
         return $this->callConditionMethodChain(__FUNCTION__, $prefix);
     }
 
-    public function table(array|\Closure|ICondition|self|string $table, array|string $cols = '*'): ISelect
+    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): ISelect
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols);
     }
