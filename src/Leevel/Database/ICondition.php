@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use Leevel\Support\IFlowControl;
-
 /**
  * 条件构造器接口.
  */
-interface ICondition extends IFlowControl
+interface ICondition
 {
     /**
      * 根据分页设置条件.
@@ -407,4 +405,24 @@ interface ICondition extends IFlowControl
      * 返回参数绑定.
      */
     public function getBindParams(): array;
+
+    /**
+     * 条件语句 if.
+     */
+    public function if(mixed $condition): self;
+
+    /**
+     * 条件语句 elif.
+     */
+    public function elif(mixed $condition): self;
+
+    /**
+     * 条件语句 else.
+     */
+    public function else(): self;
+
+    /**
+     * 条件语句 fi.
+     */
+    public function fi(): self;
 }

@@ -46,7 +46,7 @@ class Session
         if (!$this->getSessionId($request)) {
             $response->headers->setCookie(
                 CookieUtils::makeCookie(
-                    $this->manager->getName(),
+                    $this->manager->getName() ?: '',
                     $this->manager->getId(),
                     ['expire' => $this->getSessionExpire()],
                 )
