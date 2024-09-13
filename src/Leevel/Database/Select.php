@@ -75,377 +75,377 @@ class Select implements ISelect
         throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
     }
 
-    public function forPage(int $page, int $perPage = 10): ISelect
+    public function forPage(int $page, int $perPage = 10): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $page, $perPage);
     }
 
-    public function time(string $type = 'date'): ISelect
+    public function time(string $type = 'date'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $type);
     }
 
-    public function endTime(): ISelect
+    public function endTime(): self
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function reset(?string $config = null): ISelect
+    public function reset(?string $config = null): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $config);
     }
 
-    public function comment(string $comment): ISelect
+    public function comment(string $comment): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $comment);
     }
 
-    public function prefix(string $prefix): ISelect
+    public function prefix(string $prefix): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $prefix);
     }
 
-    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): ISelect
+    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols);
     }
 
-    public function columns(array|string $cols = '*', ?string $table = null): ISelect
+    public function columns(array|string $cols = '*', ?string $table = null): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function setColumns(array|string $cols = '*', ?string $table = null): ISelect
+    public function setColumns(array|string $cols = '*', ?string $table = null): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function field(array|string $cols = '*', ?string $table = null): ISelect
+    public function field(array|string $cols = '*', ?string $table = null): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $cols, $table);
     }
 
-    public function middlewares(string ...$middlewares): ISelect
+    public function middlewares(string ...$middlewares): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$middlewares);
     }
 
-    public function where(mixed ...$cond): ISelect
+    public function where(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orWhere(mixed ...$cond): ISelect
+    public function orWhere(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereRaw(string $raw): ISelect
+    public function whereRaw(string $raw): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function orWhereRaw(string $raw): ISelect
+    public function orWhereRaw(string $raw): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function whereExists(mixed $exists): ISelect
+    public function whereExists(mixed $exists): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $exists);
     }
 
-    public function whereNotExists(mixed $exists): ISelect
+    public function whereNotExists(mixed $exists): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $exists);
     }
 
-    public function whereBetween(mixed ...$cond): ISelect
+    public function whereBetween(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotBetween(mixed ...$cond): ISelect
+    public function whereNotBetween(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNull(mixed ...$cond): ISelect
+    public function whereNull(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotNull(mixed ...$cond): ISelect
+    public function whereNotNull(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereIn(mixed ...$cond): ISelect
+    public function whereIn(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotIn(mixed ...$cond): ISelect
+    public function whereNotIn(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereLike(mixed ...$cond): ISelect
+    public function whereLike(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereNotLike(mixed ...$cond): ISelect
+    public function whereNotLike(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereDate(mixed ...$cond): ISelect
+    public function whereDate(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereDay(mixed ...$cond): ISelect
+    public function whereDay(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereMonth(mixed ...$cond): ISelect
+    public function whereMonth(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function whereYear(mixed ...$cond): ISelect
+    public function whereYear(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): ISelect
+    public function bind(mixed $names, mixed $value = null, ?int $dataType = null): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $names, $value, $dataType);
     }
 
-    public function forceIndex(array|string $indexes, string $type = 'FORCE'): ISelect
+    public function forceIndex(array|string $indexes, string $type = 'FORCE'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $indexes, $type);
     }
 
-    public function ignoreIndex(array|string $indexes): ISelect
+    public function ignoreIndex(array|string $indexes): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $indexes);
     }
 
-    public function join(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function join(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function innerJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function innerJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function leftJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function leftJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function rightJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function rightJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function fullJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function fullJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function crossJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function crossJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function naturalJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): ISelect
+    public function naturalJoin(array|\Closure|ICondition|self|string $table, array|string $cols, mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $table, $cols, ...$cond);
     }
 
-    public function union(array|callable|ICondition|self|string $selects, string $type = 'UNION'): ISelect
+    public function union(array|callable|ICondition|self|string $selects, string $type = 'UNION'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $selects, $type);
     }
 
-    public function unionAll(array|callable|ICondition|self|string $selects): ISelect
+    public function unionAll(array|callable|ICondition|self|string $selects): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $selects);
     }
 
-    public function groupBy(array|string $expression): ISelect
+    public function groupBy(array|string $expression): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $expression);
     }
 
-    public function having(mixed ...$cond): ISelect
+    public function having(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orHaving(mixed ...$cond): ISelect
+    public function orHaving(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingRaw(string $raw): ISelect
+    public function havingRaw(string $raw): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function orHavingRaw(string $raw): ISelect
+    public function orHavingRaw(string $raw): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $raw);
     }
 
-    public function havingBetween(mixed ...$cond): ISelect
+    public function havingBetween(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotBetween(mixed ...$cond): ISelect
+    public function havingNotBetween(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNull(mixed ...$cond): ISelect
+    public function havingNull(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotNull(mixed ...$cond): ISelect
+    public function havingNotNull(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingIn(mixed ...$cond): ISelect
+    public function havingIn(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotIn(mixed ...$cond): ISelect
+    public function havingNotIn(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingLike(mixed ...$cond): ISelect
+    public function havingLike(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingNotLike(mixed ...$cond): ISelect
+    public function havingNotLike(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingDate(mixed ...$cond): ISelect
+    public function havingDate(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingDay(mixed ...$cond): ISelect
+    public function havingDay(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingMonth(mixed ...$cond): ISelect
+    public function havingMonth(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function havingYear(mixed ...$cond): ISelect
+    public function havingYear(mixed ...$cond): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, ...$cond);
     }
 
-    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): ISelect
+    public function orderBy(array|string $expression, string $orderDefault = 'ASC'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $expression, $orderDefault);
     }
 
-    public function latest(string $field = 'create_at'): ISelect
+    public function latest(string $field = 'create_at'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field);
     }
 
-    public function oldest(string $field = 'create_at'): ISelect
+    public function oldest(string $field = 'create_at'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field);
     }
 
-    public function distinct(bool $flag = true): ISelect
+    public function distinct(bool $flag = true): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function count(string $field = '*', string $alias = 'row_count'): ISelect
+    public function count(string $field = '*', string $alias = 'row_count'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function avg(string $field, string $alias = 'avg_value'): ISelect
+    public function avg(string $field, string $alias = 'avg_value'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function max(string $field, string $alias = 'max_value'): ISelect
+    public function max(string $field, string $alias = 'max_value'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function min(string $field, string $alias = 'min_value'): ISelect
+    public function min(string $field, string $alias = 'min_value'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function sum(string $field, string $alias = 'sum_value'): ISelect
+    public function sum(string $field, string $alias = 'sum_value'): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $field, $alias);
     }
 
-    public function one(): ISelect
+    public function one(): self
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function all(): ISelect
+    public function all(): self
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function top(int $count = 30): ISelect
+    public function top(int $count = 30): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $count);
     }
 
-    public function limit(int $offset = 0, int $count = 0): ISelect
+    public function limit(int $offset = 0, int $count = 0): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $offset, $count);
     }
 
-    public function forUpdate(bool $flag = true): ISelect
+    public function forUpdate(bool $flag = true): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function lockShare(bool $flag = true): ISelect
+    public function lockShare(bool $flag = true): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $flag);
     }
 
-    public function resetBindParams(array $bindParams = []): ISelect
+    public function resetBindParams(array $bindParams = []): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $bindParams);
     }
 
-    public function setBindParamsPrefix(string $bindParamsPrefix): ISelect
+    public function setBindParamsPrefix(string $bindParamsPrefix): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $bindParamsPrefix);
     }
@@ -473,22 +473,22 @@ class Select implements ISelect
         return $this->callConditionMethod(__FUNCTION__);
     }
 
-    public function if(mixed $condition): ISelect
+    public function if(mixed $condition): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $condition);
     }
 
-    public function elif(mixed $condition): ISelect
+    public function elif(mixed $condition): self
     {
         return $this->callConditionMethodChain(__FUNCTION__, $condition);
     }
 
-    public function else(): ISelect
+    public function else(): self
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
 
-    public function fi(): ISelect
+    public function fi(): self
     {
         return $this->callConditionMethodChain(__FUNCTION__);
     }
@@ -503,14 +503,14 @@ class Select implements ISelect
         return $this->connect;
     }
 
-    public function master(bool $master = false): ISelect
+    public function master(bool $master = false): self
     {
         $this->queryParams['master'] = $master;
 
         return $this;
     }
 
-    public function asSome(?\Closure $asSome = null, array $args = []): ISelect
+    public function asSome(?\Closure $asSome = null, array $args = []): self
     {
         $this->queryParams['as_some'] = $asSome;
         $this->queryParams['as_args'] = $args;
@@ -518,7 +518,7 @@ class Select implements ISelect
         return $this;
     }
 
-    public function asArray(?\Closure $asArray = null): ISelect
+    public function asArray(?\Closure $asArray = null): self
     {
         $this->queryParams['as_some'] = static fn (array $value): array => $asArray ? $asArray($value) : $value;
         $this->queryParams['as_args'] = [];
@@ -527,7 +527,7 @@ class Select implements ISelect
         return $this;
     }
 
-    public function asCollection(bool $asCollection = true, array $valueTypes = []): ISelect
+    public function asCollection(bool $asCollection = true, array $valueTypes = []): self
     {
         $this->queryParams['as_collection'] = $asCollection;
         $this->queryParams['as_collection_value_types'] = $asCollection ? $valueTypes : [];
@@ -817,7 +817,7 @@ class Select implements ISelect
         return $this->page($currentPage, $perPage, null, $config);
     }
 
-    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): ISelect
+    public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
     {
         $this->queryParams['cache'] = [$name, $expire, $cache];
 
@@ -852,7 +852,7 @@ class Select implements ISelect
         return $data;
     }
 
-    protected function callConditionMethodChain(string $method, mixed ...$args): ISelect
+    protected function callConditionMethodChain(string $method, mixed ...$args): self
     {
         $this->condition->{$method}(...$args);
 
