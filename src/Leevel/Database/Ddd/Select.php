@@ -155,7 +155,7 @@ use Leevel\Database\Select as DatabaseSelect;
  * @method static \Leevel\Database\Ddd\Select                                            else()                                                                                                                                                         条件语句 else.
  * @method static \Leevel\Database\Ddd\Select                                            fi()                                                                                                                                                           条件语句 fi.
  */
-class Select
+class Select implements ISelect
 {
     /**
      * 查询.
@@ -190,17 +190,11 @@ class Select
         return $this->normalizeSelectResult($result);
     }
 
-    /**
-     * 获取实体.
-     */
     public function entity(): Entity
     {
         return $this->entity;
     }
 
-    /**
-     * 获取不执行预载入的查询结果.
-     */
     public static function withoutPreLoadsResult(\Closure $call): mixed
     {
         $old = static::$preLoadsResult;
@@ -218,14 +212,6 @@ class Select
         return $result;
     }
 
-    /**
-     * 包含软删除数据的实体查询对象.
-     *
-     * - 获取包含软删除的数据.
-     * - 会覆盖查询条件，需要首先调用.
-     *
-     * @todo remove this(注意关联模型)
-     */
     public function withSoftDeleted(): self
     {
         $this->initSelect(Entity::WITH_SOFT_DELETED);
@@ -233,14 +219,6 @@ class Select
         return $this;
     }
 
-    /**
-     * 仅仅包含软删除数据的实体查询对象.
-     *
-     * - 获取只包含软删除的数据.
-     * - 会覆盖查询条件，需要首先调用.
-     *
-     * @todo remove this(注意关联模型)
-     */
     public function onlySoftDeleted(): self
     {
         $this->initSelect(Entity::ONLY_SOFT_DELETED);
@@ -248,9 +226,6 @@ class Select
         return $this;
     }
 
-    /**
-     * 添加预载入关联查询.
-     */
     public function eager(array $relation): self
     {
         $this->preLoads = array_merge(
@@ -261,9 +236,6 @@ class Select
         return $this;
     }
 
-    /**
-     * 尝试解析结果预载.
-     */
     public function preLoadResult(mixed $result): mixed
     {
         [$result, $type, $collectionType] = $this->conversionToEntitys($result);
@@ -279,9 +251,6 @@ class Select
         return $result;
     }
 
-    /**
-     * 通过主键或条件查找实体.
-     */
     public function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
@@ -298,9 +267,6 @@ class Select
         return $this->normalizeSelectResult($result);
     }
 
-    /**
-     * 通过主键或条件查找多个实体.
-     */
     public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): EntityCollection
     {
         // @todo 需要删除掉，这里设计很别扭，空直接抛出异常
@@ -322,9 +288,6 @@ class Select
         return $this->normalizeSelectResult($result);
     }
 
-    /**
-     * 通过主键或条件查找实体，未找到则抛出异常.
-     */
     public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
     {
         // 没有查询主键字段，自动补上主键自动
