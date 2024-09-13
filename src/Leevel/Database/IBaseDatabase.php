@@ -41,7 +41,7 @@ interface IBaseDatabase extends IConnection
     /**
      * 返回查询对象.
      */
-    public function databaseSelect(): ISelect;
+    public function databaseSelect(): Select;
 
     /**
      * 返回 PDO 查询连接.

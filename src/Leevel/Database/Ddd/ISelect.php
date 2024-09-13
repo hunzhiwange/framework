@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use Leevel\Database\ISelect as IBaseSelect;
+
 /**
  * 实体查询接口.
  */
-interface ISelect
+interface ISelect extends IBaseSelect
 {
     /**
      * 获取实体.
