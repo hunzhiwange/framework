@@ -1578,8 +1578,8 @@ EOT,
 
     public function testFindByFooAndBarArgsWasNotMatched(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Params of findBy or findAllBy was not matched.');
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined method Leevel\\Database\\Mysql::findByNameAndTitle()');
 
         $connect = $this->createDatabaseConnectMock();
         $connect->findByNameAndTitle('one');
@@ -1587,8 +1587,8 @@ EOT,
 
     public function testFindNotFound(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Select do not implement magic method `findPage`.');
+        $this->expectException(\Error::class);
+        $this->expectExceptionMessage('Call to undefined method Leevel\\Database\\Mysql::findPage()');
 
         $connect = $this->createDatabaseConnectMock();
         $connect->findPage();

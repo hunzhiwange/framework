@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Leevel\Database\Condition;
 use Leevel\Kernel\Utils\Api;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Query\Database\Demo;
 use Tests\Database\Query\Database\Demo2;
-use Tests\Database\Query\Database\Demo3;
 use Tests\Database\Query\Database\ForceMaster;
 
 #[Api([
@@ -151,17 +149,6 @@ EOT,
         );
     }
 
-    public function test4(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Condition middleware must be string.'
-        );
-
-        $this->createDatabaseConnectMock();
-        Condition::registerMiddlewares([1]);
-    }
-
     public function test5(): void
     {
         $connect = $this->createDatabaseConnectMock();
@@ -194,64 +181,6 @@ EOT,
                     ->findAll(),
                 $connect
             )
-        );
-    }
-
-    public function test6(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Condition middleware Tests\\Database\\Query\\Database\\Demo3 was invalid.'
-        );
-
-        $this->createDatabaseConnectMock();
-        Condition::registerMiddlewares([Demo3::class]);
-    }
-
-    #[Api([
-        'zh-CN:title' => 'registerMiddlewares 注册查询中间件',
-    ])]
-    public function testRegisterMiddlewares(): void
-    {
-        $this->createDatabaseConnectMock();
-        $data = Condition::registerMiddlewares([Demo::class]);
-
-        $result = <<<'eot'
-            [
-                [
-                    "Tests\\Database\\Query\\Database\\Demo@terminate"
-                ],
-                [
-                    "Tests\\Database\\Query\\Database\\Demo@handle"
-                ]
-            ]
-            eot;
-
-        self::assertSame(
-            $result,
-            $this->varJson($data)
-        );
-    }
-
-    public function testRegisterMiddlewares2(): void
-    {
-        $this->createDatabaseConnectMock();
-        $data = Condition::registerMiddlewares([Demo::class, Demo::class], true);
-
-        $result = <<<'eot'
-            [
-                [
-                    "Tests\\Database\\Query\\Database\\Demo@terminate"
-                ],
-                [
-                    "Tests\\Database\\Query\\Database\\Demo@handle"
-                ]
-            ]
-            eot;
-
-        self::assertSame(
-            $result,
-            $this->varJson($data)
         );
     }
 

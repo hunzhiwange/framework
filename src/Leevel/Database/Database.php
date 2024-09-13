@@ -170,7 +170,7 @@ abstract class Database implements IDatabase
         return $this->callSelectMethodChain(__FUNCTION__, $prefix);
     }
 
-    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): Select
+    public function table(array|\Closure|ICondition|ISelect|string $table, array|string $cols = '*'): ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $table, $cols);
     }

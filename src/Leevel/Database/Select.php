@@ -8,7 +8,6 @@ use Leevel\Cache\ICache;
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection;
 use Leevel\Support\Collection;
-use Leevel\Support\Str\UnCamelize;
 
 /**
  * 数据库查询器.
@@ -71,60 +70,6 @@ class Select implements ISelect
     {
         if (\is_callable([$this->connect, $method])) {
             return $this->connect->{$method}(...$args);
-        }
-
-        // 动态查询支持
-        if (0 === strncasecmp($method, 'find', 4)) {
-            $sourceMethod = $method;
-            $method = substr($method, 4);
-
-            // support find10start3 etc.
-            if (str_contains(strtolower($method), 'start')) {
-                $values = explode('start', strtolower($method));
-                $num = (int) array_shift($values);
-                $offset = (int) array_shift($values);
-
-                return $this->limit($offset, $num)->find();
-            }
-
-            // support findByName findByNameAndSex etc.
-            // support findAllByNameAndSex etc.
-            if (0 === strncasecmp($method, 'By', 2)
-                || 0 === strncasecmp($method, 'AllBy', 5)) {
-                $method = substr($method, ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5);
-                $isKeep = false;
-                if ('_' === substr($method, -1)) {
-                    $isKeep = true;
-                    $method = substr($method, 0, -1);
-                }
-
-                $keys = explode('And', $method);
-                if (\count($keys) !== \count($args)) {
-                    throw new \InvalidArgumentException('Params of findBy or findAllBy was not matched.');
-                }
-
-                if (!$isKeep) {
-                    $keys = array_map(static function ($item) {
-                        return UnCamelize::handle($item);
-                    }, $keys);
-                }
-
-                $method = 'find'.($isOne ? 'One' : 'All');
-
-                return $this
-                    ->where(array_combine($keys, $args))
-                    ->{$method}()
-                ;
-            }
-
-            if (!ctype_digit($method)) {
-                throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $sourceMethod));
-            }
-
-            return $this
-                ->top((int) $method)
-                ->find()
-            ;
         }
 
         throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));

@@ -42,7 +42,8 @@ final class DbTest extends TestCase
                 ->insert($data)
         );
 
-        $result = $manager->table('guest_book', 'name,content')
+        $result = $manager
+            ->table('guest_book', 'name,content')
             ->where('id', 1)
             ->findOne()
         ;
@@ -63,11 +64,13 @@ final class DbTest extends TestCase
 
         self::assertSame(
             1,
-            Db::table('guest_book')
+            Db::proxy()
+                ->table('guest_book')
                 ->insert($data)
         );
 
-        $result = Db::table('guest_book', 'name,content')
+        $result = Db::proxy()
+            ->table('guest_book', 'name,content')
             ->where('id', 1)
             ->findOne()
         ;
