@@ -37,7 +37,7 @@ abstract class Server extends Command
     {
         $result = [];
         // @phpstan-ignore-next-line
-        $result[] = ['QueryPHP', App::version()];
+        $result[] = ['QueryPHP', App::proxy()->version()];
         $result[] = ['PHP', PHP_VERSION];
         $result[] = ['Swoole', phpversion('swoole')];
         foreach ($config as $key => $val) {

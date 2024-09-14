@@ -729,9 +729,6 @@ class Container implements IContainer, \ArrayAccess
         $this->getContext(null, $defaultContext)[$type] = [];
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
     protected function getContext(?string $name = null, bool $defaultContext = false): \ArrayObject
     {
         if ($defaultContext) {
@@ -744,7 +741,8 @@ class Container implements IContainer, \ArrayAccess
             /** @phpstan-ignore-next-line */
             $context = $contextResolver();
             if (!$context instanceof \ArrayObject) {
-                throw new \InvalidArgumentException('The context resolver did not return an \ArrayObject as expected.');
+                // 框架初始化期间协程环境尚未准备好
+                return $this->defaultContext;
             }
 
             return $context;
