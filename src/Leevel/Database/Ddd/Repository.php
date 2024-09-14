@@ -801,9 +801,9 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $num);
     }
 
-    public function value(string $field): mixed
+    public function value(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
     public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
@@ -828,24 +828,24 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findAvg(string $field): mixed
+    public function findAvg(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findMax(string $field): mixed
+    public function findMax(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findMin(string $field): mixed
+    public function findMin(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findSum(string $field): mixed
+    public function findSum(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
     public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page

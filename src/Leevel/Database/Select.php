@@ -855,13 +855,17 @@ class Select implements ISelect
         return $this->queryAllResult();
     }
 
-    public function value(string $field): mixed
+    public function value(string $field, ?\Closure $condition = null): mixed
     {
         $this
             ->condition
             ->setColumns($field)
             ->one()
         ;
+
+        if ($condition) {
+            $condition($this);
+        }
 
         $result = (array) $this
             ->asSome()
@@ -951,24 +955,24 @@ class Select implements ISelect
         return (int) $this->findAggregateResult('count', $field, 'row_count', $condition);
     }
 
-    public function findAvg(string $field): mixed
+    public function findAvg(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->findAggregateResult('avg', $field, 'avg_value');
+        return $this->findAggregateResult('avg', $field, 'avg_value', $condition);
     }
 
-    public function findMax(string $field): mixed
+    public function findMax(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->findAggregateResult('max', $field, 'max_value');
+        return $this->findAggregateResult('max', $field, 'max_value', $condition);
     }
 
-    public function findMin(string $field): mixed
+    public function findMin(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->findAggregateResult('min', $field, 'min_value');
+        return $this->findAggregateResult('min', $field, 'min_value', $condition);
     }
 
-    public function findSum(string $field): mixed
+    public function findSum(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->findAggregateResult('sum', $field, 'sum_value');
+        return $this->findAggregateResult('sum', $field, 'sum_value', $condition);
     }
 
     public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page

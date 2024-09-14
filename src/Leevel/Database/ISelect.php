@@ -279,7 +279,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 返回一个字段的值.
      */
-    public function value(string $field): mixed;
+    public function value(string $field, ?\Closure $condition = null): mixed;
 
     /**
      * 返回一列数据.
@@ -304,22 +304,22 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 平均数.
      */
-    public function findAvg(string $field): mixed;
+    public function findAvg(string $field, ?\Closure $condition = null): mixed;
 
     /**
      * 最大值.
      */
-    public function findMax(string $field): mixed;
+    public function findMax(string $field, ?\Closure $condition = null): mixed;
 
     /**
      * 最小值.
      */
-    public function findMin(string $field): mixed;
+    public function findMin(string $field, ?\Closure $condition = null): mixed;
 
     /**
      * 合计.
      */
-    public function findSum(string $field): mixed;
+    public function findSum(string $field, ?\Closure $condition = null): mixed;
 
     /**
      * 分页列表查询.

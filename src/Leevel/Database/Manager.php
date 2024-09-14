@@ -735,7 +735,7 @@ class Manager extends Managers implements IDatabase
         return $this->callConnectMethod(__FUNCTION__, $num);
     }
 
-    public function value(string $field): mixed
+    public function value(string $field, ?\Closure $condition = null): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $field);
     }
@@ -762,22 +762,22 @@ class Manager extends Managers implements IDatabase
         return $this->callConnectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findAvg(string $field): mixed
+    public function findAvg(string $field, ?\Closure $condition = null): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findMax(string $field): mixed
+    public function findMax(string $field, ?\Closure $condition = null): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findMin(string $field): mixed
+    public function findMin(string $field, ?\Closure $condition = null): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findSum(string $field): mixed
+    public function findSum(string $field, ?\Closure $condition = null): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $field);
     }
