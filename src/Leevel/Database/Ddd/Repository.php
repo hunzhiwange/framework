@@ -36,6 +36,11 @@ class Repository implements ISelect
     protected ?\Closure $insertAllBoot = null;
 
     /**
+     * 实体软删除数据类型.
+     */
+    protected int $softDeletedType = Entity::WITHOUT_SOFT_DELETED;
+
+    /**
      * 构造函数.
      */
     public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null) {}
@@ -87,6 +92,12 @@ class Repository implements ISelect
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $idOrCondition, $column);
+    }
+
+    public function getDatabaseSelect(): DatabaseSelect
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
     }
 
     public function getContainer(): IContainer
@@ -778,10 +789,10 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__);
     }
 
-    public function findAll(): array|Collection|EntityCollection
+    public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__);
+        return $this->callSelectMethod(__FUNCTION__, $condition);
     }
 
     public function find(?int $num = null): array|Collection|EntityCollection
@@ -795,10 +806,10 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function list(mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey);
+        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey, $condition);
     }
 
     public function chunk(int $count, \Closure $chunk): void
@@ -811,10 +822,10 @@ class Repository implements ISelect
         $this->callSelectMethod(__FUNCTION__, $count, $each);
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count'): int
+    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias, $condition);
     }
 
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
@@ -837,38 +848,27 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
-    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);
     }
 
-    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
-    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): Select
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
-    }
-
-    public function queryOne(): mixed
-    {
-        return $this->callSelectMethod(__FUNCTION__);
-    }
-
-    public function queryAll(): array|Collection|EntityCollection
-    {
-        // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__);
     }
 
     /**
@@ -901,47 +901,16 @@ class Repository implements ISelect
             $insertAllBoot($this, $data, $bind, $replace);
         }
 
-        return $this->getSelect()->insertAll($data, $bind, $replace);
-    }
-
-    /**
-     * 取得所有记录.
-     */
-    public function findAllByCondition(?\Closure $condition = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): array|Collection|EntityCollection
-    {
-        $select = $this->condition($condition, $softDeletedType);
-
-        // @phpstan-ignore-next-line
-        return $select->findAll();
-    }
-
-    /**
-     * 返回一列数据.
-     */
-    public function findList(?\Closure $condition, mixed $fieldValue, ?string $fieldKey = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): array
-    {
-        $select = $this->condition($condition, $softDeletedType);
-
-        return $select->list($fieldValue, $fieldKey);
-    }
-
-    /**
-     * 取得记录数量.
-     */
-    public function findCountByCondition(?\Closure $condition = null, string $field = '*', int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): int
-    {
-        $select = $this->condition($condition, $softDeletedType);
-
-        return $select->findCount($field);
+        return $this->getEntitySelect()->insertAll($data, $bind, $replace);
     }
 
     /**
      * 分页查询.
      */
-    public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
+    public function findPageAndCount(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = []): Page
     {
-        if (!$this->getSelect()->getContainer()->enabledCoroutine()) {
-            $count = $this->findCountByCondition($condition, $column, $softDeletedType);
+        if (!$this->getEntitySelect()->getContainer()->enabledCoroutine()) {
+            $count = $this->findCount($condition, $column, $softDeletedType);
             $page = $this->condition($condition, $softDeletedType)->page($currentPage, $perPage, null, $config);
             $page->setTotalRecord($count);
 
@@ -997,37 +966,17 @@ class Repository implements ISelect
     }
 
     /**
-     * 创建一个无限数据的分页查询.
-     */
-    public function findPageMacro(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
-    {
-        $select = $this->condition($condition, $softDeletedType);
-
-        return $select->pageMacro($currentPage, $perPage, $config);
-    }
-
-    /**
-     * 创建一个只有上下页的分页查询.
-     */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
-    {
-        $select = $this->condition($condition, $softDeletedType);
-
-        return $select->pagePrevNext($currentPage, $perPage, $config);
-    }
-
-    /**
      * 判断指定数组数据值是否存在.
      *
      * @throws DataNotFoundException
      */
-    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*', int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): void
+    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*'): void
     {
         if (!$field) {
             $field = $this->entity->singlePrimaryKey();
         }
         $data = array_values(array_unique($data));
-        $select = $this->condition(null, $softDeletedType);
+        $select = $this->getEntitySelect();
         $select->whereIn($field, $data);
 
         if ($condition) {
@@ -1043,25 +992,11 @@ class Repository implements ISelect
     }
 
     /**
-     * 条件查询器.
-     */
-    public function condition(?\Closure $condition = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Select
-    {
-        $select = $this->getSelect($softDeletedType);
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
-
-        return $select;
-    }
-
-    /**
      * 返回基础查询.
      */
-    public function getSelect(int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Select
+    public function getEntitySelect(): Select
     {
-        return $this->entity->select($softDeletedType);
+        return $this->entity->select($this->softDeletedType);
     }
 
     /**
@@ -1123,12 +1058,12 @@ class Repository implements ISelect
     protected function callSelectMethodChain(string $method, mixed ...$args): Select
     {
         // @phpstan-ignore-next-line
-        return $this->getSelect()->{$method}(...$args);
+        return $this->getEntitySelect()->{$method}(...$args);
     }
 
     protected function callSelectMethod(string $method, mixed ...$args): mixed
     {
-        return $this->getSelect()->{$method}(...$args);
+        return $this->getEntitySelect()->{$method}(...$args);
     }
 
     /**

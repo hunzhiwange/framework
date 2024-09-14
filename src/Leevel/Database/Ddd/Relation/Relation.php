@@ -122,6 +122,12 @@ abstract class Relation implements IRelation
         return $this->callSelectMethod(__FUNCTION__, $idOrCondition, $column);
     }
 
+    public function getDatabaseSelect(): DatabaseSelect
+    {
+        // @phpstan-ignore-next-line
+        return $this->callSelectMethod(__FUNCTION__);
+    }
+
     public function getContainer(): IContainer
     {
         // @phpstan-ignore-next-line
@@ -817,10 +823,10 @@ abstract class Relation implements IRelation
         return $this->callSelectMethod(__FUNCTION__);
     }
 
-    public function findAll(): array|Collection|EntityCollection
+    public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__);
+        return $this->callSelectMethod(__FUNCTION__, $condition);
     }
 
     public function find(?int $num = null): array|Collection|EntityCollection
@@ -834,10 +840,10 @@ abstract class Relation implements IRelation
         return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function list(mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey);
+        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey, $condition);
     }
 
     public function chunk(int $count, \Closure $chunk): void
@@ -850,10 +856,10 @@ abstract class Relation implements IRelation
         $this->callSelectMethod(__FUNCTION__, $count, $each);
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count'): int
+    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field, $alias, $condition);
     }
 
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
@@ -876,38 +882,27 @@ abstract class Relation implements IRelation
         return $this->callSelectMethod(__FUNCTION__, $field, $alias);
     }
 
-    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);
     }
 
-    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
-    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config);
+        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
-    }
-
-    public function queryOne(): mixed
-    {
-        return $this->callSelectMethod(__FUNCTION__);
-    }
-
-    public function queryAll(): array|Collection|EntityCollection
-    {
-        // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__);
     }
 
     public function getSelect(): Select

@@ -724,11 +724,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $select = new Select($entity = new static(), $softDeletedType);
         $withoutGlobalScopeNames = static::$withoutGlobalScopeNamesFramework[static::class] ?? null;
         if (isset(static::$globalScopeFramework[static::class])) {
+            $batabaseSelect = $select->getDatabaseSelect();
             foreach (static::$globalScopeFramework[static::class] as $scopeName => $call) {
                 if ($withoutGlobalScopeNames && \in_array($scopeName, $withoutGlobalScopeNames, true)) {
                     continue;
                 }
-                $call($select, $entity);
+                $call($batabaseSelect, $entity);
             }
         }
 

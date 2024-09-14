@@ -7,6 +7,7 @@ namespace Leevel\Database\Ddd;
 use Leevel\Cache\ICache;
 use Leevel\Database\ICondition;
 use Leevel\Database\ISelect as IBaseSelect;
+use Leevel\Database\Select as DatabaseSelect;
 
 /**
  * 实体查询接口.
@@ -235,4 +236,9 @@ interface ISelect extends IBaseSelect
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
     public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity;
+
+    /**
+     * 获取查询.
+     */
+    public function getDatabaseSelect(): DatabaseSelect;
 }

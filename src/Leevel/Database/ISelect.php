@@ -269,7 +269,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 返回所有记录.
      */
-    public function findAll(): array|Collection|EntityCollection;
+    public function findAll(?\Closure $condition = null): array|Collection|EntityCollection;
 
     /**
      * 返回最后几条记录.
@@ -284,7 +284,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 返回一列数据.
      */
-    public function list(mixed $fieldValue, ?string $fieldKey = null): array;
+    public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array;
 
     /**
      * 数据分块处理.
@@ -299,7 +299,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 总记录数.
      */
-    public function findCount(string $field = '*', string $alias = 'row_count'): int;
+    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int;
 
     /**
      * 平均数.
@@ -324,30 +324,20 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 分页查询.
      */
-    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page;
+    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page;
 
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page;
+    public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page;
 
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page;
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page;
 
     /**
      * 设置查询缓存.
      */
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self;
-
-    /**
-     * 查询单条记录获得结果.
-     */
-    public function queryOne(): mixed;
-
-    /**
-     * 查询多条记录获得结果.
-     */
-    public function queryAll(): array|Collection|EntityCollection;
 }

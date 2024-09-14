@@ -801,7 +801,7 @@ class Select implements ISelect
     {
         $this->condition->one();
 
-        return $this->queryOne();
+        return $this->queryOneResult();
     }
 
     public function findArray(): array
@@ -809,7 +809,10 @@ class Select implements ISelect
         $this->condition->all();
 
         // @phpstan-ignore-next-line
-        return $this->asCollection(false)->queryAll();
+        return $this
+            ->asCollection(false)
+            ->queryAllResult()
+        ;
     }
 
     public function findAsArray(): array
@@ -820,7 +823,7 @@ class Select implements ISelect
         return $this
             ->asCollection(false)
             ->asArray()
-            ->queryAll()
+            ->queryAllResult()
         ;
     }
 
@@ -829,14 +832,18 @@ class Select implements ISelect
         $this->condition->all();
 
         // @phpstan-ignore-next-line
-        return $this->asCollection()->queryAll();
+        return $this->asCollection()->queryAllResult();
     }
 
-    public function findAll(): array|Collection|EntityCollection
+    public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
         $this->condition->all();
 
-        return $this->queryAll();
+        if ($condition) {
+            $condition($this);
+        }
+
+        return $this->queryAllResult();
     }
 
     public function find(?int $num = null): array|Collection|EntityCollection
@@ -845,7 +852,7 @@ class Select implements ISelect
             $this->condition->top($num);
         }
 
-        return $this->queryAll();
+        return $this->queryAllResult();
     }
 
     public function value(string $field): mixed
@@ -858,15 +865,14 @@ class Select implements ISelect
 
         $result = (array) $this
             ->asSome()
-            ->queryOne()
+            ->queryOneResult()
         ;
 
         return $result[$field] ?? null;
     }
 
-    public function list(mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
     {
-        // 纵然有弱水三千，我也只取一瓢
         // 第一个字段为值，第二个字段为键值，多余的字段丢弃
         $fields = [];
         if (\is_array($fieldValue)) {
@@ -880,6 +886,10 @@ class Select implements ISelect
         }
 
         $this->condition->setColumns($fields);
+
+        if ($condition) {
+            $condition($this);
+        }
 
         $list = $this
             ->asSome()
@@ -936,9 +946,9 @@ class Select implements ISelect
         });
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count'): int
+    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
     {
-        return (int) $this->findAggregateResult('count', $field, $alias);
+        return (int) $this->findAggregateResult('count', $field, $alias, $condition);
     }
 
     public function findAvg(string $field, string $alias = 'avg_value'): mixed
@@ -961,9 +971,14 @@ class Select implements ISelect
         return $this->findAggregateResult('sum', $field, $alias);
     }
 
-    public function page(int $currentPage, int $perPage = 10, ?int $count = null, array $config = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         $page = new Page($currentPage, $perPage, $count, $config);
+
+        if ($condition) {
+            $condition($this);
+        }
+
         $data = $this
             ->limit($page->getFromRecord(), $perPage)
             ->findAll()
@@ -973,14 +988,14 @@ class Select implements ISelect
         return $page;
     }
 
-    public function pageMacro(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
-        return $this->page($currentPage, $perPage, Page::MACRO, $config);
+        return $this->findPage($currentPage, $perPage, Page::MACRO, $config, $condition);
     }
 
-    public function pagePrevNext(int $currentPage, int $perPage = 10, array $config = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
-        return $this->page($currentPage, $perPage, null, $config);
+        return $this->findPage($currentPage, $perPage, null, $config, $condition);
     }
 
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
@@ -990,7 +1005,10 @@ class Select implements ISelect
         return $this;
     }
 
-    public function queryOne(): mixed
+    /**
+     * 查询单条记录获得结果.
+     */
+    protected function queryOneResult(): mixed
     {
         $data = $this->queryBaseData();
         if (null === $this->queryParams['as_some']) {
@@ -1004,7 +1022,10 @@ class Select implements ISelect
         return $data;
     }
 
-    public function queryAll(): array|Collection|EntityCollection
+    /**
+     * 查询单条记录获得结果.
+     */
+    protected function queryAllResult(): array|Collection|EntityCollection
     {
         $data = $this->queryBaseData();
         if (null === $this->queryParams['as_some']) {
@@ -1112,13 +1133,17 @@ class Select implements ISelect
     /**
      * 获取聚合结果.
      */
-    protected function findAggregateResult(string $method, string $field, string $alias): mixed
+    protected function findAggregateResult(string $method, string $field, string $alias, ?\Closure $condition = null): mixed
     {
         $this->condition->{$method}($field, $alias);
 
+        if ($condition) {
+            $condition($this);
+        }
+
         $result = $this
             ->asSome()
-            ->queryOne()
+            ->queryOneResult()
         ;
 
         return \is_object($result) ? ($result->{$alias} ?? 0) : ($result[$alias] ?? 0);
