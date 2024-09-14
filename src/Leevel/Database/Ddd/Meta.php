@@ -149,6 +149,7 @@ class Meta
             throw new \Exception('Database connect was not set.');
         }
 
+        // @phpstan-ignore-next-line
         return $this->databaseConnect->table($this->table);
     }
 
