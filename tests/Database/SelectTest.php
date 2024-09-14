@@ -746,7 +746,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('name')
+            ->findList('name')
         ;
 
         $json = <<<'eot'
@@ -782,7 +782,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('content', 'name')
+            ->findList('content', 'name')
         ;
 
         $json = <<<'eot'
@@ -818,7 +818,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list('content,name')
+            ->findList('content,name')
         ;
 
         $json = <<<'eot'
@@ -851,7 +851,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->where('id', 1)
-            ->list(['content'], 'name')
+            ->findList(['content'], 'name')
         ;
 
         $json = <<<'eot'
@@ -1055,7 +1055,7 @@ EOT,
 
         $page = $connect
             ->table('guest_book')
-            ->page(1, count: 26)
+            ->findPageList(1, count: 26)
         ;
         $result = $page->toArray()['data'];
 
@@ -1162,7 +1162,7 @@ EOT,
                     ->orWhere('content', 'like', '%m%')
                 ;
             })
-            ->page(1, count: 3)
+            ->findPageList(1, count: 3)
         ;
         $result = $page->toArray()['data'];
 
@@ -1262,7 +1262,7 @@ EOT,
 
         $page = $connect
             ->table('guest_book')
-            ->pageMacro(1)
+            ->findPageMacro(1)
         ;
         $result = $page->toArray()['data'];
 
@@ -1362,7 +1362,7 @@ EOT,
 
         $page = $connect
             ->table('guest_book')
-            ->pagePrevNext(1, 15)
+            ->findPagePrevNext(1, 15)
         ;
         $result = $page->toArray()['data'];
 
@@ -1993,20 +1993,20 @@ EOT,
 
         $result = $manager
             ->table('guest_book')
-            ->page(1)
+            ->findPageList(1)
         ;
         self::assertFileDoesNotExist($cacheFile);
 
         $resultWithoutCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->page(1)
+            ->findPageList(1)
         ;
         // cached data
         $resultWithCache = $manager
             ->cache('testcachekey')
             ->table('guest_book')
-            ->page(1)
+            ->findPageList(1)
         ;
 
         self::assertFileExists($cacheFile);

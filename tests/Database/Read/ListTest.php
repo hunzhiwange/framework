@@ -31,7 +31,7 @@ final class ListTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test')
-                    ->list('name'),
+                    ->findList('name'),
                 $connect
             )
         );
@@ -55,7 +55,7 @@ final class ListTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test')
-                    ->list('name,id'),
+                    ->findList('name,id'),
                 $connect,
                 1
             )
@@ -80,7 +80,7 @@ final class ListTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test')
-                    ->list('name', 'id'),
+                    ->findList('name', 'id'),
                 $connect,
                 2
             )
@@ -105,7 +105,7 @@ final class ListTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test')
-                    ->list(['name', 'id']),
+                    ->findList(['name', 'id']),
                 $connect,
                 3
             )
@@ -130,7 +130,7 @@ final class ListTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test')
-                    ->list(['name'], 'id'),
+                    ->findList(['name'], 'id'),
                 $connect,
                 4
             )

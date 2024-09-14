@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\DataNotFoundException;
-use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\EntityCollection as Collection;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Database\Ddd\Repository;
+use Leevel\Database\Ddd\Select as EntitySelect;
 use Leevel\Database\Page;
 use Leevel\Database\Select;
 use Leevel\Di\Container;
@@ -167,7 +167,7 @@ final class RepositoryTest extends TestCase
             $select->getLastSql(),
         );
 
-        $this->assertInstanceof(Select::class, $select);
+        $this->assertInstanceof(EntitySelect::class, $select);
         $this->assertInstanceof(Collection::class, $result);
         self::assertCount(10, $result);
     }
@@ -239,7 +239,7 @@ final class RepositoryTest extends TestCase
             $select->getLastSql(),
         );
 
-        $this->assertInstanceof(Select::class, $select);
+        $this->assertInstanceof(EntitySelect::class, $select);
         self::assertSame(10, $result);
     }
 
@@ -821,7 +821,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = static function (Select $select, Entity $entity): void {
+        $condition = static function (Select $select): void {
             $select->where('id', '<', 8);
         };
 
@@ -887,7 +887,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = static function (Select $select, Entity $entity): void {
+        $condition = static function (Select $select): void {
             $select->where('id', '<', 8);
         };
 
@@ -953,7 +953,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $condition = static function (Select $select, Entity $entity): void {
+        $condition = static function (Select $select): void {
             $select->where('id', '<', 8);
         };
 
