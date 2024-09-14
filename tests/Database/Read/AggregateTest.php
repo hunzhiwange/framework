@@ -71,7 +71,7 @@ final class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT COUNT(*) AS row_count2 FROM `test_query` LIMIT 1",
+                "SELECT COUNT(*) AS row_count FROM `test_query` LIMIT 1",
                 [],
                 false
             ]
@@ -146,7 +146,7 @@ final class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT AVG(`test_query`.`num`) AS avg_value2 FROM `test_query` LIMIT 1",
+                "SELECT AVG(`test_query`.`num`) AS avg_value FROM `test_query` LIMIT 1",
                 [],
                 false
             ]
@@ -221,7 +221,7 @@ final class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT MAX(`test_query`.`num`) AS max_value2 FROM `test_query` LIMIT 1",
+                "SELECT MAX(`test_query`.`num`) AS max_value FROM `test_query` LIMIT 1",
                 [],
                 false
             ]
@@ -296,7 +296,7 @@ final class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT MIN(`test_query`.`num`) AS min_value2 FROM `test_query` LIMIT 1",
+                "SELECT MIN(`test_query`.`num`) AS min_value FROM `test_query` LIMIT 1",
                 [],
                 false
             ]
@@ -371,7 +371,7 @@ final class AggregateTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT SUM(`test_query`.`num`) AS sum_value2 FROM `test_query` LIMIT 1",
+                "SELECT SUM(`test_query`.`num`) AS sum_value FROM `test_query` LIMIT 1",
                 [],
                 false
             ]
