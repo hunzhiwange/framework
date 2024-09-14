@@ -837,11 +837,11 @@ class Select implements ISelect
 
     public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
-        $this->condition->all();
-
         if ($condition) {
             $condition($this);
         }
+
+        $this->condition->all();
 
         return $this->queryAllResult();
     }
@@ -857,15 +857,15 @@ class Select implements ISelect
 
     public function value(string $field, ?\Closure $condition = null): mixed
     {
+        if ($condition) {
+            $condition($this);
+        }
+
         $this
             ->condition
             ->setColumns($field)
             ->one()
         ;
-
-        if ($condition) {
-            $condition($this);
-        }
 
         $result = (array) $this
             ->asSome()
@@ -877,7 +877,9 @@ class Select implements ISelect
 
     public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
     {
-        // 第一个字段为值，第二个字段为键值，多余的字段丢弃
+        // 第一个字段为值
+        // 第二个字段为键值
+        // 多余的字段丢弃
         $fields = [];
         if (\is_array($fieldValue)) {
             $fields = $fieldValue;
@@ -889,11 +891,11 @@ class Select implements ISelect
             $fields[] = $fieldKey;
         }
 
-        $this->condition->setColumns($fields);
-
         if ($condition) {
             $condition($this);
         }
+
+        $this->condition->setColumns($fields);
 
         $list = $this
             ->asSome()
@@ -1139,11 +1141,11 @@ class Select implements ISelect
      */
     protected function findAggregateResult(string $method, string $field, string $alias, ?\Closure $condition = null): mixed
     {
-        $this->condition->{$method}($field, $alias);
-
         if ($condition) {
             $condition($this);
         }
+
+        $this->condition->{$method}($field, $alias);
 
         $result = $this
             ->asSome()
