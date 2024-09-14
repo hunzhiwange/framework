@@ -907,9 +907,9 @@ class Repository implements ISelect
     /**
      * 取得所有记录.
      */
-    public function findAllByCondition(?\Closure $condition = null): array|Collection|EntityCollection
+    public function findAllByCondition(?\Closure $condition = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): array|Collection|EntityCollection
     {
-        $select = $this->condition($condition);
+        $select = $this->condition($condition, $softDeletedType);
 
         // @phpstan-ignore-next-line
         return $select->findAll();
@@ -918,9 +918,9 @@ class Repository implements ISelect
     /**
      * 返回一列数据.
      */
-    public function findList(?\Closure $condition, mixed $fieldValue, ?string $fieldKey = null): array
+    public function findList(?\Closure $condition, mixed $fieldValue, ?string $fieldKey = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): array
     {
-        $select = $this->condition($condition);
+        $select = $this->condition($condition, $softDeletedType);
 
         return $select->list($fieldValue, $fieldKey);
     }
@@ -928,9 +928,9 @@ class Repository implements ISelect
     /**
      * 取得记录数量.
      */
-    public function findCountByCondition(?\Closure $condition = null, string $field = '*'): int
+    public function findCountByCondition(?\Closure $condition = null, string $field = '*', int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): int
     {
-        $select = $this->condition($condition);
+        $select = $this->condition($condition, $softDeletedType);
 
         return $select->findCount($field);
     }
@@ -938,11 +938,11 @@ class Repository implements ISelect
     /**
      * 分页查询.
      */
-    public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
     {
         if (!$this->getSelect()->getContainer()->enabledCoroutine()) {
-            $count = $this->findCountByCondition($condition, $column);
-            $page = $this->condition($condition)->page($currentPage, $perPage, null, $config);
+            $count = $this->findCountByCondition($condition, $column, $softDeletedType);
+            $page = $this->condition($condition, $softDeletedType)->page($currentPage, $perPage, null, $config);
             $page->setTotalRecord($count);
 
             return $page;
@@ -955,11 +955,11 @@ class Repository implements ISelect
         // 启动一个协程
         $wg->add();
         $count = 0;
-        Coroutine::create(function () use ($wg, $condition, $column, &$count, &$exceptions): void {
+        Coroutine::create(function () use ($wg, $condition, $column, $softDeletedType, &$count, &$exceptions): void {
             Container::parentContext();
 
             try {
-                $count = $this->findCountByCondition($condition, $column);
+                $count = $this->findCountByCondition($condition, $column, $softDeletedType);
             } catch (\Throwable $e) {
                 $exceptions[] = $e;
             }
@@ -971,11 +971,11 @@ class Repository implements ISelect
         // 启动一个协程
         $wg->add();
         $page = null;
-        Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, &$page, &$exceptions): void {
+        Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, $softDeletedType, &$page, &$exceptions): void {
             Container::parentContext();
 
             try {
-                $page = $this->condition($condition)->page($currentPage, $perPage, null, $config);
+                $page = $this->condition($condition, $softDeletedType)->page($currentPage, $perPage, null, $config);
             } catch (\Throwable $e) {
                 $exceptions[] = $e;
             }
@@ -999,9 +999,9 @@ class Repository implements ISelect
     /**
      * 创建一个无限数据的分页查询.
      */
-    public function findPageMacro(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = []): Page
+    public function findPageMacro(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
     {
-        $select = $this->condition($condition);
+        $select = $this->condition($condition, $softDeletedType);
 
         return $select->pageMacro($currentPage, $perPage, $config);
     }
@@ -1009,9 +1009,9 @@ class Repository implements ISelect
     /**
      * 创建一个只有上下页的分页查询.
      */
-    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = []): Page
+    public function findPagePrevNext(int $currentPage, int $perPage = 10, ?\Closure $condition = null, array $config = [], int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Page
     {
-        $select = $this->condition($condition);
+        $select = $this->condition($condition, $softDeletedType);
 
         return $select->pagePrevNext($currentPage, $perPage, $config);
     }
@@ -1021,13 +1021,13 @@ class Repository implements ISelect
      *
      * @throws DataNotFoundException
      */
-    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*'): void
+    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*', int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): void
     {
         if (!$field) {
             $field = $this->entity->singlePrimaryKey();
         }
         $data = array_values(array_unique($data));
-        $select = $this->condition();
+        $select = $this->condition(null, $softDeletedType);
         $select->whereIn($field, $data);
 
         if ($condition) {
@@ -1045,9 +1045,9 @@ class Repository implements ISelect
     /**
      * 条件查询器.
      */
-    public function condition(?\Closure $condition = null): Select
+    public function condition(?\Closure $condition = null, int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Select
     {
-        $select = $this->getSelect();
+        $select = $this->getSelect($softDeletedType);
 
         if ($condition) {
             $this->normalizeCondition($condition, $select);
@@ -1059,9 +1059,9 @@ class Repository implements ISelect
     /**
      * 返回基础查询.
      */
-    public function getSelect(): Select
+    public function getSelect(int $softDeletedType = Entity::WITHOUT_SOFT_DELETED): Select
     {
-        return $this->entity->select();
+        return $this->entity->select($softDeletedType);
     }
 
     /**
