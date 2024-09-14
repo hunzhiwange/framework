@@ -274,7 +274,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 返回最后几条记录.
      */
-    public function find(?int $num = null): array|Collection|EntityCollection;
+    public function find(?int $num = null, ?\Closure $condition = null): array|Collection|EntityCollection;
 
     /**
      * 返回一个字段的值.

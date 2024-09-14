@@ -746,10 +746,10 @@ class Select implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $condition);
     }
 
-    public function find(?int $num = null): array|Collection|EntityCollection
+    public function find(?int $num = null, ?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $num);
+        return $this->callSelectMethod(__FUNCTION__, $num, $condition);
     }
 
     public function value(string $field, ?\Closure $condition = null): mixed

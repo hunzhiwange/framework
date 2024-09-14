@@ -729,7 +729,7 @@ class Manager extends Managers implements IDatabase
         return $this->callConnectMethod(__FUNCTION__, $condition);
     }
 
-    public function find(?int $num = null): array|Collection|EntityCollection
+    public function find(?int $num = null, ?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__, $num);

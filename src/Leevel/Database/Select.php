@@ -846,7 +846,7 @@ class Select implements ISelect
         return $this->queryAllResult();
     }
 
-    public function find(?int $num = null): array|Collection|EntityCollection
+    public function find(?int $num = null, ?\Closure $condition = null): array|Collection|EntityCollection
     {
         if (null !== $num) {
             $this->condition->top($num);
