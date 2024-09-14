@@ -56,7 +56,7 @@ final class RepositoryTest extends TestCase
         self::assertSame(1, $newPost->userId);
         self::assertSame('hello world', $newPost->title);
         self::assertSame('post summary', $newPost->summary);
-        $this->assertInstanceof(Post::class, $repository->entity());
+        $this->assertInstanceof(Post::class, $repository->getEntity());
     }
 
     #[Api([
@@ -157,7 +157,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
         $select = $repository->condition();
-        $result = $repository->findAll();
+        $result = $repository->findAllByCondition();
 
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
@@ -192,7 +192,7 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $result = $repository->findAll(static function (Select $select): void {
+        $result = $repository->findAllByCondition(static function (Select $select): void {
             $select->where('id', '<', 8);
         });
 
@@ -229,7 +229,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
         $select = $repository->condition();
-        $result = $repository->findCount();
+        $result = $repository->findCountByCondition();
 
         $sql = <<<'eot'
             SQL: [91] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at LIMIT 1 | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 LIMIT 1)
@@ -263,7 +263,7 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $result = $repository->findCount(static function (Select $select): void {
+        $result = $repository->findCountByCondition(static function (Select $select): void {
             $select->where('id', '<', 8);
         });
 
@@ -796,7 +796,7 @@ final class RepositoryTest extends TestCase
         };
 
         $select = $repository->condition($condition);
-        $result = $select->findAll();
+        $result = $select->findAllByCondition();
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
