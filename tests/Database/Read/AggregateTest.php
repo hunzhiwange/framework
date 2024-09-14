@@ -64,7 +64,7 @@ final class AggregateTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'findCount 查询数量指定字段和别名',
+        'zh-CN:title' => 'findCount 查询数量指定字段',
     ])]
     public function testCount3(): void
     {
@@ -81,7 +81,7 @@ final class AggregateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
-                    ->findCount('*', 'row_count2'),
+                    ->findCount('*'),
                 $connect,
                 2
             )
@@ -139,7 +139,7 @@ final class AggregateTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'findAvg 查询平均值指定字段和别名',
+        'zh-CN:title' => 'findAvg 查询平均值指定字段',
     ])]
     public function testAvg3(): void
     {
@@ -156,7 +156,7 @@ final class AggregateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
-                    ->findAvg('num', 'avg_value2'),
+                    ->findAvg('num'),
                 $connect,
                 2
             )
@@ -214,7 +214,7 @@ final class AggregateTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'findMax 查询最大值指定字段和别名',
+        'zh-CN:title' => 'findMax 查询最大值指定字段',
     ])]
     public function testMax3(): void
     {
@@ -231,7 +231,7 @@ final class AggregateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
-                    ->findMax('num', 'max_value2'),
+                    ->findMax('num'),
                 $connect,
                 2
             )
@@ -289,7 +289,7 @@ final class AggregateTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'findMin 查询最小值指定字段和别名',
+        'zh-CN:title' => 'findMin 查询最小值指定字段',
     ])]
     public function testMin3(): void
     {
@@ -306,7 +306,7 @@ final class AggregateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
-                    ->findMin('num', 'min_value2'),
+                    ->findMin('num'),
                 $connect,
                 2
             )
@@ -364,7 +364,7 @@ final class AggregateTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'findSum 查询合计指定字段和别名',
+        'zh-CN:title' => 'findSum 查询合计指定字段',
     ])]
     public function testSum3(): void
     {
@@ -381,7 +381,7 @@ final class AggregateTest extends TestCase
             $sql,
             $this->varJsonSql(
                 $connect->table('test_query')
-                    ->findSum('num', 'sum_value2'),
+                    ->findSum('num'),
                 $connect,
                 2
             )

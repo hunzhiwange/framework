@@ -156,8 +156,8 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $select = $repository->condition();
-        $result = $repository->findAllByCondition();
+        $select = $repository->getEntitySelect();
+        $result = $repository->findAll();
 
         $sql = <<<'eot'
             SQL: [70] SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = :post_delete_at | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT `post`.* FROM `post` WHERE `post`.`delete_at` = 0)
@@ -192,7 +192,7 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $result = $repository->findAllByCondition(static function (Select $select): void {
+        $result = $repository->findAll(condition: static function (Select $select): void {
             $select->where('id', '<', 8);
         });
 
@@ -228,8 +228,8 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $select = $repository->condition();
-        $result = $repository->findCountByCondition();
+        $select = $repository->getEntitySelect();
+        $result = $repository->findCount();
 
         $sql = <<<'eot'
             SQL: [91] SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = :post_delete_at LIMIT 1 | Params:  1 | Key: Name: [15] :post_delete_at | paramno=0 | name=[15] ":post_delete_at" | is_param=1 | param_type=1 (SELECT COUNT(*) AS row_count FROM `post` WHERE `post`.`delete_at` = 0 LIMIT 1)
@@ -263,7 +263,7 @@ final class RepositoryTest extends TestCase
         }
 
         $repository = new Repository(new Post());
-        $result = $repository->findCountByCondition(static function (Select $select): void {
+        $result = $repository->findCount(condition: static function (Select $select): void {
             $select->where('id', '<', 8);
         });
 
@@ -769,49 +769,6 @@ final class RepositoryTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'condition 条件查询器支持闭包',
-    ])]
-    public function testConditionIsClosure(): void
-    {
-        $connect = $this->createDatabaseConnect();
-
-        for ($i = 0; $i < 10; ++$i) {
-            $connect
-                ->table('post')
-                ->insert([
-                    'title' => 'hello world',
-                    'user_id' => 1,
-                    'summary' => 'post summary',
-                    'delete_at' => 0,
-                ])
-            ;
-        }
-
-        $request = ['foo' => 'no-bar', 'hello' => 'no-world'];
-
-        $repository = new Repository(new Post());
-
-        $condition = static function (Select $select, Entity $entity): void {
-            $select->where('id', '<', 8);
-        };
-
-        $select = $repository->condition($condition);
-        $result = $select->findAll();
-
-        $this->assertInstanceof(Select::class, $select);
-        $this->assertInstanceof(Collection::class, $result);
-        self::assertCount(7, $result);
-    }
-
-    public function testConditionTypeIsInvalid(): void
-    {
-        $this->expectException(\TypeError::class);
-
-        $repository = new Repository(new Post());
-        $repository->condition(5);
-    }
-
-    #[Api([
         'zh-CN:title' => 'findPage 分页查询',
     ])]
     public function testFindPage(): void
@@ -868,7 +825,7 @@ final class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        $page = $repository->findPage(1, 10, $condition);
+        $page = $repository->findPage(1, 10, condition: $condition);
         $result = $page->getData();
 
         $this->assertInstanceof(BasePage::class, $page);
@@ -934,7 +891,7 @@ final class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        $page = $repository->findPageMacro(1, 10, $condition);
+        $page = $repository->findPageMacro(1, 10, condition: $condition);
         $result = $page->getData();
 
         $this->assertInstanceof(BasePage::class, $page);
@@ -1000,7 +957,7 @@ final class RepositoryTest extends TestCase
             $select->where('id', '<', 8);
         };
 
-        $page = $repository->findPagePrevNext(1, 10, $condition);
+        $page = $repository->findPagePrevNext(1, 10, condition: $condition);
         $result = $page->getData();
 
         $this->assertInstanceof(BasePage::class, $page);
@@ -1030,7 +987,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $result = $repository->findList(null, 'summary', 'title');
+        $result = $repository->findList('summary', 'title');
 
         self::assertIsArray($result);
 
@@ -1075,7 +1032,7 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $result = $repository->findList(null, ['summary', 'title']);
+        $result = $repository->findList(['summary', 'title']);
 
         self::assertIsArray($result);
 
@@ -1123,9 +1080,9 @@ final class RepositoryTest extends TestCase
 
         $repository = new Repository(new Post());
 
-        $result = $repository->findList(static function (Select $select): void {
+        $result = $repository->findList(['summary', 'title'], condition: static function (Select $select): void {
             $select->where('id', '>', 5);
-        }, ['summary', 'title']);
+        });
 
         self::assertIsArray($result);
 
