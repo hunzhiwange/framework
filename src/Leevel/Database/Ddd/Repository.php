@@ -822,33 +822,33 @@ class Repository implements ISelect
         $this->callSelectMethod(__FUNCTION__, $count, $each);
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
+    public function findCount(string $field = '*', ?\Closure $condition = null): int
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias, $condition);
+        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findAvg(string $field, string $alias = 'avg_value'): mixed
+    public function findAvg(string $field): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function findMax(string $field, string $alias = 'max_value'): mixed
+    public function findMax(string $field): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function findMin(string $field, string $alias = 'min_value'): mixed
+    public function findMin(string $field): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function findSum(string $field, string $alias = 'sum_value'): mixed
+    public function findSum(string $field): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $alias);
+        return $this->callSelectMethod(__FUNCTION__, $field);
     }
 
-    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
+    public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);
@@ -907,11 +907,11 @@ class Repository implements ISelect
     /**
      * 分页查询.
      */
-    public function findPageAndCount(int $currentPage, int $perPage = 10, ?\Closure $condition = null, string $column = '*', array $config = []): Page
+    public function findPage(int $currentPage, int $perPage = 10, string $column = '*', array $config = [], ?\Closure $condition = null): Page
     {
         if (!$this->getEntitySelect()->getContainer()->enabledCoroutine()) {
-            $count = $this->findCount($condition, $column, $softDeletedType);
-            $page = $this->condition($condition, $softDeletedType)->page($currentPage, $perPage, null, $config);
+            $count = $this->findCount($column, $condition);
+            $page = $this->findPageList($currentPage, $perPage, null, $config, $condition);
             $page->setTotalRecord($count);
 
             return $page;
@@ -924,11 +924,11 @@ class Repository implements ISelect
         // 启动一个协程
         $wg->add();
         $count = 0;
-        Coroutine::create(function () use ($wg, $condition, $column, $softDeletedType, &$count, &$exceptions): void {
+        Coroutine::create(function () use ($wg, $condition, $column, &$count, &$exceptions): void {
             Container::parentContext();
 
             try {
-                $count = $this->findCountByCondition($condition, $column, $softDeletedType);
+                $count = $this->findCount($column, $condition);
             } catch (\Throwable $e) {
                 $exceptions[] = $e;
             }
@@ -940,11 +940,11 @@ class Repository implements ISelect
         // 启动一个协程
         $wg->add();
         $page = null;
-        Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, $softDeletedType, &$page, &$exceptions): void {
+        Coroutine::create(function () use ($wg, $condition, $currentPage, $perPage, $config, &$page, &$exceptions): void {
             Container::parentContext();
 
             try {
-                $page = $this->condition($condition, $softDeletedType)->page($currentPage, $perPage, null, $config);
+                $page = $this->findPageList($currentPage, $perPage, null, $config, $condition);
             } catch (\Throwable $e) {
                 $exceptions[] = $e;
             }
@@ -970,20 +970,15 @@ class Repository implements ISelect
      *
      * @throws DataNotFoundException
      */
-    public function validateDataExists(array $data, ?string $field = null, ?\Closure $condition = null, string $countField = '*'): void
+    public function validateDataExists(array $data, ?string $field = null, string $countField = '*', ?\Closure $condition = null): void
     {
         if (!$field) {
             $field = $this->entity->singlePrimaryKey();
         }
-        $data = array_values(array_unique($data));
+
         $select = $this->getEntitySelect();
-        $select->whereIn($field, $data);
-
-        if ($condition) {
-            $this->normalizeCondition($condition, $select);
-        }
-
-        $count = $select->findCount($countField);
+        $select->whereIn($field, $data = array_values(array_unique($data)));
+        $count = $select->findCount($countField, $condition);
         if ($count === \count($data)) {
             return;
         }
@@ -1064,13 +1059,5 @@ class Repository implements ISelect
     protected function callSelectMethod(string $method, mixed ...$args): mixed
     {
         return $this->getEntitySelect()->{$method}(...$args);
-    }
-
-    /**
-     * 处理查询条件.
-     */
-    protected function normalizeCondition(\Closure $condition, Select $select): void
-    {
-        $condition($select, $this->entity);
     }
 }

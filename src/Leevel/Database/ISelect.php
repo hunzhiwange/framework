@@ -299,32 +299,32 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 总记录数.
      */
-    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int;
+    public function findCount(string $field = '*', ?\Closure $condition = null): int;
 
     /**
      * 平均数.
      */
-    public function findAvg(string $field, string $alias = 'avg_value'): mixed;
+    public function findAvg(string $field): mixed;
 
     /**
      * 最大值.
      */
-    public function findMax(string $field, string $alias = 'max_value'): mixed;
+    public function findMax(string $field): mixed;
 
     /**
      * 最小值.
      */
-    public function findMin(string $field, string $alias = 'min_value'): mixed;
+    public function findMin(string $field): mixed;
 
     /**
      * 合计.
      */
-    public function findSum(string $field, string $alias = 'sum_value'): mixed;
+    public function findSum(string $field): mixed;
 
     /**
-     * 分页查询.
+     * 分页列表查询.
      */
-    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page;
+    public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page;
 
     /**
      * 创建一个无限数据的分页查询.

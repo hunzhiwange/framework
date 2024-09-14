@@ -756,33 +756,33 @@ class Manager extends Managers implements IDatabase
         $this->callConnectMethod(__FUNCTION__, $count, $each);
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
+    public function findCount(string $field = '*', ?\Closure $condition = null): int
     {
         // @phpstan-ignore-next-line
-        return $this->callConnectMethod(__FUNCTION__, $field, $alias, $condition);
+        return $this->callConnectMethod(__FUNCTION__, $field, $condition);
     }
 
-    public function findAvg(string $field, string $alias = 'avg_value'): mixed
+    public function findAvg(string $field): mixed
     {
-        return $this->callConnectMethod(__FUNCTION__, $field, $alias);
+        return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findMax(string $field, string $alias = 'max_value'): mixed
+    public function findMax(string $field): mixed
     {
-        return $this->callConnectMethod(__FUNCTION__, $field, $alias);
+        return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findMin(string $field, string $alias = 'min_value'): mixed
+    public function findMin(string $field): mixed
     {
-        return $this->callConnectMethod(__FUNCTION__, $field, $alias);
+        return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findSum(string $field, string $alias = 'sum_value'): mixed
+    public function findSum(string $field): mixed
     {
-        return $this->callConnectMethod(__FUNCTION__, $field, $alias);
+        return $this->callConnectMethod(__FUNCTION__, $field);
     }
 
-    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
+    public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);

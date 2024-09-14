@@ -946,32 +946,32 @@ class Select implements ISelect
         });
     }
 
-    public function findCount(string $field = '*', string $alias = 'row_count', ?\Closure $condition = null): int
+    public function findCount(string $field = '*', ?\Closure $condition = null): int
     {
-        return (int) $this->findAggregateResult('count', $field, $alias, $condition);
+        return (int) $this->findAggregateResult('count', $field, 'row_count', $condition);
     }
 
-    public function findAvg(string $field, string $alias = 'avg_value'): mixed
+    public function findAvg(string $field): mixed
     {
-        return $this->findAggregateResult('avg', $field, $alias);
+        return $this->findAggregateResult('avg', $field, 'avg_value');
     }
 
-    public function findMax(string $field, string $alias = 'max_value'): mixed
+    public function findMax(string $field): mixed
     {
-        return $this->findAggregateResult('max', $field, $alias);
+        return $this->findAggregateResult('max', $field, 'max_value');
     }
 
-    public function findMin(string $field, string $alias = 'min_value'): mixed
+    public function findMin(string $field): mixed
     {
-        return $this->findAggregateResult('min', $field, $alias);
+        return $this->findAggregateResult('min', $field, 'min_value');
     }
 
-    public function findSum(string $field, string $alias = 'sum_value'): mixed
+    public function findSum(string $field): mixed
     {
-        return $this->findAggregateResult('sum', $field, $alias);
+        return $this->findAggregateResult('sum', $field, 'sum_value');
     }
 
-    public function findPage(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
+    public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         $page = new Page($currentPage, $perPage, $count, $config);
 
@@ -990,12 +990,12 @@ class Select implements ISelect
 
     public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
-        return $this->findPage($currentPage, $perPage, Page::MACRO, $config, $condition);
+        return $this->findPageList($currentPage, $perPage, Page::MACRO, $config, $condition);
     }
 
     public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
-        return $this->findPage($currentPage, $perPage, null, $config, $condition);
+        return $this->findPageList($currentPage, $perPage, null, $config, $condition);
     }
 
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): self
