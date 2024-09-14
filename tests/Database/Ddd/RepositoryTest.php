@@ -796,7 +796,7 @@ final class RepositoryTest extends TestCase
         };
 
         $select = $repository->condition($condition);
-        $result = $select->findAllByCondition();
+        $result = $select->findAll();
 
         $this->assertInstanceof(Select::class, $select);
         $this->assertInstanceof(Collection::class, $result);
