@@ -12,7 +12,6 @@ use Leevel\Database\IDatabase;
 use Leevel\Database\ISelect as IDatabaseSelect;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
-use Leevel\Database\Ddd\Select;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
@@ -1068,7 +1067,7 @@ class Repository implements ISelect
     protected function callSelectMethodCondition(string $method, mixed ...$args): mixed
     {
         $entitySelect = $this->getEntitySelect();
-        $lastIndex = count($args)-1;
+        $lastIndex = \count($args) - 1;
         // @phpstan-ignore-next-line
         $args[$lastIndex] = $this->prepareCondition($entitySelect, $args[$lastIndex]);
 
@@ -1081,7 +1080,7 @@ class Repository implements ISelect
             return null;
         }
 
-        return function(DatabaseSelect $databaseSelect) use($entitySelect, $condition) :void {
+        return function (DatabaseSelect $databaseSelect) use ($entitySelect, $condition): void {
             $condition($databaseSelect, $entitySelect, $this->entity);
         };
     }
