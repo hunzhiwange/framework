@@ -19,7 +19,7 @@ class InCondition
             throw new \InvalidArgumentException('Data item must be array.');
         }
 
-        $data = array_unique(array_column($data, $key));
+        $data = array_values(array_unique(array_column($data, $key)));
         if (null === $filter) {
             return $data;
         }

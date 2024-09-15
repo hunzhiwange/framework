@@ -10,8 +10,6 @@ namespace Leevel\Validate;
  * - 提供一套精简版本的断言方便业务中很愉快地使用。
  * - 链式操作没有第一个参数 `$value`，此时值为 `$this->value`。
  *
- * @see https://github.com/beberlei/assert 参考这里，断言和验证器复用一致的规则
- *
  * @method static \Leevel\Validate\Assert|void accepted($value, ?string $message = null)                                                                     是否可接受的（链式操作没有参数 $value）.
  * @method static \Leevel\Validate\Assert|void allowedIp($value, array $param, ?string $message = null)                                                      验证 IP 许可（链式操作没有参数 $value）.
  * @method static \Leevel\Validate\Assert|void alpha($value, ?string $message = null)                                                                        是否为英文字母（链式操作没有参数 $value）.

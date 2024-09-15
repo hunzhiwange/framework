@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace Tests\Support;
 
 use Leevel\Kernel\Utils\Api;
-use Leevel\Support\Arr;
+use Leevel\Support\Arr\ConvertJson;
+use Leevel\Support\Arr\Except;
+use Leevel\Support\Arr\Filter;
+use Leevel\Support\Arr\InCondition;
+use Leevel\Support\Arr\Normalize;
+use Leevel\Support\Arr\Only;
+use Leevel\Support\Arr\ShouldJson;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Tests\TestCase;
@@ -24,13 +30,13 @@ final class ArrTest extends TestCase
     ])]
     public function testBaseUse(): void
     {
-        self::assertTrue(Arr::normalize(true));
-        self::assertSame(['a', 'b'], Arr::normalize('a,b'));
-        self::assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
-        self::assertSame(['a'], Arr::normalize(['a', '']));
-        self::assertSame(['a'], Arr::normalize(['a', ''], ',', true));
-        self::assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
-        self::assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
+        self::assertTrue(Normalize::handle(true));
+        self::assertSame(['a', 'b'], Normalize::handle('a,b'));
+        self::assertSame(['a', 'b'], Normalize::handle(['a', 'b']));
+        self::assertSame(['a'], Normalize::handle(['a', '']));
+        self::assertSame(['a'], Normalize::handle(['a', ''], ',', true));
+        self::assertSame(['a', ' 0 '], Normalize::handle(['a', ' 0 '], ',', true));
+        self::assertSame(['a', '0'], Normalize::handle(['a', ' 0 '], ','));
     }
 
     #[Api([
@@ -38,7 +44,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalize(): void
     {
-        $result = Arr::normalize('hello');
+        $result = Normalize::handle('hello');
 
         $json = <<<'eot'
             [
@@ -59,7 +65,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeSplitString(): void
     {
-        $result = Arr::normalize('hello,world');
+        $result = Normalize::handle('hello,world');
 
         $json = <<<'eot'
             [
@@ -81,7 +87,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeArr(): void
     {
-        $result = Arr::normalize(['hello', 'world']);
+        $result = Normalize::handle(['hello', 'world']);
 
         $json = <<<'eot'
             [
@@ -103,7 +109,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeArrFilterEmpty(): void
     {
-        $result = Arr::normalize(['hello', 'world', ' ', '0']);
+        $result = Normalize::handle(['hello', 'world', ' ', '0']);
 
         $json = <<<'eot'
             [
@@ -125,7 +131,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeArrNotFilterEmpty(): void
     {
-        $result = Arr::normalize(['hello', 'world', ' ', '0'], ',', true);
+        $result = Normalize::handle(['hello', 'world', ' ', '0'], ',', true);
 
         $json = <<<'eot'
             [
@@ -148,7 +154,7 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeNotArrAndNotString(): void
     {
-        $result = Arr::normalize(false);
+        $result = Normalize::handle(false);
 
         self::assertFalse($result);
     }
@@ -161,7 +167,7 @@ EOT,
     ])]
     public function testOnly(): void
     {
-        $result = Arr::only(['input' => 'test', 'foo' => 'bar', 'hello' => 'world'], ['input', 'hello', 'notfound']);
+        $result = Only::handle(['input' => 'test', 'foo' => 'bar', 'hello' => 'world'], ['input', 'hello', 'notfound']);
 
         $json = <<<'eot'
             {
@@ -186,7 +192,7 @@ EOT,
     ])]
     public function testExcept(): void
     {
-        $result = Arr::except(['input' => 'test', 'foo' => 'bar', 'hello' => 'world'], ['input', 'hello', 'notfound']);
+        $result = Except::handle(['input' => 'test', 'foo' => 'bar', 'hello' => 'world'], ['input', 'hello', 'notfound']);
 
         $json = <<<'eot'
             {
@@ -213,7 +219,7 @@ EOT,
         $sourceData = ['foo' => 'bar', 'hello' => 'world ', 'i' => '5'];
         $rule = [];
 
-        $result = Arr::filter($sourceData, $rule);
+        $result = Filter::handle($sourceData, $rule);
 
         $json = <<<'eot'
             {
@@ -245,7 +251,7 @@ EOT,
             }],
         ];
 
-        $result = Arr::filter($sourceData, $rule);
+        $result = Filter::handle($sourceData, $rule);
 
         $json = <<<'eot'
             {
@@ -278,7 +284,7 @@ EOT,
             'i' => 'intval',
         ];
 
-        Arr::filter($sourceData, $rule);
+        Filter::handle($sourceData, $rule);
     }
 
     #[Api([
@@ -296,7 +302,7 @@ EOT,
             'i' => ['notcallback'],
         ];
 
-        Arr::filter($sourceData, $rule);
+        Filter::handle($sourceData, $rule);
     }
 
     #[Api([
@@ -307,7 +313,7 @@ EOT,
         $sourceData = ['foo' => null];
         $rule = ['foo' => ['intval']];
 
-        $result = Arr::filter($sourceData, $rule);
+        $result = Filter::handle($sourceData, $rule);
 
         $json = <<<'eot'
             {
@@ -331,7 +337,7 @@ EOT,
         $sourceData = ['foo' => null];
         $rule = ['foo' => ['intval', 'must']];
 
-        $result = Arr::filter($sourceData, $rule);
+        $result = Filter::handle($sourceData, $rule);
 
         $json = <<<'eot'
             {
@@ -371,10 +377,10 @@ EOT,
     ])]
     public function testShouldJson(): void
     {
-        self::assertTrue(Arr::shouldJson(['foo' => 'bar']));
-        self::assertTrue(Arr::shouldJson(new ArrMyArray()));
-        self::assertTrue(Arr::shouldJson(new ArrMyJson()));
-        self::assertTrue(Arr::shouldJson(new ArrMyJsonSerializable()));
+        self::assertTrue(ShouldJson::handle(['foo' => 'bar']));
+        self::assertTrue(ShouldJson::handle(new ArrMyArray()));
+        self::assertTrue(ShouldJson::handle(new ArrMyJson()));
+        self::assertTrue(ShouldJson::handle(new ArrMyJsonSerializable()));
     }
 
     #[Api([
@@ -382,13 +388,13 @@ EOT,
     ])]
     public function testConvertJson(): void
     {
-        self::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar']));
-        self::assertSame('{"foo":"bar"}', Arr::convertJson(['foo' => 'bar'], JSON_THROW_ON_ERROR));
-        self::assertSame('{"hello":"IArray"}', Arr::convertJson(new ArrMyArray()));
-        self::assertSame('{"hello":"IJson"}', Arr::convertJson(new ArrMyJson()));
-        self::assertSame('{"hello":"JsonSerializable"}', Arr::convertJson(new ArrMyJsonSerializable()));
-        self::assertSame('{"成":"都"}', Arr::convertJson(['成' => '都']));
-        self::assertSame('{"\u6210":"\u90fd"}', Arr::convertJson(['成' => '都'], 0));
+        self::assertSame('{"foo":"bar"}', ConvertJson::handle(['foo' => 'bar']));
+        self::assertSame('{"foo":"bar"}', ConvertJson::handle(['foo' => 'bar'], JSON_THROW_ON_ERROR));
+        self::assertSame('{"hello":"IArray"}', ConvertJson::handle(new ArrMyArray()));
+        self::assertSame('{"hello":"IJson"}', ConvertJson::handle(new ArrMyJson()));
+        self::assertSame('{"hello":"JsonSerializable"}', ConvertJson::handle(new ArrMyJsonSerializable()));
+        self::assertSame('{"成":"都"}', ConvertJson::handle(['成' => '都']));
+        self::assertSame('{"\u6210":"\u90fd"}', ConvertJson::handle(['成' => '都'], 0));
     }
 
     public function testConvertJsonWithInvalidUtf8Characters(): void
@@ -398,7 +404,7 @@ EOT,
             'Malformed UTF-8 characters, possibly incorrectly encoded'
         );
 
-        Arr::convertJson("\xB1\x31");
+        ConvertJson::handle("\xB1\x31");
     }
 
     public function testConvertJsonWithInvalidUtf8CharactersAndThrowJsonException(): void
@@ -408,7 +414,7 @@ EOT,
             'Malformed UTF-8 characters, possibly incorrectly encoded'
         );
 
-        Arr::convertJson("\xB1\x31", JSON_THROW_ON_ERROR);
+        ConvertJson::handle("\xB1\x31", JSON_THROW_ON_ERROR);
     }
 
     public function testConvertJsonJsonSerializeThrowException(): void
@@ -418,7 +424,7 @@ EOT,
             'json exception'
         );
 
-        Arr::convertJson(new ArrMyJsonSerializableWithException(), JSON_THROW_ON_ERROR);
+        ConvertJson::handle(new ArrMyJsonSerializableWithException(), JSON_THROW_ON_ERROR);
     }
 
     #[Api([
@@ -436,7 +442,7 @@ EOT,
             [11, 'world'],
         ];
 
-        $result = Arr::inCondition($data, 'id');
+        $result = InCondition::handle($data, 'id');
         $json = <<<'eot'
             [
                 5,
@@ -449,7 +455,7 @@ EOT,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($data, 'name');
+        $result = InCondition::handle($data, 'name');
         $json = <<<'eot'
             [
                 "hello",
@@ -462,7 +468,7 @@ EOT,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($dataDemo2, 0);
+        $result = InCondition::handle($dataDemo2, 0);
         $json = <<<'eot'
             [
                 10,
@@ -484,7 +490,7 @@ EOT,
             ['id' => 6, 'name' => 'world'],
         ];
 
-        $result = Arr::inCondition($data, 'id');
+        $result = InCondition::handle($data, 'id');
         $json = <<<'eot'
             [
                 5,
@@ -497,7 +503,7 @@ EOT,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($data, 'name');
+        $result = InCondition::handle($data, 'name');
         $json = <<<'eot'
             [
                 "hello",
@@ -519,7 +525,7 @@ EOT,
             ['id' => 6, 'name' => ''],
         ];
 
-        $result = Arr::inCondition($data, 'id');
+        $result = InCondition::handle($data, 'id');
         $json = <<<'eot'
             [
                 5,
@@ -533,7 +539,7 @@ EOT,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($data, 'name');
+        $result = InCondition::handle($data, 'name');
         $json = <<<'eot'
             [
                 "",
@@ -558,7 +564,7 @@ EOT,
             ['id' => 'haha', 'name' => '0'],
         ];
 
-        $result = Arr::inCondition($data, 'id', static fn ($v): int => (int) $v);
+        $result = InCondition::handle($data, 'id', static fn ($v): int => (int) $v);
         $json = <<<'eot'
             [
                 5,
@@ -572,7 +578,7 @@ EOT,
             $this->varJson($result)
         );
 
-        $result = Arr::inCondition($data, 'name', static fn ($v): string => (string) $v);
+        $result = InCondition::handle($data, 'name', static fn ($v): string => (string) $v);
         $json = <<<'eot'
             [
                 "5",
@@ -594,15 +600,7 @@ EOT,
             'Data item must be array.'
         );
 
-        Arr::inCondition([1, 2], 0);
-    }
-
-    public function testArrNotFound(): void
-    {
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Class "Leevel\\Support\\Arr\NotFound" not found');
-
-        self::assertTrue(Arr::notFound());
+        InCondition::handle([1, 2], 0);
     }
 }
 
