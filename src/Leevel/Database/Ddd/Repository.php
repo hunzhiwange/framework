@@ -12,6 +12,7 @@ use Leevel\Database\IDatabase;
 use Leevel\Database\ISelect as IDatabaseSelect;
 use Leevel\Database\Page;
 use Leevel\Database\Select as DatabaseSelect;
+use Leevel\Database\Ddd\Select;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
@@ -792,24 +793,24 @@ class Repository implements ISelect
     public function findAll(?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $condition);
     }
 
     public function find(?int $num = null, ?\Closure $condition = null): array|Collection|EntityCollection
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $num, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $num, $condition);
     }
 
     public function value(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findList(mixed $fieldValue, ?string $fieldKey = null, ?\Closure $condition = null): array
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $fieldValue, $fieldKey, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $fieldValue, $fieldKey, $condition);
     }
 
     public function chunk(int $count, \Closure $chunk): void
@@ -825,45 +826,45 @@ class Repository implements ISelect
     public function findCount(string $field = '*', ?\Closure $condition = null): int
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findAvg(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findMax(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findMin(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findSum(string $field, ?\Closure $condition = null): mixed
     {
-        return $this->callSelectMethod(__FUNCTION__, $field, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $field, $condition);
     }
 
     public function findPageList(int $currentPage, int $perPage = 10, ?int $count = null, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $currentPage, $perPage, $count, $config, $condition);
     }
 
     public function findPageMacro(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
     public function findPagePrevNext(int $currentPage, int $perPage = 10, array $config = [], ?\Closure $condition = null): Page
     {
         // @phpstan-ignore-next-line
-        return $this->callSelectMethod(__FUNCTION__, $currentPage, $perPage, $config, $condition);
+        return $this->callSelectMethodCondition(__FUNCTION__, $currentPage, $perPage, $config, $condition);
     }
 
     public function cache(string $name, ?int $expire = null, ?ICache $cache = null): Select
@@ -909,7 +910,10 @@ class Repository implements ISelect
      */
     public function findPage(int $currentPage, int $perPage = 10, string $column = '*', array $config = [], ?\Closure $condition = null): Page
     {
-        if (!$this->getEntitySelect()->getContainer()->enabledCoroutine()) {
+        if (!$this
+            ->getEntitySelect()
+            ->getContainer()
+            ->enabledCoroutine()) {
             $count = $this->findCount($column, $condition);
             $page = $this->findPageList($currentPage, $perPage, null, $config, $condition);
             $page->setTotalRecord($count);
@@ -1059,5 +1063,26 @@ class Repository implements ISelect
     protected function callSelectMethod(string $method, mixed ...$args): mixed
     {
         return $this->getEntitySelect()->{$method}(...$args);
+    }
+
+    protected function callSelectMethodCondition(string $method, mixed ...$args): mixed
+    {
+        $entitySelect = $this->getEntitySelect();
+        $lastIndex = count($args)-1;
+        // @phpstan-ignore-next-line
+        $args[$lastIndex] = $this->prepareCondition($entitySelect, $args[$lastIndex]);
+
+        return $this->getEntitySelect()->{$method}(...$args);
+    }
+
+    protected function prepareCondition(Select $entitySelect, ?\Closure $condition = null): ?\Closure
+    {
+        if (!$condition) {
+            return null;
+        }
+
+        return function(DatabaseSelect $databaseSelect) use($entitySelect, $condition) :void {
+            $condition($databaseSelect, $entitySelect, $this->entity);
+        };
     }
 }

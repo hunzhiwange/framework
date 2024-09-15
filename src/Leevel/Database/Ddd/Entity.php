@@ -729,7 +729,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 if ($withoutGlobalScopeNames && \in_array($scopeName, $withoutGlobalScopeNames, true)) {
                     continue;
                 }
-                $call($batabaseSelect, $entity);
+                $call($batabaseSelect, $select, $entity);
             }
         }
 
