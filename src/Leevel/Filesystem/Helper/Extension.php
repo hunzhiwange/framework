@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem\Helper;
 
-class GetExtension
+class Extension
 {
     /**
      * 获取上传文件扩展名.

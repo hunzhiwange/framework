@@ -8,7 +8,7 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Filesystem\Manager;
 use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
@@ -30,7 +30,7 @@ use Tests\TestCase;
 使用容器 flysystems 服务
 
 ``` php
-\App::make('filesystems')->write(string $path, string $contents, array $config = []): bool;
+\App::make('filesystems')->getFilesystem()->write(string $path, string $contents, array $config = []): bool;
 ```
 
 依赖注入
@@ -158,7 +158,7 @@ final class ManagerTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
     }

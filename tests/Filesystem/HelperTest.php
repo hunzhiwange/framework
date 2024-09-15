@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Filesystem;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\CreateDirectory;
+use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Filesystem\Helper\DeleteDirectory;
+use Leevel\Filesystem\Helper\Distributed;
+use Leevel\Filesystem\Helper\Extension;
+use Leevel\Filesystem\Helper\IsAbsolutePath;
+use Leevel\Filesystem\Helper\TidyPath;
+use Leevel\Filesystem\Helper\TraverseDirectory;
 use Leevel\Kernel\Utils\Api;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Tests\TestCase;
@@ -32,7 +39,7 @@ final class HelperTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
     }
@@ -46,14 +53,14 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($dir);
 
-        Helper::createDirectory($dir);
+        CreateDirectory::handle($dir);
 
         self::assertDirectoryExists($dir);
 
-        Helper::createDirectory($dir);
-        Helper::createDirectory($dir);
+        CreateDirectory::handle($dir);
+        CreateDirectory::handle($dir);
 
-        Helper::deleteDirectory($dir);
+        DeleteDirectory::handle($dir);
     }
 
     #[Api([
@@ -65,19 +72,19 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($dir);
 
-        Helper::deleteDirectory($dir);
+        DeleteDirectory::handle($dir);
 
-        Helper::createDirectory($dir);
+        CreateDirectory::handle($dir);
 
         self::assertDirectoryExists($dir);
 
-        Helper::deleteDirectory($dir);
+        DeleteDirectory::handle($dir);
 
         $topDir = \dirname($dir);
 
         self::assertDirectoryExists($topDir);
 
-        Helper::deleteDirectory($topDir);
+        DeleteDirectory::handle($topDir);
 
         self::assertDirectoryDoesNotExist($topDir);
     }
@@ -90,11 +97,11 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($dir);
 
-        Helper::createDirectory($dir);
+        CreateDirectory::handle($dir);
 
         self::assertDirectoryExists($dir);
 
-        Helper::deleteDirectory($topDir);
+        DeleteDirectory::handle($topDir);
 
         self::assertDirectoryDoesNotExist($topDir);
     }
@@ -109,7 +116,7 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($sourceSubPath);
 
-        Helper::createDirectory($sourceSubPath);
+        CreateDirectory::handle($sourceSubPath);
 
         file_put_contents($testFile = $sourceSubPath.'/hello.txt', 'foo');
 
@@ -120,18 +127,18 @@ final class HelperTest extends TestCase
         $filesAndDirs = [];
         $filesAndDirs2 = [];
 
-        Helper::traverseDirectory($sourcePath, true, static function ($item) use (&$filesAndDirs): void {
+        TraverseDirectory::handle($sourcePath, true, static function ($item) use (&$filesAndDirs): void {
             $filesAndDirs[] = $item->getFileName();
         });
 
-        Helper::traverseDirectory($sourcePath, true, static function ($item) use (&$filesAndDirs2): void {
+        TraverseDirectory::handle($sourcePath, true, static function ($item) use (&$filesAndDirs2): void {
             $filesAndDirs2[] = $item->getFileName();
         }, ['hello.txt']);
 
         self::assertSame(['dir', 'hello.txt'], $filesAndDirs);
         self::assertSame(['dir'], $filesAndDirs2);
 
-        Helper::deleteDirectory($sourcePath);
+        DeleteDirectory::handle($sourcePath);
     }
 
     public function testTraverseDirectory2(): void
@@ -140,7 +147,7 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($sourcePath);
 
-        Helper::traverseDirectory($sourcePath, true, static function ($item): void {});
+        TraverseDirectory::handle($sourcePath, true, static function ($item): void {});
     }
 
     #[Api([
@@ -150,8 +157,8 @@ final class HelperTest extends TestCase
     {
         $sourcePath = '/home\goods/name/';
 
-        self::assertSame('/home/goods/name', Helper::tidyPath($sourcePath));
-        self::assertSame('\home\goods\name', Helper::tidyPath($sourcePath, false));
+        self::assertSame('/home/goods/name', TidyPath::handle($sourcePath));
+        self::assertSame('\home\goods\name', TidyPath::handle($sourcePath, false));
     }
 
     #[Api([
@@ -159,9 +166,9 @@ final class HelperTest extends TestCase
     ])]
     public function testIsAbsolutePath(): void
     {
-        self::assertTrue(Helper::isAbsolutePath('c://'));
-        self::assertTrue(Helper::isAbsolutePath('/path/hello'));
-        self::assertFalse(Helper::isAbsolutePath('hello'));
+        self::assertTrue(IsAbsolutePath::handle('c://'));
+        self::assertTrue(IsAbsolutePath::handle('/path/hello'));
+        self::assertFalse(IsAbsolutePath::handle('hello'));
     }
 
     #[Api([
@@ -169,9 +176,9 @@ final class HelperTest extends TestCase
     ])]
     public function testDistributed(): void
     {
-        self::assertSame(['000/00/00/', '01'], Helper::distributed(1));
+        self::assertSame(['000/00/00/', '01'], Distributed::handle(1));
 
-        self::assertSame(['090/00/00/', '00'], Helper::distributed(90000000));
+        self::assertSame(['090/00/00/', '00'], Distributed::handle(90000000));
     }
 
     #[Api([
@@ -184,15 +191,15 @@ final class HelperTest extends TestCase
 
         self::assertDirectoryDoesNotExist($sourcePath);
 
-        Helper::createDirectory($sourcePath);
+        CreateDirectory::handle($sourcePath);
 
         self::assertFalse(is_file($file));
 
-        Helper::createFile($file);
+        CreateFile::handle($file);
 
         self::assertTrue(is_file($file));
 
-        Helper::deleteDirectory($sourcePath);
+        DeleteDirectory::handle($sourcePath);
     }
 
     public function testCreateFile2(): void
@@ -204,7 +211,7 @@ final class HelperTest extends TestCase
             sprintf('Failed to create "%s": mkdir(): File exists', $file)
         );
 
-        Helper::createFile($file.'/demo.txt');
+        CreateFile::handle($file.'/demo.txt');
     }
 
     public function testCreateFile3(): void
@@ -229,7 +236,7 @@ final class HelperTest extends TestCase
 
         self::assertFalse(is_file($file));
 
-        Helper::createFile($file);
+        CreateFile::handle($file);
     }
 
     public function testCreateFile4(): void
@@ -241,13 +248,13 @@ final class HelperTest extends TestCase
 
         self::assertFalse(is_file($file));
 
-        Helper::createFile($file);
+        CreateFile::handle($file);
 
         self::assertTrue(is_file($file));
 
-        Helper::createFile($file);
+        CreateFile::handle($file);
 
-        Helper::deleteDirectory($sourcePath);
+        DeleteDirectory::handle($sourcePath);
     }
 
     public function testCreateFile5(): void
@@ -259,34 +266,26 @@ final class HelperTest extends TestCase
 
         self::assertFalse(is_file($file));
 
-        Helper::createFile($file, 'hello');
+        CreateFile::handle($file, 'hello');
 
         self::assertTrue(is_file($file));
         self::assertSame('hello', file_get_contents($file));
 
-        Helper::createFile($file, 'world', 0o666);
+        CreateFile::handle($file, 'world', 0o666);
         self::assertSame('world', file_get_contents($file));
 
-        Helper::deleteDirectory($sourcePath);
+        DeleteDirectory::handle($sourcePath);
     }
 
     #[Api([
-        'zh-CN:title' => 'get_extension 获取上传文件扩展名',
+        'zh-CN:title' => 'extension 获取上传文件扩展名',
     ])]
-    public function testGetExtension(): void
+    public function testExtension(): void
     {
         $file = __DIR__.'/HelperTest.pHp';
 
-        self::assertSame('pHp', Helper::getExtension($file));
-        self::assertSame('PHP', Helper::getExtension($file, 1));
-        self::assertSame('php', Helper::getExtension($file, 2));
-    }
-
-    public function testNotFound(): void
-    {
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Class "Leevel\\Filesystem\\Helper\\NotFound" not found');
-
-        self::assertTrue(Helper::notFound());
+        self::assertSame('pHp', Extension::handle($file));
+        self::assertSame('PHP', Extension::handle($file, 1));
+        self::assertSame('php', Extension::handle($file, 2));
     }
 }
