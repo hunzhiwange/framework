@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\I18n;
 
+use Leevel\Filesystem\Helper\CreateDirectory;
 use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\I18n\GettextGenerator;
 use Tests\TestCase;
@@ -91,7 +92,7 @@ final class GettextGeneratorTest extends TestCase
         $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();
         error_reporting(0);
 
-        Helper\CreateDirectory::handle(\dirname($filePath));
+        CreateDirectory::handle(\dirname($filePath));
         file_put_contents($filePath, 'foo');
         chmod($filePath, 0o444);
 
