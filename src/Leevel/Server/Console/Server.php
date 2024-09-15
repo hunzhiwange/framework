@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Kernel\Console;
+namespace Leevel\Server\Console;
 
 use Leevel\Config\IConfig;
 use Leevel\Console\Command;
