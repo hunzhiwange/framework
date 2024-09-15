@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\View;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\View\Compiler;
 use Leevel\View\Html;
 use Leevel\View\Parser;
@@ -15,7 +15,7 @@ final class HtmlTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_html');
+        DeleteDirectory::handle(__DIR__.'/cache_html');
     }
 
     public function testBaseUse(): void

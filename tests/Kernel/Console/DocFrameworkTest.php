@@ -6,7 +6,7 @@ namespace Tests\Kernel\Console;
 
 use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Doc;
 use Leevel\Kernel\Console\DocFramework;
@@ -95,7 +95,7 @@ final class DocFrameworkTest extends TestCase
         self::assertFileExists($outputDirNameEnUs.'/demo2.md');
         self::assertFileExists($outputDirNameEnUs.'/demo3.md');
 
-        Helper::deleteDirectory($outputDirNameDefault);
+        DeleteDirectory::handle($outputDirNameDefault);
     }
 
     protected function initContainerService(IContainer $container): void

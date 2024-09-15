@@ -7,7 +7,7 @@ namespace Tests\Kernel\Bootstrap;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadI18n;
 use Leevel\Kernel\IApp;
@@ -146,7 +146,7 @@ EOT,
         self::assertSame('Total 5', $i18n->gettext('共 %d 条', 5));
         self::assertSame('Go to', $i18n->gettext('前往'));
 
-        Helper::deleteDirectory($appPath.'/storage');
+        DeleteDirectory::handle($appPath.'/storage');
     }
 
     public function testExtendI18nDirNotFound(): void

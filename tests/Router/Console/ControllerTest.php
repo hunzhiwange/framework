@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Router\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Router\Console\Controller;
 use Tests\Console\BaseMake;
 use Tests\TestCase;
@@ -62,7 +62,7 @@ final class ControllerTest extends TestCase
         $dir = __DIR__.'/../../Console/Subdir';
         $file = $dir.'/Suddir2/BarValue.php';
         if (is_dir($dir)) {
-            Helper::deleteDirectory($dir);
+            DeleteDirectory::handle($dir);
         }
 
         $result = $this->runCommand(new Controller(), [
@@ -78,7 +78,7 @@ final class ControllerTest extends TestCase
         self::assertStringContainsString($this->normalizeContent('controller <BarValue> created successfully.'), $result);
         self::assertStringContainsString($this->normalizeContent(realpath($file)), $result);
         self::assertStringContainsString('class BarValue', file_get_contents($file));
-        Helper::deleteDirectory($dir);
+        DeleteDirectory::handle($dir);
     }
 
     public function testWithCustomStub(): void

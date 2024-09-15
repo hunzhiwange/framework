@@ -9,7 +9,7 @@ use Leevel\Cache\Proxy\Cache;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\TestCase;
 
 final class CacheTest extends TestCase
@@ -23,7 +23,7 @@ final class CacheTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cacheManager');
+        DeleteDirectory::handle(__DIR__.'/cacheManager');
         Container::singletons()->clear();
     }
 

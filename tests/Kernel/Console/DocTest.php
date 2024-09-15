@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Kernel\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Console\Doc;
 use Leevel\Kernel\IApp;
@@ -27,7 +27,7 @@ final class DocTest extends TestCase
     {
         $outputDirName = \dirname(__DIR__).'/Utils/Assert/Doc/Output';
         if (is_dir($outputDirName)) {
-            Helper::deleteDirectory($outputDirName);
+            DeleteDirectory::handle($outputDirName);
         }
 
         if (isset($GLOBALS['make:doc:bootstrap'])) {

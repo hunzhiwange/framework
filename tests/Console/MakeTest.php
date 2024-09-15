@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Console;
 
 use Leevel\Console\Make;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use Tests\Console\Command\MakeFile;
 use Tests\Console\Command\MakeFileWithGlobalReplace;
@@ -31,7 +31,7 @@ final class MakeTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
     }

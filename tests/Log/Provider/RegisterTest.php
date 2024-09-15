@@ -7,7 +7,7 @@ namespace Tests\Log\Provider;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Event\IDispatch;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Leevel\Log\Provider\Register;
@@ -27,7 +27,7 @@ final class RegisterTest extends TestCase
         self::assertFileDoesNotExist($filePath);
         $manager->info('foo', ['bar']);
         self::assertFileExists($filePath);
-        Helper::deleteDirectory(__DIR__.'/cache');
+        DeleteDirectory::handle(__DIR__.'/cache');
     }
 
     public function testConnect(): void
@@ -43,7 +43,7 @@ final class RegisterTest extends TestCase
         self::assertFileDoesNotExist($filePath);
         $file->info('foo', ['bar']);
         self::assertFileExists($filePath);
-        Helper::deleteDirectory(__DIR__.'/cache');
+        DeleteDirectory::handle(__DIR__.'/cache');
     }
 
     protected function createContainer(): Container

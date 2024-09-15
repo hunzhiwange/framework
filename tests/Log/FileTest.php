@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
 use Tests\TestCase;
@@ -25,7 +25,7 @@ final class FileTest extends TestCase
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
-                Helper::deleteDirectory($v);
+                DeleteDirectory::handle($v);
             }
         }
     }

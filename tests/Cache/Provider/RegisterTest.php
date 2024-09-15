@@ -9,7 +9,7 @@ use Leevel\Cache\Provider\Register;
 use Leevel\Cache\Redis;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\TestCase;
 
 final class RegisterTest extends TestCase
@@ -38,7 +38,7 @@ final class RegisterTest extends TestCase
         $manager->delete('hello');
         self::assertFileDoesNotExist($filePath);
         self::assertFalse($manager->get('hello'));
-        Helper::deleteDirectory(__DIR__.'/cache');
+        DeleteDirectory::handle(__DIR__.'/cache');
     }
 
     public function testCache(): void
@@ -57,7 +57,7 @@ final class RegisterTest extends TestCase
         $file->delete('hello');
         self::assertFileDoesNotExist($filePath);
         self::assertFalse($file->get('hello'));
-        Helper::deleteDirectory(__DIR__.'/cache');
+        DeleteDirectory::handle(__DIR__.'/cache');
     }
 
     public function testRedis(): void

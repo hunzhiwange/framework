@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\I18n;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\I18n\GettextGenerator;
 use Tests\TestCase;
 
@@ -15,7 +15,7 @@ final class GettextGeneratorTest extends TestCase
     {
         $path = __DIR__.'/cacheFile';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
 
         if (isset($GLOBALS['RUNTIME_ERROR_REPORTING'])) {

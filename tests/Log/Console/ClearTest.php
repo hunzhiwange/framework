@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Log\Console;
 
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\CreateFile;
 use Leevel\Kernel\IApp;
 use Leevel\Log\Console\Clear;
 use Tests\Console\BaseCommand;
@@ -18,7 +18,7 @@ final class ClearTest extends TestCase
     public function testBaseUse(): void
     {
         $cacheDir = __DIR__.'/log_clear';
-        Helper::createFile($cacheDir.'/hello.txt', 'foo');
+        CreateFile::handle($cacheDir.'/hello.txt', 'foo');
         self::assertDirectoryExists($cacheDir);
 
         $result = $this->runCommand(

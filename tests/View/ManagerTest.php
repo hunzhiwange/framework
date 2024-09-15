@@ -7,7 +7,7 @@ namespace Tests\View;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App;
 use Leevel\Kernel\Utils\Api;
 use Leevel\View\Manager;
@@ -73,7 +73,7 @@ final class ManagerTest extends TestCase
     protected function tearDown(): void
     {
         if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {
-            Helper::deleteDirectory($cacheDirPath);
+            DeleteDirectory::handle($cacheDirPath);
         }
     }
 

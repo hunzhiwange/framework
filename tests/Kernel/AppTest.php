@@ -8,7 +8,7 @@ use Leevel\Config\IConfig;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Di\Provider;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Http\Request;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
@@ -370,7 +370,7 @@ final class AppTest extends TestCase
         file_put_contents($appPath.'/storage/bootstrap/i18n/zh-CN.php', 'foo');
         self::assertTrue($app->isCachedI18n('zh-CN'));
 
-        Helper::deleteDirectory($appPath);
+        DeleteDirectory::handle($appPath);
     }
 
     #[Api([
@@ -407,7 +407,7 @@ final class AppTest extends TestCase
         file_put_contents($appPath.'/storage/bootstrap/config.php', 'foo');
         self::assertTrue($app->isCachedConfig());
 
-        Helper::deleteDirectory($appPath);
+        DeleteDirectory::handle($appPath);
     }
 
     #[Api([
@@ -437,7 +437,7 @@ final class AppTest extends TestCase
 
         self::assertTrue($app->isCachedRouter());
 
-        Helper::deleteDirectory($appPath);
+        DeleteDirectory::handle($appPath);
     }
 
     #[Api([

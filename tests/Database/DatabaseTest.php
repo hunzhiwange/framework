@@ -8,7 +8,7 @@ use Leevel\Database\ConnectionException;
 use Leevel\Database\Database;
 use Leevel\Database\Mysql;
 use Leevel\Database\Select;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\Database\DatabaseTestCase as TestCase;
@@ -27,7 +27,7 @@ final class DatabaseTest extends TestCase
 
         $path = \dirname(__DIR__).'/databaseCacheManager';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
     }
 

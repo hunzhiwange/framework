@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Kernel\Utils;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Doc;
 use Tests\Kernel\Utils\Assert\Demo5;
 use Tests\Kernel\Utils\Assert\Demo6;
@@ -27,7 +27,7 @@ final class DocTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
     }

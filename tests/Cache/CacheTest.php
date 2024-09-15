@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\File;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use Tests\TestCase;
 
@@ -71,7 +71,7 @@ final class CacheTest extends TestCase
     {
         $path = __DIR__.'/cache';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
     }
 

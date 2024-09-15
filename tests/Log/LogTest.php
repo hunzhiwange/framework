@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Log\File;
 use Leevel\Log\ILog;
@@ -102,7 +102,7 @@ final class LogTest extends TestCase
         ];
         foreach ($dirPath as $v) {
             if (is_dir($v)) {
-                Helper::deleteDirectory($v);
+                DeleteDirectory::handle($v);
             }
         }
     }
@@ -129,7 +129,7 @@ EOT,
         self::assertNull($log->{$level}('foo', ['hello', 'world']));
 
         self::assertInstanceOf(Logger::class, $log->getMonolog());
-        Helper::deleteDirectory(__DIR__.'/cacheLog');
+        DeleteDirectory::handle(__DIR__.'/cacheLog');
     }
 
     public static function baseUseProvider(): array

@@ -7,7 +7,7 @@ namespace Tests\I18n\Console;
 use Leevel\Config\Config;
 use Leevel\Config\IConfig;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\I18n\Console\Generate;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
@@ -23,7 +23,7 @@ final class GenerateTest extends TestCase
     {
         $path = __DIR__.'/../cachePath';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
     }
 

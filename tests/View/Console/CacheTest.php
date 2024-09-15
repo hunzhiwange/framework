@@ -6,7 +6,7 @@ namespace Tests\View\Console;
 
 use Leevel\Config\Config;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\IApp;
 use Leevel\View\Console\Cache;
@@ -22,7 +22,7 @@ final class CacheTest extends TestCase
     protected function tearDown(): void
     {
         if (is_dir($cacheDirPath = __DIR__.'/cache_app')) {
-            Helper::deleteDirectory($cacheDirPath);
+            DeleteDirectory::handle($cacheDirPath);
         }
     }
 

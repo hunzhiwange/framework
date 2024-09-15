@@ -6,7 +6,7 @@ namespace Tests\View\Provider;
 
 use Leevel\Config\Config;
 use Leevel\Di\Container;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App;
 use Leevel\View\Manager;
 use Leevel\View\Provider\Register;
@@ -17,7 +17,7 @@ final class RegisterTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        Helper::deleteDirectory(__DIR__.'/cache_app');
+        DeleteDirectory::handle(__DIR__.'/cache_app');
     }
 
     public function testBaseUse(): void

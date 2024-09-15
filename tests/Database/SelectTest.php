@@ -9,7 +9,7 @@ use Leevel\Cache\ICache;
 use Leevel\Database\Condition;
 use Leevel\Database\Page;
 use Leevel\Di\Container;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Page\Page as BasePage;
 use Leevel\Support\Collection;
@@ -29,7 +29,7 @@ final class SelectTest extends TestCase
 
         $path = \dirname(__DIR__).'/databaseCacheManager';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
     }
 

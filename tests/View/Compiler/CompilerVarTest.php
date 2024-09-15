@@ -292,12 +292,12 @@ EOT,
         // 静态方法
         $source = <<<'eot'
             {{~ $currentTime=time() }}
-            {{ $currentTime|\Leevel\Support\Str::formatDate }}
+            {{ $currentTime|\Leevel\Support\Str\FormatDate::handle }}
             eot;
 
         $compiled = <<<'eot'
             <?php $currentTime=time(); ?>
-            <?php echo \Leevel\Support\Str::formatDate($currentTime); ?>
+            <?php echo \Leevel\Support\Str\FormatDate::handle($currentTime); ?>
             eot;
 
         self::assertSame($compiled, $parser->doCompile($source, null, true));

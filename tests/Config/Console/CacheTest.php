@@ -6,7 +6,7 @@ namespace Tests\Config\Console;
 
 use Leevel\Config\Console\Cache;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
@@ -24,7 +24,7 @@ final class CacheTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
 

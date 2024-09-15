@@ -7,7 +7,7 @@ namespace Tests\Kernel\Bootstrap;
 use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\App as Apps;
 use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\IApp;
@@ -40,7 +40,7 @@ final class LoadConfigTest extends TestCase
         $storagePath = $appPath.'/storage';
 
         if (is_dir($storagePath)) {
-            Helper::deleteDirectory($storagePath);
+            DeleteDirectory::handle($storagePath);
         }
 
         if (getenv('RUNTIME_ENVIRONMENT')) {

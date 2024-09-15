@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Session;
 
 use Leevel\Cache\File as CacheFile;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
@@ -85,7 +85,7 @@ final class SessionTest extends TestCase
     {
         $dirPath = __DIR__.'/cache';
         if (is_dir($dirPath)) {
-            Helper::deleteDirectory($dirPath);
+            DeleteDirectory::handle($dirPath);
         }
     }
 

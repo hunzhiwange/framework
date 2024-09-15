@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Tests\Auth;
 
 use Leevel\Auth\Token;
-use Leevel\Cache\File;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\TestCase;
 
 final class TokenTest extends TestCase
@@ -16,7 +15,7 @@ final class TokenTest extends TestCase
     {
         $path = __DIR__.'/cacheFile';
         if (is_dir($path)) {
-            Helper::deleteDirectory($path);
+            DeleteDirectory::handle($path);
         }
     }
 

@@ -8,7 +8,7 @@ use Leevel\Config\Config;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Leevel\Log\ILog;
 use Leevel\Log\Manager;
 use Monolog\Logger;
@@ -23,7 +23,7 @@ final class ManagerTest extends TestCase
         self::assertFileDoesNotExist($filePath);
         $manager->info('foo', ['bar']);
         self::assertFileExists($filePath);
-        Helper::deleteDirectory(__DIR__.'/cache');
+        DeleteDirectory::handle(__DIR__.'/cache');
     }
 
     public function testSyslog(): void

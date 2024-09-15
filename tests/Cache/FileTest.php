@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Cache;
 
 use Leevel\Cache\File;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\TestCase;
 
 final class FileTest extends TestCase
@@ -23,7 +23,7 @@ final class FileTest extends TestCase
             __DIR__.'/cacheFile',
         ];
         foreach ($dirs as $dir) {
-            Helper::deleteDirectory($dir);
+            DeleteDirectory::handle($dir);
         }
     }
 

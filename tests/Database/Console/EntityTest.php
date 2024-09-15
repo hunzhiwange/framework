@@ -8,7 +8,8 @@ use Leevel\Console\Make;
 use Leevel\Database\Console\Entity;
 use Leevel\Database\Manager;
 use Leevel\Di\IContainer;
-use Leevel\Filesystem\Helper;
+use Leevel\Filesystem\Helper\CreateFile;
+use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\Console\BaseMake;
 use Tests\Database\DatabaseTestCase as TestCase;
 
@@ -136,7 +137,7 @@ final class EntityTest extends TestCase
     {
         $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         self::assertFalse(is_file($file));
-        Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh'));
+        CreateFile::handle($file, file_get_contents(__DIR__.'/assert/refresh'));
         self::assertTrue(is_file($file));
 
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
@@ -200,7 +201,7 @@ final class EntityTest extends TestCase
     {
         $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         self::assertFalse(is_file($file));
-        Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_extends_struct'));
+        CreateFile::handle($file, file_get_contents(__DIR__.'/assert/refresh_with_extends_struct'));
         self::assertTrue(is_file($file));
 
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
@@ -245,7 +246,7 @@ final class EntityTest extends TestCase
     {
         $file = __DIR__.'/../../Console/Base/Entity/Test.php';
         self::assertFalse(is_file($file));
-        Helper::createFile($file, file_get_contents(__DIR__.'/assert/refresh_with_bad_struct'));
+        CreateFile::handle($file, file_get_contents(__DIR__.'/assert/refresh_with_bad_struct'));
         self::assertTrue(is_file($file));
 
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
@@ -407,7 +408,7 @@ final class EntityTest extends TestCase
         ];
         foreach ($dirs as $dir) {
             if (is_dir($dir)) {
-                Helper::deleteDirectory($dir);
+                DeleteDirectory::handle($dir);
             }
         }
     }
