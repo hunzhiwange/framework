@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Auth;
 
 use Leevel\Auth\Token;
+use Leevel\Cache\File;
 use Leevel\Filesystem\Helper\DeleteDirectory;
 use Tests\TestCase;
 
