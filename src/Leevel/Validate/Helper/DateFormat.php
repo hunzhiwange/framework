@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class DateFormat
 {
+    public const string MESSAGE = '{field} 必须使用日期格式 {rule}';
+
     /**
      * 是否为时间.
      *

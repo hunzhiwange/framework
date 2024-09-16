@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class EqualLessThan
 {
+    public const string MESSAGE = '{field} 必须小于等于 {rule}';
+
     /**
      * 小于等于.
      *

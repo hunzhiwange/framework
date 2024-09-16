@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Url
 {
+    public const string MESSAGE = '{field} 不是有效的 URL 地址';
+
     /**
      * 验证是否为 URL 地址.
      */

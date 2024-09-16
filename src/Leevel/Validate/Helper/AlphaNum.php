@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class AlphaNum
 {
+    public const string MESSAGE = '{field} 只能是字母和数字';
+
     /**
      * 字符串是否为数字和字母.
      */

@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Email
 {
+    public const string MESSAGE = '{field} 必须为正确的电子邮件格式';
+
     /**
      * 是否为电子邮件.
      */

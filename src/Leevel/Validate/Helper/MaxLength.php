@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class MaxLength
 {
+    public const string MESSAGE = '{field} 不满足最大长度 {rule}';
+
     /**
      * 验证数据最大长度.
      *

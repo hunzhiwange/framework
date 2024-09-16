@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class NotBetweenEqual
 {
+    public const string MESSAGE = '{field} 不在 {rule} 和 {rule1} 之间，包含等于';
+
     /**
      * 未处于 betweenEqual 范围，包含等于.
      *

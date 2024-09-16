@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class NotIn
 {
+    public const string MESSAGE = '{field} 不能在 {rule} 范围内';
+
     /**
      * 是否不处于某个范围.
      *

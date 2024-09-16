@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class NotEmpty
 {
+    public const string MESSAGE = '{field} 不能为空';
+
     /**
      * 值是否不为空.
      */

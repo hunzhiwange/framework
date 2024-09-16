@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Timezone
 {
+    public const string MESSAGE = '{field} 不是正确的时区';
+
     /**
      * 是否为正确的时区.
      */

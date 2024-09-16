@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class AlphaUpper
 {
+    public const string MESSAGE = '{field} 只能是大写字母';
+
     /**
      * 是否为大写英文字母.
      */

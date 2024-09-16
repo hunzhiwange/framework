@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Lower
 {
+    public const string MESSAGE = '{field} 必须全部是小写';
+
     /**
      * 验证是否都是小写.
      *

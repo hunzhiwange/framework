@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class AlphaLower
 {
+    public const string MESSAGE = '{field} 只能是小写字母';
+
     /**
      * 是否为小写英文字母.
      */

@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Digit
 {
+    public const string MESSAGE = '{field} 字符串中的字符必须都是数字';
+
     /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
      */

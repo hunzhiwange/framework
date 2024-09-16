@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Json
 {
+    public const string MESSAGE = '{field} 不是有效的 JSON';
+
     /**
      * 验证是否为正常的 JSON 数据.
      */

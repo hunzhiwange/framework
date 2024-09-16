@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Number
 {
+    public const string MESSAGE = '{field} 必须是数字';
+
     /**
      * 是否为数字.
      */

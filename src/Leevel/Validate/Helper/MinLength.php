@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class MinLength
 {
+    public const string MESSAGE = '{field} 不满足最小长度 {rule}';
+
     /**
      * 验证数据最小长度.
      *

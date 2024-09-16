@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Upper
 {
+    public const string MESSAGE = '{field} 必须全部是大写';
+
     /**
      * 验证是否都是大写.
      */

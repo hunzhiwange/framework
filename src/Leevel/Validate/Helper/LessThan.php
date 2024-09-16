@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class LessThan
 {
+    public const string MESSAGE = '{field} 必须小于 {rule}';
+
     /**
      * 小于.
      *

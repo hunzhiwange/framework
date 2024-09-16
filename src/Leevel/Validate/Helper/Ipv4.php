@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Ipv4
 {
+    public const string MESSAGE = '{field} 不是有效的 IPV4 地址';
+
     /**
      * 是否为 ipv4.
      */

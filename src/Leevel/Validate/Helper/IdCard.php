@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class IdCard
 {
+    public const string MESSAGE = '{field} 必须是有效的中国大陆身份证';
+
     /**
      * 是否为大陆身份证.
      */

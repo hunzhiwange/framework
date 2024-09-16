@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Regex
 {
+    public const string MESSAGE = '{field} 必须满足正则格式 {rule}';
+
     /**
      * 数据是否满足正则条件.
      *

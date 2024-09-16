@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Qq
 {
+    public const string MESSAGE = '{field} 必须是有效的 QQ 号码';
+
     /**
      * 是否为 QQ 号码.
      */

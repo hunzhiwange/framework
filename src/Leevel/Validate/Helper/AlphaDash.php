@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class AlphaDash
 {
+    public const string MESSAGE = '{field} 只能是字母、数字、短横线和下划线';
+
     /**
      * 字符串是否为数字、下划线、短横线和字母.
      */

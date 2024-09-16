@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class EqualGreaterThan
 {
+    public const string MESSAGE = '{field} 必须大于等于 {rule}';
+
     /**
      * 大于等于.
      *

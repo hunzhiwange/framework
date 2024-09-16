@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class NotSame
 {
+    public const string MESSAGE = '{field} 不能完全等于 {rule}';
+
     /**
      * 两个值是否不完全相同.
      *

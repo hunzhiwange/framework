@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class IsArray
 {
+    public const string MESSAGE = '{field} 必须是数组';
+
     /**
      * 验证是否为数组.
      */

@@ -8,6 +8,8 @@ use Leevel\Validate\IValidator;
 
 class EqualTo
 {
+    public const string MESSAGE = '{field} 必须等于字段 {rule}';
+
     /**
      * 两个字段是否相同.
      *

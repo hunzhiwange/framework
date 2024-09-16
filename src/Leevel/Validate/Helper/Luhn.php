@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Luhn
 {
+    public const string MESSAGE = '{field} 必须为正确的符合 luhn 格式算法银行卡';
+
     /**
      * 值是否为银行卡等符合 luhn 算法.
      */

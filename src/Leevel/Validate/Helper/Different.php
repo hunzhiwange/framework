@@ -8,6 +8,8 @@ use Leevel\Validate\IValidator;
 
 class Different
 {
+    public const string MESSAGE = '{field} 不能等于字段 {rule}';
+
     /**
      * 两个字段是否不同.
      *

@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Required
 {
+    public const string MESSAGE = '{field} 不能为空';
+
     /**
      * 不能为空.
      */

@@ -24,6 +24,8 @@ class UniqueRule
      */
     public const string SEPARATE = ':';
 
+    public const string MESSAGE = '{field} 不能出现重复值';
+
     /**
      * 校验.
      *

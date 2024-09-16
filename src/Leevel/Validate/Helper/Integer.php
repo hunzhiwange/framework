@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Integer
 {
+    public const string MESSAGE = '{field} 必须是整形';
+
     /**
      * 是否整型数字.
      */

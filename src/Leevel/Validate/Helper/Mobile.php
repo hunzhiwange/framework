@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Mobile
 {
+    public const string MESSAGE = '{field} 必须是有效的手机号';
+
     /**
      * 值是否为手机号码.
      */

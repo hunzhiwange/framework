@@ -11,6 +11,8 @@ class BeforeRule
 {
     use Date;
 
+    public const string MESSAGE = '{field} 日期不能超过 {rule}';
+
     /**
      * 校验.
      */

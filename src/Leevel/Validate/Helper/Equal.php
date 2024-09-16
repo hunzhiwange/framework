@@ -6,10 +6,10 @@ namespace Leevel\Validate\Helper;
 
 class Equal
 {
+    public const string MESSAGE = '{field} 必须等于 {rule}';
+
     /**
      * 两个值是否相同.
-     *
-     * - 全等匹配，为了严禁.
      *
      * @throws \InvalidArgumentException
      */

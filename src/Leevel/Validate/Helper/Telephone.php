@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Telephone
 {
+    public const string MESSAGE = '{field} 必须是有效的电话号码';
+
     /**
      * 值是否为电话号码.
      */

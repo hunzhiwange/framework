@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Ipv6
 {
+    public const string MESSAGE = '{field} 不是有效的 IPV6 地址';
+
     /**
      * 是否为 ipv6.
      */

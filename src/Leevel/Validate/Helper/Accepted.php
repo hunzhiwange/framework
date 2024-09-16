@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Accepted
 {
+    public const string MESSAGE = '{field} 必须是 yes、on、true 或者 1';
+
     /**
      * 是否可接受的.
      */

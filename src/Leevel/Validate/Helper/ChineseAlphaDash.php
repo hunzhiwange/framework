@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class ChineseAlphaDash
 {
+    public const string MESSAGE = '{field} 只能是汉字、字母、数字、短横线和下划线';
+
     /**
      * 是否为中文、数字、下划线、短横线和字母.
      */

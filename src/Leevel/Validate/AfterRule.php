@@ -11,6 +11,8 @@ class AfterRule
 {
     use Date;
 
+    public const string MESSAGE = '{field} 日期不能小于 {rule}';
+
     /**
      * 校验.
      */

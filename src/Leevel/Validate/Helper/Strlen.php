@@ -8,6 +8,8 @@ use function strlen as base_strlen;
 
 class Strlen
 {
+    public const string MESSAGE = '{field} 长度不符合要求 {rule}';
+
     /**
      * 长度验证.
      *

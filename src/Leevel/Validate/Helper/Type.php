@@ -8,6 +8,8 @@ use Leevel\Support\Type\Type as BaseType;
 
 class Type
 {
+    public const string MESSAGE = '{field} 类型不符合要求 {rule}';
+
     /**
      * 数据类型验证.
      *

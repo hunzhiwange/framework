@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Chinese
 {
+    public const string MESSAGE = '{field} 只能是汉字';
+
     /**
      * 是否为中文.
      */

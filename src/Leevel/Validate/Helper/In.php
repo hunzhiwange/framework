@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class In
 {
+    public const string MESSAGE = '{field} 必须在 {rule} 范围内';
+
     /**
      * 是否处于某个范围.
      *

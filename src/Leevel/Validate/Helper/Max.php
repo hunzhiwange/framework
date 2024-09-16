@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Max
 {
+    public const string MESSAGE = '{field} 值不能超过 {rule}';
+
     /**
      * 验证值上限.
      *

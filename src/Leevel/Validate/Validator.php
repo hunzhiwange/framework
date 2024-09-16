@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\Di\IContainer;
+use Leevel\I18n\Gettext;
 use Leevel\Support\Arr\Normalize;
 use Leevel\Support\FlowControl;
 use Leevel\Support\Str\Camelize;
@@ -624,6 +625,11 @@ class Validator implements IValidator
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
         if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
+            // 验证器默认消息
+            if (!isset(static::$defaultMessages[$rule])) {
+                static::$defaultMessages[$rule] = \defined($classHelper.'::MESSAGE') ? __($classHelper::MESSAGE) : '';
+            }
+
             $validatorErrorMessage = '';
 
             try {
@@ -652,6 +658,11 @@ class Validator implements IValidator
             if (!\is_callable([$validateRule, 'handle'])) {
                 // @phpstan-ignore-next-line
                 throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
+            }
+
+            // 验证器默认消息
+            if (!isset(static::$defaultMessages[$rule])) {
+                static::$defaultMessages[$rule] = \defined($className.'::MESSAGE') ? __($className::MESSAGE) : '';
             }
 
             /** @phpstan-ignore-next-line */
@@ -840,5 +851,16 @@ class Validator implements IValidator
     protected function isCallbackValid(\Closure $callbacks): bool
     {
         return $callbacks($this->getData());
+    }
+}
+
+if (!\function_exists(__NAMESPACE__.'\\__')) {
+    function __(string $text, ...$data): string
+    {
+        if (!class_exists(Gettext::class)) {
+            return sprintf($text, ...$data); // @codeCoverageIgnore
+        }
+
+        return Gettext::handle($text, ...$data);
     }
 }

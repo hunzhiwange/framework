@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class Date
 {
+    public const string MESSAGE = '{field} 不是正确的日期格式';
+
     /**
      * 是否为日期.
      */

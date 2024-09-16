@@ -6,6 +6,8 @@ namespace Leevel\Validate\Helper;
 
 class NotNull
 {
+    public const string MESSAGE = '{field} 不能为 null';
+
     /**
      * 是否不为 NULL.
      */
