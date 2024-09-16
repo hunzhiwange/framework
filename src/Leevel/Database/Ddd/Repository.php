@@ -41,6 +41,11 @@ class Repository implements ISelect
     protected int $softDeletedType = Entity::WITHOUT_SOFT_DELETED;
 
     /**
+     * 实体查询条件.
+     */
+    protected ?\Closure $selectCondition = null;
+
+    /**
      * 构造函数.
      */
     public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null) {}
@@ -58,12 +63,18 @@ class Repository implements ISelect
 
     public function withSoftDeleted(): Select
     {
-        return $this->callSelectMethodChain(__FUNCTION__);
+        $select = $this->callSelectMethodChain(__FUNCTION__);
+        $this->callSelectCondition($select);
+
+        return $select;
     }
 
     public function onlySoftDeleted(): Select
     {
-        return $this->callSelectMethodChain(__FUNCTION__);
+        $select = $this->callSelectMethodChain(__FUNCTION__);
+        $this->callSelectCondition($select);
+
+        return $select;
     }
 
     public function eager(array $relation): Select
@@ -1053,6 +1064,36 @@ class Repository implements ISelect
         return $this->entity;
     }
 
+    /**
+     * 实体查询条件.
+     */
+    public function selectCondition(\Closure $selectCondition): self
+    {
+        $this->selectCondition = $selectCondition;
+
+        return $this;
+    }
+
+    /**
+     * 实体查询包含软删除数据的实体查询对象.
+     */
+    public function selectWithSoftDeleted(): self
+    {
+        $this->softDeletedType = Entity::WITH_SOFT_DELETED;
+
+        return $this;
+    }
+
+    /**
+     * 实体查询仅仅包含软删除数据的实体查询对象.
+     */
+    public function selectOnlySoftDeleted(): self
+    {
+        $this->softDeletedType = Entity::ONLY_SOFT_DELETED;
+
+        return $this;
+    }
+
     protected function callSelectMethodChain(string $method, mixed ...$args): Select
     {
         // @phpstan-ignore-next-line
@@ -1066,22 +1107,19 @@ class Repository implements ISelect
 
     protected function callSelectMethodCondition(string $method, mixed ...$args): mixed
     {
-        $entitySelect = $this->getEntitySelect();
-        $lastIndex = \count($args) - 1;
-        // @phpstan-ignore-next-line
-        $args[$lastIndex] = $this->prepareCondition($entitySelect, $args[$lastIndex]);
+        $select = $this->getEntitySelect();
+        $this->callSelectCondition($select);
 
-        return $this->getEntitySelect()->{$method}(...$args);
+        return $select->{$method}(...$args);
     }
 
-    protected function prepareCondition(Select $entitySelect, ?\Closure $condition = null): ?\Closure
+    protected function callSelectCondition(Select $select): void
     {
-        if (!$condition) {
-            return null;
+        if (!$this->selectCondition) {
+            return;
         }
 
-        return function (DatabaseSelect $databaseSelect) use ($entitySelect, $condition): void {
-            $condition($databaseSelect, $entitySelect, $this->entity);
-        };
+        $selectCondition = $this->selectCondition;
+        $selectCondition($select);
     }
 }
