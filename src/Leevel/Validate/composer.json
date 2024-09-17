@@ -13,12 +13,12 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/i18n": "^1.1",
-        "leevel/support": "^1.1",
-        "leevel/di": "^1.1"
+        "leevel/i18n": "^2.0",
+        "leevel/support": "^2.0",
+        "leevel/di": "^2.0"
     },
     "suggest": {
-        "leevel/database": "Required to use database unique rule (^1.1)."
+        "leevel/database": "Required to use database unique rule (^2.0)."
     },
     "autoload": {
         "psr-4": {
@@ -27,7 +27,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [

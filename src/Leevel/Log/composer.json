@@ -13,17 +13,17 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/support": "^1.1",
-        "leevel/event": "^1.1",
+        "leevel/support": "^2.0",
+        "leevel/event": "^2.0",
         "monolog/monolog": "^3.6.0"
     },
     "require-dev": {
         "swoole/ide-helper": "^5.1.3"
     },
     "suggest": {
-        "leevel/http": "Required to use log middleware (^1.1).",
-        "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "leevel/console": "Required to use the make commands (^1.1).",
+        "leevel/http": "Required to use log middleware (^2.0).",
+        "leevel/filesystem": "Required to use the make commands (^2.0).",
+        "leevel/console": "Required to use the make commands (^2.0).",
         "ext-swoole": "Required to use swoole (^5.1.3)."
     },
     "autoload": {
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [

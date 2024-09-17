@@ -13,16 +13,16 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/di": "^1.1",
-        "leevel/support": "^1.1",
-        "leevel/http": "^1.1",
-        "leevel/kernel": "^1.1",
-        "leevel/session": "^1.1",
-        "leevel/view": "^1.1"
+        "leevel/di": "^2.0",
+        "leevel/support": "^2.0",
+        "leevel/http": "^2.0",
+        "leevel/kernel": "^2.0",
+        "leevel/session": "^2.0",
+        "leevel/view": "^2.0"
     },
     "suggest": {
-        "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "leevel/console": "Required to use the make commands (^1.1)."
+        "leevel/filesystem": "Required to use the make commands (^2.0).",
+        "leevel/console": "Required to use the make commands (^2.0)."
     },
     "autoload": {
         "psr-4": {
@@ -31,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [

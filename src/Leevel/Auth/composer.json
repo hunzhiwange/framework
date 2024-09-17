@@ -13,13 +13,13 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/support": "^1.1",
-        "leevel/cache": "^1.1",
-        "leevel/http": "^1.1",
+        "leevel/support": "^2.0",
+        "leevel/cache": "^2.0",
+        "leevel/http": "^2.0",
         "firebase/php-jwt": "^6.10.0"
     },
     "suggest": {
-        "leevel/session": "Required to use the session based guard (^1.1)."
+        "leevel/session": "Required to use the session based guard (^2.0)."
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [

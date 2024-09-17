@@ -13,14 +13,14 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/support": "^1.1",
-        "leevel/cache": "^1.1"
+        "leevel/support": "^2.0",
+        "leevel/cache": "^2.0"
     },
     "suggest": {
-        "leevel/http": "Required to use session middleware (^1.1).",
-        "leevel/filesystem": "Required to use the make commands (^1.1).",
-        "leevel/kernel": "Required to use the make commands (^1.1).",
-        "leevel/console": "Required to use the make commands (^1.1)."
+        "leevel/http": "Required to use session middleware (^2.0).",
+        "leevel/filesystem": "Required to use the make commands (^2.0).",
+        "leevel/kernel": "Required to use the make commands (^2.0).",
+        "leevel/console": "Required to use the make commands (^2.0)."
     },
     "autoload": {
         "psr-4": {
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [

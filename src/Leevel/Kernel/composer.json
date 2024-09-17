@@ -13,20 +13,20 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/di": "^1.1",
-        "leevel/support": "^1.1",
-        "leevel/http": "^1.1",
-        "leevel/i18n": "^1.1",
-        "leevel/config": "^1.1",
-        "leevel/event": "^1.1",
-        "leevel/log": "^1.1",
-        "leevel/router": "^1.1",
-        "leevel/database": "^1.1",
-        "leevel/console": "^1.1",
+        "leevel/di": "^2.0",
+        "leevel/support": "^2.0",
+        "leevel/http": "^2.0",
+        "leevel/i18n": "^2.0",
+        "leevel/config": "^2.0",
+        "leevel/event": "^2.0",
+        "leevel/log": "^2.0",
+        "leevel/router": "^2.0",
+        "leevel/database": "^2.0",
+        "leevel/console": "^2.0",
         "nunomaduro/collision": "^8.1.1"
     },
     "suggest": {
-        "leevel/filesystem": "Required to use the make commands (^1.1).",
+        "leevel/filesystem": "Required to use the make commands (^2.0).",
         "symfony/process": "Required to use php built-in web server (^7.0.7)."
     },
     "autoload": {
@@ -36,7 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         }
     },
     "minimum-stability": "dev"

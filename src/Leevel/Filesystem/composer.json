@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": ">=8.3",
-        "leevel/support": "^1.1",
+        "leevel/support": "^2.0",
         "league/flysystem": "^3.27.0",
         "league/flysystem-sftp-v3": "^3.26.0",
         "symfony/filesystem": "^7.0.7"
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "2.0-dev"
         },
         "leevel": {
             "providers": [
