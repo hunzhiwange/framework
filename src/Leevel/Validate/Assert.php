@@ -2168,21 +2168,11 @@ class Assert
             if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
                 return true;
             }
-
-            // @phpstan-ignore-next-line
-            [$method, $multi] = $result;
-
-            // 验证
-            if (false === self::validateRule($method, $multi)) {
-                return false;
+        } else {
+            // 匹配单个值
+            if (true === ($result = self::matchSingle($method, $args, $optional, $multiValue))) {
+                return true;
             }
-
-            return true;
-        }
-
-        // 匹配单个值
-        if (true === ($result = self::matchSingle($method, $args, $optional, $multiValue))) {
-            return true;
         }
 
         // @phpstan-ignore-next-line
