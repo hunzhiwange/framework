@@ -192,21 +192,20 @@ EOT,
     #[Api([
         'zh-CN:title' => '断言链式表达式支持可选和多个校验',
         'zh-CN:description' => <<<'EOT'
-链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。
-一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。
+链式表达式数据值可以支持多个。
 EOT,
     ])]
     public function testAssertChainSupportOptionalMulti(): void
     {
-        Assert::make(5)
+        $result = Assert::lazy([3, 2, 5], true)
             ->notEmpty()
             ->lessThan([7])
-            ->multiNotEmpty()
-            ->optionalNotEmpty()
-            ->optionalMultiNotEmpty()
+            ->lessThan([8])
+            ->lessThan([9])
+            ->flush()
         ;
 
-        self::assertSame(1, 1);
+        $this->assert($result);
     }
 
     #[Api([
@@ -224,19 +223,6 @@ EOT,
     public function testAssertLazyChain(): void
     {
         $result = Assert::lazy(3)
-            ->notEmpty()
-            ->lessThan([7])
-            ->lessThan([8])
-            ->lessThan([9])
-            ->flush()
-        ;
-
-        $this->assert($result);
-    }
-
-    public function testAssertLazyChain2(): void
-    {
-        $result = Assert::lazy([3, 2, 5], true)
             ->notEmpty()
             ->lessThan([7])
             ->lessThan([8])
