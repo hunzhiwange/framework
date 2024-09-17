@@ -8,6 +8,8 @@ class NotEmpty
 {
     public const string MESSAGE = '{field} 不能为空';
 
+    public const string ANTISENSE_MESSAGE = '{field} 只能为空';
+
     /**
      * 值是否不为空.
      */

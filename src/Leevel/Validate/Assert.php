@@ -17,6 +17,7 @@ use Leevel\Support\Str\UnCamelize;
 class Assert
 {
     use FlowControl;
+    use PrepareMessage;
 
     /**
      * 校验值.
@@ -49,11 +50,6 @@ class Assert
     protected array $error = [];
 
     /**
-     * 默认验证提示信息.
-     */
-    protected static array $defaultMessages = [];
-
-    /**
      * 构造函数.
      */
     public function __construct(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true, bool $lazy = false)
@@ -68,1009 +64,1009 @@ class Assert
     /**
      * 是否可接受的.
      */
-    public function accepted(?string $message = null): self
+    public function accepted(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证 IP 许可.
      */
-    public function allowedIp(array $param, ?string $message = null): self
+    public function allowedIp(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为英文字母.
      */
-    public function alpha(?string $message = null): self
+    public function alpha(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 字符串是否为数字、下划线、短横线和字母.
      */
-    public function alphaDash(?string $message = null): self
+    public function alphaDash(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为小写英文字母.
      */
-    public function alphaLower(?string $message = null): self
+    public function alphaLower(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 字符串是否为数字和字母.
      */
-    public function alphaNum(?string $message = null): self
+    public function alphaNum(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为大写英文字母.
      */
-    public function alphaUpper(?string $message = null): self
+    public function alphaUpper(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 处于 between 范围，不包含等于.
      */
-    public function between(array $param, ?string $message = null): self
+    public function between(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 处于 betweenEqual 范围，包含全等.
      */
-    public function betweenEqual(array $param, ?string $message = null): self
+    public function betweenEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否为布尔值
      */
-    public function boolean(?string $message = null): self
+    public function boolean(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为有效的域名.
      */
-    public function checkdnsrr(?string $message = null): self
+    public function checkdnsrr(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文.
      */
-    public function chinese(?string $message = null): self
+    public function chinese(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文、数字、下划线、短横线和字母.
      */
-    public function chineseAlphaDash(?string $message = null): self
+    public function chineseAlphaDash(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文、数字和字母.
      */
-    public function chineseAlphaNum(?string $message = null): self
+    public function chineseAlphaNum(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为日期
      */
-    public function date(?string $message = null): self
+    public function date(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为时间.
      */
-    public function dateFormat(array $param, ?string $message = null): self
+    public function dateFormat(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证 IP 许可.
      */
-    public function denyIp(array $param, ?string $message = null): self
+    public function denyIp(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
      */
-    public function digit(?string $message = null): self
+    public function digit(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否双精度浮点数.
      */
-    public function double(?string $message = null): self
+    public function double(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为电子邮件.
      */
-    public function email(?string $message = null): self
+    public function email(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否相同.
      */
-    public function equal(array $param, ?string $message = null): self
+    public function equal(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 大于或者全等.
      */
-    public function equalGreaterThan(array $param, ?string $message = null): self
+    public function equalGreaterThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 小于或者全等.
      */
-    public function equalLessThan(array $param, ?string $message = null): self
+    public function equalLessThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 大于.
      */
-    public function greaterThan(array $param, ?string $message = null): self
+    public function greaterThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为大陆身份证
      */
-    public function idCard(?string $message = null): self
+    public function idCard(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否处于某个范围.
      */
-    public function in(array $param, ?string $message = null): self
+    public function in(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否整型数字.
      */
-    public function integer(?string $message = null): self
+    public function integer(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为合法的 IP 地址
      */
-    public function ip(?string $message = null): self
+    public function ip(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 ipv4.
      */
-    public function ipv4(?string $message = null): self
+    public function ipv4(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 ipv6.
      */
-    public function ipv6(?string $message = null): self
+    public function ipv6(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为数组.
      */
-    public function isArray(?string $message = null): self
+    public function isArray(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为空.
      */
-    public function isEmpty(?string $message = null): self
+    public function isEmpty(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为浮点数.
      */
-    public function isFloat(?string $message = null): self
+    public function isFloat(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 null.
      */
-    public function isNull(?string $message = null): self
+    public function isNull(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为正常的 JSON 字符串.
      */
-    public function json(?string $message = null): self
+    public function json(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 小于.
      */
-    public function lessThan(array $param, ?string $message = null): self
+    public function lessThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否都是小写.
      */
-    public function lower(?string $message = null): self
+    public function lower(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为银行卡等符合 luhn 算法.
      */
-    public function luhn(?string $message = null): self
+    public function luhn(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证值上限.
      */
-    public function max(array $param, ?string $message = null): self
+    public function max(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证数据最大长度.
      */
-    public function maxLength(array $param, ?string $message = null): self
+    public function maxLength(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证值下限.
      */
-    public function min(array $param, ?string $message = null): self
+    public function min(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证数据最小长度.
      */
-    public function minLength(array $param, ?string $message = null): self
+    public function minLength(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否为手机号码
      */
-    public function mobile(?string $message = null): self
+    public function mobile(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 未处于 between 范围，不包含等于.
      */
-    public function notBetween(array $param, ?string $message = null): self
+    public function notBetween(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 未处于 betweenEqual 范围，包含等于.
      */
-    public function notBetweenEqual(array $param, ?string $message = null): self
+    public function notBetweenEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否不为空.
      */
-    public function notEmpty(?string $message = null): self
+    public function notEmpty(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否不相同.
      */
-    public function notEqual(array $param, ?string $message = null): self
+    public function notEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否不处于某个范围.
      */
-    public function notIn(array $param, ?string $message = null): self
+    public function notIn(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否不为 null.
      */
-    public function notNull(?string $message = null): self
+    public function notNull(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否不完全相同.
      */
-    public function notSame(array $param, ?string $message = null): self
+    public function notSame(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为数字.
      */
-    public function number(?string $message = null): self
+    public function number(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为电话号码或者手机号码
      */
-    public function phone(?string $message = null): self
+    public function phone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 QQ 号码
      */
-    public function qq(?string $message = null): self
+    public function qq(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 数据是否满足正则条件.
      */
-    public function regex(array $param, ?string $message = null): self
+    public function regex(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 不能为空.
      */
-    public function required(?string $message = null): self
+    public function required(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否完全相同.
      */
-    public function same(array $param, ?string $message = null): self
+    public function same(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 长度验证
      */
-    public function strlen(array $param, ?string $message = null): self
+    public function strlen(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否为电话号码
      */
-    public function telephone(?string $message = null): self
+    public function telephone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为正确的时区.
      */
-    public function timezone(?string $message = null): self
+    public function timezone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 数据类型验证
      */
-    public function type(array $param, ?string $message = null): self
+    public function type(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否都是大写.
      */
-    public function upper(?string $message = null): self
+    public function upper(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为 URL 地址
      */
-    public function url(?string $message = null): self
+    public function url(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中国邮政编码
      */
-    public function zipCode(?string $message = null): self
+    public function zipCode(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否可接受的（可选验证）.
      */
-    public function optionalAccepted(?string $message = null): self
+    public function optionalAccepted(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证 IP 许可（可选验证）.
      */
-    public function optionalAllowedIp(array $param, ?string $message = null): self
+    public function optionalAllowedIp(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为英文字母（可选验证）.
      */
-    public function optionalAlpha(?string $message = null): self
+    public function optionalAlpha(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 字符串是否为数字、下划线、短横线和字母（可选验证）.
      */
-    public function optionalAlphaDash(?string $message = null): self
+    public function optionalAlphaDash(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为小写英文字母（可选验证）.
      */
-    public function optionalAlphaLower(?string $message = null): self
+    public function optionalAlphaLower(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 字符串是否为数字和字母（可选验证）.
      */
-    public function optionalAlphaNum(?string $message = null): self
+    public function optionalAlphaNum(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为大写英文字母（可选验证）.
      */
-    public function optionalAlphaUpper(?string $message = null): self
+    public function optionalAlphaUpper(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 处于 between 范围，不包含等于（可选验证）.
      */
-    public function optionalBetween(array $param, ?string $message = null): self
+    public function optionalBetween(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 处于 betweenEqual 范围，包含全等（可选验证）.
      */
-    public function optionalBetweenEqual(array $param, ?string $message = null): self
+    public function optionalBetweenEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否为布尔值（可选验证）.
      */
-    public function optionalBoolean(?string $message = null): self
+    public function optionalBoolean(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为有效的域名（可选验证）.
      */
-    public function optionalCheckdnsrr(?string $message = null): self
+    public function optionalCheckdnsrr(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文（可选验证）.
      */
-    public function optionalChinese(?string $message = null): self
+    public function optionalChinese(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文、数字、下划线、短横线和字母（可选验证）.
      */
-    public function optionalChineseAlphaDash(?string $message = null): self
+    public function optionalChineseAlphaDash(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中文、数字和字母（可选验证）.
      */
-    public function optionalChineseAlphaNum(?string $message = null): self
+    public function optionalChineseAlphaNum(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为日期（可选验证）.
      */
-    public function optionalDate(?string $message = null): self
+    public function optionalDate(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为时间（可选验证）.
      */
-    public function optionalDateFormat(array $param, ?string $message = null): self
+    public function optionalDateFormat(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证 IP 许可（可选验证）.
      */
-    public function optionalDenyIp(array $param, ?string $message = null): self
+    public function optionalDenyIp(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（可选验证）.
      */
-    public function optionalDigit(?string $message = null): self
+    public function optionalDigit(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否双精度浮点数（可选验证）.
      */
-    public function optionalDouble(?string $message = null): self
+    public function optionalDouble(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为电子邮件（可选验证）.
      */
-    public function optionalEmail(?string $message = null): self
+    public function optionalEmail(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否相同（可选验证）.
      */
-    public function optionalEqual(array $param, ?string $message = null): self
+    public function optionalEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 大于或者全等（可选验证）.
      */
-    public function optionalEqualGreaterThan(array $param, ?string $message = null): self
+    public function optionalEqualGreaterThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 小于或者全等（可选验证）.
      */
-    public function optionalEqualLessThan(array $param, ?string $message = null): self
+    public function optionalEqualLessThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 大于（可选验证）.
      */
-    public function optionalGreaterThan(array $param, ?string $message = null): self
+    public function optionalGreaterThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为大陆身份证（可选验证）.
      */
-    public function optionalIdCard(?string $message = null): self
+    public function optionalIdCard(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否处于某个范围（可选验证）.
      */
-    public function optionalIn(array $param, ?string $message = null): self
+    public function optionalIn(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否整型数字（可选验证）.
      */
-    public function optionalInteger(?string $message = null): self
+    public function optionalInteger(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为合法的 IP 地址（可选验证）.
      */
-    public function optionalIp(?string $message = null): self
+    public function optionalIp(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 ipv4（可选验证）.
      */
-    public function optionalIpv4(?string $message = null): self
+    public function optionalIpv4(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 ipv6（可选验证）.
      */
-    public function optionalIpv6(?string $message = null): self
+    public function optionalIpv6(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为数组（可选验证）.
      */
-    public function optionalIsArray(?string $message = null): self
+    public function optionalIsArray(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为空（可选验证）.
      */
-    public function optionalIsEmpty(?string $message = null): self
+    public function optionalIsEmpty(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为浮点数（可选验证）.
      */
-    public function optionalIsFloat(?string $message = null): self
+    public function optionalIsFloat(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 null（可选验证）.
      */
-    public function optionalIsNull(?string $message = null): self
+    public function optionalIsNull(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为正常的 JSON 字符串（可选验证）.
      */
-    public function optionalJson(?string $message = null): self
+    public function optionalJson(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 小于（可选验证）.
      */
-    public function optionalLessThan(array $param, ?string $message = null): self
+    public function optionalLessThan(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否都是小写（可选验证）.
      */
-    public function optionalLower(?string $message = null): self
+    public function optionalLower(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为银行卡等符合 luhn 算法（可选验证）.
      */
-    public function optionalLuhn(?string $message = null): self
+    public function optionalLuhn(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证值上限（可选验证）.
      */
-    public function optionalMax(array $param, ?string $message = null): self
+    public function optionalMax(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证数据最大长度（可选验证）.
      */
-    public function optionalMaxLength(array $param, ?string $message = null): self
+    public function optionalMaxLength(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证值下限（可选验证）.
      */
-    public function optionalMin(array $param, ?string $message = null): self
+    public function optionalMin(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证数据最小长度（可选验证）.
      */
-    public function optionalMinLength(array $param, ?string $message = null): self
+    public function optionalMinLength(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否为手机号码（可选验证）.
      */
-    public function optionalMobile(?string $message = null): self
+    public function optionalMobile(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 未处于 between 范围，不包含等于（可选验证）.
      */
-    public function optionalNotBetween(array $param, ?string $message = null): self
+    public function optionalNotBetween(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 未处于 betweenEqual 范围，包含等于（可选验证）.
      */
-    public function optionalNotBetweenEqual(array $param, ?string $message = null): self
+    public function optionalNotBetweenEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否不为空（可选验证）.
      */
-    public function optionalNotEmpty(?string $message = null): self
+    public function optionalNotEmpty(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否不相同（可选验证）.
      */
-    public function optionalNotEqual(array $param, ?string $message = null): self
+    public function optionalNotEqual(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否不处于某个范围（可选验证）.
      */
-    public function optionalNotIn(array $param, ?string $message = null): self
+    public function optionalNotIn(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否不为 null.
      */
-    public function optionalNotNull(?string $message = null): self
+    public function optionalNotNull(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否不完全相同（可选验证）.
      */
-    public function optionalNotSame(array $param, ?string $message = null): self
+    public function optionalNotSame(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 是否为数字（可选验证）.
      */
-    public function optionalNumber(?string $message = null): self
+    public function optionalNumber(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 值是否为电话号码或者手机号码（可选验证）.
      */
-    public function optionalPhone(?string $message = null): self
+    public function optionalPhone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为 QQ 号码（可选验证）.
      */
-    public function optionalQq(?string $message = null): self
+    public function optionalQq(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 数据是否满足正则条件（可选验证）.
      */
-    public function optionalRegex(array $param, ?string $message = null): self
+    public function optionalRegex(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 不能为空（可选验证）.
      */
-    public function optionalRequired(?string $message = null): self
+    public function optionalRequired(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 两个值是否完全相同（可选验证）.
      */
-    public function optionalSame(array $param, ?string $message = null): self
+    public function optionalSame(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 长度验证（可选验证）.
      */
-    public function optionalStrlen(array $param, ?string $message = null): self
+    public function optionalStrlen(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 值是否为电话号码（可选验证）.
      */
-    public function optionalTelephone(?string $message = null): self
+    public function optionalTelephone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为正确的时区（可选验证）.
      */
-    public function optionalTimezone(?string $message = null): self
+    public function optionalTimezone(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 数据类型验证（可选验证）.
      */
-    public function optionalType(array $param, ?string $message = null): self
+    public function optionalType(array $param, ?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $param, $message);
+        return $this->callMethodChain(__FUNCTION__, $param, $message, $antisense);
     }
 
     /**
      * 验证是否都是大写（可选验证）.
      */
-    public function optionalUpper(?string $message = null): self
+    public function optionalUpper(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 验证是否为 URL 地址（可选验证）.
      */
-    public function optionalUrl(?string $message = null): self
+    public function optionalUrl(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
      * 是否为中国邮政编码（可选验证）.
      */
-    public function optionalZipCode(?string $message = null): self
+    public function optionalZipCode(?string $message = null, bool $antisense = false): self
     {
-        return $this->callMethodChain(__FUNCTION__, $message);
+        return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
 
     /**
@@ -1137,10 +1133,11 @@ class Assert
             return $this;
         }
 
+        $antisense = (bool) array_pop($args);
         array_unshift($args, $this->value);
 
-        if (false === self::validateAssert($method, $args, $this->multiValue)) {
-            $message = self::normalizeMessage($method, $args, $this->field);
+        if (false === self::validateAssert($method, $args, $this->multiValue, $antisense)) {
+            $message = self::normalizeMessage($method, $args, $this->field, $antisense);
             if (false === $this->lazy) {
                 throw new AssertException($message);
             }
@@ -1155,7 +1152,7 @@ class Assert
      *
      * @throws \InvalidArgumentException
      */
-    protected static function validateAssert(string $method, array $args, bool $multiValue): bool
+    protected static function validateAssert(string $method, array $args, bool $multiValue, bool $antisense): bool
     {
         // 匹配可选
         if (true === ($result = self::matchOptional($method, $args))) {
@@ -1175,25 +1172,31 @@ class Assert
         [$method, $multi] = $result;
 
         // 验证
-        if (false === self::validateRule($method, $multi)) {
-            return false;
+        $result = self::validateRule($method, $multi, $antisense);
+        if ($antisense) {
+            $result = !$result;
         }
 
-        return true;
+        return $result;
     }
 
     /**
      * 参数校验和消息整理.
      */
-    protected static function normalizeMessage(string $method, array $args, ?string $field = null): string
+    protected static function normalizeMessage(string $method, array $args, ?string $field = null, bool $antisense = false): string
     {
         $rule = UnCamelize::handle($method);
-        $rule = str_replace(['optional_multi_', 'multi_', 'optional_'], ['', '', ''], $rule);
+        $rule = str_replace(['optional_'], [''], $rule);
 
         if (\count($args) >= 2 && \is_string($args[array_key_last($args)])) {
             $message = array_pop($args);
         } else {
-            $message = static::$defaultMessages[$rule] ?? 'No exception messsage specified.';
+            if ($antisense) {
+                $antisenseRule = '!'.$rule;
+                $message = static::$defaultMessages[$antisenseRule] ?? 'No exception messsage specified.';
+            } else {
+                $message = static::$defaultMessages[$rule] ?? 'No exception messsage specified.';
+            }
         }
 
         $replace = [
@@ -1279,21 +1282,18 @@ class Assert
      *
      * @throws \BadMethodCallException
      */
-    protected static function validateRule(string $method, array $multi): bool
+    protected static function validateRule(string $method, array $multi, bool $antisense): bool
     {
-        $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
-        if (!class_exists($helperClass)) {
-            throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $helperClass));
+        $classHelper = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
+        if (!class_exists($classHelper)) {
+            throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $classHelper));
         }
 
-        // 验证器默认消息
         $rule = UnCamelize::handle($method);
-        if (!isset(static::$defaultMessages[$rule])) {
-            static::$defaultMessages[$rule] = \defined($helperClass.'::MESSAGE') ? __($helperClass::MESSAGE) : '';
-        }
+        static::parepareMessage($classHelper, $rule, $antisense);
 
         foreach ($multi as $m) {
-            if (false === $helperClass::handle(...$m)) {
+            if (false === $classHelper::handle(...$m)) {
                 return false;
             }
         }

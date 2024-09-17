@@ -18,6 +18,7 @@ use Leevel\Support\Type\StringDecode;
 class Validator implements IValidator
 {
     use FlowControl;
+    use PrepareMessage;
 
     /**
      * IOC 容器.
@@ -33,11 +34,6 @@ class Validator implements IValidator
      * 验证规则.
      */
     protected array $rules = [];
-
-    /**
-     * 默认验证提示信息.
-     */
-    protected static array $defaultMessages = [];
 
     /**
      * 验证提示信息.
@@ -614,15 +610,15 @@ class Validator implements IValidator
         }
 
         // 反义规则
-        $isAntisenseRule = str_starts_with($rule, '!');
-        if ($isAntisenseRule) {
+        $antisense = str_starts_with($rule, '!');
+        if ($antisense) {
             $rule = substr($rule, 1);
         }
 
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
         if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
-            $this->parepareDefaultMessage($classHelper, $rule, $isAntisenseRule);
+            static::parepareMessage($classHelper, $rule, $antisense);
 
             $validatorErrorMessage = '';
 
@@ -638,12 +634,12 @@ class Validator implements IValidator
                 $validatorErrorMessage = $e->getMessage();
             }
 
-            if ($isAntisenseRule) {
+            if ($antisense) {
                 $validateResult = !$validateResult;
             }
 
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
+                $this->addFailure($field, $rule, $param, $antisense, $validatorErrorMessage);
 
                 return false;
             }
@@ -657,41 +653,18 @@ class Validator implements IValidator
                 $validatorErrorMessage = $e->getMessage();
             }
 
-            if ($isAntisenseRule) {
+            if ($antisense) {
                 $validateResult = !$validateResult;
             }
 
             if (!$validateResult) {
-                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
+                $this->addFailure($field, $rule, $param, $antisense, $validatorErrorMessage);
 
                 return false;
             }
         }
 
         return true;
-    }
-
-    protected function parepareDefaultMessage(string $classHelper, string $rule, bool $isAntisenseRule): void
-    {
-        // 验证器默认消息
-        if ($isAntisenseRule) {
-            if (!isset(static::$defaultMessages['!'.$rule])) {
-                $message = \defined($classHelper.'::ANTISENSE_MESSAGE') ? __($classHelper::ANTISENSE_MESSAGE) : '';
-                if (!$message && \defined($classHelper.'::MESSAGE')) {
-                    $message = $this->parepareAntisenseMessage(__($classHelper::MESSAGE));
-                }
-                if ($message) {
-                    static::$defaultMessages['!'.$rule] = $message;
-                }
-            }
-        } elseif (!isset(static::$defaultMessages[$rule])) {
-            static::$defaultMessages[$rule] = \defined($classHelper.'::MESSAGE') ? __($classHelper::MESSAGE) : '';
-        }
-    }
-
-    protected function parepareAntisenseMessage(string $message): string
-    {
-        return __('不满足【%s】', $message);
     }
 
     /**
@@ -713,18 +686,18 @@ class Validator implements IValidator
     /**
      * 添加错误规则和验证错误消息.
      */
-    protected function addFailure(string $field, string $rule, array $param, bool $isAntisenseRule = false, string $validatorErrorMessage = ''): void
+    protected function addFailure(string $field, string $rule, array $param, bool $antisense = false, string $validatorErrorMessage = ''): void
     {
-        $this->addError($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
+        $this->addError($field, $rule, $param, $antisense, $validatorErrorMessage);
         $this->failedRules[$field][$rule] = $param;
     }
 
     /**
      * 添加验证错误消息.
      */
-    protected function addError(string $field, string $rule, array $param, bool $isAntisenseRule = false, string $validatorErrorMessage = ''): void
+    protected function addError(string $field, string $rule, array $param, bool $antisense = false, string $validatorErrorMessage = ''): void
     {
-        $message = $validatorErrorMessage ?: $this->getFieldRuleMessage($field, $rule, $isAntisenseRule);
+        $message = $validatorErrorMessage ?: $this->getFieldRuleMessage($field, $rule, $antisense);
         $replace = ['field' => $this->parseFieldName($field)];
 
         if ($this->isImplodeRuleParam($rule)) {
@@ -747,12 +720,12 @@ class Validator implements IValidator
     /**
      * 获取验证消息.
      */
-    protected function getFieldRuleMessage(string $field, string $rule, bool $isAntisenseRule = false): string
+    protected function getFieldRuleMessage(string $field, string $rule, bool $antisense = false): string
     {
-        if ($isAntisenseRule) {
-            $notRule = '!'.$rule;
-            $message = $this->messages[$field.'.'.$notRule] ??
-                ($this->messages[$notRule] ?? (static::$defaultMessages[$notRule] ?? ''));
+        if ($antisense) {
+            $antisenseRule = '!'.$rule;
+            $message = $this->messages[$field.'.'.$antisenseRule] ??
+                ($this->messages[$antisenseRule] ?? (static::$defaultMessages[$antisenseRule] ?? ''));
             if ($message) {
                 return $message;
             }
@@ -761,8 +734,8 @@ class Validator implements IValidator
         $message = $this->messages[$field.'.'.$rule] ??
             ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
 
-        if ($isAntisenseRule) {
-            $message = $this->parepareAntisenseMessage($message);
+        if ($antisense) {
+            $message = static::parepareAntisenseMessage($message);
         }
 
         return $message;

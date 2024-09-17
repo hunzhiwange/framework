@@ -190,7 +190,7 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => '断言链式表达式支持可选和多个校验',
+        'zh-CN:title' => '断言链式表达式支持多个值校验',
         'zh-CN:description' => <<<'EOT'
 链式表达式数据值可以支持多个。
 EOT,
@@ -206,6 +206,23 @@ EOT,
         ;
 
         $this->assert($result);
+    }
+
+    #[Api([
+        'zh-CN:title' => '断言支持反义规则',
+    ])]
+    public function test6(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '只能为空'
+        );
+
+        Assert::make(5)
+            ->notEmpty(antisense: true)
+        ;
+
+        self::assertSame(1, 1);
     }
 
     #[Api([
