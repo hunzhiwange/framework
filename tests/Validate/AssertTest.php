@@ -177,8 +177,6 @@ EOT,
 ``` php
 Assert::make(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true, bool $lazy = false): static
 ```
-
-第一个参数为待校验的值，第二个为默认校验失败消息，每一条验证规则也支持自己的失败消息。
 EOT,
     ])]
     public function testAssertChain(): void
@@ -221,8 +219,6 @@ EOT,
 ``` php
 Assert::lazy(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true): static
 ```
-
-第一个参数为待校验的值，第二个为默认校验失败消息，第三个为是否全部验证，每一条验证规则也支持自己的失败消息。
 EOT,
     ])]
     public function testAssertLazyChain(): void
