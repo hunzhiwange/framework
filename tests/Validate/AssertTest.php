@@ -128,7 +128,7 @@ EOT,
     public function testAssertMulti(): void
     {
         Assert::make([3, ['hello'], 'bar', 'yes'], true)
-            ->multiNotEmpty()
+            ->notEmpty()
         ;
 
         self::assertSame(1, 1);
@@ -148,7 +148,7 @@ EOT,
         );
 
         Assert::make([3, ['hello'], '', 'yes'], true)
-            ->multiNotEmpty()
+            ->notEmpty()
         ;
     }
 
@@ -161,7 +161,7 @@ EOT,
     public function testAssertMultiWithOptional(): void
     {
         Assert::make([null, ['hello'], 'bar', 'yes', null], true)
-            ->optionalMultiNotEmpty()
+            ->optionalNotEmpty()
         ;
 
         self::assertSame(1, 1);
@@ -281,6 +281,47 @@ EOT,
         ;
     }
 
+    #[Api([
+        'zh-CN:title' => '断言链式表达式支持流程控制(不满足条件)',
+    ])]
+    public function test2(): void
+    {
+        $condition = false;
+        $result = Assert::lazy([3, 2, 5], true)
+            ->notEmpty()
+            ->lessThan([7])
+            ->if($condition)
+            ->lessThan([1])
+            ->fi()
+            ->lessThan([9])
+            ->flush()
+        ;
+
+        $this->assert($result);
+    }
+
+    #[Api([
+        'zh-CN:title' => '断言链式表达式支持流程控制(满足条件)',
+    ])]
+    public function test3(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '["必须小于 1"]'
+        );
+
+        $condition = true;
+        Assert::lazy([3, 2, 5], true)
+            ->notEmpty()
+            ->lessThan([7])
+            ->if($condition)
+            ->lessThan([1])
+            ->fi()
+            ->lessThan([9])
+            ->flush()
+        ;
+    }
+
     public function testAssertLazyChainWithNotAll(): void
     {
         $this->expectException(AssertException::class);
@@ -363,7 +404,7 @@ EOT,
         );
 
         Assert::make('hello world', true)
-            ->multiNotEmpty()
+            ->notEmpty()
         ;
     }
 
@@ -386,7 +427,7 @@ EOT,
     public function testAssertOptionalMultiAllWasNull(): void
     {
         Assert::make([null, null, null], true)
-            ->optionalMultiNotEmpty()
+            ->optionalNotEmpty()
         ;
 
         self::assertSame(1, 1);
