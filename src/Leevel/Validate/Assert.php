@@ -2120,7 +2120,10 @@ class Assert
                 };
             }
 
-            throw new AssertException($format($this->error));
+            $e = new AssertException($format($this->error));
+            $e->setError($this->error);
+
+            throw $e;
         }
 
         return true;
