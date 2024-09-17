@@ -2179,23 +2179,14 @@ class Assert
 
             return true;
         }
-        if (!$multiValue) {
-            $args[0] = [$args[0]];
-        }
 
-        $multi = [];
-        $argsSource = $args;
-        foreach ($args[0] as $v) {
-            if (null === $v && $optional) {
-                continue;
-            }
-            $argsSource[0] = $v;
-            $multi[] = $argsSource;
-        }
-
-        if (!$multi) {
+        // 匹配单个值
+        if (true === ($result = self::matchSingle($method, $args, $optional, $multiValue))) {
             return true;
         }
+
+        // @phpstan-ignore-next-line
+        [$method, $multi] = $result;
 
         // 验证
         if (false === self::validateRule($method, $multi)) {
@@ -2269,7 +2260,7 @@ class Assert
      *
      * @throws \InvalidArgumentException
      */
-    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiValue): array|bool
+    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiValue): array|true
     {
         // 非多选值转换为多选值
         if (!$multiValue) {
@@ -2295,6 +2286,38 @@ class Assert
         }
 
         $method = substr($method, 5);
+
+        return [$method, $multi];
+    }
+
+    /**
+     * 匹配单个值.
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected static function matchSingle(string $method, array $args, bool $optional, bool $multiValue): array|true
+    {
+        if (!$multiValue) {
+            $args[0] = [$args[0]];
+        }
+
+        if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
+            throw new \InvalidArgumentException('Invalid first argument for multi assert.');
+        }
+
+        $multi = [];
+        $argsSource = $args;
+        foreach ($args[0] as $v) {
+            if (null === $v && $optional) {
+                continue;
+            }
+            $argsSource[0] = $v;
+            $multi[] = $argsSource;
+        }
+
+        if (!$multi) {
+            return true;
+        }
 
         return [$method, $multi];
     }
