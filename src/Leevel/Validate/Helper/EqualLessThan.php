@@ -8,6 +8,8 @@ class EqualLessThan
 {
     public const string MESSAGE = '{field} 必须小于等于 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 必须大于 {rule}';
+
     /**
      * 小于等于.
      *

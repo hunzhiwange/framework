@@ -8,6 +8,8 @@ class Date
 {
     public const string MESSAGE = '{field} 不是正确的日期格式';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是正确的日期格式';
+
     /**
      * 是否为日期.
      */

@@ -8,6 +8,8 @@ class DateFormat
 {
     public const string MESSAGE = '{field} 必须使用日期格式 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能使用日期格式 {rule}';
+
     /**
      * 是否为时间.
      *

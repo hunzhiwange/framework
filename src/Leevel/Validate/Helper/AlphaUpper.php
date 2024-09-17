@@ -8,6 +8,8 @@ class AlphaUpper
 {
     public const string MESSAGE = '{field} 只能是大写字母';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能只是大写字母';
+
     /**
      * 是否为大写英文字母.
      */

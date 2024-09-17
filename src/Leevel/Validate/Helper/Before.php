@@ -13,6 +13,8 @@ class Before
 
     public const string MESSAGE = '{field} 日期不能超过 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 日期必须超过 {rule}';
+
     /**
      * 验证在给定日期之前.
      */

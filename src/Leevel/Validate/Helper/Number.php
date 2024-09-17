@@ -8,6 +8,8 @@ class Number
 {
     public const string MESSAGE = '{field} 必须是数字';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是数字';
+
     /**
      * 是否为数字.
      */

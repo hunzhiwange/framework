@@ -8,6 +8,8 @@ class Same
 {
     public const string MESSAGE = '{field} 必须完全等于 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能完全等于 {rule}';
+
     /**
      * 两个值是否完全相同.
      *

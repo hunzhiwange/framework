@@ -8,6 +8,8 @@ class Integer
 {
     public const string MESSAGE = '{field} 必须是整形';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是整形';
+
     /**
      * 是否整型数字.
      */

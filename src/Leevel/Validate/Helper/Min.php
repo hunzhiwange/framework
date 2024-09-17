@@ -8,6 +8,8 @@ class Min
 {
     public const string MESSAGE = '{field} 值不能小于 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 值必须小于 {rule}';
+
     /**
      * 验证值下限.
      *

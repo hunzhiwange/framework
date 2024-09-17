@@ -8,6 +8,8 @@ class Qq
 {
     public const string MESSAGE = '{field} 必须是有效的 QQ 号码';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是有效的 QQ 号码';
+
     /**
      * 是否为 QQ 号码.
      */

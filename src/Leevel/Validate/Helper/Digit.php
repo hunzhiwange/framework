@@ -8,6 +8,8 @@ class Digit
 {
     public const string MESSAGE = '{field} 字符串中的字符必须都是数字';
 
+    public const string ANTISENSE_MESSAGE = '{field} 字符串中的字符不能都是数字';
+
     /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
      */

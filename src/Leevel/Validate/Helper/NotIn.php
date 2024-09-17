@@ -8,6 +8,8 @@ class NotIn
 {
     public const string MESSAGE = '{field} 不能在 {rule} 范围内';
 
+    public const string ANTISENSE_MESSAGE = '{field} 只能在 {rule} 范围内';
+
     /**
      * 是否不处于某个范围.
      *

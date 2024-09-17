@@ -10,6 +10,8 @@ class Strlen
 {
     public const string MESSAGE = '{field} 长度不符合要求 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 长度不能符合要求 {rule}';
+
     /**
      * 长度验证.
      *

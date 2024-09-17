@@ -24,6 +24,8 @@ class Unique
 
     public const string MESSAGE = '{field} 不能出现重复值';
 
+    public const string ANTISENSE_MESSAGE = '{field} 只能是重复值';
+
     /**
      * 不能重复值验证规则.
      *

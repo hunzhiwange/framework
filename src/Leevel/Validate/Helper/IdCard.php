@@ -8,6 +8,8 @@ class IdCard
 {
     public const string MESSAGE = '{field} 必须是有效的中国大陆身份证';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是有效的中国大陆身份证';
+
     /**
      * 是否为大陆身份证.
      */

@@ -13,6 +13,8 @@ class After
 
     public const string MESSAGE = '{field} 日期不能小于 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 日期必须小于 {rule}';
+
     /**
      * 验证在给定日期之后.
      */

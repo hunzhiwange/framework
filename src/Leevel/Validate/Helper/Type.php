@@ -10,6 +10,8 @@ class Type
 {
     public const string MESSAGE = '{field} 类型不符合要求 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 类型不能符合要求 {rule}';
+
     /**
      * 数据类型验证.
      *

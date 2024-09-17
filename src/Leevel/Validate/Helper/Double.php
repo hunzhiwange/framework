@@ -8,6 +8,8 @@ class Double
 {
     public const string MESSAGE = '{field} 必须是双精度浮点数';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是双精度浮点数';
+
     /**
      * 是否双精度浮点数.
      */

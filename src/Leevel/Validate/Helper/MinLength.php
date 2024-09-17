@@ -8,6 +8,8 @@ class MinLength
 {
     public const string MESSAGE = '{field} 不满足最小长度 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 必须大于等于 {rule}';
+
     /**
      * 验证数据最小长度.
      *

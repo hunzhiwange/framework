@@ -8,6 +8,8 @@ class IsFloat
 {
     public const string MESSAGE = '{field} 必须是浮点数';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是浮点数';
+
     /**
      * 验证是否为浮点数.
      */

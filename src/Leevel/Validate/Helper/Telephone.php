@@ -8,6 +8,8 @@ class Telephone
 {
     public const string MESSAGE = '{field} 必须是有效的电话号码';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是有效的电话号码';
+
     /**
      * 值是否为电话号码.
      */

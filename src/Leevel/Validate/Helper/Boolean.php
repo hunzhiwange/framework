@@ -8,6 +8,8 @@ class Boolean
 {
     public const string MESSAGE = '{field} 必须是布尔值';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是布尔值';
+
     /**
      * 验证是否为布尔值.
      */

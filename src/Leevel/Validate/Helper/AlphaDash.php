@@ -8,6 +8,8 @@ class AlphaDash
 {
     public const string MESSAGE = '{field} 只能是字母、数字、短横线和下划线';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能只是字母、数字、短横线和下划线';
+
     /**
      * 字符串是否为数字、下划线、短横线和字母.
      */

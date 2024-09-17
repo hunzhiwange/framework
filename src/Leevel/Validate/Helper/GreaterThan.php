@@ -8,6 +8,8 @@ class GreaterThan
 {
     public const string MESSAGE = '{field} 必须大于 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 必须小于等于 {rule}';
+
     /**
      * 大于.
      *

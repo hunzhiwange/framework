@@ -8,6 +8,8 @@ class Max
 {
     public const string MESSAGE = '{field} 值不能超过 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 值必须超过 {rule}';
+
     /**
      * 验证值上限.
      *

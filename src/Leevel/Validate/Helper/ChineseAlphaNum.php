@@ -8,6 +8,8 @@ class ChineseAlphaNum
 {
     public const string MESSAGE = '{field} 只能是汉字、字母、数字';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能只是汉字、字母、数字';
+
     /**
      * 是否为中文、数字和字母.
      */

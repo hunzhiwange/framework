@@ -8,6 +8,8 @@ class DenyIp
 {
     public const string MESSAGE = '{field} 禁止的 IP 访问 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 允许的 IP 访问 {rule}';
+
     /**
      * 验证 IP 许可.
      *

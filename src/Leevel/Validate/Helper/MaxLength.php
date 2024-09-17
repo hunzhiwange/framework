@@ -8,6 +8,8 @@ class MaxLength
 {
     public const string MESSAGE = '{field} 不满足最大长度 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 必须小于等于 {rule}';
+
     /**
      * 验证数据最大长度.
      *

@@ -8,6 +8,8 @@ class Ipv6
 {
     public const string MESSAGE = '{field} 不是有效的 IPV6 地址';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是有效的 IPV6 地址';
+
     /**
      * 是否为 ipv6.
      */

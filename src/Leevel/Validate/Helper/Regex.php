@@ -8,6 +8,8 @@ class Regex
 {
     public const string MESSAGE = '{field} 必须满足正则格式 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能满足正则格式 {rule}';
+
     /**
      * 数据是否满足正则条件.
      *

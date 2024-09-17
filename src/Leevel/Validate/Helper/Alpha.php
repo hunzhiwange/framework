@@ -8,6 +8,8 @@ class Alpha
 {
     public const string MESSAGE = '{field} 只能是字母';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能只是字母';
+
     /**
      * 是否为英文字母.
      */

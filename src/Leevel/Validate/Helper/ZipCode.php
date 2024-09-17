@@ -8,6 +8,8 @@ class ZipCode
 {
     public const string MESSAGE = '{field} 必须是有效的中国邮政编码';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是有效的中国邮政编码';
+
     /**
      * 是否为中国邮政编码.
      */

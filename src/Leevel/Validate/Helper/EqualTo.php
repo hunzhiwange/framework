@@ -10,6 +10,8 @@ class EqualTo
 {
     public const string MESSAGE = '{field} 必须等于字段 {rule}';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能等于字段 {rule}';
+
     /**
      * 两个字段是否相同.
      *

@@ -8,6 +8,8 @@ class NotNull
 {
     public const string MESSAGE = '{field} 不能为 null';
 
+    public const string ANTISENSE_MESSAGE = '{field} 必须为 null';
+
     /**
      * 是否不为 NULL.
      */

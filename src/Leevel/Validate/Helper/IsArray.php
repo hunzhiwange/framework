@@ -8,6 +8,8 @@ class IsArray
 {
     public const string MESSAGE = '{field} 必须是数组';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是数组';
+
     /**
      * 验证是否为数组.
      */

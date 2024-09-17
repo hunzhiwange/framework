@@ -8,6 +8,8 @@ class Luhn
 {
     public const string MESSAGE = '{field} 必须为正确的符合 luhn 格式算法银行卡';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能为正确的符合 luhn 格式算法银行卡';
+
     /**
      * 值是否为银行卡等符合 luhn 算法.
      */

@@ -8,6 +8,8 @@ class Between
 {
     public const string MESSAGE = '{field} 只能在 {rule} 和 {rule1} 之间，不包含等于';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能在 {rule} 和 {rule1} 之间，包含等于';
+
     /**
      * 处于 between 范围，不包含等于.
      *
