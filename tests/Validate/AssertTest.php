@@ -223,11 +223,60 @@ EOT,
     ])]
     public function testAssertLazyChain(): void
     {
-        $result = Assert::lazy(5)
+        $result = Assert::lazy(3)
             ->notEmpty()
-            ->lessThan([7], '5 not less than 3')
-            ->lessThan([8], '5 not less than 4')
-            ->lessThan([9], '5 not less than 2')
+            ->lessThan([7])
+            ->lessThan([8])
+            ->lessThan([9])
+            ->flush()
+        ;
+
+        $this->assert($result);
+    }
+
+    public function testAssertLazyChain2(): void
+    {
+        $result = Assert::lazy([3, 2, 5], true)
+            ->notEmpty()
+            ->lessThan([7])
+            ->lessThan([8])
+            ->lessThan([9])
+            ->flush()
+        ;
+
+        $this->assert($result);
+    }
+
+    public function testAssertLazyChain3(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '["必须小于 7","必须小于 8","必须小于 9"]'
+        );
+
+        $result = Assert::lazy(11)
+            ->notEmpty()
+            ->lessThan([7])
+            ->lessThan([8])
+            ->lessThan([9])
+            ->flush()
+        ;
+
+        $this->assert($result);
+    }
+
+    public function testAssertLazyChain4(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '["必须小于 7","必须小于 8","必须小于 9"]'
+        );
+
+        $result = Assert::lazy([3, 22, 5], true)
+            ->notEmpty()
+            ->lessThan([7])
+            ->lessThan([8])
+            ->lessThan([9])
             ->flush()
         ;
 

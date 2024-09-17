@@ -2163,13 +2163,39 @@ class Assert
         // @phpstan-ignore-next-line
         [$method, $optional] = $result;
 
-        // 匹配多个值，可支持 optionalMulti
-        if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
+        if (0 === stripos($method, 'multi')) {
+            // 匹配多个值，可支持 optionalMulti
+            if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
+                return true;
+            }
+
+            // @phpstan-ignore-next-line
+            [$method, $multi] = $result;
+
+            // 验证
+            if (false === self::validateRule($method, $multi)) {
+                return false;
+            }
+
             return true;
         }
+        if (!$multiValue) {
+            $multi = [$args];
+        } else {
+            $multi = [];
+            $argsSource = $args;
+            foreach ($args[0] as $v) {
+                if (null === $v && $optional) {
+                    continue;
+                }
+                $argsSource[0] = $v;
+                $multi[] = $argsSource;
+            }
 
-        // @phpstan-ignore-next-line
-        [$method, $multi] = $result;
+            if (!$multi) {
+                return true;
+            }
+        }
 
         // 验证
         if (false === self::validateRule($method, $multi)) {
@@ -2205,7 +2231,7 @@ class Assert
             }
         }
 
-        $message = preg_replace_callback('/{(.+?)}/', static function ($matches) use ($replace): string {
+        $message = preg_replace_callback('/{(.+?)}/', static function (array $matches) use ($replace): string {
             return (string) ($replace[$matches[1]] ?? $matches[0]);
         }, $message);
 
@@ -2245,10 +2271,6 @@ class Assert
      */
     protected static function matchMulti(string $method, array $args, bool $optional, bool $multiValue): array|bool
     {
-        if (0 !== stripos($method, 'multi')) {
-            return [$method, [$args]];
-        }
-
         // 非多选值转换为多选值
         if (!$multiValue) {
             $args[0] = [$args[0]];
