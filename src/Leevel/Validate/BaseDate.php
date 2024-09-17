@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use DateTime;
-
 /**
  * 日期验证.
  */
-trait Date
+trait BaseDate
 {
     /**
      * 数据验证器.

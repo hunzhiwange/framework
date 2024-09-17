@@ -647,39 +647,6 @@ class Validator implements IValidator
 
                 return false;
             }
-        } elseif (class_exists($className = __NAMESPACE__.'\\'.$camelizeRule.'Rule')) {
-            if ($this->container) {
-                $validateRule = $this->container->make($className);
-            } else {
-                $validateRule = new $className();
-            }
-
-            if (!\is_callable([$validateRule, 'handle'])) {
-                // @phpstan-ignore-next-line
-                throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
-            }
-
-            $this->parepareDefaultMessage($classHelper, $rule, $isAntisenseRule);
-
-            $validatorErrorMessage = '';
-
-            try {
-                /** @phpstan-ignore-next-line */
-                $validateResult = $validateRule->handle($fieldValue, $param, $this, $field);
-            } catch (ValidatorException $e) {
-                $validateResult = false;
-                $validatorErrorMessage = $e->getMessage();
-            }
-
-            if ($isAntisenseRule) {
-                $validateResult = !$validateResult;
-            }
-
-            if (false === $validateResult) {
-                $this->addFailure($field, $rule, $param, $isAntisenseRule, $validatorErrorMessage);
-
-                return false;
-            }
         } else {
             $validatorErrorMessage = '';
 

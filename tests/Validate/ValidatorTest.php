@@ -1512,7 +1512,7 @@ EOT,
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Validate rule Leevel\\Validate\\DemoOneRule is invalid.'
+            'Validate rule Leevel\\Validate\\Helper\\DemoOne is invalid.'
         );
 
         $validate = new Validator(

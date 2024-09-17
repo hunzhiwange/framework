@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Leevel\Validate\Helper;
 
-use Leevel\Validate\Date;
+use Leevel\Validate\BaseDate;
 use Leevel\Validate\IValidator;
 
 class After
 {
-    use Date;
+    use BaseDate;
 
     public const string MESSAGE = '{field} 日期不能小于 {rule}';
 
