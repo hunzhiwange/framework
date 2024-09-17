@@ -9,267 +9,6 @@ namespace Leevel\Validate;
  *
  * - 提供一套精简版本的断言方便业务中很愉快地使用。
  * - 链式操作没有第一个参数 `$value`，此时值为 `$this->value`。
- *
- * @method static \Leevel\Validate\Assert|void accepted($value, ?string $message = null)                                                                     是否可接受的（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void allowedIp($value, array $param, ?string $message = null)                                                      验证 IP 许可（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void alpha($value, ?string $message = null)                                                                        是否为英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void alphaDash($value, ?string $message = null)                                                                    字符串是否为数字、下划线、短横线和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void alphaLower($value, ?string $message = null)                                                                   是否为小写英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void alphaNum($value, ?string $message = null)                                                                     字符串是否为数字和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void alphaUpper($value, ?string $message = null)                                                                   是否为大写英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void between($value, array $param, ?string $message = null)                                                        处于 between 范围，不包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void betweenEqual($value, array $param, ?string $message = null)                                                   处于 betweenEqual 范围，包含全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void boolean($value, ?string $message = null)                                                                      验证是否为布尔值（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void checkdnsrr($value, ?string $message = null)                                                                   验证是否为有效的域名（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void chinese($value, ?string $message = null)                                                                      是否为中文（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void chineseAlphaDash($value, ?string $message = null)                                                             是否为中文、数字、下划线、短横线和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void chineseAlphaNum($value, ?string $message = null)                                                              是否为中文、数字和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void date($value, ?string $message = null)                                                                         是否为日期（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void dateFormat($value, array $param, ?string $message = null)                                                     是否为时间（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void denyIp($value, array $param, ?string $message = null)                                                         验证 IP 许可（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void different($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)              两个字段是否不同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void digit($value, ?string $message = null)                                                                        检测字符串中的字符是否都是数字，负数和小数会检测不通过（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void double($value, ?string $message = null)                                                                       是否双精度浮点数（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void email($value, ?string $message = null)                                                                        是否为电子邮件（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void equal($value, array $param, ?string $message = null)                                                          两个值是否相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void equalGreaterThan($value, array $param, ?string $message = null)                                               大于或者全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void equalLessThan($value, array $param, ?string $message = null)                                                  小于或者全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void equalTo($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)                两个字段是否相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void greaterThan($value, array $param, ?string $message = null)                                                    大于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void idCard($value, ?string $message = null)                                                                       是否为大陆身份证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void in($value, array $param, ?string $message = null)                                                             是否处于某个范围（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void integer($value, ?string $message = null)                                                                      是否整型数字（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void ip($value, ?string $message = null)                                                                           是否为合法的 IP 地址（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void ipv4($value, ?string $message = null)                                                                         是否为 ipv4（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void ipv6($value, ?string $message = null)                                                                         是否为 ipv6（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void isArray($value, ?string $message = null)                                                                      验证是否为数组（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void isEmpty($value, ?string $message = null)                                                                      值是否为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void isFloat($value, ?string $message = null)                                                                      验证是否为浮点数（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void isNull($value, ?string $message = null)                                                                       是否为 null（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void json($value, ?string $message = null)                                                                         验证是否为正常的 JSON 字符串（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void lessThan($value, array $param, ?string $message = null)                                                       小于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void lower($value, ?string $message = null)                                                                        验证是否都是小写（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void luhn($value, ?string $message = null)                                                                         值是否为银行卡等符合 luhn 算法（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void max($value, array $param, ?string $message = null)                                                            验证值上限（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void maxLength($value, array $param, ?string $message = null)                                                      验证数据最大长度（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void min($value, array $param, ?string $message = null)                                                            验证值下限（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void minLength($value, array $param, ?string $message = null)                                                      验证数据最小长度（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void mobile($value, ?string $message = null)                                                                       值是否为手机号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notBetween($value, array $param, ?string $message = null)                                                     未处于 between 范围，不包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notBetweenEqual($value, array $param, ?string $message = null)                                                未处于 betweenEqual 范围，包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notEmpty($value, ?string $message = null)                                                                     值是否不为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notEqual($value, array $param, ?string $message = null)                                                       两个值是否不相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notIn($value, array $param, ?string $message = null)                                                          是否不处于某个范围（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notNull($value, ?string $message = null)                                                                      是否不为 null（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void notSame($value, array $param, ?string $message = null)                                                        两个值是否不完全相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void number($value, ?string $message = null)                                                                       是否为数字（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void phone($value, ?string $message = null)                                                                        值是否为电话号码或者手机号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void qq($value, ?string $message = null)                                                                           是否为 QQ 号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void regex($value, array $param, ?string $message = null)                                                          数据是否满足正则条件（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void required($value, ?string $message = null)                                                                     不能为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void same($value, array $param, ?string $message = null)                                                           两个值是否完全相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void strlen($value, array $param, ?string $message = null)                                                         长度验证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void telephone($value, ?string $message = null)                                                                    值是否为电话号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void timezone($value, ?string $message = null)                                                                     是否为正确的时区（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void type($value, array $param, ?string $message = null)                                                           数据类型验证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void upper($value, ?string $message = null)                                                                        验证是否都是大写（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void url($value, ?string $message = null)                                                                          验证是否为 URL 地址（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void zipCode($value, ?string $message = null)                                                                      是否为中国邮政编码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAccepted($value, ?string $message = null)                                                             是否可接受的（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAllowedIp($value, array $param, ?string $message = null)                                              验证 IP 许可（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAlpha($value, ?string $message = null)                                                                是否为英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAlphaDash($value, ?string $message = null)                                                            字符串是否为数字、下划线、短横线和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAlphaLower($value, ?string $message = null)                                                           是否为小写英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAlphaNum($value, ?string $message = null)                                                             字符串是否为数字和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalAlphaUpper($value, ?string $message = null)                                                           是否为大写英文字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalBetween($value, array $param, ?string $message = null)                                                处于 between 范围，不包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalBetweenEqual($value, array $param, ?string $message = null)                                           处于 betweenEqual 范围，包含全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalBoolean($value, ?string $message = null)                                                              验证是否为布尔值（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalCheckdnsrr($value, ?string $message = null)                                                           验证是否为有效的域名（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalChinese($value, ?string $message = null)                                                              是否为中文（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalChineseAlphaDash($value, ?string $message = null)                                                     是否为中文、数字、下划线、短横线和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalChineseAlphaNum($value, ?string $message = null)                                                      是否为中文、数字和字母（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDate($value, ?string $message = null)                                                                 是否为日期（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDateFormat($value, array $param, ?string $message = null)                                             是否为时间（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDenyIp($value, array $param, ?string $message = null)                                                 验证 IP 许可（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDifferent($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)      两个字段是否不同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDigit($value, ?string $message = null)                                                                检测字符串中的字符是否都是数字，负数和小数会检测不通过（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalDouble($value, ?string $message = null)                                                               是否双精度浮点数（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalEmail($value, ?string $message = null)                                                                是否为电子邮件（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalEqual($value, array $param, ?string $message = null)                                                  两个值是否相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalEqualGreaterThan($value, array $param, ?string $message = null)                                       大于或者全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalEqualLessThan($value, array $param, ?string $message = null)                                          小于或者全等（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalEqualTo($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)        两个字段是否相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalGreaterThan($value, array $param, ?string $message = null)                                            大于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIdCard($value, ?string $message = null)                                                               是否为大陆身份证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIn($value, array $param, ?string $message = null)                                                     是否处于某个范围（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalInteger($value, ?string $message = null)                                                              是否整型数字（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIp($value, ?string $message = null)                                                                   是否为合法的 IP 地址（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIpv4($value, ?string $message = null)                                                                 是否为 ipv4（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIpv6($value, ?string $message = null)                                                                 是否为 ipv6（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIsArray($value, ?string $message = null)                                                              验证是否为数组（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIsEmpty($value, ?string $message = null)                                                              值是否为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIsFloat($value, ?string $message = null)                                                              验证是否为浮点数（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalIsNull($value, ?string $message = null)                                                               是否为 null（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalJson($value, ?string $message = null)                                                                 验证是否为正常的 JSON 字符串（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalLessThan($value, array $param, ?string $message = null)                                               小于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalLower($value, ?string $message = null)                                                                验证是否都是小写（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalLuhn($value, ?string $message = null)                                                                 值是否为银行卡等符合 luhn 算法（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalMax($value, array $param, ?string $message = null)                                                    验证值上限（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalMaxLength($value, array $param, ?string $message = null)                                              验证数据最大长度（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalMin($value, array $param, ?string $message = null)                                                    验证值下限（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalMinLength($value, array $param, ?string $message = null)                                              验证数据最小长度（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalMobile($value, ?string $message = null)                                                               值是否为手机号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotBetween($value, array $param, ?string $message = null)                                             未处于 between 范围，不包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotBetweenEqual($value, array $param, ?string $message = null)                                        未处于 betweenEqual 范围，包含等于（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotEmpty($value, ?string $message = null)                                                             值是否不为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotEqual($value, array $param, ?string $message = null)                                               两个值是否不相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotIn($value, array $param, ?string $message = null)                                                  是否不处于某个范围（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotNull($value, ?string $message = null)                                                              是否不为 null（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNotSame($value, array $param, ?string $message = null)                                                两个值是否不完全相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalNumber($value, ?string $message = null)                                                               是否为数字（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalPhone($value, ?string $message = null)                                                                值是否为电话号码或者手机号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalQq($value, ?string $message = null)                                                                   是否为 QQ 号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalRegex($value, array $param, ?string $message = null)                                                  数据是否满足正则条件（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalRequired($value, ?string $message = null)                                                             不能为空（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalSame($value, array $param, ?string $message = null)                                                   两个值是否完全相同（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalStrlen($value, array $param, ?string $message = null)                                                 长度验证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalTelephone($value, ?string $message = null)                                                            值是否为电话号码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalTimezone($value, ?string $message = null)                                                             是否为正确的时区（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalType($value, array $param, ?string $message = null)                                                   数据类型验证（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalUpper($value, ?string $message = null)                                                                验证是否都是大写（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalUrl($value, ?string $message = null)                                                                  验证是否为 URL 地址（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void optionalZipCode($value, ?string $message = null)                                                              是否为中国邮政编码（链式操作没有参数 $value）.
- * @method static \Leevel\Validate\Assert|void multiAccepted($value, ?string $message = null)                                                                是否可接受的（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAllowedIp($value, array $param, ?string $message = null)                                                 验证 IP 许可（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAlpha($value, ?string $message = null)                                                                   是否为英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAlphaDash($value, ?string $message = null)                                                               字符串是否为数字、下划线、短横线和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAlphaLower($value, ?string $message = null)                                                              是否为小写英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAlphaNum($value, ?string $message = null)                                                                字符串是否为数字和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiAlphaUpper($value, ?string $message = null)                                                              是否为大写英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiBetween($value, array $param, ?string $message = null)                                                   处于 between 范围，不包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiBetweenEqual($value, array $param, ?string $message = null)                                              处于 betweenEqual 范围，包含全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiBoolean($value, ?string $message = null)                                                                 验证是否为布尔值（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiCheckdnsrr($value, ?string $message = null)                                                              验证是否为有效的域名（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiChinese($value, ?string $message = null)                                                                 是否为中文（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiChineseAlphaDash($value, ?string $message = null)                                                        是否为中文、数字、下划线、短横线和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiChineseAlphaNum($value, ?string $message = null)                                                         是否为中文、数字和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDate($value, ?string $message = null)                                                                    是否为日期（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDateFormat($value, array $param, ?string $message = null)                                                是否为时间（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDenyIp($value, array $param, ?string $message = null)                                                    验证 IP 许可（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDifferent($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)         两个字段是否不同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDigit($value, ?string $message = null)                                                                   检测字符串中的字符是否都是数字，负数和小数会检测不通过（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiDouble($value, ?string $message = null)                                                                  是否双精度浮点数（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiEmail($value, ?string $message = null)                                                                   是否为电子邮件（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiEqual($value, array $param, ?string $message = null)                                                     两个值是否相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiEqualGreaterThan($value, array $param, ?string $message = null)                                          大于或者全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiEqualLessThan($value, array $param, ?string $message = null)                                             小于或者全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiEqualTo($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)           两个字段是否相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiGreaterThan($value, array $param, ?string $message = null)                                               大于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIdCard($value, ?string $message = null)                                                                  是否为大陆身份证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIn($value, array $param, ?string $message = null)                                                        是否处于某个范围（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiInteger($value, ?string $message = null)                                                                 是否整型数字（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIp($value, ?string $message = null)                                                                      是否为合法的 IP 地址（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIpv4($value, ?string $message = null)                                                                    是否为 ipv4（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIpv6($value, ?string $message = null)                                                                    是否为 ipv6（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIsArray($value, ?string $message = null)                                                                 验证是否为数组（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIsEmpty($value, ?string $message = null)                                                                 值是否为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIsFloat($value, ?string $message = null)                                                                 验证是否为浮点数（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiIsNull($value, ?string $message = null)                                                                  是否为 null（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiJson($value, ?string $message = null)                                                                    验证是否为正常的 JSON 字符串（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiLessThan($value, array $param, ?string $message = null)                                                  小于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiLower($value, ?string $message = null)                                                                   验证是否都是小写（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiLuhn($value, ?string $message = null)                                                                    值是否为银行卡等符合 luhn 算法（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiMax($value, array $param, ?string $message = null)                                                       验证值上限（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiMaxLength($value, array $param, ?string $message = null)                                                 验证数据最大长度（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiMin($value, array $param, ?string $message = null)                                                       验证值下限（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiMinLength($value, array $param, ?string $message = null)                                                 验证数据最小长度（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiMobile($value, ?string $message = null)                                                                  值是否为手机号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotBetween($value, array $param, ?string $message = null)                                                未处于 between 范围，不包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotBetweenEqual($value, array $param, ?string $message = null)                                           未处于 betweenEqual 范围，包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotEmpty($value, ?string $message = null)                                                                值是否不为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotEqual($value, array $param, ?string $message = null)                                                  两个值是否不相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotIn($value, array $param, ?string $message = null)                                                     是否不处于某个范围（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotNull($value, ?string $message = null)                                                                 是否不为 null（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNotSame($value, array $param, ?string $message = null)                                                   两个值是否不完全相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiNumber($value, ?string $message = null)                                                                  是否为数字（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiPhone($value, ?string $message = null)                                                                   值是否为电话号码或者手机号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiQq($value, ?string $message = null)                                                                      是否为 QQ 号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiRegex($value, array $param, ?string $message = null)                                                     数据是否满足正则条件（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiRequired($value, ?string $message = null)                                                                不能为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiSame($value, array $param, ?string $message = null)                                                      两个值是否完全相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiStrlen($value, array $param, ?string $message = null)                                                    长度验证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiTelephone($value, ?string $message = null)                                                               值是否为电话号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiTimezone($value, ?string $message = null)                                                                是否为正确的时区（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiType($value, array $param, ?string $message = null)                                                      数据类型验证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiUpper($value, ?string $message = null)                                                                   验证是否都是大写（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiUrl($value, ?string $message = null)                                                                     验证是否为 URL 地址（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void multiZipCode($value, ?string $message = null)                                                                 是否为中国邮政编码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAccepted($value, ?string $message = null)                                                        是否可接受的（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAllowedIp($value, array $param, ?string $message = null)                                         验证 IP 许可（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAlpha($value, ?string $message = null)                                                           是否为英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAlphaDash($value, ?string $message = null)                                                       字符串是否为数字、下划线、短横线和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAlphaLower($value, ?string $message = null)                                                      是否为小写英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAlphaNum($value, ?string $message = null)                                                        字符串是否为数字和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiAlphaUpper($value, ?string $message = null)                                                      是否为大写英文字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiBetween($value, array $param, ?string $message = null)                                           处于 between 范围，不包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiBetweenEqual($value, array $param, ?string $message = null)                                      处于 betweenEqual 范围，包含全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiBoolean($value, ?string $message = null)                                                         验证是否为布尔值（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiCheckdnsrr($value, ?string $message = null)                                                      验证是否为有效的域名（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiChinese($value, ?string $message = null)                                                         是否为中文（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiChineseAlphaDash($value, ?string $message = null)                                                是否为中文、数字、下划线、短横线和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiChineseAlphaNum($value, ?string $message = null)                                                 是否为中文、数字和字母（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDate($value, ?string $message = null)                                                            是否为日期（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDateFormat($value, array $param, ?string $message = null)                                        是否为时间（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDenyIp($value, array $param, ?string $message = null)                                            验证 IP 许可（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDifferent($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null) 两个字段是否不同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDigit($value, ?string $message = null)                                                           检测字符串中的字符是否都是数字，负数和小数会检测不通过（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiDouble($value, ?string $message = null)                                                          是否双精度浮点数（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiEmail($value, ?string $message = null)                                                           是否为电子邮件（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiEqual($value, array $param, ?string $message = null)                                             两个值是否相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiEqualGreaterThan($value, array $param, ?string $message = null)                                  大于或者全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiEqualLessThan($value, array $param, ?string $message = null)                                     小于或者全等（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiEqualTo($value, array $param, \Leevel\Validate\IValidator $validator, ?string $message = null)   两个字段是否相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiGreaterThan($value, array $param, ?string $message = null)                                       大于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIdCard($value, ?string $message = null)                                                          是否为大陆身份证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIn($value, array $param, ?string $message = null)                                                是否处于某个范围（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiInteger($value, ?string $message = null)                                                         是否整型数字（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIp($value, ?string $message = null)                                                              是否为合法的 IP 地址（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIpv4($value, ?string $message = null)                                                            是否为 ipv4（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIpv6($value, ?string $message = null)                                                            是否为 ipv6（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIsArray($value, ?string $message = null)                                                         验证是否为数组（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIsEmpty($value, ?string $message = null)                                                         值是否为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIsFloat($value, ?string $message = null)                                                         验证是否为浮点数（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiIsNull($value, ?string $message = null)                                                          是否为 null（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiJson($value, ?string $message = null)                                                            验证是否为正常的 JSON 字符串（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiLessThan($value, array $param, ?string $message = null)                                          小于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiLower($value, ?string $message = null)                                                           验证是否都是小写（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiLuhn($value, ?string $message = null)                                                            值是否为银行卡等符合 luhn 算法（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiMax($value, array $param, ?string $message = null)                                               验证值上限（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiMaxLength($value, array $param, ?string $message = null)                                         验证数据最大长度（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiMin($value, array $param, ?string $message = null)                                               验证值下限（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiMinLength($value, array $param, ?string $message = null)                                         验证数据最小长度（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiMobile($value, ?string $message = null)                                                          值是否为手机号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotBetween($value, array $param, ?string $message = null)                                        未处于 between 范围，不包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotBetweenEqual($value, array $param, ?string $message = null)                                   未处于 betweenEqual 范围，包含等于（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotEmpty($value, ?string $message = null)                                                        值是否不为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotEqual($value, array $param, ?string $message = null)                                          两个值是否不相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotIn($value, array $param, ?string $message = null)                                             是否不处于某个范围（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotNull($value, ?string $message = null)                                                         是否不为 null（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNotSame($value, array $param, ?string $message = null)                                           两个值是否不完全相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiNumber($value, ?string $message = null)                                                          是否为数字（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiPhone($value, ?string $message = null)                                                           值是否为电话号码或者手机号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiQq($value, ?string $message = null)                                                              是否为 QQ 号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiRegex($value, array $param, ?string $message = null)                                             数据是否满足正则条件（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiRequired($value, ?string $message = null)                                                        不能为空（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiSame($value, array $param, ?string $message = null)                                              两个值是否完全相同（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiStrlen($value, array $param, ?string $message = null)                                            长度验证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiTelephone($value, ?string $message = null)                                                       值是否为电话号码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiTimezone($value, ?string $message = null)                                                        是否为正确的时区（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiType($value, array $param, ?string $message = null)                                              数据类型验证（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiUpper($value, ?string $message = null)                                                           验证是否都是大写（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiUrl($value, ?string $message = null)                                                             验证是否为 URL 地址（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
- * @method static \Leevel\Validate\Assert|void optionalMultiZipCode($value, ?string $message = null)                                                         是否为中国邮政编码（链式操作没有参数 $value，多个校验场景参数 $value 为多个待校验数据数组）.
  */
 class Assert
 {
@@ -310,11 +49,2089 @@ class Assert
     }
 
     /**
-     * 实现魔术方法 __call.
-     *
+     * 是否可接受的.
+     */
+    public function accepted(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证 IP 许可.
+     */
+    public function allowedIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为英文字母.
+     */
+    public function alpha(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字、下划线、短横线和字母.
+     */
+    public function alphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为小写英文字母.
+     */
+    public function alphaLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字和字母.
+     */
+    public function alphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为大写英文字母.
+     */
+    public function alphaUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 处于 between 范围，不包含等于.
+     */
+    public function between(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 处于 betweenEqual 范围，包含全等.
+     */
+    public function betweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否为布尔值
+     */
+    public function boolean(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为有效的域名.
+     */
+    public function checkdnsrr(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文.
+     */
+    public function chinese(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字、下划线、短横线和字母.
+     */
+    public function chineseAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字和字母.
+     */
+    public function chineseAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为日期
+     */
+    public function date(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为时间.
+     */
+    public function dateFormat(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证 IP 许可.
+     */
+    public function denyIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否不同.
+     */
+    public function different(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
+     */
+    public function digit(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否双精度浮点数.
+     */
+    public function double(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为电子邮件.
+     */
+    public function email(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否相同.
+     */
+    public function equal(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 大于或者全等.
+     */
+    public function equalGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 小于或者全等.
+     */
+    public function equalLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否相同.
+     */
+    public function equalTo(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 大于.
+     */
+    public function greaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为大陆身份证
+     */
+    public function idCard(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否处于某个范围.
+     */
+    public function in(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否整型数字.
+     */
+    public function integer(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为合法的 IP 地址
+     */
+    public function ip(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv4.
+     */
+    public function ipv4(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv6.
+     */
+    public function ipv6(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为数组.
+     */
+    public function isArray(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为空.
+     */
+    public function isEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为浮点数.
+     */
+    public function isFloat(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 null.
+     */
+    public function isNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为正常的 JSON 字符串.
+     */
+    public function json(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 小于.
+     */
+    public function lessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是小写.
+     */
+    public function lower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为银行卡等符合 luhn 算法.
+     */
+    public function luhn(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证值上限.
+     */
+    public function max(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最大长度.
+     */
+    public function maxLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证值下限.
+     */
+    public function min(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最小长度.
+     */
+    public function minLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为手机号码
+     */
+    public function mobile(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 未处于 between 范围，不包含等于.
+     */
+    public function notBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 未处于 betweenEqual 范围，包含等于.
+     */
+    public function notBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否不为空.
+     */
+    public function notEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不相同.
+     */
+    public function notEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不处于某个范围.
+     */
+    public function notIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不为 null.
+     */
+    public function notNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不完全相同.
+     */
+    public function notSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为数字.
+     */
+    public function number(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为电话号码或者手机号码
+     */
+    public function phone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 QQ 号码
+     */
+    public function qq(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据是否满足正则条件.
+     */
+    public function regex(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 不能为空.
+     */
+    public function required(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否完全相同.
+     */
+    public function same(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 长度验证
+     */
+    public function strlen(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为电话号码
+     */
+    public function telephone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为正确的时区.
+     */
+    public function timezone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据类型验证
+     */
+    public function type(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是大写.
+     */
+    public function upper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为 URL 地址
+     */
+    public function url(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中国邮政编码
+     */
+    public function zipCode(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否可接受的（可选验证）.
+     */
+    public function optionalAccepted(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证 IP 许可（可选验证）.
+     */
+    public function optionalAllowedIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为英文字母（可选验证）.
+     */
+    public function optionalAlpha(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字、下划线、短横线和字母（可选验证）.
+     */
+    public function optionalAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为小写英文字母（可选验证）.
+     */
+    public function optionalAlphaLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字和字母（可选验证）.
+     */
+    public function optionalAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为大写英文字母（可选验证）.
+     */
+    public function optionalAlphaUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 处于 between 范围，不包含等于（可选验证）.
+     */
+    public function optionalBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 处于 betweenEqual 范围，包含全等（可选验证）.
+     */
+    public function optionalBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否为布尔值（可选验证）.
+     */
+    public function optionalBoolean(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为有效的域名（可选验证）.
+     */
+    public function optionalCheckdnsrr(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文（可选验证）.
+     */
+    public function optionalChinese(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字、下划线、短横线和字母（可选验证）.
+     */
+    public function optionalChineseAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字和字母（可选验证）.
+     */
+    public function optionalChineseAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为日期（可选验证）.
+     */
+    public function optionalDate(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为时间（可选验证）.
+     */
+    public function optionalDateFormat(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证 IP 许可（可选验证）.
+     */
+    public function optionalDenyIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否不同（可选验证）.
+     */
+    public function optionalDifferent(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（可选验证）.
+     */
+    public function optionalDigit(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否双精度浮点数（可选验证）.
+     */
+    public function optionalDouble(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为电子邮件（可选验证）.
+     */
+    public function optionalEmail(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否相同（可选验证）.
+     */
+    public function optionalEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 大于或者全等（可选验证）.
+     */
+    public function optionalEqualGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 小于或者全等（可选验证）.
+     */
+    public function optionalEqualLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否相同（可选验证）.
+     */
+    public function optionalEqualTo(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 大于（可选验证）.
+     */
+    public function optionalGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为大陆身份证（可选验证）.
+     */
+    public function optionalIdCard(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否处于某个范围（可选验证）.
+     */
+    public function optionalIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否整型数字（可选验证）.
+     */
+    public function optionalInteger(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为合法的 IP 地址（可选验证）.
+     */
+    public function optionalIp(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv4（可选验证）.
+     */
+    public function optionalIpv4(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv6（可选验证）.
+     */
+    public function optionalIpv6(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为数组（可选验证）.
+     */
+    public function optionalIsArray(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为空（可选验证）.
+     */
+    public function optionalIsEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为浮点数（可选验证）.
+     */
+    public function optionalIsFloat(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 null（可选验证）.
+     */
+    public function optionalIsNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为正常的 JSON 字符串（可选验证）.
+     */
+    public function optionalJson(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 小于（可选验证）.
+     */
+    public function optionalLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是小写（可选验证）.
+     */
+    public function optionalLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为银行卡等符合 luhn 算法（可选验证）.
+     */
+    public function optionalLuhn(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证值上限（可选验证）.
+     */
+    public function optionalMax(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最大长度（可选验证）.
+     */
+    public function optionalMaxLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证值下限（可选验证）.
+     */
+    public function optionalMin(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最小长度（可选验证）.
+     */
+    public function optionalMinLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为手机号码（可选验证）.
+     */
+    public function optionalMobile(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 未处于 between 范围，不包含等于（可选验证）.
+     */
+    public function optionalNotBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 未处于 betweenEqual 范围，包含等于（可选验证）.
+     */
+    public function optionalNotBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否不为空（可选验证）.
+     */
+    public function optionalNotEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不相同（可选验证）.
+     */
+    public function optionalNotEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不处于某个范围（可选验证）.
+     */
+    public function optionalNotIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不为 null.
+     */
+    public function optionalNotNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不完全相同（可选验证）.
+     */
+    public function optionalNotSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为数字（可选验证）.
+     */
+    public function optionalNumber(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为电话号码或者手机号码（可选验证）.
+     */
+    public function optionalPhone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 QQ 号码（可选验证）.
+     */
+    public function optionalQq(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据是否满足正则条件（可选验证）.
+     */
+    public function optionalRegex(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 不能为空（可选验证）.
+     */
+    public function optionalRequired(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否完全相同（可选验证）.
+     */
+    public function optionalSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 长度验证（可选验证）.
+     */
+    public function optionalStrlen(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为电话号码（可选验证）.
+     */
+    public function optionalTelephone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为正确的时区（可选验证）.
+     */
+    public function optionalTimezone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据类型验证（可选验证）.
+     */
+    public function optionalType(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是大写（可选验证）.
+     */
+    public function optionalUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为 URL 地址（可选验证）.
+     */
+    public function optionalUrl(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中国邮政编码（可选验证）.
+     */
+    public function optionalZipCode(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否可接受的（多校验场景）.
+     */
+    public function multiAccepted(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证 IP 许可（多校验场景）.
+     */
+    public function multiAllowedIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为英文字母（多校验场景）.
+     */
+    public function multiAlpha(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字、下划线、短横线和字母（多校验场景）.
+     */
+    public function multiAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为小写英文字母（多校验场景）.
+     */
+    public function multiAlphaLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字和字母（多校验场景）.
+     */
+    public function multiAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为大写英文字母（多校验场景）.
+     */
+    public function multiAlphaUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 处于 between 范围，不包含等于（多校验场景）.
+     */
+    public function multiBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 处于 betweenEqual 范围，包含全等（多校验场景）.
+     */
+    public function multiBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否为布尔值（多校验场景）.
+     */
+    public function multiBoolean(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为有效的域名（多校验场景）.
+     */
+    public function multiCheckdnsrr(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文（多校验场景）.
+     */
+    public function multiChinese(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字、下划线、短横线和字母（多校验场景）.
+     */
+    public function multiChineseAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字和字母（多校验场景）.
+     */
+    public function multiChineseAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为日期（多校验场景）.
+     */
+    public function multiDate(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为时间（多校验场景）.
+     */
+    public function multiDateFormat(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证 IP 许可（多校验场景）.
+     */
+    public function multiDenyIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否不同（多校验场景）.
+     */
+    public function multiDifferent(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（多校验场景）.
+     */
+    public function multiDigit(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否双精度浮点数（多校验场景）.
+     */
+    public function multiDouble(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为电子邮件（多校验场景）.
+     */
+    public function multiEmail(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否相同（多校验场景）.
+     */
+    public function multiEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 大于或者全等（多校验场景）.
+     */
+    public function multiEqualGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 小于或者全等（多校验场景）.
+     */
+    public function multiEqualLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否相同（多校验场景）.
+     */
+    public function multiEqualTo(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 大于（多校验场景）.
+     */
+    public function multiGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为大陆身份证（多校验场景）.
+     */
+    public function multiIdCard(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否处于某个范围（多校验场景）.
+     */
+    public function multiIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否整型数字（多校验场景）.
+     */
+    public function multiInteger(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为合法的 IP 地址（多校验场景）.
+     */
+    public function multiIp(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv4（多校验场景）.
+     */
+    public function multiIpv4(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv6（多校验场景）.
+     */
+    public function multiIpv6(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为数组（多校验场景）.
+     */
+    public function multiIsArray(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为空（多校验场景）.
+     */
+    public function multiIsEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为浮点数（多校验场景）.
+     */
+    public function multiIsFloat(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 null（多校验场景）.
+     */
+    public function multiIsNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为正常的 JSON 字符串（多校验场景）.
+     */
+    public function multiJson(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 小于（多校验场景）.
+     */
+    public function multiLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是小写（多校验场景）.
+     */
+    public function multiLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为银行卡等符合 luhn 算法（多校验场景）.
+     */
+    public function multiLuhn(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证值上限（多校验场景）.
+     */
+    public function multiMax(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最大长度（多校验场景）.
+     */
+    public function multiMaxLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证值下限（多校验场景）.
+     */
+    public function multiMin(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最小长度（多校验场景）.
+     */
+    public function multiMinLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为手机号码（多校验场景）.
+     */
+    public function multiMobile(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 未处于 between 范围，不包含等于（多校验场景）.
+     */
+    public function multiNotBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 未处于 betweenEqual 范围，包含等于（多校验场景）.
+     */
+    public function multiNotBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否不为空（多校验场景）.
+     */
+    public function multiNotEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不相同（多校验场景）.
+     */
+    public function multiNotEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不处于某个范围（多校验场景）.
+     */
+    public function multiNotIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不为 null（多校验场景）.
+     */
+    public function multiNotNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不完全相同（多校验场景）.
+     */
+    public function multiNotSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为数字（多校验场景）.
+     */
+    public function multiNumber(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为电话号码或者手机号码（多校验场景）.
+     */
+    public function multiPhone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 QQ 号码（多校验场景）.
+     */
+    public function multiQq(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据是否满足正则条件（多校验场景）.
+     */
+    public function multiRegex(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 不能为空（多校验场景）.
+     */
+    public function multiRequired(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否完全相同（多校验场景）.
+     */
+    public function multiSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 长度验证（多校验场景）.
+     */
+    public function multiStrlen(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为电话号码（多校验场景）.
+     */
+    public function multiTelephone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为正确的时区（多校验场景）.
+     */
+    public function multiTimezone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据类型验证（多校验场景）.
+     */
+    public function multiType(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是大写（多校验场景）.
+     */
+    public function multiUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为 URL 地址（多校验场景）.
+     */
+    public function multiUrl(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中国邮政编码（多校验场景）.
+     */
+    public function multiZipCode(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否可接受的（可选验证，多校验场景）.
+     */
+    public function optionalMultiAccepted(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证 IP 许可（可选验证，多校验场景）.
+     */
+    public function optionalMultiAllowedIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为英文字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiAlpha(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字、下划线、短横线和字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为小写英文字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiAlphaLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 字符串是否为数字和字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为大写英文字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiAlphaUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 处于 between 范围，不包含等于（可选验证，多校验场景）.
+     */
+    public function optionalMultiBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 处于 betweenEqual 范围，包含全等（可选验证，多校验场景）.
+     */
+    public function optionalMultiBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否为布尔值（可选验证，多校验场景）.
+     */
+    public function optionalMultiBoolean(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为有效的域名（可选验证，多校验场景）.
+     */
+    public function optionalMultiCheckdnsrr(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文（可选验证，多校验场景）.
+     */
+    public function optionalMultiChinese(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字、下划线、短横线和字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiChineseAlphaDash(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中文、数字和字母（可选验证，多校验场景）.
+     */
+    public function optionalMultiChineseAlphaNum(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为日期（可选验证，多校验场景）.
+     */
+    public function optionalMultiDate(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为时间（可选验证，多校验场景）.
+     */
+    public function optionalMultiDateFormat(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证 IP 许可（可选验证，多校验场景）.
+     */
+    public function optionalMultiDenyIp(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否不同（可选验证，多校验场景）.
+     */
+    public function optionalMultiDifferent(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（可选验证，多校验场景）.
+     */
+    public function optionalMultiDigit(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否双精度浮点数（可选验证，多校验场景）.
+     */
+    public function optionalMultiDouble(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为电子邮件（可选验证，多校验场景）.
+     */
+    public function optionalMultiEmail(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否相同（可选验证，多校验场景）.
+     */
+    public function optionalMultiEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 大于或者全等（可选验证，多校验场景）.
+     */
+    public function optionalMultiEqualGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 小于或者全等（可选验证，多校验场景）.
+     */
+    public function optionalMultiEqualLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 两个字段是否相同（可选验证，多校验场景）.
+     */
+    public function optionalMultiEqualTo(array $param, IValidator $validator, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
+    }
+
+    /**
+     * 大于（可选验证，多校验场景）.
+     */
+    public function optionalMultiGreaterThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为大陆身份证（可选验证，多校验场景）.
+     */
+    public function optionalMultiIdCard(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否处于某个范围（可选验证，多校验场景）.
+     */
+    public function optionalMultiIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否整型数字（可选验证，多校验场景）.
+     */
+    public function optionalMultiInteger(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为合法的 IP 地址（可选验证，多校验场景）.
+     */
+    public function optionalMultiIp(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv4（可选验证，多校验场景）.
+     */
+    public function optionalMultiIpv4(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 ipv6（可选验证，多校验场景）.
+     */
+    public function optionalMultiIpv6(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为数组（可选验证，多校验场景）.
+     */
+    public function optionalMultiIsArray(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为空（可选验证，多校验场景）.
+     */
+    public function optionalMultiIsEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为浮点数（可选验证，多校验场景）.
+     */
+    public function optionalMultiIsFloat(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 null（可选验证，多校验场景）.
+     */
+    public function optionalMultiIsNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为正常的 JSON 字符串（可选验证，多校验场景）.
+     */
+    public function optionalMultiJson(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 小于（可选验证，多校验场景）.
+     */
+    public function optionalMultiLessThan(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是小写（可选验证，多校验场景）.
+     */
+    public function optionalMultiLower(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为银行卡等符合 Luhn 算法（可选验证，多校验场景）.
+     */
+    public function optionalMultiLuhn(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证值上限（可选验证，多校验场景）.
+     */
+    public function optionalMultiMax(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最大长度（可选验证，多校验场景）.
+     */
+    public function optionalMultiMaxLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证值下限（可选验证，多校验场景）.
+     */
+    public function optionalMultiMin(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证数据最小长度（可选验证，多校验场景）.
+     */
+    public function optionalMultiMinLength(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为手机号码（可选验证，多校验场景）.
+     */
+    public function optionalMultiMobile(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 未处于 between 范围，不包含等于（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotBetween(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 未处于 betweenEqual 范围，包含等于（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotBetweenEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否不为空（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotEmpty(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不相同（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotEqual(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不处于某个范围（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotIn(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否不为 null（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotNull(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否不完全相同（可选验证，多校验场景）.
+     */
+    public function optionalMultiNotSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 是否为数字（可选验证，多校验场景）.
+     */
+    public function optionalMultiNumber(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 值是否为电话号码或者手机号码（可选验证，多校验场景）.
+     */
+    public function optionalMultiPhone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为 QQ 号码（可选验证，多校验场景）.
+     */
+    public function optionalMultiQq(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据是否满足正则条件（可选验证，多校验场景）.
+     */
+    public function optionalMultiRegex(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 不能为空（可选验证，多校验场景）.
+     */
+    public function optionalMultiRequired(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 两个值是否完全相同（可选验证，多校验场景）.
+     */
+    public function optionalMultiSame(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 长度验证（可选验证，多校验场景）.
+     */
+    public function optionalMultiStrlen(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 值是否为电话号码（可选验证，多校验场景）.
+     */
+    public function optionalMultiTelephone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为正确的时区（可选验证，多校验场景）.
+     */
+    public function optionalMultiTimezone(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 数据类型验证（可选验证，多校验场景）.
+     */
+    public function optionalMultiType(array $param, ?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $param, $message);
+    }
+
+    /**
+     * 验证是否都是大写（可选验证，多校验场景）.
+     */
+    public function optionalMultiUpper(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 验证是否为 URL 地址（可选验证，多校验场景）.
+     */
+    public function optionalMultiUrl(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
+     * 是否为中国邮政编码（可选验证，多校验场景）.
+     */
+    public function optionalMultiZipCode(?string $message = null): self
+    {
+        return $this->callMethodChain(__FUNCTION__, $message);
+    }
+
+    /**
      * @throws AssertException
      */
-    public function __call(string $method, array $args): self
+    public function callMethodChain(string $method, mixed ...$args): self
     {
         if (false === $this->all && $this->error) {
             return $this;
@@ -330,20 +2147,6 @@ class Assert
         }
 
         return $this;
-    }
-
-    /**
-     * 实现魔术方法 __callStatic.
-     *
-     * @throws AssertException
-     */
-    public static function __callStatic(string $method, array $args): void
-    {
-        if (false === self::validateAssert($method, $args, false)) {
-            $message = self::normalizeMessage($args);
-
-            throw new AssertException($message);
-        }
     }
 
     /**
