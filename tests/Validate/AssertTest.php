@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Assert;
 use Leevel\Validate\AssertException;
@@ -18,6 +19,23 @@ EOT,
 ])]
 final class AssertTest extends TestCase
 {
+    #[\Override]
+    protected function setUp(): void
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        $container->singleton('i18n', static function (): \I18nMock {
+            return new \I18nMock();
+        });
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     #[Api([
         'zh-CN:title' => '基本断言测试',
         'zh-CN:description' => <<<'EOT'
@@ -48,7 +66,7 @@ EOT,
     {
         $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
-            'No exception messsage specified.'
+            '不能为空'
         );
 
         Assert::make(0)
@@ -93,7 +111,7 @@ EOT,
     {
         $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
-            'No exception messsage specified.'
+            '不能为空'
         );
 
         Assert::make(0)
@@ -232,6 +250,22 @@ EOT,
             ->lessThan([2], '5 not less than 3')
             ->lessThan([8], '5 not less than 4')
             ->lessThan([9], '5 not less than 2')
+            ->flush()
+        ;
+    }
+
+    public function test1(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '["必须小于 2"]'
+        );
+
+        Assert::lazy(5, null, false)
+            ->notEmpty()
+            ->lessThan([2])
+            ->lessThan([8])
+            ->lessThan([9])
             ->flush()
         ;
     }

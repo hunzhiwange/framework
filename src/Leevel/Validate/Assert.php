@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Leevel\I18n\Gettext;
+use Leevel\Support\Str\UnCamelize;
 
 /**
  * 断言.
@@ -198,14 +199,6 @@ class Assert
     }
 
     /**
-     * 两个字段是否不同.
-     */
-    public function different(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
-    }
-
-    /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
      */
     public function digit(?string $message = null): self
@@ -251,14 +244,6 @@ class Assert
     public function equalLessThan(array $param, ?string $message = null): self
     {
         return $this->callMethodChain(__FUNCTION__, $param, $message);
-    }
-
-    /**
-     * 两个字段是否相同.
-     */
-    public function equalTo(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
     }
 
     /**
@@ -718,14 +703,6 @@ class Assert
     }
 
     /**
-     * 两个字段是否不同（可选验证）.
-     */
-    public function optionalDifferent(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
-    }
-
-    /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（可选验证）.
      */
     public function optionalDigit(?string $message = null): self
@@ -771,14 +748,6 @@ class Assert
     public function optionalEqualLessThan(array $param, ?string $message = null): self
     {
         return $this->callMethodChain(__FUNCTION__, $param, $message);
-    }
-
-    /**
-     * 两个字段是否相同（可选验证）.
-     */
-    public function optionalEqualTo(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
     }
 
     /**
@@ -1238,14 +1207,6 @@ class Assert
     }
 
     /**
-     * 两个字段是否不同（多校验场景）.
-     */
-    public function multiDifferent(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
-    }
-
-    /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（多校验场景）.
      */
     public function multiDigit(?string $message = null): self
@@ -1291,14 +1252,6 @@ class Assert
     public function multiEqualLessThan(array $param, ?string $message = null): self
     {
         return $this->callMethodChain(__FUNCTION__, $param, $message);
-    }
-
-    /**
-     * 两个字段是否相同（多校验场景）.
-     */
-    public function multiEqualTo(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
     }
 
     /**
@@ -1758,14 +1711,6 @@ class Assert
     }
 
     /**
-     * 两个字段是否不同（可选验证，多校验场景）.
-     */
-    public function optionalMultiDifferent(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
-    }
-
-    /**
      * 检测字符串中的字符是否都是数字，负数和小数会检测不通过（可选验证，多校验场景）.
      */
     public function optionalMultiDigit(?string $message = null): self
@@ -1811,14 +1756,6 @@ class Assert
     public function optionalMultiEqualLessThan(array $param, ?string $message = null): self
     {
         return $this->callMethodChain(__FUNCTION__, $param, $message);
-    }
-
-    /**
-     * 两个字段是否相同（可选验证，多校验场景）.
-     */
-    public function optionalMultiEqualTo(array $param, IValidator $validator, ?string $message = null): self
-    {
-        return $this->callMethodChain(__FUNCTION__, $param, $validator, $message);
     }
 
     /**
@@ -2153,7 +2090,7 @@ class Assert
         array_unshift($args, $this->value);
 
         if (false === self::validateAssert($method, $args, $this->multiValue)) {
-            $message = self::normalizeMessage($args, $this->message);
+            $message = self::normalizeMessage($method, $args, $this->message);
             if (false === $this->lazy) {
                 throw new AssertException($message);
             }
@@ -2199,7 +2136,10 @@ class Assert
     {
         if ($this->error) {
             if (!$format) {
-                $format = 'json_encode';
+                $format = static function (array $error): string {
+                    // @phpstan-ignore-next-line
+                    return json_encode($error, JSON_UNESCAPED_UNICODE);
+                };
             }
 
             throw new AssertException($format($this->error));
@@ -2242,13 +2182,42 @@ class Assert
     /**
      * 参数校验和消息整理.
      */
-    protected static function normalizeMessage(array $args, ?string $message = null): string
+    protected static function normalizeMessage(string $method, array $args, ?string $message = null): string
     {
+        $rule = UnCamelize::handle($method);
+        $rule = str_replace(['optional_multi_', 'optional_'], ['', ''], $rule);
+
         if (\count($args) >= 2 && \is_string($args[array_key_last($args)])) {
-            return array_pop($args);
+            $message = array_pop($args);
+        } else {
+            $message ??= (static::$defaultMessages[$rule] ?? 'No exception messsage specified.');
         }
 
-        return $message ?? 'No exception messsage specified.';
+        $replace = [
+            'field' => '',
+        ];
+        $param = $args[1] ?? [];
+        if (static::isImplodeRuleParam($rule)) {
+            $replace['rule'] = implode(',', $param);
+        } else {
+            foreach ($param as $key => $value) {
+                $replace['rule'.($key ?: '')] = $value;
+            }
+        }
+
+        $message = preg_replace_callback('/{(.+?)}/', static function ($matches) use ($replace): string {
+            return (string) ($replace[$matches[1]] ?? $matches[0]);
+        }, $message);
+
+        return trim($message);
+    }
+
+    /**
+     * 返回需要合并的规则参数.
+     */
+    protected static function isImplodeRuleParam(string $rule): bool
+    {
+        return \in_array($rule, ['in', 'not_in', 'allow_ip', 'deny_ip'], true);
     }
 
     /**
@@ -2318,6 +2287,12 @@ class Assert
         $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
         if (!class_exists($helperClass)) {
             throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $helperClass));
+        }
+
+        // 验证器默认消息
+        $rule = UnCamelize::handle($method);
+        if (!isset(static::$defaultMessages[$rule])) {
+            static::$defaultMessages[$rule] = \defined($helperClass.'::MESSAGE') ? __($helperClass::MESSAGE) : '';
         }
 
         foreach ($multi as $m) {

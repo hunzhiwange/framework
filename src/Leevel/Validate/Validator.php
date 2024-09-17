@@ -336,12 +336,14 @@ class Validator implements IValidator
         if (!str_contains($rule, '.')) {
             return $this->data[$rule] ?? null;
         }
+
         $parts = explode('.', $rule);
         $data = $this->data;
         foreach ($parts as $part) {
             if (!isset($data[$part])) {
                 return null;
             }
+
             $data = $data[$part];
         }
 
@@ -660,7 +662,6 @@ class Validator implements IValidator
                 static::$defaultMessages[$rule] = \defined($className.'::MESSAGE') ? __($className::MESSAGE) : '';
             }
 
-            /** @phpstan-ignore-next-line */
             $validatorErrorMessage = '';
 
             try {
@@ -739,7 +740,7 @@ class Validator implements IValidator
 
         if ($this->isImplodeRuleParam($rule)) {
             $replace['rule'] = implode(',', $param);
-        } elseif ('equal_to' === $rule) {
+        } elseif (\in_array($rule, ['equal_to', 'different'], true)) {
             $replace['rule'] = $this->parseFieldName($param[0] ?? '');
         } else {
             foreach ($param as $key => $value) {
