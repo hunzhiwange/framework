@@ -136,11 +136,6 @@ interface IValidator
     public function setContainer(IContainer $container): self;
 
     /**
-     * 初始化默认的消息.
-     */
-    public static function initMessages(array $messages): void;
-
-    /**
      * 获取解析后的验证规则.
      */
     public function getParseRule(string $field, array|string $rules): array;

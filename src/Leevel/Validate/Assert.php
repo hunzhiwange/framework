@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
+use Leevel\I18n\Gettext;
+
 /**
  * 断言.
  *
@@ -41,6 +43,11 @@ class Assert
      * 是否为多选值.
      */
     protected bool $multiValue = false;
+
+    /**
+     * 默认验证提示信息.
+     */
+    protected static array $defaultMessages = [];
 
     /**
      * 构造函数.
@@ -2320,5 +2327,16 @@ class Assert
         }
 
         return true;
+    }
+}
+
+if (!\function_exists(__NAMESPACE__.'\\__')) {
+    function __(string $text, ...$data): string
+    {
+        if (!class_exists(Gettext::class)) {
+            return sprintf($text, ...$data); // @codeCoverageIgnore
+        }
+
+        return Gettext::handle($text, ...$data);
     }
 }

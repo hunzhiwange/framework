@@ -22,7 +22,6 @@ class Validate implements IValidate
     public function __construct(IContainer $container)
     {
         $this->container = $container;
-        $this->initMessages();
     }
 
     public function make(array $data = [], array $rules = [], array $names = [], array $messages = []): IValidator
@@ -31,10 +30,5 @@ class Validate implements IValidate
         $validator->setContainer($this->container);
 
         return $validator;
-    }
-
-    public static function initMessages(): void
-    {
-        Validator::initMessages([]);
     }
 }

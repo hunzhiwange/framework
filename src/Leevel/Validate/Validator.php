@@ -318,11 +318,6 @@ class Validator implements IValidator
         return $this;
     }
 
-    public static function initMessages(array $messages): void
-    {
-        static::$defaultMessages = $messages;
-    }
-
     public function getParseRule(string $field, array|string $rules): array
     {
         $rules = (array) $rules;

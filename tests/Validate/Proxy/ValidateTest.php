@@ -25,8 +25,6 @@ final class ValidateTest extends TestCase
         $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
-
-        Validate::initMessages();
     }
 
     public function testBaseUse(): void

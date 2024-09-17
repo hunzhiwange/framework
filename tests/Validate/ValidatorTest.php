@@ -7,7 +7,6 @@ namespace Tests\Validate;
 use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\IValidator;
-use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Leevel\Validate\ValidatorException;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -44,8 +43,6 @@ final class ValidatorTest extends TestCase
         $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
-
-        Validate::initMessages();
     }
 
     #[\Override]

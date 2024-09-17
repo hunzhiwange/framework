@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Validate;
 
 use Leevel\Di\Container;
-use Leevel\Validate\Validate;
 use Leevel\Validate\Validator;
 use Tests\TestCase;
 
@@ -20,8 +19,6 @@ final class ValidatorFlowTest extends TestCase
         $container->singleton('i18n', static function (): \I18nMock {
             return new \I18nMock();
         });
-
-        Validate::initMessages();
     }
 
     #[\Override]
