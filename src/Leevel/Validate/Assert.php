@@ -2164,15 +2164,13 @@ class Assert
         [$method, $optional] = $result;
 
         if (0 === stripos($method, 'multi')) {
-            // 匹配多个值，可支持 optionalMulti
-            if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
-                return true;
-            }
-        } else {
-            // 匹配单个值
-            if (true === ($result = self::matchSingle($method, $args, $optional, $multiValue))) {
-                return true;
-            }
+            $method = substr($method, 5);
+        }
+
+        // 匹配多个值，可支持 optionalMulti
+        // 单个值也会被拼接成多个组合值进行统一校验
+        if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
+            return true;
         }
 
         // @phpstan-ignore-next-line
@@ -2253,40 +2251,6 @@ class Assert
     protected static function matchMulti(string $method, array $args, bool $optional, bool $multiValue): array|true
     {
         // 非多选值转换为多选值
-        if (!$multiValue) {
-            $args[0] = [$args[0]];
-        }
-
-        if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
-            throw new \InvalidArgumentException('Invalid first argument for multi assert.');
-        }
-
-        $multi = [];
-        $argsSource = $args;
-        foreach ($args[0] as $v) {
-            if (null === $v && $optional) {
-                continue;
-            }
-            $argsSource[0] = $v;
-            $multi[] = $argsSource;
-        }
-
-        if (!$multi) {
-            return true;
-        }
-
-        $method = substr($method, 5);
-
-        return [$method, $multi];
-    }
-
-    /**
-     * 匹配单个值.
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected static function matchSingle(string $method, array $args, bool $optional, bool $multiValue): array|true
-    {
         if (!$multiValue) {
             $args[0] = [$args[0]];
         }
