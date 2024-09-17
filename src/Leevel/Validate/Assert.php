@@ -21,9 +21,9 @@ class Assert
     protected mixed $value = null;
 
     /**
-     * 默认消息.
+     * 字段名字.
      */
-    protected ?string $message = null;
+    protected ?string $field = null;
 
     /**
      * 是否延后提示错误.
@@ -53,13 +53,13 @@ class Assert
     /**
      * 构造函数.
      */
-    public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true, bool $multiValue = false)
+    public function __construct(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true, bool $lazy = false)
     {
         $this->value = $value;
-        $this->message = $message;
-        $this->lazy = $lazy;
-        $this->all = $all;
         $this->multiValue = $multiValue;
+        $this->field = $field;
+        $this->all = $all;
+        $this->lazy = $lazy;
     }
 
     /**
@@ -2090,7 +2090,7 @@ class Assert
         array_unshift($args, $this->value);
 
         if (false === self::validateAssert($method, $args, $this->multiValue)) {
-            $message = self::normalizeMessage($method, $args, $this->message);
+            $message = self::normalizeMessage($method, $args, $this->field);
             if (false === $this->lazy) {
                 throw new AssertException($message);
             }
@@ -2108,9 +2108,9 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7]);
      */
-    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true, bool $multiValue = false): static
+    public static function make(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true, bool $lazy = false): static
     {
-        return new static($value, $message, $lazy, $all, $multiValue);
+        return new static($value,  $multiValue,  $field ,  $all ,  $lazy);
     }
 
     /**
@@ -2122,9 +2122,9 @@ class Assert
      *     ->lessThan([7])
      *     ->flush();
      */
-    public static function lazy(mixed $value, ?string $message = null, bool $all = true, bool $multiValue = false): static
+    public static function lazy(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true): static
     {
-        return new static($value, $message, true, $all, $multiValue);
+        return new static($value,  $multiValue,  $field ,  $all ,  true);
     }
 
     /**
@@ -2182,19 +2182,19 @@ class Assert
     /**
      * 参数校验和消息整理.
      */
-    protected static function normalizeMessage(string $method, array $args, ?string $message = null): string
+    protected static function normalizeMessage(string $method, array $args, ?string $field = null): string
     {
         $rule = UnCamelize::handle($method);
-        $rule = str_replace(['optional_multi_', 'optional_'], ['', ''], $rule);
+        $rule = str_replace(['optional_multi_', 'multi_', 'optional_'], ['', '', ''], $rule);
 
         if (\count($args) >= 2 && \is_string($args[array_key_last($args)])) {
             $message = array_pop($args);
         } else {
-            $message ??= (static::$defaultMessages[$rule] ?? 'No exception messsage specified.');
+            $message = static::$defaultMessages[$rule] ?? 'No exception messsage specified.';
         }
 
         $replace = [
-            'field' => '',
+            'field' => $field ?? '',
         ];
         $param = $args[1] ?? [];
         if (static::isImplodeRuleParam($rule)) {

@@ -127,7 +127,7 @@ EOT,
     ])]
     public function testAssertMulti(): void
     {
-        Assert::make([3, ['hello'], 'bar', 'yes'], multiValue: true)
+        Assert::make([3, ['hello'], 'bar', 'yes'], true)
             ->multiNotEmpty()
         ;
 
@@ -144,10 +144,10 @@ EOT,
     {
         $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
-            'No exception messsage specified.'
+            '不能为空'
         );
 
-        Assert::make([3, ['hello'], '', 'yes'], multiValue: true)
+        Assert::make([3, ['hello'], '', 'yes'], true)
             ->multiNotEmpty()
         ;
     }
@@ -160,7 +160,7 @@ EOT,
     ])]
     public function testAssertMultiWithOptional(): void
     {
-        Assert::make([null, ['hello'], 'bar', 'yes', null], multiValue: true)
+        Assert::make([null, ['hello'], 'bar', 'yes', null], true)
             ->optionalMultiNotEmpty()
         ;
 
@@ -175,7 +175,7 @@ EOT,
 **make 原型**
 
 ``` php
-Assert::make($value, ?string $message)
+Assert::make(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true, bool $lazy = false): static
 ```
 
 第一个参数为待校验的值，第二个为默认校验失败消息，每一条验证规则也支持自己的失败消息。
@@ -183,7 +183,7 @@ EOT,
     ])]
     public function testAssertChain(): void
     {
-        Assert::make(5, 'Assert success.')
+        Assert::make(5)
             ->notEmpty()
             ->lessThan([7])
         ;
@@ -200,7 +200,7 @@ EOT,
     ])]
     public function testAssertChainSupportOptionalMulti(): void
     {
-        Assert::make(5, 'Assert success.')
+        Assert::make(5)
             ->notEmpty()
             ->lessThan([7])
             ->multiNotEmpty()
@@ -219,7 +219,7 @@ EOT,
 **lazy 原型**
 
 ``` php
-Assert::lazy($value, ?string $message, bool $all = true)
+Assert::lazy(mixed $value, bool $multiValue = false, ?string $field = null, bool $all = true): static
 ```
 
 第一个参数为待校验的值，第二个为默认校验失败消息，第三个为是否全部验证，每一条验证规则也支持自己的失败消息。
@@ -227,7 +227,7 @@ EOT,
     ])]
     public function testAssertLazyChain(): void
     {
-        $result = Assert::lazy(5, 'Assert success.')
+        $result = Assert::lazy(5)
             ->notEmpty()
             ->lessThan([7], '5 not less than 3')
             ->lessThan([8], '5 not less than 4')
@@ -245,7 +245,7 @@ EOT,
             '["5 not less than 3"]'
         );
 
-        Assert::lazy(5, 'Assert success.', false)
+        Assert::lazy(5, all: false)
             ->notEmpty()
             ->lessThan([2], '5 not less than 3')
             ->lessThan([8], '5 not less than 4')
@@ -261,7 +261,7 @@ EOT,
             '["必须小于 2"]'
         );
 
-        Assert::lazy(5, null, false)
+        Assert::lazy(5, all: false)
             ->notEmpty()
             ->lessThan([2])
             ->lessThan([8])
@@ -280,7 +280,7 @@ EOT,
             '["5 not less than 3","5 not less than 4","5 not less than 2"]'
         );
 
-        Assert::lazy(5, 'Assert success.')
+        Assert::lazy(5)
             ->notEmpty()
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
@@ -301,7 +301,7 @@ EOT,
             '5 not less than 2'
         );
 
-        Assert::lazy(5, 'Assert success.')
+        Assert::lazy(5)
             ->notEmpty()
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
@@ -319,7 +319,7 @@ EOT,
             'Invalid first argument for multi assert.'
         );
 
-        Assert::make('hello world', multiValue: true)
+        Assert::make('hello world', true)
             ->multiNotEmpty()
         ;
     }
@@ -331,7 +331,7 @@ EOT,
             '5 not less than 3'
         );
 
-        Assert::make(8, null, false, false)
+        Assert::make(8, false, lazy: false, all: false)
             ->notEmpty()
             ->lessThan([3], '5 not less than 3')
             ->lessThan([4], '5 not less than 4')
@@ -342,7 +342,7 @@ EOT,
 
     public function testAssertOptionalMultiAllWasNull(): void
     {
-        Assert::make([null, null, null], multiValue: true)
+        Assert::make([null, null, null], true)
             ->optionalMultiNotEmpty()
         ;
 
