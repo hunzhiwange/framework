@@ -8,7 +8,7 @@ namespace Leevel\Validate;
  * 断言.
  *
  * - 提供一套精简版本的断言方便业务中很愉快地使用。
- * - 链式操作没有第一个参数 `$value`，此时值为 `$this->value`。
+ * - 断言和验证器复用同样的验证规则。
  */
 class Assert
 {
