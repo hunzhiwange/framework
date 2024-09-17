@@ -254,15 +254,13 @@ EOT,
             '["必须小于 7","必须小于 8","必须小于 9"]'
         );
 
-        $result = Assert::lazy(11)
+        Assert::lazy(11)
             ->notEmpty()
             ->lessThan([7])
             ->lessThan([8])
             ->lessThan([9])
             ->flush()
         ;
-
-        $this->assert($result);
     }
 
     public function testAssertLazyChain4(): void
@@ -272,15 +270,13 @@ EOT,
             '["必须小于 7","必须小于 8","必须小于 9"]'
         );
 
-        $result = Assert::lazy([3, 22, 5], true)
+        Assert::lazy([3, 22, 5], true)
             ->notEmpty()
             ->lessThan([7])
             ->lessThan([8])
             ->lessThan([9])
             ->flush()
         ;
-
-        $this->assert($result);
     }
 
     public function testAssertLazyChain5(): void
@@ -290,15 +286,13 @@ EOT,
             '["名字 必须小于 7","名字 必须小于 8","名字 必须小于 9"]'
         );
 
-        $result = Assert::lazy([3, 22, 5], true, field: '名字')
+        Assert::lazy([3, 22, 5], true, field: '名字')
             ->notEmpty()
             ->lessThan([7])
             ->lessThan([8])
             ->lessThan([9])
             ->flush()
         ;
-
-        $this->assert($result);
     }
 
     public function testAssertLazyChainWithNotAll(): void
