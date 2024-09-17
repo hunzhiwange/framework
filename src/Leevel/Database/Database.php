@@ -1308,8 +1308,12 @@ abstract class Database implements IDatabase
      */
     protected function bindParams(\PDOStatement $statement, array $bindParams): void
     {
-        foreach ($bindParams as $key => &$val) {
-            $statement->{\count($val) >= 3 ? 'bindParam' : 'bindValue'}($key, ...$val);
+        foreach ($bindParams as $key => $val) {
+            if (\count($val) >= 3) {
+                $statement->bindParam($key, ...$val);
+            } else {
+                $statement->bindValue($key, ...$val);
+            }
         }
     }
 
