@@ -53,9 +53,22 @@ EOT,
 final class EntityTest extends TestCase
 {
     #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $container = Container::singletons();
+        $container->clear();
+        $container->singleton('i18n', static function (): \I18nMock {
+            return new \I18nMock();
+        });
+    }
+
+    #[\Override]
     protected function tearDown(): void
     {
         parent::tearDown();
+
         Container::singletons()->clear();
         Post::removeGlobalScope('hello');
     }
@@ -297,7 +310,7 @@ EOT,
         $data = <<<'eot'
 {
     "status": [
-        ""
+        "status 必须在 0,1 范围内"
     ]
 }
 eot;
@@ -317,6 +330,7 @@ eot;
             'status' => 5,
         ]);
         [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
+
         $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
         $result = $validator->fail();
         self::assertTrue($result);
@@ -324,7 +338,7 @@ eot;
         $data = <<<'eot'
 {
     "status": [
-        ""
+        "status 必须在 0,1 范围内"
     ]
 }
 eot;
