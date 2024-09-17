@@ -2180,21 +2180,21 @@ class Assert
             return true;
         }
         if (!$multiValue) {
-            $multi = [$args];
-        } else {
-            $multi = [];
-            $argsSource = $args;
-            foreach ($args[0] as $v) {
-                if (null === $v && $optional) {
-                    continue;
-                }
-                $argsSource[0] = $v;
-                $multi[] = $argsSource;
-            }
+            $args[0] = [$args[0]];
+        }
 
-            if (!$multi) {
-                return true;
+        $multi = [];
+        $argsSource = $args;
+        foreach ($args[0] as $v) {
+            if (null === $v && $optional) {
+                continue;
             }
+            $argsSource[0] = $v;
+            $multi[] = $argsSource;
+        }
+
+        if (!$multi) {
+            return true;
         }
 
         // 验证
