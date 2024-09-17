@@ -38,14 +38,20 @@ class Assert
     protected array $error = [];
 
     /**
+     * 是否为多选值.
+     */
+    protected bool $multiValue = false;
+
+    /**
      * 构造函数.
      */
-    public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true)
+    public function __construct(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true, bool $multiValue = false)
     {
         $this->value = $value;
         $this->message = $message;
         $this->lazy = $lazy;
         $this->all = $all;
+        $this->multiValue = $multiValue;
     }
 
     /**
@@ -2138,7 +2144,8 @@ class Assert
         }
 
         array_unshift($args, $this->value);
-        if (false === self::validateAssert($method, $args)) {
+
+        if (false === self::validateAssert($method, $args, $this->multiValue)) {
             $message = self::normalizeMessage($args, $this->message);
             if (false === $this->lazy) {
                 throw new AssertException($message);
@@ -2157,9 +2164,9 @@ class Assert
      *     ->notEmpty()
      *     ->lessThan([7]);
      */
-    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true): static
+    public static function make(mixed $value, ?string $message = null, bool $lazy = false, bool $all = true, bool $multiValue = false): static
     {
-        return new static($value, $message, $lazy, $all);
+        return new static($value, $message, $lazy, $all, $multiValue);
     }
 
     /**
@@ -2171,9 +2178,9 @@ class Assert
      *     ->lessThan([7])
      *     ->flush();
      */
-    public static function lazy(mixed $value, ?string $message = null, bool $all = true): static
+    public static function lazy(mixed $value, ?string $message = null, bool $all = true, bool $multiValue = false): static
     {
-        return new static($value, $message, true, $all);
+        return new static($value, $message, true, $all, $multiValue);
     }
 
     /**
@@ -2199,7 +2206,7 @@ class Assert
      *
      * @throws \InvalidArgumentException
      */
-    protected static function validateAssert(string $method, array $args, bool $multiForChain = true): bool
+    protected static function validateAssert(string $method, array $args, bool $multiValue): bool
     {
         if (!\array_key_exists(0, $args)) {
             throw new \InvalidArgumentException('Missing the first argument.');
@@ -2214,7 +2221,7 @@ class Assert
         [$method, $optional] = $result;
 
         // 匹配多个值，可支持 optionalMulti
-        if (true === ($result = self::matchMulti($method, $args, $optional, $multiForChain))) {
+        if (true === ($result = self::matchMulti($method, $args, $optional, $multiValue))) {
             return true;
         }
 
@@ -2264,15 +2271,17 @@ class Assert
      *
      * @throws \InvalidArgumentException
      */
-    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiForChain = true): array|bool
+    protected static function matchMulti(string $method, array $args, bool $optional, bool $multiValue): array|bool
     {
         if (0 !== stripos($method, 'multi')) {
             return [$method, [$args]];
         }
 
-        if ($multiForChain) {
+        // 非多选值转换为多选值
+        if (!$multiValue) {
             $args[0] = [$args[0]];
         }
+
         if (!\is_array($args[0]) && !$args[0] instanceof \Traversable) {
             throw new \InvalidArgumentException('Invalid first argument for multi assert.');
         }
@@ -2304,11 +2313,11 @@ class Assert
     protected static function validateRule(string $method, array $multi): bool
     {
         $helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
-        foreach ($multi as $m) {
-            if (!class_exists($helperClass)) {
-                throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $helperClass));
-            }
+        if (!class_exists($helperClass)) {
+            throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $helperClass));
+        }
 
+        foreach ($multi as $m) {
             if (false === $helperClass::handle(...$m)) {
                 return false;
             }
