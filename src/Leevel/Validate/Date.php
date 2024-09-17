@@ -14,14 +14,14 @@ trait Date
     /**
      * 数据验证器.
      */
-    protected ?IValidator $validator = null;
+    protected static ?IValidator $validator = null;
 
     /**
      * 校验日期.
      *
      * @throws \InvalidArgumentException
      */
-    public function validateDate(mixed $value, array $param, IValidator $validator, string $field, bool $before = false): bool
+    protected static function validateDate(mixed $value, array $param, IValidator $validator, string $field, bool $before = false): bool
     {
         if (!\is_string($value)) {
             return false;
@@ -31,10 +31,10 @@ trait Date
             throw new \InvalidArgumentException('Missing the first element of param.');
         }
 
-        $this->validator = $validator;
+        static::$validator = $validator;
 
-        if ($format = $this->getDateFormat($field)) {
-            return $this->doWithFormat($format, $value, $param, $before);
+        if ($format = static::getDateFormat($field)) {
+            return static::doWithFormat($format, $value, $param, $before);
         }
 
         if (!($time = strtotime($param[0]))) {
@@ -43,16 +43,17 @@ trait Date
             }
 
             // @phpstan-ignore-next-line
-            return $this->compareTime(strtotime($value), strtotime($_), $before);
+            return static::compareTime(strtotime($value), strtotime($_), $before);
         }
 
-        return $this->compareTime(strtotime($value), $time, $before);
+        // @phpstan-ignore-next-line
+        return static::compareTime(strtotime($value), $time, $before);
     }
 
     /**
      * 比较时间.
      */
-    protected function compareTime(int $left, int $right, bool $before = false): bool
+    protected static function compareTime(int $left, int $right, bool $before = false): bool
     {
         if ($before) {
             return $left < $right;
@@ -64,10 +65,10 @@ trait Date
     /**
      * 获取时间格式化.
      */
-    protected function getDateFormat(string $field): ?string
+    protected static function getDateFormat(string $field): ?string
     {
         // @phpstan-ignore-next-line
-        if ($result = $this->validator->getParseRule($field, 'date_format')) {
+        if ($result = static::$validator->getParseRule($field, 'date_format')) {
             return $result[1][0];
         }
 
@@ -77,25 +78,25 @@ trait Date
     /**
      * 验证在给定日期之后.
      */
-    protected function doWithFormat(string $format, mixed $value, array $param, bool $before = false): bool
+    protected static function doWithFormat(string $format, mixed $value, array $param, bool $before = false): bool
     {
         // @phpstan-ignore-next-line
-        $param[0] = $this->validator->getFieldValue($param[0]) ?: $param[0];
+        $param[0] = static::$validator->getFieldValue($param[0]) ?: $param[0];
 
         if ($before) {
             [$param[0], $value] = [$value, $param[0]];
         }
 
-        return $this->doCheckDate($format, $param[0], $value);
+        return static::doCheckDate($format, (string) $param[0], (string) $value);
     }
 
     /**
      * 验证日期顺序.
      */
-    protected function doCheckDate(string $format, string $first, string $second): bool
+    protected static function doCheckDate(string $format, string $first, string $second): bool
     {
-        $before = $this->makeDateTimeFormat($format, $first);
-        $after = $this->makeDateTimeFormat($format, $second);
+        $before = static::makeDateTimeFormat($format, $first);
+        $after = static::makeDateTimeFormat($format, $second);
 
         return $before && $after && $before < $after;
     }
@@ -103,7 +104,7 @@ trait Date
     /**
      * 创建 DateTime 实例.
      */
-    protected function makeDateTimeFormat(string $format, string $value): ?\DateTime
+    protected static function makeDateTimeFormat(string $format, string $value): ?\DateTime
     {
         $date = \DateTime::createFromFormat($format, $value);
         if ($date) {
