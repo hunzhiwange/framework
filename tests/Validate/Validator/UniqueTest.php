@@ -6,8 +6,8 @@ namespace Tests\Validate\Validator;
 
 use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
+use Leevel\Validate\Helper\Unique;
 use Leevel\Validate\IValidator;
-use Leevel\Validate\UniqueRule;
 use Leevel\Validate\Validator;
 use Tests\Database\DatabaseTestCase as TestCase;
 use Tests\Database\Ddd\Entity\CompositeId;
@@ -19,13 +19,34 @@ use Tests\Database\Ddd\Entity\Guestbook;
 ])]
 final class UniqueTest extends TestCase
 {
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $container = Container::singletons();
+        $container->clear();
+
+        $container->singleton('i18n', static function (): \I18nMock {
+            return new \I18nMock();
+        });
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Container::singletons()->clear();
+    }
+
     #[Api([
         'zh-CN:title' => '唯一值基本使用方法',
         'zh-CN:description' => <<<'EOT'
 框架提供了一个唯一值创建生成规则方法
 
 ``` php
-{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\UniqueRule::class, 'rule', 'define')]}
+{[\Leevel\Kernel\Utils\Doc::getMethodBody(\Leevel\Validate\Helper\Unique::class, 'rule', 'define')]}
 ```
 
   * entity 实体
@@ -44,7 +65,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, exceptId: 1),
+                'name' => $rule = Unique::rule(Guestbook::class, exceptId: 1),
             ]
         );
 
@@ -66,7 +87,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, exceptId: 1),
+                'name' => $rule = Unique::rule(Guestbook::class, exceptId: 1),
             ]
         );
 
@@ -101,7 +122,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, null, 1, 'id'),
+                'name' => $rule = Unique::rule(Guestbook::class, null, 1, 'id'),
             ]
         );
 
@@ -136,7 +157,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(CompositeId::class, exceptId: 1),
+                'name' => $rule = Unique::rule(CompositeId::class, exceptId: 1),
             ]
         );
 
@@ -170,7 +191,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class),
+                'name' => $rule = Unique::rule(Guestbook::class),
             ]
         );
 
@@ -229,7 +250,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => UniqueRule::rule(Guestbook::class, null, 1, additional: [['arr']]),
+                'name' => Unique::rule(Guestbook::class, null, 1, additional: [['arr']]),
             ]
         );
     }
@@ -246,7 +267,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => UniqueRule::rule('Test\\Validate\\NotFoundEntity', exceptId: 1),
+                'name' => Unique::rule('Test\\Validate\\NotFoundEntity', exceptId: 1),
             ]
         );
 
@@ -255,13 +276,13 @@ EOT,
 
     public function testValidateArgsNotObjectAndNotStringWillReturnFalse(): void
     {
-        $rule = new UniqueRule();
+        $rule = new Unique();
         self::assertFalse($rule->handle('value', [['arr']], $this->createMock(IValidator::class), 'field'));
     }
 
     public function testValidateArgsIsEntity(): void
     {
-        $rule = new UniqueRule();
+        $rule = new Unique();
 
         self::assertTrue($rule->handle('value', [new Guestbook()], $this->createMock(IValidator::class), 'name'));
 
@@ -287,7 +308,7 @@ EOT,
             'Validate entity `Tests\\Validate\\Validator\\DemoUnique1` must be an entity.'
         );
 
-        $rule = new UniqueRule();
+        $rule = new Unique();
 
         $rule->handle('value', [new DemoUnique1()], $this->createMock(IValidator::class), 'name');
     }
@@ -299,7 +320,7 @@ EOT,
             'Validate entity `Tests\\Validate\\Validator\\DemoUnique1` must be an entity.'
         );
 
-        $rule = new UniqueRule();
+        $rule = new Unique();
 
         $rule->handle('value', ['Tests\\Validate\\Validator\\DemoUnique1'], $this->createMock(IValidator::class), 'name');
     }
@@ -314,7 +335,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, 'name', 1),
+                'name' => $rule = Unique::rule(Guestbook::class, 'name', 1),
             ]
         );
 
@@ -349,7 +370,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, 'name:content', 1),
+                'name' => $rule = Unique::rule(Guestbook::class, 'name:content', 1),
             ]
         );
 
@@ -384,7 +405,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, additional: ['id' => '1']),
+                'name' => $rule = Unique::rule(Guestbook::class, additional: ['id' => '1']),
             ]
         );
 
@@ -416,7 +437,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, additional: ['content' => 'hello']),
+                'name' => $rule = Unique::rule(Guestbook::class, additional: ['content' => 'hello']),
             ]
         );
 
@@ -448,7 +469,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, additional: ['content' => 'hello']),
+                'name' => $rule = Unique::rule(Guestbook::class, additional: ['content' => 'hello']),
             ]
         );
 
@@ -483,7 +504,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, additional: ['id:>' => '1']),
+                'name' => $rule = Unique::rule(Guestbook::class, additional: ['id:>' => '1']),
             ]
         );
 
@@ -534,7 +555,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, exceptId: 1),
+                'name' => $rule = Unique::rule(Guestbook::class, exceptId: 1),
             ]
         );
 
@@ -554,11 +575,11 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(
+                'name' => $rule = Unique::rule(
                     Guestbook::class,
-                    UniqueRule::PLACEHOLDER,
-                    UniqueRule::PLACEHOLDER,
-                    UniqueRule::PLACEHOLDER,
+                    Unique::PLACEHOLDER,
+                    Unique::PLACEHOLDER,
+                    Unique::PLACEHOLDER,
                     [
                         'content' => 'hello',
                     ],
@@ -598,7 +619,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, 'name', '1', additional: ['content' => '1.5']),
+                'name' => $rule = Unique::rule(Guestbook::class, 'name', '1', additional: ['content' => '1.5']),
             ]
         );
 
@@ -620,7 +641,7 @@ EOT,
                 'name' => 'foo',
             ],
             [
-                'name' => $rule = UniqueRule::rule(Guestbook::class, 'name', 1, additional: ['content' => 1.5]),
+                'name' => $rule = Unique::rule(Guestbook::class, 'name', 1, additional: ['content' => 1.5]),
             ]
         );
 
@@ -633,7 +654,7 @@ EOT,
 
     public function testValidateValueIsNotString(): void
     {
-        $rule = new UniqueRule();
+        $rule = new Unique();
         self::assertTrue($rule->handle(3, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
         self::assertTrue($rule->handle(1.5, [Guestbook::class], $this->createMock(IValidator::class), 'id'));
     }

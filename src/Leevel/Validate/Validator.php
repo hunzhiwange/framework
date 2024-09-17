@@ -626,6 +626,11 @@ class Validator implements IValidator
 
             $validatorErrorMessage = '';
 
+            if (!\is_callable([$classHelper, 'handle'])) {
+                // @phpstan-ignore-next-line
+                throw new \Exception(sprintf('Validate rule %s is invalid.', $classHelper));
+            }
+
             try {
                 $validateResult = $classHelper::handle($fieldValue, $param, $this, $field);
             } catch (ValidatorException $e) {

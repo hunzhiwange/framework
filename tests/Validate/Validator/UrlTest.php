@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate\Validator;
 
+use Leevel\Di\Container;
 use Leevel\Kernel\Utils\Api;
 use Leevel\Validate\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -15,6 +16,23 @@ use Tests\TestCase;
 ])]
 final class UrlTest extends TestCase
 {
+    #[\Override]
+    protected function setUp(): void
+    {
+        $container = Container::singletons();
+        $container->clear();
+
+        $container->singleton('i18n', static function (): \I18nMock {
+            return new \I18nMock();
+        });
+    }
+
+    #[\Override]
+    protected function tearDown(): void
+    {
+        Container::singletons()->clear();
+    }
+
     #[DataProvider('baseUseProvider')]
     #[Api([
         'zh-CN:title' => '验证通过的数据',

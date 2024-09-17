@@ -2,17 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Validate;
+namespace Leevel\Validate\Helper;
 
 use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Select;
 use Leevel\Support\Type\Arr;
 use Leevel\Support\Type\StringEncode;
+use Leevel\Validate\IValidator;
 
-/**
- * 不能重复值验证规则.
- */
-class UniqueRule
+class Unique
 {
     /**
      * 占位符.
@@ -27,11 +25,11 @@ class UniqueRule
     public const string MESSAGE = '{field} 不能出现重复值';
 
     /**
-     * 校验.
+     * 不能重复值验证规则.
      *
      * @throws \InvalidArgumentException
      */
-    public function handle(mixed $value, array $param, IValidator $validator, string $field): bool
+    public static function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if (!\array_key_exists(0, $param)) {
             throw new \InvalidArgumentException('Missing the first element of param.');
@@ -41,9 +39,9 @@ class UniqueRule
             return false;
         }
 
-        $select = $this->normalizeSelect($value, $param, $field);
-        $this->parseExceptId($select, $param);
-        $this->parseAdditional($select, $param);
+        $select = static::normalizeSelect($value, $param, $field);
+        static::parseExceptId($select, $param);
+        static::parseAdditional($select, $param);
 
         return 0 === $select->findCount();
     }
@@ -76,9 +74,9 @@ class UniqueRule
     /**
      * 取得查询.
      */
-    protected function normalizeSelect(mixed $value, array $param, string $field): Select
+    protected static function normalizeSelect(mixed $value, array $param, string $field): Select
     {
-        $entity = $this->parseEntity($param);
+        $entity = static::parseEntity($param);
 
         if (isset($param[1]) && self::PLACEHOLDER !== $param[1]) {
             $field = $param[1];
@@ -101,7 +99,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseEntity(array $param): Entity
+    protected static function parseEntity(array $param): Entity
     {
         if (\is_string($param[0])) {
             if (!class_exists($param[0])) {
@@ -124,7 +122,7 @@ class UniqueRule
     /**
      * 排除主键.
      */
-    protected function parseExceptId(Select $select, array $param): void
+    protected static function parseExceptId(Select $select, array $param): void
     {
         if (isset($param[2]) && self::PLACEHOLDER !== $param[2]) {
             $withoutPrimary = true;
@@ -149,7 +147,7 @@ class UniqueRule
      *
      * @throws \InvalidArgumentException
      */
-    protected function parseAdditional(Select $select, array $param): void
+    protected static function parseAdditional(Select $select, array $param): void
     {
         if (($num = \count($param)) >= 4) {
             for ($i = 4; $i < $num; $i += 2) {
