@@ -21,14 +21,14 @@ class Assert
     protected mixed $value = null;
 
     /**
+     * 是否为多选值.
+     */
+    protected bool $multiValue = false;
+
+    /**
      * 字段名字.
      */
     protected ?string $field = null;
-
-    /**
-     * 是否延后提示错误.
-     */
-    protected bool $lazy = false;
 
     /**
      * 是否验证所有.
@@ -36,14 +36,14 @@ class Assert
     protected bool $all = true;
 
     /**
+     * 是否延后提示错误.
+     */
+    protected bool $lazy = false;
+
+    /**
      * 验证错误消息.
      */
     protected array $error = [];
-
-    /**
-     * 是否为多选值.
-     */
-    protected bool $multiValue = false;
 
     /**
      * 默认验证提示信息.
