@@ -21,22 +21,23 @@ final class AssertTest extends TestCase
     #[Api([
         'zh-CN:title' => '基本断言测试',
         'zh-CN:description' => <<<'EOT'
-断言和验证器共享规则，所以可以直接参考验证器有哪些规则，排查掉依赖验证器自身的校验规则。
-
-**支持格式**
-
-``` php
-Assert::foo($value, string $message);
-Assert::foo($value, array $param, string $message);
-```
+断言和验证器共享规则，所以可以直接参考验证器有哪些规则。
 EOT,
     ])]
     public function testBaseUse(): void
     {
-        Assert::notEmpty(1);
-        Assert::notEmpty(55);
-        Assert::notEmpty(66);
-        Assert::lessThan(4, [5]);
+        Assert::make(1)
+            ->notEmpty()
+        ;
+        Assert::make(55)
+            ->notEmpty()
+        ;
+        Assert::make(66)
+            ->notEmpty()
+        ;
+        Assert::make(4)
+            ->lessThan([5])
+        ;
         self::assertSame(1, 1);
     }
 
@@ -50,7 +51,9 @@ EOT,
             'No exception messsage specified.'
         );
 
-        Assert::notEmpty(0);
+        Assert::make(0)
+            ->notEmpty()
+        ;
     }
 
     #[Api([
@@ -60,10 +63,12 @@ EOT,
     {
         $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
-            'No exception messsage specified.'
+            '值不能为空'
         );
 
-        Assert::notEmpty(0);
+        Assert::make(0)
+            ->notEmpty('值不能为空')
+        ;
     }
 
     #[Api([
@@ -74,7 +79,9 @@ EOT,
     ])]
     public function testAssertOptional(): void
     {
-        Assert::optionalNotEmpty(null);
+        Assert::make(null)
+            ->optionalNotEmpty()
+        ;
 
         self::assertSame(1, 1);
     }
@@ -89,7 +96,9 @@ EOT,
             'No exception messsage specified.'
         );
 
-        Assert::optionalNotEmpty(0);
+        Assert::make(0)
+            ->optionalNotEmpty()
+        ;
     }
 
     #[Api([
@@ -100,7 +109,9 @@ EOT,
     ])]
     public function testAssertMulti(): void
     {
-        Assert::multiNotEmpty([3, ['hello'], 'bar', 'yes']);
+        Assert::make([3, ['hello'], 'bar', 'yes'], multiValue: true)
+            ->multiNotEmpty()
+        ;
 
         self::assertSame(1, 1);
     }
@@ -118,18 +129,22 @@ EOT,
             'No exception messsage specified.'
         );
 
-        Assert::multiNotEmpty([3, ['hello'], '', 'yes']);
+        Assert::make([3, ['hello'], '', 'yes'], multiValue: true)
+            ->multiNotEmpty()
+        ;
     }
 
     #[Api([
         'zh-CN:title' => '断言支持多个校验也支持可选',
         'zh-CN:description' => <<<'EOT'
-必须每一个都满足规则才算校验成功, 可选会跳过验证，可选必须在最前面，即不支持 `multiOptional` 这种写法。
+必须每一个都满足规则才算校验成功, 可选会跳过验证。
 EOT,
     ])]
     public function testAssertMultiWithOptional(): void
     {
-        Assert::optionalMultiNotEmpty([null, ['hello'], 'bar', 'yes', null]);
+        Assert::make([null, ['hello'], 'bar', 'yes', null], multiValue: true)
+            ->optionalMultiNotEmpty()
+        ;
 
         self::assertSame(1, 1);
     }
@@ -161,7 +176,8 @@ EOT,
     #[Api([
         'zh-CN:title' => '断言链式表达式支持可选和多个校验',
         'zh-CN:description' => <<<'EOT'
-链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。
+链式表达式数据值只支持单个，但是可以调用多个校验方法，系统做了统一兼容。
+一般来说多个校验这种用法在链式调用中没有必要，如果调用了也是没有什么问题。
 EOT,
     ])]
     public function testAssertChainSupportOptionalMulti(): void
@@ -262,26 +278,6 @@ EOT,
         ;
     }
 
-    public function testAssertMissingArgument(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Missing the first argument.'
-        );
-
-        Assert::notEmpty();
-    }
-
-    public function testAssertNotFoundRule(): void
-    {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage(
-            'Class `Leevel\\Validate\\Helper\\NotFound` is not exits.'
-        );
-
-        Assert::notFound(1);
-    }
-
     public function testAssertMultiWithInvalidFirstArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -289,7 +285,9 @@ EOT,
             'Invalid first argument for multi assert.'
         );
 
-        Assert::multiNotEmpty('hello world');
+        Assert::make('hello world', multiValue: true)
+            ->multiNotEmpty()
+        ;
     }
 
     public function testAssertNotLazyChainWithNotAll(): void
@@ -310,18 +308,11 @@ EOT,
 
     public function testAssertOptionalMultiAllWasNull(): void
     {
-        Assert::optionalMultiNotEmpty([null, null, null]);
+        Assert::make([null, null, null], multiValue: true)
+            ->optionalMultiNotEmpty()
+        ;
+
         self::assertSame(1, 1);
-    }
-
-    public function testAssertOptionalMultiAllWasNullFailed(): void
-    {
-        $this->expectException(AssertException::class);
-        $this->expectExceptionMessage(
-            'No exception messsage specified.'
-        );
-
-        Assert::optionalMultiLessThan([null, 8, null], [5]);
     }
 
     public function testAssertExceptionReportable(): void

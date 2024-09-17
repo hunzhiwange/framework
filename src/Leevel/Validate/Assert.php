@@ -2208,10 +2208,6 @@ class Assert
      */
     protected static function validateAssert(string $method, array $args, bool $multiValue): bool
     {
-        if (!\array_key_exists(0, $args)) {
-            throw new \InvalidArgumentException('Missing the first argument.');
-        }
-
         // 匹配可选
         if (true === ($result = self::matchOptional($method, $args))) {
             return true;
