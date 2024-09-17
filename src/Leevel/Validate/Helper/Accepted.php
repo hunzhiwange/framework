@@ -8,6 +8,8 @@ class Accepted
 {
     public const string MESSAGE = '{field} 必须是 yes、on、true 或者 1';
 
+    public const string ANTISENSE_MESSAGE = '{field} 不能是 yes、on、true 和 1';
+
     /**
      * 是否可接受的.
      */

@@ -2536,6 +2536,39 @@ eot;
         );
     }
 
+    public function test15(): void
+    {
+        $validate = new Validator(
+            [
+                'name' => true,
+            ],
+            [
+                'name' => '!accepted',
+            ],
+            [
+                'name' => '地名',
+            ],
+        );
+
+        self::assertFalse($validate->success());
+        self::assertTrue($validate->fail());
+        self::assertSame(['name' => '地名'], $validate->getName());
+        $error = <<<'eot'
+{
+    "name": [
+        "地名 不能是 yes、on、true 和 1"
+    ]
+}
+eot;
+
+        self::assertSame(
+            $error,
+            $this->varJson(
+                $validate->error()
+            )
+        );
+    }
+
     public function test8(): void
     {
         $validate = new Validator(

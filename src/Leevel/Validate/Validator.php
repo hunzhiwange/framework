@@ -622,10 +622,7 @@ class Validator implements IValidator
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
         if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
-            // 验证器默认消息
-            if (!isset(static::$defaultMessages[$rule])) {
-                static::$defaultMessages[$rule] = \defined($classHelper.'::MESSAGE') ? __($classHelper::MESSAGE) : '';
-            }
+            $this->parepareDefaultMessage($classHelper, $rule, $isAntisenseRule);
 
             $validatorErrorMessage = '';
 
@@ -657,10 +654,7 @@ class Validator implements IValidator
                 throw new \Exception(sprintf('Validate rule %s is invalid.', $validateRule::class));
             }
 
-            // 验证器默认消息
-            if (!isset(static::$defaultMessages[$rule])) {
-                static::$defaultMessages[$rule] = \defined($className.'::MESSAGE') ? __($className::MESSAGE) : '';
-            }
+            $this->parepareDefaultMessage($classHelper, $rule, $isAntisenseRule);
 
             $validatorErrorMessage = '';
 
@@ -703,6 +697,29 @@ class Validator implements IValidator
         }
 
         return true;
+    }
+
+    protected function parepareDefaultMessage(string $classHelper, string $rule, bool $isAntisenseRule): void
+    {
+        // 验证器默认消息
+        if ($isAntisenseRule) {
+            if (!isset(static::$defaultMessages['!'.$rule])) {
+                $message = \defined($classHelper.'::ANTISENSE_MESSAGE') ? __($classHelper::ANTISENSE_MESSAGE) : '';
+                if (!$message && \defined($classHelper.'::MESSAGE')) {
+                    $message = $this->parepareAntisenseMessage(__($classHelper::MESSAGE));
+                }
+                if ($message) {
+                    static::$defaultMessages['!'.$rule] = $message;
+                }
+            }
+        } elseif (!isset(static::$defaultMessages[$rule])) {
+            static::$defaultMessages[$rule] = \defined($classHelper.'::MESSAGE') ? __($classHelper::MESSAGE) : '';
+        }
+    }
+
+    protected function parepareAntisenseMessage(string $message): string
+    {
+        return __('不满足【%s】', $message);
     }
 
     /**
@@ -773,7 +790,7 @@ class Validator implements IValidator
             ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
 
         if ($isAntisenseRule) {
-            $message = sprintf('不满足【%s】', $message);
+            $message = $this->parepareAntisenseMessage($message);
         }
 
         return $message;
