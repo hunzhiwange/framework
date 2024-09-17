@@ -2079,28 +2079,6 @@ class Assert
     }
 
     /**
-     * @throws AssertException
-     */
-    public function callMethodChain(string $method, mixed ...$args): self
-    {
-        if (false === $this->all && $this->error) {
-            return $this;
-        }
-
-        array_unshift($args, $this->value);
-
-        if (false === self::validateAssert($method, $args, $this->multiValue)) {
-            $message = self::normalizeMessage($method, $args, $this->field);
-            if (false === $this->lazy) {
-                throw new AssertException($message);
-            }
-            $this->error[] = $message;
-        }
-
-        return $this;
-    }
-
-    /**
      * 创建断言对象已支持链式表达式.
      *
      * @example
@@ -2146,6 +2124,28 @@ class Assert
         }
 
         return true;
+    }
+
+    /**
+     * @throws AssertException
+     */
+    protected function callMethodChain(string $method, mixed ...$args): self
+    {
+        if (false === $this->all && $this->error) {
+            return $this;
+        }
+
+        array_unshift($args, $this->value);
+
+        if (false === self::validateAssert($method, $args, $this->multiValue)) {
+            $message = self::normalizeMessage($method, $args, $this->field);
+            if (false === $this->lazy) {
+                throw new AssertException($message);
+            }
+            $this->error[] = $message;
+        }
+
+        return $this;
     }
 
     /**

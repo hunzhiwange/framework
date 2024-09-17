@@ -283,6 +283,24 @@ EOT,
         $this->assert($result);
     }
 
+    public function testAssertLazyChain5(): void
+    {
+        $this->expectException(AssertException::class);
+        $this->expectExceptionMessage(
+            '["名字 必须小于 7","名字 必须小于 8","名字 必须小于 9"]'
+        );
+
+        $result = Assert::lazy([3, 22, 5], true, field: '名字')
+            ->notEmpty()
+            ->lessThan([7])
+            ->lessThan([8])
+            ->lessThan([9])
+            ->flush()
+        ;
+
+        $this->assert($result);
+    }
+
     public function testAssertLazyChainWithNotAll(): void
     {
         $this->expectException(AssertException::class);
