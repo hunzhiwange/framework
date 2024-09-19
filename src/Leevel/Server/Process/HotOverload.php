@@ -32,8 +32,10 @@ class HotOverload extends Process
 
     /**
      * 检测间隔时间（毫秒）.
+     *
+     * - 这个值设置得太小频繁检测会导致消耗很大
      */
-    protected int $timeInterval = 20;
+    protected int $timeInterval = 2000;
 
     /**
      * 源代码监听目录.
