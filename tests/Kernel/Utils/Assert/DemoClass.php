@@ -18,5 +18,5 @@ class DemoClass
         return 'hello';
     }
 
-    public function demo4(...$hello): void {}
+    public function demo4(mixed ...$hello): void {}
 }

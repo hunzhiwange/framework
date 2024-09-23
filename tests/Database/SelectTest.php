@@ -111,7 +111,7 @@ EOT,
 
         $result = $connect
             ->table('guest_book')
-            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (mixed ...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->where('id', 1)
             ->setColumns('name,content')
             ->findOne()
@@ -300,7 +300,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection()
-            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (mixed ...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;
@@ -372,7 +372,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection()
-            ->asSome(static fn (...$args): Guestbook => new Guestbook(...$args))
+            ->asSome(static fn (mixed ...$args): Guestbook => new Guestbook(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;
@@ -444,7 +444,7 @@ EOT,
         $result = $connect
             ->table('guest_book')
             ->asCollection(true, [AsSomeDemo::class])
-            ->asSome(static fn (...$args): AsSomeDemo => new AsSomeDemo(...$args))
+            ->asSome(static fn (mixed ...$args): AsSomeDemo => new AsSomeDemo(...$args))
             ->setColumns('name,content')
             ->findAll()
         ;

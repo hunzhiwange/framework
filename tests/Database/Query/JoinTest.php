@@ -16,7 +16,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 ## join 函数原型
 
 ``` php
-join($table, $cols, ...$cond);
+join($table, $cols, mixed ...$cond);
 ```
 
  - 其中 $table 和 $cols 与 《查询语言.table》中的用法一致。

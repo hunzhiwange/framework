@@ -19,14 +19,14 @@ QueryPHP 内置通过 `i18n` 语言包提供多语言支持，可以在开发过
 使用容器 i18n 服务
 
 ``` php
-\App::make('i18n')->gettext(string $text, ...$data): string;
-\App::make('i18n')->__(string $text, ...$data): string;
+\App::make('i18n')->gettext(string $text, null|bool|float|int|string ...$data): string;
+\App::make('i18n')->__(string $text, null|bool|float|int|string ...$data): string;
 ```
 
 推荐使用全局函数 `__`
 
 ``` php
-__(string $text, ...$data): string;
+__(string $text, null|bool|float|int|string ...$data): string;
 ```
 
 ### 语言目录
