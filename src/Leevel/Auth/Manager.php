@@ -45,12 +45,12 @@ class Manager extends Managers implements IAuth
         return $this->callConnectMethod(__FUNCTION__);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IAuth
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IAuth
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): IAuth
+    public function reconnect(?string $connect = null, mixed ...$arguments): IAuth
     {
         return parent::reconnect($connect, ...$arguments);
     }

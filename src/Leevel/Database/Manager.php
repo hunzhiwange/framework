@@ -805,7 +805,7 @@ class Manager extends Managers implements IDatabase
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IDatabase
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IDatabase
     {
         // 协程环境每次从创建驱动中获取连接
         if ($this->container->enabledCoroutine()) {
@@ -815,7 +815,7 @@ class Manager extends Managers implements IDatabase
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): IDatabase
+    public function reconnect(?string $connect = null, mixed ...$arguments): IDatabase
     {
         return parent::reconnect($connect, ...$arguments);
     }

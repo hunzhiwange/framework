@@ -34,7 +34,7 @@ class Dispatch implements IDispatch
         $this->container = $container;
     }
 
-    public function handle(object|string $event, ...$params): void // @phpstan-ignore-line
+    public function handle(object|string $event, mixed ...$params): void
     {
         if (\is_object($event)) {
             $name = $event::class;

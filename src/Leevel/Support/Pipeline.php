@@ -81,14 +81,14 @@ class Pipeline
     /**
      * 遍历迭代器.
      */
-    protected function traverseGenerator(...$args): mixed // @phpstan-ignore-line
+    protected function traverseGenerator(mixed ...$args): mixed
     {
         $this->generator->next();
         if (!$this->generator->valid()) {
             return null;
         }
 
-        array_unshift($args, function (...$args) {
+        array_unshift($args, function (mixed ...$args): mixed {
             return $this->traverseGenerator(...$args);
         });
 

@@ -63,12 +63,12 @@ class Manager extends Managers implements ILog
         $this->callConnectMethod(__FUNCTION__, $level, $message, $context);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ILog
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ILog
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): ILog
+    public function reconnect(?string $connect = null, mixed ...$arguments): ILog
     {
         return parent::reconnect($connect, ...$arguments);
     }

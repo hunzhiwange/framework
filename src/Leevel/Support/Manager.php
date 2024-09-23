@@ -55,7 +55,7 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): object
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): object
     {
         if (!$connect) {
             $connect = $this->getDefaultConnect();
@@ -95,7 +95,7 @@ abstract class Manager
     /**
      * 重新连接.
      */
-    public function reconnect(?string $connect = null, ...$arguments): object
+    public function reconnect(?string $connect = null, mixed ...$arguments): object
     {
         $this->disconnect($connect);
 
@@ -211,7 +211,7 @@ abstract class Manager
      *
      * @throws \InvalidArgumentException
      */
-    protected function makeConnect(string $connect, string $driver, ?string $driverClass = null, ...$arguments): object
+    protected function makeConnect(string $connect, string $driver, ?string $driverClass = null, mixed ...$arguments): object
     {
         if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
             return $this->{$makeDriver}($connect, $driverClass, ...$arguments);

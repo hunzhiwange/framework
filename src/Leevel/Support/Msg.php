@@ -14,7 +14,7 @@ readonly class Msg
 {
     private string $message;
 
-    public function __construct(string $message = '', ...$moreArgs) // @phpstan-ignore-line
+    public function __construct(string $message = '', null|bool|float|int|string ...$moreArgs)
     {
         if ($moreArgs) {
             $message = __($message, ...$moreArgs);
@@ -33,7 +33,7 @@ if (!\function_exists(__NAMESPACE__.'\\__')) {
     /**
      * @codeCoverageIgnore
      */
-    function __(string $text, ...$data): string
+    function __(string $text, null|bool|float|int|string ...$data): string
     {
         if (!class_exists(Gettext::class)) {
             return sprintf($text, ...$data);

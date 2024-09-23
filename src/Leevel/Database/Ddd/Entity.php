@@ -827,7 +827,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         $select = static::meta()
             ->select()
-            ->asSome(static fn (...$args): self => new static(...$args), [true, true])
+            ->asSome(static fn (mixed ...$args): self => new static(...$args), [true, true])
             ->asCollection(true, [static::class])
         ;
 
@@ -1521,7 +1521,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 执行实体事件.
      */
-    public function handleEvent(string $event, ...$args): void // @phpstan-ignore-line
+    public function handleEvent(string $event, mixed ...$args): void
     {
         if (null === static::$dispatchFramework) {
             return;
@@ -2821,7 +2821,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 // @codeCoverageIgnoreStart
 if (!\function_exists(__NAMESPACE__.'\\__')) {
     /** @codeCoverageIgnoreEnd */
-    function __(string $text, ...$data): string
+    function __(string $text, null|bool|float|int|string ...$data): string
     {
         if (!class_exists(Gettext::class)) {
             return sprintf($text, ...$data); // @codeCoverageIgnore

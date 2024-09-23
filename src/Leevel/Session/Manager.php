@@ -194,12 +194,12 @@ class Manager extends Managers implements ISession
         return $this->callConnectMethod(__FUNCTION__, $maxLifetime);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ISession
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ISession
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): ISession
+    public function reconnect(?string $connect = null, mixed ...$arguments): ISession
     {
         return parent::reconnect($connect, ...$arguments);
     }

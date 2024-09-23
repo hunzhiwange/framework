@@ -28,7 +28,7 @@ class I18n implements II18n
         $this->text[$i18n] = [];
     }
 
-    public function gettext(string $text, ...$data): string // @phpstan-ignore-line
+    public function gettext(string $text, null|bool|float|int|string ...$data): string
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
 

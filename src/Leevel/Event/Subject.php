@@ -96,7 +96,7 @@ class Subject implements \SplSubject
     /**
      * 设置通知附加参数.
      */
-    public function setNotifyArgs(...$args): void // @phpstan-ignore-line
+    public function setNotifyArgs(mixed ...$args): void
     {
         $this->notifyArgs = $args;
     }

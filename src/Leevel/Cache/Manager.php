@@ -93,7 +93,7 @@ class Manager extends Managers implements ICache
         $this->callConnectMethod(__FUNCTION__, $pool);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): ICache
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ICache
     {
         // 协程环境每次从创建驱动中获取连接
         if ($this->container->enabledCoroutine()) {
@@ -103,7 +103,7 @@ class Manager extends Managers implements ICache
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): ICache
+    public function reconnect(?string $connect = null, mixed ...$arguments): ICache
     {
         return parent::reconnect($connect, ...$arguments);
     }

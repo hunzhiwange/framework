@@ -39,12 +39,12 @@ class Manager extends Managers implements IServer
         return $this->callConnectMethod(__FUNCTION__);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IServer
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IServer
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): IServer
+    public function reconnect(?string $connect = null, mixed ...$arguments): IServer
     {
         return parent::reconnect($connect, ...$arguments);
     }

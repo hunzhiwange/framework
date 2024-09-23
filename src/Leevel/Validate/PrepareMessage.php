@@ -38,7 +38,7 @@ trait PrepareMessage
 }
 
 if (!\function_exists(__NAMESPACE__.'\\__')) {
-    function __(string $text, ...$data): string
+    function __(string $text, null|bool|float|int|string ...$data): string
     {
         if (!class_exists(Gettext::class)) {
             return sprintf($text, ...$data); // @codeCoverageIgnore

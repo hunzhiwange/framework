@@ -38,12 +38,12 @@ class Manager extends Managers implements IView
         $this->callConnectMethod(__FUNCTION__);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IView
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IView
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): IView
+    public function reconnect(?string $connect = null, mixed ...$arguments): IView
     {
         return parent::reconnect($connect);
     }

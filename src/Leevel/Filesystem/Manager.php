@@ -18,12 +18,12 @@ class Manager extends Managers implements IFilesystem
         return $this->callConnectMethod(__FUNCTION__);
     }
 
-    public function connect(?string $connect = null, bool $newConnect = false, ...$arguments): IFilesystem
+    public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IFilesystem
     {
         return parent::connect($connect, $newConnect, ...$arguments);
     }
 
-    public function reconnect(?string $connect = null, ...$arguments): IFilesystem
+    public function reconnect(?string $connect = null, mixed ...$arguments): IFilesystem
     {
         return parent::reconnect($connect, ...$arguments);
     }
