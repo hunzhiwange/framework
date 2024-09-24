@@ -16,12 +16,5 @@ trait SelectDatabase
             InputOption::VALUE_REQUIRED,
             'Select database.',
         );
-
-        $this->addOption(
-            'database-index',
-            null,
-            InputOption::VALUE_REQUIRED,
-            'Select database index.',
-        );
     }
 }
