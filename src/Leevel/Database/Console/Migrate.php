@@ -44,9 +44,10 @@ class Migrate extends AbstractCommand
         $environment = $input->getOption('environment');
 
         try {
-            $start = microtime(true);
             $migrator = $this->getMigrator();
             $migrator->setConfig($this->config);
+
+            $start = microtime(true);
             $migrator->migrate($environment, $target);
             $end = microtime(true);
         } catch (\Exception $e) {
