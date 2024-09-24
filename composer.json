@@ -125,7 +125,7 @@
         "test-coverage": "@php build/phpunit --colors=always -c phpunit.xml.coverage",
         "php-cs-fixer": "@php build/php-cs-fixer fix",
         "phpstan": "@php build/phpstan analyse",
-        "migrate": "@php vendor/bin/phinx migrate"
+        "migrate": "@php tests/assets/migration migrate:migrate"
     },
     "config": {
         "sort-packages": true

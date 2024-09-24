@@ -13,8 +13,6 @@ use Leevel\Database\Mysql;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Event\IDispatch;
-use PDO;
-use PDOException;
 
 /**
  * 数据辅助方法.

@@ -862,10 +862,10 @@ class Manager extends Managers implements IDatabase
         $mysql = new $driverClass(
             $this->container,
             $configs,
-            $this->container->make(IDispatch::class),
+            $this->container->make(IDispatch::class, throw: false),
             $poolTransaction,
         );
-        $mysql->setCache($this->container->make('cache'));
+        $mysql->setCache($this->container->make('cache', throw: false));
 
         return $mysql;
     }
