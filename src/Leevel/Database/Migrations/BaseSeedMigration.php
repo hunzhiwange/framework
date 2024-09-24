@@ -20,7 +20,7 @@ trait BaseSeedMigration
 
     final public function __construct(string $environment, ?InputInterface $input = null, ?OutputInterface $output = null)
     {
-        $this->environment = $environment;
+        $this->setEnvironment($environment);
 
         if (null !== $input) {
             $this->setInput($input);
