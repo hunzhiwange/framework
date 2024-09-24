@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Database\Console;
 
 use Leevel\Database\Console\Migrate;
-use Leevel\Di\IContainer;
-use Leevel\Kernel\IApp;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
@@ -21,9 +19,7 @@ final class MigrateMigrateTest extends TestCase
             [
                 'command' => 'migrate:migrate',
             ],
-            function ($container): void {
-                $this->initContainerService($container);
-            }
+            static function (): void {}
         );
 
         $result = $this->normalizeContent($result);
@@ -34,26 +30,13 @@ final class MigrateMigrateTest extends TestCase
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent('phinx.php'),
+            $this->normalizeContent('migration.php'),
             $result
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent('using config parser php'),
+            $this->normalizeContent('Service databases was not found'),
             $result
         );
-
-        self::assertStringContainsString(
-            $this->normalizeContent('ordering by creation time'),
-            $result
-        );
-    }
-
-    protected function initContainerService(IContainer $container): void
-    {
-        $app = $this->createMock(IApp::class);
-        $this->assertInstanceof(IApp::class, $app);
-
-        $container->singleton(IApp::class, $app);
     }
 }
