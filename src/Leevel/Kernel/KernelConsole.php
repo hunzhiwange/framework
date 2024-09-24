@@ -8,14 +8,8 @@ use Leevel\Config\IConfig;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
-use Leevel\Database\Console\Breakpoint;
-use Leevel\Database\Console\Create;
 use Leevel\Database\Console\Migrate;
-use Leevel\Database\Console\Rollback;
-use Leevel\Database\Console\SeedCreate;
 use Leevel\Database\Console\SeedRun;
-use Leevel\Database\Console\Status;
-use Leevel\Database\Console\Test;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
@@ -133,14 +127,8 @@ abstract class KernelConsole implements IKernelConsole
         }
 
         $invalidCommands = [
-            Breakpoint::class,
-            Create::class,
             Migrate::class,
-            Rollback::class,
-            SeedCreate::class,
             SeedRun::class,
-            Status::class,
-            Test::class,
         ];
         foreach ($commands as $k => $v) {
             if (\in_array($v, $invalidCommands, true)) {

@@ -59,7 +59,6 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
-        "robmorgan/phinx": "^0.16.0",
         "league/flysystem-ziparchive": "^3.27.0",
         "swoole/ide-helper": "^5.1.3"
     },
