@@ -6,7 +6,7 @@ namespace Leevel\Database\Console;
 
 use Leevel\Console\RuntimeEnvironment;
 use Leevel\Database\Console\Base\AbstractCommand;
-use Leevel\Database\SelectDatabase;
+use Leevel\Database\Migrations\Config;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,13 +17,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Migrate extends AbstractCommand
 {
     use RuntimeEnvironment;
-    use SelectDatabase;
 
     protected function configure(): void
     {
         parent::configure();
 
-        $this->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', 'development');
+        $this->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', Config::ENVIRONMENT_DEFAULT);
 
         $this->setName('migrate:migrate')
             ->setDescription('Migrate the database')
@@ -31,7 +30,6 @@ class Migrate extends AbstractCommand
         ;
 
         $this->setRuntimeEnvironment();
-        $this->selectDatabase();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

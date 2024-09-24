@@ -8,21 +8,23 @@ use Leevel\Support\Dto;
 
 class Config extends Dto
 {
+    public const string ENVIRONMENT_DEFAULT = 'development';
+
     public string $migrationsPath = '';
 
     public string $seedsPath = '';
 
-    public string $databaseDefault = 'default';
+    public string $environmentDefault = self::ENVIRONMENT_DEFAULT;
 
-    public string $database = 'default';
+    public string $environment = self::ENVIRONMENT_DEFAULT;
 
-    public array $databases = [
-        'default' => 'mysql',
+    public array $environments = [
+        self::ENVIRONMENT_DEFAULT => 'mysql',
     ];
 
     public function getDatabaseDriver(): string
     {
-        return $this->databases[$this->database] ?? $this->databases[$this->databaseDefault];
+        return $this->environments[$this->environment] ?? $this->environments[$this->environmentDefault];
     }
 
     /**

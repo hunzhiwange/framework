@@ -86,8 +86,8 @@ abstract class AbstractCommand extends Command
         $config = Config::fromPhp($configFilePath);
         $this->setConfig($config);
 
-        if ($input->hasOption('database')) {
-            $config->database = $input->getOption('database');
+        if ($input->hasOption('environment')) {
+            $config->environment = $input->getOption('environment');
         }
     }
 

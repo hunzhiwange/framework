@@ -59,7 +59,7 @@ jobs:
           mkdir -p logs
 
       - name: Migrate
-        run: php tests/assets/migration migrate:migrate --database=testing
+        run: php tests/assets/migration migrate:migrate --environment=testing
 
       - name: Execute tests against PHPUnit
         run: php build/phpunit --coverage-clover=coverage.xml
