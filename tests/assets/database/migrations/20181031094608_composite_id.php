@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-use Phinx\Migration\AbstractMigration;
+use Leevel\Database\Migrations\Migration;
 
-final class CompositeId extends AbstractMigration
+final class CompositeId extends Migration
 {
-    public function up(): void
+    public function handle(): void
     {
         $this->struct();
-    }
-
-    public function down(): void
-    {
-        $this->table('composite_id')->drop()->save();
     }
 
     private function struct(): void

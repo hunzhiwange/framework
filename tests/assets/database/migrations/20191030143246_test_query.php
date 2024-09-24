@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-use Phinx\Migration\AbstractMigration;
+use Leevel\Database\Migrations\Migration;
 
-final class TestQuery extends AbstractMigration
+final class TestQuery extends Migration
 {
-    public function up(): void
+    public function handle(): void
     {
         $this->struct();
-    }
-
-    public function down(): void
-    {
-        $this->table('test_query')->drop()->save();
     }
 
     private function struct(): void

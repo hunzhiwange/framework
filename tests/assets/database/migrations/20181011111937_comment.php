@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-use Phinx\Migration\AbstractMigration;
+use Leevel\Database\Migrations\Migration;
 
-final class Comment extends AbstractMigration
+final class Comment extends Migration
 {
-    public function up(): void
+    public function handle(): void
     {
         $this->struct();
-    }
-
-    public function down(): void
-    {
-        $this->table('comment')->drop()->save();
     }
 
     private function struct(): void

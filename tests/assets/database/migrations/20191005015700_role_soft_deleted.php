@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-use Phinx\Migration\AbstractMigration;
+use Leevel\Database\Migrations\Migration;
 
-final class RoleSoftDeleted extends AbstractMigration
+final class RoleSoftDeleted extends Migration
 {
-    public function up(): void
+    public function handle(): void
     {
         $this->struct();
-    }
-
-    public function down(): void
-    {
-        $this->table('role_soft_deleted')->drop()->save();
     }
 
     private function struct(): void

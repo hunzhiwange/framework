@@ -2,22 +2,13 @@
 
 declare(strict_types=1);
 
-use Phinx\Migration\AbstractMigration;
+use Leevel\Database\Migrations\Migration;
 
-final class TestProcedure extends AbstractMigration
+final class TestProcedure extends Migration
 {
-    public function up(): void
+    public function handle(): void
     {
         $this->struct();
-    }
-
-    public function down(): void
-    {
-        $sql = <<<'EOT'
-            DROP PROCEDURE IF EXISTS `test_procedure`;
-            DROP PROCEDURE IF EXISTS `test_procedure2`;
-            EOT;
-        $this->execute($sql);
     }
 
     private function struct(): void
