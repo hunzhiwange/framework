@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Console;
 
 use Leevel\Console\RuntimeEnvironment;
-use Leevel\Database\Console\Base\AbstractCommand;
+use Leevel\Database\Migrations\AbstractCommand;
 use Leevel\Database\Migrations\Config;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

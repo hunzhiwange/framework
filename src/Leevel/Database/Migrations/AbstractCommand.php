@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Leevel\Database\Console\Base;
+namespace Leevel\Database\Migrations;
 
-use Leevel\Database\Migrations\Config;
-use Leevel\Database\Migrations\Migrator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
