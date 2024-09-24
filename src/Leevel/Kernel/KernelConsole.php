@@ -8,8 +8,6 @@ use Leevel\Config\IConfig;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
 use Leevel\Console\Make;
-use Leevel\Database\Console\Migrate;
-use Leevel\Database\Console\SeedRun;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
@@ -110,38 +108,7 @@ abstract class KernelConsole implements IKernelConsole
     protected function loadCommands(): void
     {
         $commands = $this->normalizeCommands($this->getCommandNamespaces());
-        $commands = $this->clearInvalidCommands($commands);
         $this->getConsoleApplication()->normalizeCommands($commands);
-    }
-
-    /**
-     * 清理无效命令.
-     *
-     * - 数据库迁移相关命令在生产环境执行 `composer dump-autoload --optimize --no-dev` 后失效，需要清理掉
-     * - 开发阶段执行 `composer dump-autoload --optimize` 命令后可用
-     */
-    protected function clearInvalidCommands(array $commands): array
-    {
-        if (!$this->includeInvalidCommands()) {
-            return $commands;
-        }
-
-        $invalidCommands = [
-            Migrate::class,
-            SeedRun::class,
-        ];
-        foreach ($commands as $k => $v) {
-            if (\in_array($v, $invalidCommands, true)) {
-                unset($commands[$k]);
-            }
-        }
-
-        return array_values($commands);
-    }
-
-    protected function includeInvalidCommands(): bool
-    {
-        return !class_exists('Phinx\\Console\\Command\\Test');
     }
 
     /**
