@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class RoleSoftDeleted extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `role_soft_deleted` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
@@ -22,6 +17,5 @@ final class RoleSoftDeleted extends Migration
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有软删除的角色表';
             EOT;
-        $this->execute($sql);
     }
 }

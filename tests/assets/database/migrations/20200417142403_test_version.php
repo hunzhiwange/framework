@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestVersion extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `test_version` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名字',
@@ -23,6 +18,5 @@ final class TestVersion extends Migration
                 `version` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带版本字段的表';
             EOT;
-        $this->execute($sql);
     }
 }

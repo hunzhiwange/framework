@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestQuery extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `test_query` (
                 `tid` bigint(20) NOT NULL AUTO_INCREMENT,
                 `id` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -61,6 +56,5 @@ final class TestQuery extends Migration
                 KEY `idx_testindex` (`test`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
             EOT;
-        $this->execute($sql);
     }
 }

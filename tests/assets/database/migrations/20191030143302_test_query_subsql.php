@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestQuerySubsql extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `test_query_subsql` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `name` varchar(255) NOT NULL DEFAULT '',
@@ -24,6 +19,5 @@ final class TestQuerySubsql extends Migration
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于子查询的表';
             EOT;
-        $this->execute($sql);
     }
 }

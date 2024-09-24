@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class Comment extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `comment` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `title` varchar(64) NOT NULL DEFAULT '' COMMENT '标题',
@@ -23,6 +18,5 @@ final class Comment extends Migration
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论';
             EOT;
-        $this->execute($sql);
     }
 }

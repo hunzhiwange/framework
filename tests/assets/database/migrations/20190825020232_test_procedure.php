@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestProcedure extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             DROP PROCEDURE IF EXISTS `test_procedure`;
             DROP PROCEDURE IF EXISTS `test_procedure2`;
 
@@ -30,6 +25,5 @@ final class TestProcedure extends Migration
                 SELECT _name;
                 END;
             EOT;
-        $this->execute($sql);
     }
 }

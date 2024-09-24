@@ -31,6 +31,17 @@ abstract class Migration
         }
     }
 
+    public function handle(): void
+    {
+        if ($structSql = $this->getStructSql()) {
+            $this->execute($structSql);
+        }
+
+        if ($seedSql = $this->getSeedSql()) {
+            $this->execute($seedSql);
+        }
+    }
+
     public function setDatabase(IDatabase $database): self
     {
         $this->database = $database;
@@ -92,5 +103,15 @@ abstract class Migration
     public function query(string $sql, array $params = []): mixed
     {
         return $this->getDatabase()->query($sql, $params);
+    }
+
+    protected function getStructSql(): string
+    {
+        return '';
+    }
+
+    protected function getSeedSql(): string
+    {
+        return '';
     }
 }

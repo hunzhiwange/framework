@@ -60,10 +60,13 @@ abstract class AbstractCommand extends Command
         return null !== $this->config;
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function getConfig(): Config
     {
         if (null === $this->config) {
-            throw new RuntimeException('No config set yet');
+            throw new \RuntimeException('No config set yet');
         }
 
         return $this->config;

@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class User extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `user` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
@@ -21,6 +16,5 @@ final class User extends Migration
                 PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
             EOT;
-        $this->execute($sql);
     }
 }

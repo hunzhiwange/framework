@@ -6,14 +6,9 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestUnique extends Migration
 {
-    public function handle(): void
+    protected function getStructSql(): string
     {
-        $this->struct();
-    }
-
-    private function struct(): void
-    {
-        $sql = <<<'EOT'
+        return <<<'EOT'
             CREATE TABLE `test_unique` (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
@@ -23,6 +18,5 @@ final class TestUnique extends Migration
                 UNIQUE KEY `uniq_identity` (`identity`) USING BTREE COMMENT '唯一值'
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
             EOT;
-        $this->execute($sql);
     }
 }
