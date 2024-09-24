@@ -33,7 +33,7 @@ class Migrator
     public function migrate(string $environment, ?string $target = null): void
     {
         $migrations = $this->getMigrations($environment);
-        $databaseDriver = $this->getConfig()->databases[$this->getConfig()->database];
+        $databaseDriver = $this->getConfig()->getDatabaseDriver();
         $database = $this->getDatabase($databaseDriver);
         $this->initMigrationLog($database);
 
@@ -70,7 +70,7 @@ class Migrator
     public function seed(string $environment, ?string $target = null): void
     {
         $seeds = $this->getSeeds($environment);
-        $databaseDriver = $this->getConfig()->databases[$this->getConfig()->database];
+        $databaseDriver = $this->getConfig()->getDatabaseDriver();
         $database = $this->getDatabase($databaseDriver);
 
         /** @var Seed $seeder */

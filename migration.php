@@ -8,8 +8,9 @@ require_once __DIR__.'/tests/config.php';
 return [
     'migrations_path' => 'tests/assets/database/migrations',
     'seeds_path' => 'tests/assets/database/seeds',
-    'database' => 'default',
+    'database_default' => 'default',
     'databases' => [
         'default' => 'mysql',
+        'testing' => 'testing',
     ],
 ];

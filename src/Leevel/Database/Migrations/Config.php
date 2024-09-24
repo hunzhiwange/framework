@@ -12,11 +12,18 @@ class Config extends Dto
 
     public string $seedsPath = '';
 
+    public string $databaseDefault = 'default';
+
     public string $database = 'default';
 
     public array $databases = [
         'default' => 'mysql',
     ];
+
+    public function getDatabaseDriver(): string
+    {
+        return $this->databases[$this->database] ?? $this->databases[$this->databaseDefault];
+    }
 
     /**
      * @throws \RuntimeException
