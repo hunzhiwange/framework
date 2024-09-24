@@ -15,6 +15,8 @@ class Migrator
 {
     protected ?array $migrations = null;
 
+    protected ?array $seeds = null;
+
     protected InputInterface $input;
 
     protected OutputInterface $output;
@@ -28,7 +30,7 @@ class Migrator
         $this->output = $output;
     }
 
-    public function migrate(string $environment, ?int $target = null): void
+    public function migrate(string $environment, ?string $target = null): void
     {
         $migrations = $this->getMigrations($environment);
         $databaseDriver = $this->getConfig()->databases[$this->getConfig()->database];
@@ -62,6 +64,34 @@ class Migrator
         }
     }
 
+    /**
+     * @throws \InvalidArgumentException
+     */
+    public function seed(string $environment, ?string $target = null): void
+    {
+        $seeds = $this->getSeeds($environment);
+        $databaseDriver = $this->getConfig()->databases[$this->getConfig()->database];
+        $database = $this->getDatabase($databaseDriver);
+
+        /** @var Seed $seeder */
+        foreach ($seeds as $seedName => $seeder) {
+            if ($target && $seedName !== $target) {
+                continue;
+            }
+
+            $seeder->setDatabase($database);
+
+            try {
+                $seeder->handle();
+                $this->output->writeln("Seed <info>{$seedName}</info> executed successfully.");
+            } catch (\Throwable $e) {
+                $this->output->writeln("Error occurred while executing seed <error>{$seedName}</error>: ".$e->getMessage());
+
+                throw $e;
+            }
+        }
+    }
+
     public function setConfig(Config $config): self
     {
         $this->config = $config;
@@ -74,6 +104,68 @@ class Migrator
         return $this->config;
     }
 
+    public function setSeeds(array $seeds): self
+    {
+        $this->seeds = $seeds;
+
+        return $this;
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    public function getSeeds(string $environment): array
+    {
+        if (null !== $this->seeds) {
+            return $this->seeds;
+        }
+
+        $phpFiles = $this->getSeedFiles();
+        $seeds = [];
+        foreach ($phpFiles as $filePath) {
+            $class = (new ClassParser())->handle($filePath);
+
+            $oldDisplayErrors = \ini_get('display_errors');
+            ini_set('display_errors', 'On');
+
+            require_once $filePath;
+            ini_set('display_errors', $oldDisplayErrors);
+            if (!class_exists($class)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Could not find class "%s" in file "%s"',
+                    $class,
+                    $filePath
+                ));
+            }
+
+            $seedName = basename($filePath, '.php');
+
+            /** @var Seed $seed */
+            $seed = new $class($environment, $this->input, $this->output);
+            if (!$seed instanceof Seed) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The class "%s" in file "%s" must extend %s',
+                    $class,
+                    $filePath,
+                    $class
+                ));
+            }
+
+            $seeds[$seedName] = $seed;
+        }
+
+        $this->setSeeds($seeds);
+
+        return $seeds;
+    }
+
+    public function setMigrations(array $migrations): self
+    {
+        $this->migrations = $migrations;
+
+        return $this;
+    }
+
     /**
      * @throws \InvalidArgumentException
      */
@@ -84,26 +176,27 @@ class Migrator
         }
 
         $phpFiles = $this->getMigrationFiles();
-        $filePaths = [];
+        $fileNames = [];
+        $migrations = [];
         foreach ($phpFiles as $filePath) {
             $class = (new ClassParser())->handle($filePath);
 
-            if (isset($filePaths[$class])) {
+            if (isset($fileNames[$class])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Migration "%s" has the same name as "%s"',
                     basename($filePath),
-                    $this->migrations[$class]
+                    $class,
                 ));
             }
 
             $migrationName = basename($filePath, '.php');
-            $filePaths[$class] = $migrationName;
+            $fileNames[$class] = $migrationName;
 
-            $orig_display_errors_setting = \ini_get('display_errors');
+            $oldDisplayErrors = \ini_get('display_errors');
             ini_set('display_errors', 'On');
 
             require_once $filePath;
-            ini_set('display_errors', $orig_display_errors_setting);
+            ini_set('display_errors', $oldDisplayErrors);
             if (!class_exists($class)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Could not find class "%s" in file "%s"',
@@ -124,10 +217,12 @@ class Migrator
                 ));
             }
 
-            $this->migrations[$migrationName] = $migration;
+            $migrations[$migrationName] = $migration;
         }
 
-        return $this->migrations;
+        $this->setMigrations($migrations);
+
+        return $migrations;
     }
 
     protected function isMigrationLogged(IDatabase $database, string $migrationName): bool
@@ -174,6 +269,25 @@ class Migrator
     protected function getDatabase(string $database): IDatabase
     {
         return Db::proxy()->connect($database);
+    }
+
+    protected function getSeedFiles(): array
+    {
+        $finder = (new Finder())
+            ->in([$this->getConfig()->seedsPath])
+            ->exclude(['vendor', 'node_modules'])
+            ->followLinks()
+            ->name('*.php')
+            ->sortByName()
+            ->files()
+        ;
+
+        $files = [];
+        foreach ($finder as $file) {
+            $files[] = $file->getRealPath();
+        }
+
+        return $files;
     }
 
     protected function getMigrationFiles(): array
