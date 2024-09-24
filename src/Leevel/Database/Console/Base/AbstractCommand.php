@@ -38,7 +38,7 @@ abstract class AbstractCommand extends Command
             $this->loadConfig($input, $output);
         }
 
-        $this->migrator = new Migrator($this->config, $input, $output);
+        $this->migrator = new Migrator($this->getConfig(), $input, $output);
 
         $paths = $this->getConfig()->migrationsPath;
         $output->writeln('<info>using migration paths</info> '.$paths, $this->verbosityLevel);
@@ -86,8 +86,9 @@ abstract class AbstractCommand extends Command
         $config = Config::fromPhp($configFilePath);
         $this->setConfig($config);
 
-        if ($input->hasOption('environment')) {
-            $config->environment = $input->getOption('environment');
+        if ($input->hasOption('environment')
+            && ($environment = $input->getOption('environment'))) {
+            $config->environment = (string) $environment;
         }
     }
 
@@ -96,7 +97,7 @@ abstract class AbstractCommand extends Command
      */
     protected function locateConfigFile(InputInterface $input): string
     {
-        $configFile = $input->hasOption('configuration') ? $input->getOption('configuration') : null;
+        $configFile = $input->hasOption('configuration') ? (string) $input->getOption('configuration') : null;
         if (!$configFile) {
             $configFile = 'migration.php';
         }
