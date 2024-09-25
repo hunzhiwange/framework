@@ -22,10 +22,9 @@ class SeedRun extends AbstractCommand
     {
         parent::configure();
 
-        $this->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', Config::ENVIRONMENT_DEFAULT);
-
         $this->setName('migrate:seedrun')
             ->setDescription('Run database seeders')
+            ->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', Config::ENVIRONMENT_DEFAULT)
             ->addOption('--seed', '-s', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'What is the name of the seeder?')
         ;
 

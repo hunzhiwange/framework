@@ -22,10 +22,9 @@ class Migrate extends AbstractCommand
     {
         parent::configure();
 
-        $this->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', Config::ENVIRONMENT_DEFAULT);
-
         $this->setName('migrate:migrate')
             ->setDescription('Migrate the database')
+            ->addOption('--environment', '-e', InputOption::VALUE_REQUIRED, 'The target environment', Config::ENVIRONMENT_DEFAULT)
             ->addOption('--target', '-t', InputOption::VALUE_REQUIRED, 'The target to migrate to')
         ;
 
