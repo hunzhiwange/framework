@@ -6,7 +6,7 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestQuery extends Migration
 {
-    protected function getStructSql(): string
+    protected function sql(): string
     {
         return <<<'EOT'
             CREATE TABLE `test_query` (

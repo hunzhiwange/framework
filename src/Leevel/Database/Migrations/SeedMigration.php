@@ -8,7 +8,7 @@ use Leevel\Database\IDatabase;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-trait BaseSeedMigration
+trait SeedMigration
 {
     protected string $environment;
 
@@ -28,6 +28,13 @@ trait BaseSeedMigration
 
         if (null !== $output) {
             $this->setOutput($output);
+        }
+    }
+
+    public function handle(): void
+    {
+        if ($sql = $this->sql()) {
+            $this->execute($sql);
         }
     }
 
@@ -99,6 +106,11 @@ trait BaseSeedMigration
     public function query(string $sql, array $params = []): mixed
     {
         return $this->getDatabase()->query($sql, $params);
+    }
+
+    protected function sql(): string
+    {
+        return '';
     }
 
     protected function getSeedSql(): string

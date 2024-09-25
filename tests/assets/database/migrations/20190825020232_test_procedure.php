@@ -6,7 +6,7 @@ use Leevel\Database\Migrations\Migration;
 
 final class TestProcedure extends Migration
 {
-    protected function getStructSql(): string
+    protected function sql(): string
     {
         return <<<'EOT'
             DROP PROCEDURE IF EXISTS `test_procedure`;

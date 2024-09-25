@@ -6,7 +6,7 @@ use Leevel\Database\Migrations\Migration;
 
 final class UserRoleSoftDeleted extends Migration
 {
-    protected function getStructSql(): string
+    protected function sql(): string
     {
         return <<<'EOT'
             CREATE TABLE `user_role_soft_deleted` (

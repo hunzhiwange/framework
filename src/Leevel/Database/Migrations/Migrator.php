@@ -33,8 +33,7 @@ class Migrator
     public function migrate(string $environment, ?string $target = null): void
     {
         $migrations = $this->getMigrations($environment);
-        $databaseDriver = $this->getConfig()->getDatabaseDriver();
-        $database = $this->getDatabase($databaseDriver);
+        $database = $this->getDatabase();
         $this->initMigrationLog($database);
 
         /** @var Migration $migration */
@@ -70,8 +69,7 @@ class Migrator
     public function seed(string $environment, ?string $target = null): void
     {
         $seeds = $this->getSeeds($environment);
-        $databaseDriver = $this->getConfig()->getDatabaseDriver();
-        $database = $this->getDatabase($databaseDriver);
+        $database = $this->getDatabase();
 
         /** @var Seed $seeder */
         foreach ($seeds as $seedName => $seeder) {
@@ -123,17 +121,13 @@ class Migrator
         $phpFiles = $this->getSeedFiles();
         $seeds = [];
         foreach ($phpFiles as $filePath) {
-            $class = (new ClassParser())->handle($filePath);
+            $className = $this->parseClassName($filePath);
 
-            $oldDisplayErrors = \ini_get('display_errors');
-            ini_set('display_errors', 'On');
-
-            require_once $filePath;
-            ini_set('display_errors', $oldDisplayErrors);
-            if (!class_exists($class)) {
+            $this->requireFilePath($filePath);
+            if (!class_exists($className)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Could not find class "%s" in file "%s"',
-                    $class,
+                    $className,
                     $filePath
                 ));
             }
@@ -141,13 +135,13 @@ class Migrator
             $seedName = basename($filePath, '.php');
 
             /** @var Seed $seed */
-            $seed = new $class($environment, $this->input, $this->output);
+            $seed = new $className($environment, $this->input, $this->output);
             if (!$seed instanceof Seed) {
                 throw new \InvalidArgumentException(sprintf(
                     'The class "%s" in file "%s" must extend %s',
-                    $class,
+                    $className,
                     $filePath,
-                    $class
+                    $className
                 ));
             }
 
@@ -179,39 +173,36 @@ class Migrator
         $fileNames = [];
         $migrations = [];
         foreach ($phpFiles as $filePath) {
-            $class = (new ClassParser())->handle($filePath);
+            $className = $this->parseClassName($filePath);
 
-            if (isset($fileNames[$class])) {
+            if (isset($fileNames[$className])) {
                 throw new \InvalidArgumentException(sprintf(
                     'Migration "%s" has the same name as "%s"',
                     basename($filePath),
-                    $class,
+                    $className,
                 ));
             }
 
             $migrationName = basename($filePath, '.php');
-            $fileNames[$class] = $migrationName;
+            $fileNames[$className] = $migrationName;
 
-            $oldDisplayErrors = \ini_get('display_errors');
-            ini_set('display_errors', 'On');
+            $this->requireFilePath($filePath);
 
-            require_once $filePath;
-            ini_set('display_errors', $oldDisplayErrors);
-            if (!class_exists($class)) {
+            if (!class_exists($className)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Could not find class "%s" in file "%s"',
-                    $class,
+                    $className,
                     $filePath
                 ));
             }
 
             /** @var Migration $migration */
-            $migration = new $class($environment, $this->input, $this->output);
+            $migration = new $className($environment, $this->input, $this->output);
 
             if (!$migration instanceof Migration) {
                 throw new \InvalidArgumentException(sprintf(
                     'The class "%s" in file "%s" must extend %s',
-                    $class,
+                    $className,
                     $filePath,
                     Migration::class,
                 ));
@@ -266,15 +257,25 @@ class Migrator
         return $database->getPdo(true)->exec($sql);
     }
 
-    protected function getDatabase(string $database): IDatabase
+    protected function getDatabase(): IDatabase
     {
-        return Db::proxy()->connect($database);
+        return Db::proxy()->connect($this->getConfig()->getDatabaseDriver());
     }
 
     protected function getSeedFiles(): array
     {
+        return $this->getFilesByPath($this->getConfig()->seedsPath);
+    }
+
+    protected function getMigrationFiles(): array
+    {
+        return $this->getFilesByPath($this->getConfig()->migrationsPath);
+    }
+
+    protected function getFilesByPath(string $path): array
+    {
         $finder = (new Finder())
-            ->in([$this->getConfig()->seedsPath])
+            ->in([$path])
             ->exclude(['vendor', 'node_modules'])
             ->followLinks()
             ->name('*.php')
@@ -290,22 +291,17 @@ class Migrator
         return $files;
     }
 
-    protected function getMigrationFiles(): array
+    protected function parseClassName(string $filePath): string
     {
-        $finder = (new Finder())
-            ->in([$this->getConfig()->migrationsPath])
-            ->exclude(['vendor', 'node_modules'])
-            ->followLinks()
-            ->name('*.php')
-            ->sortByName()
-            ->files()
-        ;
+        return (new ClassParser())->handle($filePath);
+    }
 
-        $files = [];
-        foreach ($finder as $file) {
-            $files[] = $file->getRealPath();
-        }
+    protected function requireFilePath(string $filePath): void
+    {
+        $oldDisplayErrors = \ini_get('display_errors');
+        ini_set('display_errors', 'On');
 
-        return $files;
+        require_once $filePath;
+        ini_set('display_errors', $oldDisplayErrors);
     }
 }

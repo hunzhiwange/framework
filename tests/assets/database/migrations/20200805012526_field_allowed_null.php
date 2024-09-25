@@ -6,7 +6,7 @@ use Leevel\Database\Migrations\Migration;
 
 final class FieldAllowedNull extends Migration
 {
-    protected function getStructSql(): string
+    protected function sql(): string
     {
         return <<<'EOT'
             CREATE TABLE `field_allowed_null` (
