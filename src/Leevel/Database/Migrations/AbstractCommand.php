@@ -17,6 +17,9 @@ abstract class AbstractCommand extends Command
 
     protected ?Config $config = null;
 
+    /**
+     * @throws \RuntimeException
+     */
     public function getMigrator(): Migrator
     {
         if (!$this->migrator) {
