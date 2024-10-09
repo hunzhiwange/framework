@@ -7,10 +7,6 @@ namespace Leevel\Console;
 use Leevel\Di\IContainer;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 命令行应用程序.
@@ -23,16 +19,11 @@ class Application extends SymfonyApplication
     public function __construct(protected IContainer $container, string $version)
     {
         parent::__construct($this->getLogo(), $version);
-    }
 
-    public function run(?InputInterface $input = null, ?OutputInterface $output = null): int
-    {
-        $input ??= new ArgvInput();
-        $output ??= new ConsoleOutput();
-
-        $this->configureIO($input, $output);
-
-        return $this->doRun($input, $output);
+        // Collision 的异常和错误格式化更加优化
+        // 这里去掉框架自带的异常捕捉
+        $this->setCatchExceptions(false);
+        $this->setCatchErrors(false);
     }
 
     /**
