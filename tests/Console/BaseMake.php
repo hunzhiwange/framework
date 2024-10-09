@@ -11,8 +11,11 @@ use Leevel\Di\IContainer;
 use Leevel\Kernel\App;
 use Leevel\Kernel\IApp;
 use Leevel\Router\IRouter;
+use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * base make.
@@ -27,7 +30,7 @@ trait BaseMake
         $container->alias('app', [IApp::class, App::class]);
         $container->singleton(IContainer::class, $container);
 
-        $application = new Application($container, '1.0');
+        $application = new ApplicationForBaseMake($container, '1.0');
         $application->setAutoExit(false);
 
         if ($call) {
@@ -54,5 +57,13 @@ trait BaseMake
         $container->clear();
 
         return $result;
+    }
+}
+
+class ApplicationForBaseMake extends Application
+{
+    public function run(?InputInterface $input = null, ?OutputInterface $output = null): int
+    {
+        return SymfonyApplication::run($input, $output);
     }
 }
