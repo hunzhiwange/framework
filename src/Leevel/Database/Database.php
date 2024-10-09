@@ -1468,9 +1468,11 @@ abstract class Database implements IDatabase
 
     protected function parseDuplicateUniqueIndex(string $message): string
     {
-        $pattern = "/for key '(\\w+)'/";
         $matches = [];
-        if (preg_match($pattern, $message, $matches)) {
+        if (preg_match("/for key '([^']*)'/", $message, $matches)) {
+            // 不同的环境这里唯一索引返回值不一致
+            // 有可能返回带表的唯一索引 `product_brand.uniq_id`
+            // 也有可能返回不带表的唯一索引 `uniq_id`
             return $matches[1];
         }
 
