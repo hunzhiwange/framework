@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 /**
  * 注册异常运行时.
  */
-class RegisterExceptionRuntime
+class RegisterRuntime
 {
     /**
      * 应用.
@@ -68,7 +68,7 @@ class RegisterExceptionRuntime
             );
         }
 
-        $this->getExceptionRuntime()->report($e);
+        $this->getRuntime()->report($e);
 
         if ($this->app->isConsole()) {
             $this->renderConsoleResponse($e);
@@ -99,7 +99,7 @@ class RegisterExceptionRuntime
     protected function renderConsoleResponse(\Exception $e): void
     {
         $this
-            ->getExceptionRuntime()
+            ->getRuntime()
             ->renderForConsole(new ConsoleOutput(), $e)
         ;
     }
@@ -115,7 +115,7 @@ class RegisterExceptionRuntime
         ;
 
         $this
-            ->getExceptionRuntime()
+            ->getRuntime()
             ->render($request, $e)
             ->send()
         ;
@@ -138,7 +138,7 @@ class RegisterExceptionRuntime
     /**
      * 返回运行处理器.
      */
-    protected function getExceptionRuntime(): IRuntime
+    protected function getRuntime(): IRuntime
     {
         // @phpstan-ignore-next-line
         return $this->app

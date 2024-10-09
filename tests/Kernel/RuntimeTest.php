@@ -23,7 +23,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '异常运行时',
-    'path' => 'architecture/kernel/exceptionruntime',
+    'path' => 'architecture/kernel/runtime',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 系统发生的异常统一由异常运行时进行管理，处理异常上报和返回异常响应。
 
@@ -57,7 +57,7 @@ EOT,
 异常运行时设计为可替代，只需要实现 `\Leevel\Kernel\Exceptions\IRuntime` 即可，然后在入口文件替换即可。
 EOT,
 ])]
-final class ExceptionRuntimeTest extends TestCase
+final class RuntimeTest extends TestCase
 {
     #[\Override]
     protected function setUp(): void

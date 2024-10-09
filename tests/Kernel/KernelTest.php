@@ -351,7 +351,7 @@ EOT,
 
     protected function createRuntimeWithRender(IContainer $container): void
     {
-        $runtime = new ExceptionRuntime1($container->make('app'));
+        $runtime = new Runtime1($container->make('app'));
         $container->singleton(IRuntime::class, static function () use ($runtime) {
             return $runtime;
         });
@@ -419,7 +419,7 @@ class AppKernel extends Apps
     protected function registerBaseProvider(): void {}
 }
 
-class ExceptionRuntime1 extends Runtime
+class Runtime1 extends Runtime
 {
     public function getHttpExceptionView(HttpException $e): string
     {

@@ -11,9 +11,12 @@ use Leevel\Console\Make;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
-use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
+use Leevel\Kernel\Bootstrap\RegisterRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
+use Leevel\Kernel\Exceptions\IRuntime;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -32,7 +35,7 @@ abstract class KernelConsole implements IKernelConsole
     protected array $bootstraps = [
         LoadConfig::class,
         LoadI18n::class,
-        RegisterExceptionRuntime::class,
+        RegisterRuntime::class,
         TraverseProvider::class,
     ];
 
@@ -55,12 +58,30 @@ abstract class KernelConsole implements IKernelConsole
 
     public function handle(?InputInterface $input = null, ?OutputInterface $output = null): int
     {
-        $this->registerBaseService();
-        $this->bootstrap();
-        $this->setGlobalReplace();
-        $this->loadCommands();
+        try {
+            $this->registerBaseService();
+            $this->bootstrap();
+            $this->setGlobalReplace();
+            $this->loadCommands();
 
-        return $this->getConsoleApplication()->run($input, $output);
+            return $this->getConsoleApplication()->run($input, $output);
+        } catch (\Exception $e) {
+            $this->reportException($e);
+
+            return $this->renderException($e);
+        } catch (\Throwable $e) {
+            $e = new \ErrorException(
+                $e->getMessage(),
+                $e->getCode(),
+                E_ERROR,
+                $e->getFile(),
+                $e->getLine(),
+                $e->getPrevious()
+            );
+            $this->reportException($e);
+
+            return $this->renderException($e);
+        }
     }
 
     public function terminate(int $status, ?InputInterface $input = null): void {}
@@ -73,6 +94,39 @@ abstract class KernelConsole implements IKernelConsole
     public function getApp(): IApp
     {
         return $this->app;
+    }
+
+    /**
+     * 渲染异常.
+     */
+    protected function renderException(\Exception $e): int
+    {
+        $this
+            ->getRuntime()
+            ->renderForConsole(new ConsoleOutput(), $e)
+        ;
+
+        return Command::FAILURE;
+    }
+
+    /**
+     * 上报错误.
+     */
+    protected function reportException(\Exception $e): void
+    {
+        $this->getRuntime()->report($e);
+    }
+
+    /**
+     * 返回运行处理器.
+     */
+    protected function getRuntime(): IRuntime
+    {
+        // @phpstan-ignore-next-line
+        return $this->app
+            ->container()
+            ->make(IRuntime::class)
+        ;
     }
 
     /**

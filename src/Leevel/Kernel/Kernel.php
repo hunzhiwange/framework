@@ -7,7 +7,7 @@ namespace Leevel\Kernel;
 use Leevel\Http\Request;
 use Leevel\Kernel\Bootstrap\LoadConfig;
 use Leevel\Kernel\Bootstrap\LoadI18n;
-use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
+use Leevel\Kernel\Bootstrap\RegisterRuntime;
 use Leevel\Kernel\Bootstrap\TraverseProvider;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Router\IRouter;
@@ -25,7 +25,7 @@ abstract class Kernel implements IKernel
     protected array $bootstraps = [
         LoadConfig::class,
         LoadI18n::class,
-        RegisterExceptionRuntime::class,
+        RegisterRuntime::class,
         TraverseProvider::class,
     ];
 
@@ -113,7 +113,7 @@ abstract class Kernel implements IKernel
     /**
      * 返回运行处理器.
      */
-    protected function getExceptionRuntime(): IRuntime
+    protected function getRuntime(): IRuntime
     {
         // @phpstan-ignore-next-line
         return $this->app
@@ -152,7 +152,7 @@ abstract class Kernel implements IKernel
      */
     protected function reportException(\Exception $e): void
     {
-        $this->getExceptionRuntime()->report($e);
+        $this->getRuntime()->report($e);
     }
 
     /**
@@ -160,7 +160,7 @@ abstract class Kernel implements IKernel
      */
     protected function renderException(Request $request, \Exception $e): Response
     {
-        return $this->getExceptionRuntime()->render($request, $e);
+        return $this->getRuntime()->render($request, $e);
     }
 
     /**

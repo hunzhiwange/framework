@@ -10,7 +10,7 @@ use Leevel\Di\IContainer;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\App as Apps;
-use Leevel\Kernel\Bootstrap\RegisterExceptionRuntime;
+use Leevel\Kernel\Bootstrap\RegisterRuntime;
 use Leevel\Kernel\Exceptions\IRuntime;
 use Leevel\Kernel\IApp;
 use Leevel\Kernel\Utils\Api;
@@ -26,7 +26,7 @@ QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载�
 内核初始化，包括 `\Leevel\Kernel\IKernel::bootstrap` 和 `\Leevel\Kernel\IKernelConsole::bootstrap` 均会执行上述 4 个步骤。
 EOT,
 ])]
-final class RegisterExceptionRuntimeTest extends TestCase
+final class RegisterRuntimeTest extends TestCase
 {
     protected int $oldErrorReporting;
     protected string $oldDisplayErrors;
@@ -53,7 +53,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
             'foo.'
         );
 
-        $bootstrap = new RegisterExceptionRuntime();
+        $bootstrap = new RegisterRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -68,7 +68,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
 
     public function testSetErrorHandle2(): void
     {
-        $bootstrap = new RegisterExceptionRuntime();
+        $bootstrap = new RegisterRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -82,7 +82,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
     public function testSetExceptionHandler(): void
     {
         $this->backupSystemEnvironment();
-        $bootstrap = new RegisterExceptionRuntime1();
+        $bootstrap = new RegisterRuntime1();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -132,7 +132,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
     ])]
     public function testRegisterShutdownFunction(): void
     {
-        $bootstrap = new RegisterExceptionRuntime2();
+        $bootstrap = new RegisterRuntime2();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -150,7 +150,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
     public function testSetExceptionHandler2(): void
     {
         $this->backupSystemEnvironment();
-        $bootstrap = new RegisterExceptionRuntime1();
+        $bootstrap = new RegisterRuntime1();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -198,7 +198,7 @@ final class RegisterExceptionRuntimeTest extends TestCase
 
     public function testFormatErrorException(): void
     {
-        $bootstrap = new RegisterExceptionRuntime();
+        $bootstrap = new RegisterRuntime();
 
         $container = Container::singletons();
         $app = new App4($container, $appPath = __DIR__.'/app');
@@ -231,12 +231,12 @@ class App4 extends Apps
     protected function registerBaseProvider(): void {}
 }
 
-class RegisterExceptionRuntime1 extends RegisterExceptionRuntime
+class RegisterRuntime1 extends RegisterRuntime
 {
     public function registerShutdownFunction(): void {}
 }
 
-class RegisterExceptionRuntime2 extends RegisterExceptionRuntime
+class RegisterRuntime2 extends RegisterRuntime
 {
     public function setExceptionHandler(\Throwable $e): void
     {
