@@ -20,7 +20,7 @@ class Application extends SymfonyApplication
     {
         parent::__construct($this->getLogo(), $version);
 
-        // Collision 的异常和错误格式化更加优化
+        // Collision 的异常和错误格式化更加友好
         // 这里去掉框架自带的异常捕捉
         $this->setCatchExceptions(false);
         $this->setCatchErrors(false);
