@@ -312,6 +312,21 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public const string META = 'meta';
 
     /**
+     * 字段类型.整形.
+     */
+    public const string COLUMN_TYPE_INT = 'int';
+
+    /**
+     * 字段类型.浮点数.
+     */
+    public const string COLUMN_TYPE_FLOAT = 'float';
+
+    /**
+     * 字段类型.字符串.
+     */
+    public const string COLUMN_TYPE_STRING = 'string';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedPropFramework = [];
@@ -1279,9 +1294,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $struct = static::fields()[$prop];
 
         return isset($struct[self::BELONGS_TO])
-             || isset($struct[self::HAS_MANY])
-             || isset($struct[self::HAS_ONE])
-             || isset($struct[self::MANY_MANY]);
+            || isset($struct[self::HAS_MANY])
+            || isset($struct[self::HAS_ONE])
+            || isset($struct[self::MANY_MANY]);
     }
 
     /**
@@ -2020,6 +2035,18 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public static function definedEntityConstant(string $const): bool
     {
         return \defined(static::class.'::'.$const);
+    }
+
+    /**
+     * 整理字段类型.
+     */
+    public static function normalizeColumnType(string $type): string
+    {
+        return match ($type) {
+            'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'boolean' => self::COLUMN_TYPE_INT,
+            'float', 'double' => self::COLUMN_TYPE_FLOAT,
+            default => self::COLUMN_TYPE_STRING,
+        };
     }
 
     /**

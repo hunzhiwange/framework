@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Console;
 
 use Leevel\Console\Make;
+use Leevel\Database\Ddd\Entity as DddEntity;
 use Leevel\Database\Manager;
 use Leevel\Kernel\IApp;
 use Leevel\Support\Str\Camelize;
@@ -417,7 +418,7 @@ class Entity extends Make
             }
 
             $fieldName = Camelize::handle($val['field']);
-            $fieldType = $this->parseColumnType($val['type']);
+            $fieldType = DddEntity::normalizeColumnType($val['type']);
 
             if ('string' === $fieldType
                 && !empty($val['type_length'])
@@ -457,15 +458,6 @@ class Entity extends Make
         }
 
         return trim(implode(PHP_EOL, $struct), PHP_EOL);
-    }
-
-    protected function parseColumnType(string $type): string
-    {
-        return match ($type) {
-            'int', 'tinyint', 'smallint', 'mediumint', 'bigint', 'boolean' => 'int',
-            'float', 'double' => 'float',
-            default => 'string',
-        };
     }
 
     /**
@@ -552,7 +544,7 @@ class Entity extends Make
     protected function normalizeColumnItem(array $column): array
     {
         if (null !== $column['default']) {
-            $column['default'] = match ($this->parseColumnType($column['type'])) {
+            $column['default'] = match (DddEntity::normalizeColumnType($column['type'])) {
                 'int' => (int) $column['default'],
                 'float' => (float) $column['default'],
                 default => (string) $column['default'],
