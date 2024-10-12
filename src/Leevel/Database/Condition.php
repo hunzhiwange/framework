@@ -1186,6 +1186,21 @@ class Condition implements ICondition
         $sql['comment'] = $this->parseComment();
         $sql['select'] = 'SELECT';
 
+        // 统计查询不支持 order by
+        if (!empty($this->configs['order']) && !empty($this->configs['aggregate'])) {
+            $shouldSearchCount = false;
+            foreach ($this->configs['aggregate'] as $aggregateValue) {
+                if (isset($aggregateValue[0]) && 'COUNT' === $aggregateValue[0]) {
+                    $shouldSearchCount = true;
+
+                    break;
+                }
+            }
+            if ($shouldSearchCount) {
+                $this->configs['order'] = [];
+            }
+        }
+
         foreach (array_keys($this->configs) as $config) {
             $config = (string) $config;
             if ('from' === $config) {
