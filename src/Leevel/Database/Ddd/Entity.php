@@ -1837,7 +1837,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         foreach ($prop as $k => $config) {
             $isRelationProp = static::isRelation($k);
             $unCamelizeProp = static::unCamelizeProp($k);
-            $value = $this->propGetter($unCamelizeProp, true);
+            $value = $this->propGetter($unCamelizeProp);
             if (null === $value) {
                 if (!\array_key_exists(self::SHOW_PROP_NULL, $config)) {
                     continue;
@@ -1858,13 +1858,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 $value = $showPropEachCallback($value, $k);
             }
 
-            // 格式化后保留源数据
-            $shouldFormatRaw = $config[self::COLUMN_STRUCT]['format_raw'] ?? false;
-            if ($shouldFormatRaw) {
-                $result[$unCamelizeProp.'_format_raw'] = $this->getter($unCamelizeProp);
-            }
-
             $result[$k] = $value;
+
+            // 格式化后用一个新字段存储
+            if ($this->shouldFormatPropValue($k)) {
+                $result[$unCamelizeProp.'_formated'] = $this->formatPropValue($k, $value);
+            }
         }
 
         if ($result) {
@@ -2075,11 +2074,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         };
     }
 
-    protected function formatPropValue(string $camelizeProp, mixed $value): mixed
+    protected function formatPropValue(string $prop, mixed $value): mixed
     {
         if (!$fields = static::fields()) {
             return $value;
         }
+
+        $camelizeProp = static::camelizeProp($prop);
 
         // 自定义格式化优先
         if (method_exists($this, $transformValueMethod = $camelizeProp.'FormatValue')) {
@@ -2092,6 +2093,27 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         return $value;
+    }
+
+    protected function shouldFormatPropValue(string $prop): bool
+    {
+        if (!$fields = static::fields()) {
+            return false;
+        }
+
+        $camelizeProp = static::camelizeProp($prop);
+
+        // 自定义格式化优先
+        if (method_exists($this, $camelizeProp.'FormatValue')) {
+            return true;
+        }
+
+        $defaultFormat = $fields[static::unCamelizeProp($camelizeProp)][self::COLUMN_STRUCT]['format'] ?? null;
+        if (\is_callable($defaultFormat)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -2522,7 +2544,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 取得 getter 数据.
      */
-    protected function propGetter(string $prop, bool $transformGetterPropValue = false): mixed
+    protected function propGetter(string $prop): mixed
     {
         $method = 'get'.ucfirst($prop = static::camelizeProp($prop));
         $value = $this->getter($prop);
@@ -2531,13 +2553,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         if (method_exists($this, $method)) {
-            // @todo 自定义 getter 是否需要纳入格式化
             return $this->{$method}($prop);
-        }
-
-        // @todo 只有 toArray 纳入格式化，还是所有获取值都纳入格式化
-        if ($transformGetterPropValue) {
-            $value = $this->formatPropValue($prop, $value);
         }
 
         return $value;
