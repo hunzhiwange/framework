@@ -303,7 +303,7 @@ final class DtoTest extends TestCase
         self::assertSame([
             'demo_string_prop' => 'hello',
             'demo_int_prop' => 123456,
-            'demo_configal_int_prop' => null,
+            'demo_optional_int_prop' => null,
         ], $data);
 
         $data = $dto1->withoutNull()->toArray();
