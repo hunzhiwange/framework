@@ -14,14 +14,14 @@ interface IValidator
     /**
      * 可选字段.
      */
-    public const string OPTIONAL = 'configal';
+    public const string OPTIONAL = 'optional';
 
     /**
      * 可选字符串字段.
      *
      * - 忽略空字符串和NULL值.
      */
-    public const string OPTIONAL_STRING = 'configal_string';
+    public const string OPTIONAL_STRING = 'optional_string';
 
     /**
      * 无论是否是可选字段都验证.
