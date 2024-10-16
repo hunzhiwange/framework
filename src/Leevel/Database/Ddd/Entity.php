@@ -1884,6 +1884,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     }
 
     /**
+     * 转换为原始数据数组.
+     */
+    public function toRawArray(): array
+    {
+        $result = [];
+        foreach ($this->fields() as $k => $config) {
+            $result[$k] = $this->propGetter(static::unCamelizeProp($k));
+        }
+
+        return $result;
+    }
+
+    /**
      * 创建一个实体集合.
      */
     public function collection(array $entity = []): EntityCollection
