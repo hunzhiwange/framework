@@ -60,7 +60,7 @@ final class ExceptionTest extends TestCase
 
     public function testBusinessException(): void
     {
-        $e = (new BusinessException('hello', 500000))->setImportance(5);
+        $e = new BusinessException('hello', 500000)->setImportance(5);
         $this->assertInstanceof(\RuntimeException::class, $e);
 
         self::assertSame('hello', $e->getMessage());

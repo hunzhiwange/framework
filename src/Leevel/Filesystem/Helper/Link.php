@@ -13,6 +13,6 @@ class Link
      */
     public static function handle(string $originDir, string $targetDir): void
     {
-        (new Filesystem())->symlink($originDir, $targetDir, true);
+        new Filesystem()->symlink($originDir, $targetDir, true);
     }
 }

@@ -87,7 +87,7 @@ abstract class Runtime implements IRuntime
 
     public function renderForConsole(OutputInterface $output, \Throwable $e): void
     {
-        $handler = (new CollisionProvider())
+        $handler = new CollisionProvider()
             ->register()
             ->getHandler()
             ->setOutput($output)
@@ -302,7 +302,7 @@ abstract class Runtime implements IRuntime
     protected function makeJsonResponseHandler(): JsonResponseHandler
     {
         // @phpstan-ignore-next-line
-        return (new JsonResponseHandler())->addTraceToOutput(true);
+        return new JsonResponseHandler()->addTraceToOutput(true);
     }
 
     /**

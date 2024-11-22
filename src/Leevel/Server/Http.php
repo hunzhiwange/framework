@@ -153,12 +153,12 @@ class Http extends Server implements IServer
 
     protected function normalizeResponse(Response $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
-        return (new TransformResponse())->createResponse($response, $swooleResponse);
+        return new TransformResponse()->createResponse($response, $swooleResponse);
     }
 
     protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
     {
-        return (new TransformRequest())->createRequest($swooleRequest);
+        return new TransformRequest()->createRequest($swooleRequest);
     }
 
     protected function serverShutdown(SwooleHttpServer|SwooleServer $server): void

@@ -30,7 +30,7 @@ class LoadI18n
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
-            $load = (new Load([$app->i18nPath()]))
+            $load = new Load([$app->i18nPath()])
                 ->setI18n($i18nDefault)
                 ->addDir($this->getExtend($app))
             ;

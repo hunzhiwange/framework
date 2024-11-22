@@ -81,7 +81,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         self::assertSame('.env', $app->envFile());
 
-        (new Load($appPath.'/config'))->loadData($app);
+        new Load($appPath.'/config')->loadData($app);
     }
 
     public function testMergeComposerConfigException(): void
@@ -106,7 +106,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         self::assertSame('.env', $app->envFile());
 
-        (new Load($appPath.'/config'))->loadData($app);
+        new Load($appPath.'/config')->loadData($app);
     }
 
     public function testEnvException(): void
@@ -130,7 +130,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env.notexist');
         self::assertSame('.env.notexist', $app->envFile());
 
-        (new Load($appPath.'/config'))->loadData($app);
+        new Load($appPath.'/config')->loadData($app);
     }
 
     public function testEnvException2(): void
@@ -155,7 +155,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env.wrong');
         self::assertSame('.env.wrong', $app->envFile());
 
-        (new Load($appPath.'/config'))->loadData($app);
+        new Load($appPath.'/config')->loadData($app);
     }
 
     public function testMergeComposerConfigNewKey(): void
@@ -174,7 +174,7 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         self::assertSame('.env', $app->envFile());
 
-        $configs = (new Load($appPath.'/config'))->loadData($app);
+        $configs = new Load($appPath.'/config')->loadData($app);
 
         $data = file_get_contents(__DIR__.'/app5/config.json');
 
@@ -202,6 +202,6 @@ final class LoadTest extends TestCase
         $app->method('envFile')->willReturn('.env');
         self::assertSame('.env', $app->envFile());
 
-        (new Load($appPath.'/config'))->loadData($app);
+        new Load($appPath.'/config')->loadData($app);
     }
 }

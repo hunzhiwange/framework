@@ -108,7 +108,7 @@ class Server extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Where is php.',
-                (new PhpExecutableFinder())->find(false),
+                new PhpExecutableFinder()->find(false),
             ],
         ];
     }

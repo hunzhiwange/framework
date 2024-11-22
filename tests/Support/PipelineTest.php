@@ -42,7 +42,7 @@ EOT,
     ])]
     public function testPipelineBasic(): void
     {
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->send(['hello world'])
             ->through([First::class, Second::class])
             ->then()
@@ -63,7 +63,7 @@ EOT,
             $_SERVER['test.then'] = 'i am end and get the send:'.$send;
         };
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->send(['foo bar'])
             ->through([First::class, Second::class])
             ->then($thenCallback)
@@ -97,7 +97,7 @@ EOT,
             return 'return 2';
         };
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->send(['return test'])
             ->through([$pipe1, $pipe2])
             ->then()
@@ -130,7 +130,7 @@ EOT,
     ])]
     public function testPipelineWithDiConstruct(): void
     {
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->send(['hello world'])
             ->through([DiConstruct::class])
             ->then()
@@ -150,7 +150,7 @@ EOT,
             $this->assertCount(1, \func_get_args());
         };
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->through([$pipe])
             ->then()
         ;
@@ -168,7 +168,7 @@ EOT,
             $this->assertSame($send4, 'wow');
         };
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->send(['hello world'])
             ->send(['foo', 'bar', 'wow'])
             ->through([$pipe])
@@ -189,7 +189,7 @@ EOT,
             $next();
         };
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->through([$pipe])
             ->through([$pipe, $pipe, $pipe])
             ->through([$pipe, $pipe])
@@ -217,7 +217,7 @@ EOT,
     {
         $params = ['one', 'two'];
 
-        $result = (new Pipeline(new Container()))
+        $result = new Pipeline(new Container())
             ->through([WithArgs::class.':'.implode(',', $params)])
             ->then()
         ;
@@ -234,7 +234,7 @@ EOT,
             'Stage `Tests\\Pipeline\\NotFound` is invalid.'
         );
 
-        (new Pipeline(new Container()))
+        new Pipeline(new Container())
             ->through(['Tests\\Pipeline\\NotFound'])
             ->then()
         ;
@@ -254,7 +254,7 @@ EOT,
     ])]
     public function testStageWithAtMethod(): void
     {
-        (new Pipeline(new Container()))
+        new Pipeline(new Container())
             ->send(['hello world'])
             ->through([WithAtMethod::class.'@run'])
             ->then()

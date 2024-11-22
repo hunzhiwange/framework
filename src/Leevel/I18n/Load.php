@@ -119,7 +119,7 @@ class Load
      */
     protected function parsePoData(array $files): array
     {
-        return (new GettextLoader())->loadPoFile($files);
+        return new GettextLoader()->loadPoFile($files);
     }
 
     /**

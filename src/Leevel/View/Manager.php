@@ -74,7 +74,7 @@ class Manager extends Managers implements IView
         /** @var Html $html */
         $html = new $driverClass($this->normalizeConnectConfig($connect));
         $html->setParseResolver(static function (): Parser {
-            return (new Parser(new Compiler()))
+            return new Parser(new Compiler())
                 ->registerCompilers()
                 ->registerParsers()
             ;

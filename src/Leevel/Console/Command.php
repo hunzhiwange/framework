@@ -134,7 +134,7 @@ abstract class Command extends SymfonyCommand
      */
     public function table(array $headers, array $rows, string $style = 'default'): void
     {
-        (new Table($this->getOutput()))
+        new Table($this->getOutput())
             ->setHeaders($headers)
             ->setRows($rows)
             ->setStyle($style)

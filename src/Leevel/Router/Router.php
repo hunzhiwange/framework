@@ -103,7 +103,7 @@ class Router implements IRouter
             return;
         }
 
-        (new Pipeline($this->container))
+        new Pipeline($this->container)
             ->send([$request, $response])
             ->through($middlewares)
             ->then()
@@ -333,7 +333,7 @@ class Router implements IRouter
         }
 
         // @phpstan-ignore-next-line
-        return (new Pipeline($this->container))
+        return new Pipeline($this->container)
             ->send([$request])
             ->through($middlewares)
             ->then($then)

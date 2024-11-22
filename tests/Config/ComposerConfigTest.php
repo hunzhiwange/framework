@@ -131,7 +131,7 @@ EOT,
 
     public function testComposerNotFound(): void
     {
-        $configs = (new ComposerConfig(__DIR__.'/app4'))->loadData();
+        $configs = new ComposerConfig(__DIR__.'/app4')->loadData();
 
         $data = <<<'eot'
             {
@@ -163,7 +163,7 @@ EOT,
 
     public function testComposerExtraConfigNotFound(): void
     {
-        $configs = (new ComposerConfig(__DIR__.'/app7'))->loadData();
+        $configs = new ComposerConfig(__DIR__.'/app7')->loadData();
 
         $data = <<<'eot'
             {

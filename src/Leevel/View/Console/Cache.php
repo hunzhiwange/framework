@@ -97,7 +97,7 @@ class Cache extends Command
      */
     protected function findFiles(array $paths): Finder
     {
-        return (new Finder())
+        return new Finder()
             ->in($paths)
             ->exclude(['vendor', 'node_modules'])
             ->name('*.html')
@@ -155,7 +155,7 @@ class Cache extends Command
      */
     protected function createParser(): Parser
     {
-        return (new Parser(new Compiler()))
+        return new Parser(new Compiler())
             ->registerCompilers()
             ->registerParsers()
         ;

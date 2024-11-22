@@ -124,7 +124,7 @@ class Load
      */
     protected function loadComposerConfig(string $path): array
     {
-        return (new ComposerConfig($path))->loadData();
+        return new ComposerConfig($path)->loadData();
     }
 
     /**

@@ -181,7 +181,7 @@ abstract class Kernel implements IKernel
         }
 
         // @phpstan-ignore-next-line
-        return (new Pipeline($this->app->container()))
+        return new Pipeline($this->app->container())
             ->send([$request])
             ->through($this->resolvedMiddlewares['handle'])
             ->then($then)
@@ -197,7 +197,7 @@ abstract class Kernel implements IKernel
             return;
         }
 
-        (new Pipeline($this->app->container()))
+        new Pipeline($this->app->container())
             ->send([$request, $response])
             ->through($this->resolvedMiddlewares['terminate'])
             ->then()
@@ -212,7 +212,7 @@ abstract class Kernel implements IKernel
         $result = [];
         foreach ($middlewares as $middleware) {
             [$middleware, $params] = $this->parseMiddlewareParams($middleware);
-            foreach ((new \ReflectionClass($middleware))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            foreach (new \ReflectionClass($middleware)->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
                 if (\in_array($name = $method->getName(), ['handle', 'terminate'], true)) {
                     $result[$name][] = $this->packageMiddleware($middleware.'@'.$name, $params);
                 }

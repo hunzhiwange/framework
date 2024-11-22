@@ -13,6 +13,6 @@ class IsAbsolutePath
      */
     public static function handle(string $path): bool
     {
-        return (new Filesystem())->isAbsolutePath($path);
+        return new Filesystem()->isAbsolutePath($path);
     }
 }

@@ -274,7 +274,7 @@ class Migrator
 
     protected function getFilesByPath(string $path): array
     {
-        $finder = (new Finder())
+        $finder = new Finder()
             ->in([$path])
             ->exclude(['vendor', 'node_modules'])
             ->followLinks()
@@ -293,7 +293,7 @@ class Migrator
 
     protected function parseClassName(string $filePath): string
     {
-        return (new ClassParser())->handle($filePath);
+        return new ClassParser()->handle($filePath);
     }
 
     protected function requireFilePath(string $filePath): void

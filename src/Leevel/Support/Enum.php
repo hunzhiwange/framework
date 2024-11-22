@@ -244,8 +244,8 @@ trait Enum
 
         $descriptionsCached[$className] = [];
         // @phpstan-ignore-next-line
-        foreach ((new \ReflectionClass($className))->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
-            foreach ((new \ReflectionClassConstant($className, $key))->getAttributes() as $attribute) {
+        foreach (new \ReflectionClass($className)->getConstants(\ReflectionClassConstant::IS_PUBLIC) as $key => $value) {
+            foreach (new \ReflectionClassConstant($className, $key)->getAttributes() as $attribute) {
                 $group = $attribute->getName();
                 if (class_exists($group)) {
                     /** @phpstan-ignore-next-line */

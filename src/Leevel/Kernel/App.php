@@ -328,7 +328,7 @@ class App implements IApp
 
         foreach ($bootstraps as $value) {
             // @phpstan-ignore-next-line
-            (new $value())->handle($this);
+            new $value()->handle($this);
         }
     }
 

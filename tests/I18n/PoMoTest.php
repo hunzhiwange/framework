@@ -19,9 +19,9 @@ final class PoMoTest extends TestCase
             '页' => 'Page',
         ];
 
-        $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/page.po']);
+        $lang = new GettextLoader()->loadPoFile([__DIR__.'/assert/page.po']);
         self::assertSame($lang, $data);
-        $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/page.mo']);
+        $lang = new GettextLoader()->loadMoFile([__DIR__.'/assert/page.mo']);
         self::assertSame($lang, $data);
     }
 
@@ -97,7 +97,7 @@ final class PoMoTest extends TestCase
             }
             eot;
 
-        $lang = (new GettextLoader())->loadPoFile([__DIR__.'/assert/validate.po']);
+        $lang = new GettextLoader()->loadPoFile([__DIR__.'/assert/validate.po']);
         self::assertSame(
             $data,
             $this->varJson(
@@ -105,7 +105,7 @@ final class PoMoTest extends TestCase
             )
         );
 
-        $lang = (new GettextLoader())->loadMoFile([__DIR__.'/assert/validate.mo']);
+        $lang = new GettextLoader()->loadMoFile([__DIR__.'/assert/validate.mo']);
         $data = <<<'eot'
             {
                 "{field} 不允许的 IP 访问 {rule}": "IP not allowed by {field} to access {rule}",

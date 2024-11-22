@@ -211,7 +211,7 @@ abstract class KernelConsole implements IKernelConsole
             $data[$item] = $this->app->namespacePath($item);
         }
 
-        return (new Load())
+        return new Load()
             ->addNamespace($data)
             ->loadData()
         ;

@@ -65,7 +65,7 @@ class Cache extends Command
      */
     protected function extends(): array
     {
-        return (new LoadI18n())->getExtend($this->app);
+        return new LoadI18n()->getExtend($this->app);
     }
 
     /**
@@ -73,7 +73,7 @@ class Cache extends Command
      */
     protected function data(string $i18n): array
     {
-        $load = (new Load([$this->app->i18nPath()]))
+        $load = new Load([$this->app->i18nPath()])
             ->setI18n($i18n)
             ->addDir($this->extends)
         ;

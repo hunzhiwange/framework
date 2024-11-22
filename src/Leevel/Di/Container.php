@@ -649,7 +649,7 @@ class Container implements IContainer, \ArrayAccess
      */
     protected function parseClosureReflection(\Closure $injection): array
     {
-        return (new \ReflectionFunction($injection))->getParameters();
+        return new \ReflectionFunction($injection)->getParameters();
     }
 
     /**
@@ -657,7 +657,7 @@ class Container implements IContainer, \ArrayAccess
      */
     protected function parseMethodReflection(array $injection): array
     {
-        return (new \ReflectionMethod($injection[0], $injection[1]))->getParameters();
+        return new \ReflectionMethod($injection[0], $injection[1])->getParameters();
     }
 
     /**
@@ -691,7 +691,7 @@ class Container implements IContainer, \ArrayAccess
     protected function newInstanceArgs(string $className, array $args): object
     {
         // @phpstan-ignore-next-line
-        return (new \ReflectionClass($className))->newInstanceArgs($args);
+        return new \ReflectionClass($className)->newInstanceArgs($args);
     }
 
     /**

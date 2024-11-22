@@ -86,7 +86,7 @@ class Register extends Provider
                 static function (IContainer $container): Response {
                     $config = $container['config'];
 
-                    return (new Response($container['view'], $container['redirect']))
+                    return new Response($container['view'], $container['redirect'])
                         ->setViewSuccessTemplate($config->get('view\\success'))
                         ->setViewFailTemplate($config->get('view\\fail'))
                     ;

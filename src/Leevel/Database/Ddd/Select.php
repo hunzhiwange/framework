@@ -933,7 +933,7 @@ class Select implements ISelect
             return $result;
         }
 
-        throw (new EntityNotFoundException())->setEntity($this->entity::class);
+        throw new EntityNotFoundException()->setEntity($this->entity::class);
     }
 
     public function getDatabaseSelect(): DatabaseSelect

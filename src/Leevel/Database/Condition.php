@@ -1316,7 +1316,7 @@ class Condition implements ICondition
     protected function throughMiddleware(array $extendMiddlewares, array $middlewaresConfigs, \Closure $then): array
     {
         // @phpstan-ignore-next-line
-        return (new Pipeline($this->connect->getContainer()))
+        return new Pipeline($this->connect->getContainer())
             ->send([$this, $middlewaresConfigs])
             ->through($extendMiddlewares)
             ->then($then)
@@ -1329,7 +1329,7 @@ class Condition implements ICondition
     protected function throughMiddlewareTerminate(array $extendMiddlewares, array $makeSql, \Closure $then): array
     {
         // @phpstan-ignore-next-line
-        return (new Pipeline($this->connect->getContainer()))
+        return new Pipeline($this->connect->getContainer())
             ->send([$this, $this->configs['middlewaresConfigs'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)

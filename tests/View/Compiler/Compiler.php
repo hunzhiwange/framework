@@ -14,7 +14,7 @@ trait Compiler
 {
     protected function createParser(): Parser
     {
-        return (new Parser(new Compilers()))
+        return new Parser(new Compilers())
             ->registerCompilers()
             ->registerParsers()
         ;

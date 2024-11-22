@@ -134,7 +134,7 @@ class Doc
     public static function getClassBody(string $className): string
     {
         /** @phpstan-ignore-next-line */
-        $lines = (new static('', '', '', ''))->parseFileContent($reflectionClass = new \ReflectionClass($className));
+        $lines = new static('', '', '', '')->parseFileContent($reflectionClass = new \ReflectionClass($className));
         if (false === $lines) {
             return '';
         }

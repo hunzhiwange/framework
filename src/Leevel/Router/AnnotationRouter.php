@@ -132,7 +132,7 @@ class AnnotationRouter
      */
     protected function findFiles(array $paths): Finder
     {
-        $finder = (new Finder())
+        $finder = new Finder()
             ->in($paths)
             ->exclude(['vendor', 'node_modules'])
             ->followLinks()

@@ -119,7 +119,7 @@ class GettextGenerator
 
     protected function scanFile(PhpScanner $phpScanner, array $dirs): void
     {
-        $finder = (new Finder())
+        $finder = new Finder()
             ->in($dirs)
             ->name('*.php')
             ->sortByName()

@@ -249,7 +249,7 @@ final class LoadTest extends TestCase
             sprintf('I18n load dir %s is not exits.', __DIR__.'/i18nNotExists/zh-CN')
         );
 
-        (new Load([__DIR__.'/i18nNotExists']))->loadData();
+        new Load([__DIR__.'/i18nNotExists'])->loadData();
     }
 
     public function test1(): void
@@ -268,7 +268,7 @@ final class LoadTest extends TestCase
 
     protected function createLoad(string $lang): Load
     {
-        return (new Load([__DIR__.'/i18n']))
+        return new Load([__DIR__.'/i18n'])
             ->setI18n($lang)
             ->addDir([__DIR__.'/i18n/extend'])
         ;
