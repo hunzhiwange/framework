@@ -242,7 +242,7 @@ class Migrator
               `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',
               PRIMARY KEY (`id`),
               UNIQUE KEY `uniq_migration` (`migration`,`delete_at`) USING BTREE COMMENT '迁移'
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='迁移日志';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='迁移日志';
             EOT;
             $this->executeSql($database, $sql);
         } catch (\Throwable $e) {
