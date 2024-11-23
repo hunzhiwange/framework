@@ -33,7 +33,6 @@ class PostNew2 extends Entity
             'default' => '',
             'length' => 64,
             'format' => [self::class, 'titleFormat'],
-            'format_raw' => true,
         ],
     ])]
     protected ?string $title = null;
@@ -44,7 +43,6 @@ class PostNew2 extends Entity
             'type' => 'bigint',
             'default' => 0,
             'format' => null,
-            'format_raw' => true,
         ],
     ])]
     protected ?int $userId = null;

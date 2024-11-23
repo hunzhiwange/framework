@@ -1474,8 +1474,8 @@ EOT,
     {
         $entity = new PostNew2(['title' => 'foo']);
         self::assertSame([
-            'title_format_raw' => 'foo',
-            'title' => 'foo_new',
+            'title' => 'foo',
+            'title_formated' => 'foo_new',
         ], $entity->toArray());
     }
 
@@ -1483,7 +1483,6 @@ EOT,
     {
         $entity = new PostNew2(['user_id' => 1]);
         self::assertSame([
-            'user_id_format_raw' => 1,
             'user_id' => 1,
         ], $entity->toArray());
     }
@@ -1492,7 +1491,6 @@ EOT,
     {
         $entity = new PostNew2(['summary' => 'title']);
         self::assertSame([
-            'summary_format_raw' => 'title',
             'summary' => 'title',
         ], $entity->toArray());
     }
