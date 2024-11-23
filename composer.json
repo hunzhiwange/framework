@@ -17,22 +17,22 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "composer-runtime-api": ">=2.1",
-        "firebase/php-jwt": "^6.10.0",
-        "gettext/gettext": "^5.7.0",
+        "firebase/php-jwt": "^6.10.1",
+        "gettext/gettext": "^5.7.1",
         "gettext/php-scanner": "^2.0.0",
-        "league/flysystem": "^3.27.0",
-        "league/flysystem-sftp-v3": "^3.26.0",
-        "maximebf/debugbar": "^1.22.3",
-        "monolog/monolog": "^3.6.0",
-        "nunomaduro/collision": "^8.1.1",
+        "league/flysystem": "^3.29.1",
+        "league/flysystem-sftp-v3": "^3.29.0",
+        "maximebf/debugbar": "^1.23.3",
+        "monolog/monolog": "^3.8.0",
+        "nunomaduro/collision": "^8.5.0",
         "psr/container": "^2.0.2",
-        "symfony/console": "^7.0.7",
-        "symfony/filesystem": "^7.0.7",
-        "symfony/finder": "^7.0.7",
-        "symfony/http-foundation": "^7.0.7",
-        "symfony/process": "^7.0.7",
-        "symfony/var-dumper": "^7.0.7",
-        "vlucas/phpdotenv": "^5.6.0"
+        "symfony/console": "^7.1.8",
+        "symfony/filesystem": "^7.1.6",
+        "symfony/finder": "^7.1.6",
+        "symfony/http-foundation": "^7.1.8",
+        "symfony/process": "^7.1.8",
+        "symfony/var-dumper": "^7.1.8",
+        "vlucas/phpdotenv": "^5.6.1"
     },
     "replace": {
         "leevel/auth": "self.version",
@@ -59,11 +59,11 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
-        "league/flysystem-ziparchive": "^3.27.0",
+        "league/flysystem-ziparchive": "^3.29.0",
         "swoole/ide-helper": "^5.1.3"
     },
     "suggest": {
-        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.27.0)",
+        "league/flysystem-ziparchive": "ZipArchive adapter support. (^3.29.0)",
         "ext-swoole": "Required to use swoole (^5.1.3)."
     },
     "autoload": {

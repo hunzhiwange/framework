@@ -23,11 +23,10 @@
         "leevel/router": "^2.0",
         "leevel/database": "^2.0",
         "leevel/console": "^2.0",
-        "nunomaduro/collision": "^8.1.1"
+        "nunomaduro/collision": "^8.5.0"
     },
     "suggest": {
-        "leevel/filesystem": "Required to use the make commands (^2.0).",
-        "symfony/process": "Required to use php built-in web server (^7.0.7)."
+        "leevel/filesystem": "Required to use the make commands (^2.0)."
     },
     "autoload": {
         "psr-4": {

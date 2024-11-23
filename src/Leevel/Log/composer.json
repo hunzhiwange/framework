@@ -15,7 +15,7 @@
         "php": ">=8.4.1",
         "leevel/support": "^2.0",
         "leevel/event": "^2.0",
-        "monolog/monolog": "^3.6.0"
+        "monolog/monolog": "^3.8.0"
     },
     "require-dev": {
         "swoole/ide-helper": "^5.1.3"
