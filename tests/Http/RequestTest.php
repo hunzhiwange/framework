@@ -20,7 +20,7 @@ QueryPHP 请求对象构建在 Symfony HttpFoundation 之上，增加了少量�
 使用容器 request 服务
 
 ``` php
-\App::make('request')->get($key, $default = null);
+\App::make('request')->get($key, mixed $default = null);
 \App::make('request')->all(): array;
 ```
 
@@ -41,7 +41,7 @@ class Demo
 使用代理
 
 ``` php
-\Leevel\Router\Proxy\Request::proxy()->get(string $key, $default = null);
+\Leevel\Router\Proxy\Request::proxy()->get(string $key, ?$default = null);
 \Leevel\Router\Proxy\Request::proxy()->all(): array;
 ```
 

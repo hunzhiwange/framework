@@ -377,7 +377,7 @@ EOT,
         self::assertInstanceOf(Test7::class, $result[0]);
         self::assertSame([], $result[1]);
 
-        $result = $container->call(static function (Test7 $arg1, array $arg2 = [], $arg3 = null) {
+        $result = $container->call(static function (Test7 $arg1, array $arg2 = [], mixed $arg3 = null) {
             return \func_get_args();
         }, ['arg3' => 'hello']);
 

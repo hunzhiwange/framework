@@ -19,8 +19,8 @@ QueryPHP 为系统提供了灵活的配置，通常来说通过服务提供者�
 使用容器 config 服务
 
 ``` php
-\App::make('config')->set($name, $value = null): void;
-\App::make('config')->get(string $name = 'app\\', $defaults = null);
+\App::make('config')->set($name, mixed $value = null): void;
+\App::make('config')->get(string $name = 'app\\', mixed $defaults = null);
 ```
 
 依赖注入
@@ -40,8 +40,8 @@ class Demo
 使用代理
 
 ``` php
-\Leevel\Config\Proxy\Config::proxy()->set($name, $value = null): void;
-\Leevel\Config\Proxy\Config::proxy()->get(string $name = 'app\\', $defaults = null);
+\Leevel\Config\Proxy\Config::proxy()->set($name, mixed $value = null): void;
+\Leevel\Config\Proxy\Config::proxy()->get(string $name = 'app\\', mixed $defaults = null);
 ```
 
 ## 配置目录

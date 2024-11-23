@@ -25,7 +25,7 @@ QueryPHP 提供了 Session (会话) 可以用于保存用户登录状态。
 
 ``` php
 \App::make('sessions')->set(string $name, $value): void;
-\App::make('sessions')->get(string $name, $defaults = null);
+\App::make('sessions')->get(string $name, mixed $defaults = null);
 ```
 
 依赖注入
@@ -46,7 +46,7 @@ class Demo
 
 ``` php
 \Leevel\Session\Proxy\Session::proxy()->set(string $name, $value): void;
-\Leevel\Session\Proxy\Session::proxy()->get(string $name, $value = null);
+\Leevel\Session\Proxy\Session::proxy()->get(string $name, ?$value = null);
 ```
 
 ## session 配置

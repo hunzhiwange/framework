@@ -30,7 +30,7 @@ QueryPHP 路由响应封装了常用的响应，比如模板、JSON、文件下�
 使用容器 response 服务
 
 ``` php
-\App::make('response')->json($data = null, int $status = 200, array $headers = [], bool $json = false): \Leevel\Http\JsonResponse;
+\App::make('response')->json(mixed $data = null, int $status = 200, array $headers = [], bool $json = false): \Leevel\Http\JsonResponse;
 ```
 EOT,
 ])]
