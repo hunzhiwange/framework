@@ -1575,7 +1575,8 @@ EOT,
             'title' => 'hello',
         ]);
         self::assertSame([
-            'title' => 'hello_new',
+            'title' => 'hello',
+            'title_formated' => 'hello_new',
         ], $entity->toArray());
     }
 

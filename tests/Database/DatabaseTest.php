@@ -228,7 +228,7 @@ EOT,
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
-            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\' in \'where clause\''
+            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\''
         );
 
         $connect = $this->createDatabaseConnect();
@@ -239,7 +239,7 @@ EOT,
     {
         $this->expectException(\PDOException::class);
         $this->expectExceptionMessage(
-            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\' in \'where clause\''
+            'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'id_not_found\''
         );
 
         $connect = $this->createDatabaseConnect(null, MysqlNeedReconnectMock::class);
