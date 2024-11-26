@@ -82,15 +82,20 @@ class RegisterRuntime
      */
     protected function initialization(string $environment): void
     {
-        error_reporting(E_ALL);
+        // 生产环境
+        if ('production' === $environment) {
+            error_reporting(E_ERROR | E_WARNING | E_PARSE); // 仅记录运行时错误和解析错误
+            ini_set('display_errors', 'Off');
+        } else {
+            error_reporting(E_ALL);
+            ini_set('display_errors', 'On');
+        }
+
         // @phpstan-ignore-next-line
         set_error_handler([$this, 'setErrorHandle']);
         // @phpstan-ignore-next-line
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
-        if ('production' === $environment) {
-            ini_set('display_errors', 'Off');
-        }
     }
 
     /**
