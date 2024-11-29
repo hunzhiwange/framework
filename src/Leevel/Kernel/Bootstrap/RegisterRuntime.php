@@ -82,13 +82,9 @@ class RegisterRuntime
      */
     protected function initialization(string $environment): void
     {
-        // 生产环境
-        if ('production' === $environment) {
-            error_reporting(E_ERROR | E_WARNING | E_PARSE); // 仅记录运行时错误和解析错误
+        error_reporting(E_ALL);
+        if ('testing' !== $environment) {
             ini_set('display_errors', 'Off');
-        } else {
-            error_reporting(E_ALL);
-            ini_set('display_errors', 'On');
         }
 
         // @phpstan-ignore-next-line
