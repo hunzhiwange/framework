@@ -27,6 +27,7 @@
         "nunomaduro/collision": "^8.5.0",
         "psr/container": "^2.0.2",
         "symfony/console": "^7.1.8",
+        "symfony/string": "^7.1.8",
         "symfony/filesystem": "^7.1.6",
         "symfony/finder": "^7.1.6",
         "symfony/http-foundation": "^7.1.8",
