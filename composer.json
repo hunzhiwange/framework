@@ -22,7 +22,7 @@
         "gettext/php-scanner": "^2.0.0",
         "league/flysystem": "^3.29.1",
         "league/flysystem-sftp-v3": "^3.29.0",
-        "maximebf/debugbar": "^1.23.3",
+        "maximebf/debugbar": "dev-master",
         "monolog/monolog": "^3.8.0",
         "nunomaduro/collision": "^8.5.0",
         "psr/container": "^2.0.2",
