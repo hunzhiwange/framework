@@ -88,4 +88,3 @@ parameters:
 	reportStaticMethodSignatures: true
 	tmpDir: %rootDir%/logs/phpstan
 	reportUnmatchedIgnoredErrors: false
-	checkGenericClassInNonGenericObjectType: false
