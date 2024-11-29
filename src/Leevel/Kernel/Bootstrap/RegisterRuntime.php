@@ -88,7 +88,7 @@ class RegisterRuntime
         // @phpstan-ignore-next-line
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
-        if ('production' === $environment) {
+        if ('testing' !== $environment) {
             ini_set('display_errors', 'Off');
         }
     }
