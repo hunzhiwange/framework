@@ -83,14 +83,15 @@ class RegisterRuntime
     protected function initialization(string $environment): void
     {
         error_reporting(E_ALL);
+        if ('testing' !== $environment) {
+            ini_set('display_errors', 'Off');
+        }
+
         // @phpstan-ignore-next-line
         set_error_handler([$this, 'setErrorHandle']);
         // @phpstan-ignore-next-line
         set_exception_handler([$this, 'setExceptionHandler']);
         register_shutdown_function([$this, 'registerShutdownFunction']);
-        if ('testing' !== $environment) {
-            ini_set('display_errors', 'Off');
-        }
     }
 
     /**
