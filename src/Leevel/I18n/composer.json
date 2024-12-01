@@ -16,7 +16,7 @@
         "leevel/di": "^2.0",
         "leevel/support": "^2.0",
         "gettext/gettext": "^5.7.2",
-        "gettext/php-scanner": "^2.0.0"
+        "gettext/php-scanner": "^2.0.1"
     },
     "suggest": {
         "leevel/console": "Required to use the make commands (^2.0).",
