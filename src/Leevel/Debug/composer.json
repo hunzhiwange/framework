@@ -21,7 +21,7 @@
         "leevel/log": "^2.0",
         "leevel/http": "^2.0",
         "leevel/session": "^2.0",
-        "maximebf/debugbar": "dev-master",
+        "leevel/debugbar": "^1.0.0",
         "symfony/var-dumper": "^7.1.8",
         "symfony/http-foundation": "^7.1.8"
     },

@@ -23,7 +23,7 @@
         "league/flysystem": "^4.0.0",
         "league/flysystem-sftp-v3": "^4.0.0",
         "league/mime-type-detection": "^1.16.0",
-        "maximebf/debugbar": "dev-master",
+        "leevel/debugbar": "^1.0.0",
         "monolog/monolog": "^3.8.0",
         "nunomaduro/collision": "^8.5.0",
         "psr/container": "^2.0.2",
