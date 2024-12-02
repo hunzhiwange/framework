@@ -18,7 +18,7 @@
         "ext-openssl": "*",
         "composer-runtime-api": ">=2.1",
         "firebase/php-jwt": "^6.10.1",
-        "gettext/gettext": "^5.7.2",
+        "gettext/gettext": "^5.7.3",
         "gettext/php-scanner": "^2.0.0",
         "league/flysystem": "^3.29.1",
         "league/flysystem-sftp-v3": "^3.29.0",
