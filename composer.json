@@ -22,6 +22,7 @@
         "gettext/php-scanner": "^2.0.1",
         "league/flysystem": "^4.0.0",
         "league/flysystem-sftp-v3": "^4.0.0",
+        "league/mime-type-detection": "^1.16.0",
         "maximebf/debugbar": "dev-master",
         "monolog/monolog": "^3.8.0",
         "nunomaduro/collision": "^8.5.0",
