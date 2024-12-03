@@ -15,10 +15,10 @@
         "php": ">=8.4.1",
         "leevel/session": "^2.0",
         "leevel/support": "^2.0",
-        "symfony/http-foundation": "^7.1.8"
+        "symfony/http-foundation": "^7.2.0"
     },
     "suggest": {
-        "guzzlehttp/guzzle": "Required to use the HTTP Client (^6.5.5|^7.0.1)."
+        "guzzlehttp/guzzle": "Required to use the HTTP Client (^7.9.2)."
     },
     "autoload": {
         "psr-4": {

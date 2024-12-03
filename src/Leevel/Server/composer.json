@@ -20,7 +20,7 @@
     "leevel/router": "^2.0",
     "leevel/support": "^2.0",
     "leevel/filesystem": "^2.0",
-    "symfony/process": "^7.1.8"
+    "symfony/process": "^7.2.0"
   },
   "require-dev": {
     "swoole/ide-helper": "^5.1.3"

@@ -82,7 +82,7 @@ class RegisterRuntime
      */
     protected function initialization(string $environment): void
     {
-        error_reporting(E_ALL);
+        error_reporting(E_ERROR | E_WARNING);
         if ('testing' !== $environment) {
             ini_set('display_errors', 'Off');
         }
