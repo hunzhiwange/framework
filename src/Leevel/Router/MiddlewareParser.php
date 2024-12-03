@@ -61,7 +61,7 @@ class MiddlewareParser
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {
-        $middlewares = array_map(static function ($item) use ($method) {
+        $middlewares = array_map(static function (string $item) use ($method) : string|false {
             if (!str_contains($item, ':')) {
                 $realClass = $item;
             } else {

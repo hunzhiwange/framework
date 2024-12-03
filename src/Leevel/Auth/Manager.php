@@ -59,13 +59,13 @@ class Manager extends Managers implements IAuth
     {
         $config = $this->getContainerConfig('default');
 
-        return (string) $this->getContainerConfig($config.'_default');
+        return (string) $this->getContainerConfig((string) $config.'_default');
     }
 
     public function setDefaultConnect(string $name): void
     {
         $config = $this->getContainerConfig('default');
-        $this->setContainerConfig($config.'_default', $name);
+        $this->setContainerConfig((string) $config.'_default', $name);
     }
 
     /**

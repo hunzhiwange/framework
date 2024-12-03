@@ -444,7 +444,7 @@ class Parser
 
                 $themeNode = [
                     'content' => $tag['content'],
-                    'compiler' => $tag['name'].$compiler,
+                    'compiler' => (string) $tag['name'].$compiler,
                     'source' => $tag['source'],
                     'name' => $tag['name'],
                 ];
@@ -460,7 +460,7 @@ class Parser
                 $source = substr($compiled, $start, $len);
                 $themeNode = [
                     'content' => $source,
-                    'compiler' => $tag['name'].$compiler,
+                    'compiler' => (string) $tag['name'].$compiler,
                     'source' => $source,
                     'name' => $tag['name'],
                 ];

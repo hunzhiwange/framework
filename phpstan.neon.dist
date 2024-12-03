@@ -51,6 +51,11 @@ parameters:
 		- '#Parameter \$[\S\s]+ of method [\S\s]+\(\) has invalid type Swoole[\S\s]+\.#'
 		- '#[\S\s]+throws checked exception ValueError but it\''s missing from the PHPDoc @throws tag\.#'
 		- '#[\S\s]+Swoole[\S\s]+\.#'
+		- '#Trait [\S\s]+ is used zero times and is not analysed\.#'
+		- '#implements generic interface#'
+		- '#extends generic class#'
+		- '#with generic class#'
+		- '#always evaluate to true#'
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'PHPStan\ShouldNotHappenException'
@@ -88,3 +93,4 @@ parameters:
 	reportStaticMethodSignatures: true
 	tmpDir: %rootDir%/logs/phpstan
 	reportUnmatchedIgnoredErrors: false
+	treatPhpDocTypesAsCertain: false

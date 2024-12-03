@@ -18,7 +18,7 @@ trait Enum
     public static function isValid(null|bool|float|int|self|string $value, string $group = Msg::class): bool
     {
         try {
-            static::convertEnumValue($value);
+            $value = static::convertEnumValue($value);
         } catch (\OutOfBoundsException) {
             return false;
         }
@@ -81,7 +81,7 @@ trait Enum
     public static function searchKey(null|bool|float|int|self|string $value, string $group = Msg::class): false|int|string
     {
         try {
-            static::convertEnumValue($value);
+            $value = static::convertEnumValue($value);
         } catch (\OutOfBoundsException) {
             return false;
         }
@@ -100,14 +100,14 @@ trait Enum
      */
     public static function description(null|bool|float|int|self|string $value, string $group = Msg::class): string
     {
-        static::convertEnumValue($value);
+        $value = static::convertEnumValue($value);
         $normalizeValue = static::normalizeEnumValue($value, $group);
         $data = static::descriptions($group);
 
         return false !== ($key = array_search($normalizeValue, $data['value'], true)) ?
                 $data['description'][$key] :
                 throw new \OutOfBoundsException(
-                    sprintf('Value `%s` is not part of %s:%s', $value, static::class, $group)
+                    sprintf('Value `%s` is not part of %s:%s',  $value instanceof self ? self::class : (string) $value, static::class, $group)
                 );
     }
 
@@ -205,12 +205,14 @@ trait Enum
      * 底层枚举值转换.
      *
      * - 可用于将数字或者字符串转换为对应的枚举值
+     * 
+     * @throws \OutOfBoundsException
      */
-    protected static function convertEnumValue(null|bool|float|int|self|string &$value): void
+    protected static function convertEnumValue(null|bool|float|int|self|string $value): null|bool|float|int|self|string
     {
         // 枚举特殊处理一下值
         if (!enum_exists(static::class) || $value instanceof self) {
-            return;
+            return $value;
         }
 
         try {
@@ -229,6 +231,8 @@ trait Enum
         } catch (\ValueError $e) {
             throw new \OutOfBoundsException($e->getMessage(), $e->getCode());
         }
+
+        return $value;
     }
 
     /**

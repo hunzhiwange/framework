@@ -1784,12 +1784,12 @@ class Condition implements ICondition
                 }
             } elseif (\is_array($cond)) {
                 // 表达式支持
-                if (preg_match('/^'.static::raw('(.+?)').'$/', $cond[0], $matches)) {
+                if (preg_match('/^'.static::raw('(.+?)').'$/', (string) $cond[0], $matches)) {
                     $cond[0] = $this->normalizeExpression($matches[1], $table);
                 } else {
                     // 字段处理
-                    if (str_contains($cond[0], '.')) {
-                        $tmp = explode('.', $cond[0]);
+                    if (str_contains((string) $cond[0], '.')) {
+                        $tmp = explode('.', (string) $cond[0]);
                         $currentTable = $tmp[0];
                         $cond[0] = $tmp[1];
                     } else {

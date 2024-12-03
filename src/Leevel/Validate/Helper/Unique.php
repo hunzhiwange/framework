@@ -113,7 +113,6 @@ class Unique
             $entity = $param[0];
         }
 
-        /** @var Entity $entity */
         if (!$entity instanceof Entity) {
             throw new \InvalidArgumentException(sprintf('Validate entity `%s` must be an entity.', $entity::class));
         }

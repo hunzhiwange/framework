@@ -64,7 +64,7 @@ class MaxRequest extends Process
 
                 if ($v['kill_start_time'] > 0) {
                     if ($this->maxWaitTime > 0
-                        && time() - $v['kill_start_time'] >= $this->maxWaitTime) {
+                        && time() - (int) $v['kill_start_time'] >= $this->maxWaitTime) {
                         SwooleProcess::kill($v['pid'], SIGKILL);
                     }
                 } else {
