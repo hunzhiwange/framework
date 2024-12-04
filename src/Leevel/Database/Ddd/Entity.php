@@ -2032,7 +2032,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         };
     }
 
-    protected function normalize(string $prop, mixed $value): mixed
+    protected function set(string $prop, mixed $value): mixed
     {
         return $this->withProp($prop, $value)->prop($prop);
     }

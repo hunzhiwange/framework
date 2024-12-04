@@ -21,7 +21,7 @@ class DemoEntity extends Entity
     public ?int $id
     {
         set (int|null $v) {
-            $this->id = $this->normalize('id', $v);
+            $this->id = $this->set('id', $v);
         }
     }
 
@@ -30,7 +30,7 @@ class DemoEntity extends Entity
     public ?string $name
     {
         set (string|null $v) {
-            $this->name = $this->normalize('name', $v);
+            $this->name = $this->set('name', $v);
         }
     }
 }

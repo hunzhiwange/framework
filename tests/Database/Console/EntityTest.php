@@ -88,7 +88,7 @@ final class EntityTest extends TestCase
         $result = $this->normalizeContent($result);
         self::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        self::assertStringContainsString('protected ?string $createAt = null;', $content);
+        self::assertStringContainsString('public ?string $createAt', $content);
         self::assertStringContainsString('#[Struct([', $content);
         self::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
     }
@@ -154,7 +154,7 @@ final class EntityTest extends TestCase
 
         self::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        self::assertStringContainsString('protected ?string $name = null;', $content);
+        self::assertStringContainsString('public ?string $name', $content);
         self::assertStringContainsString('self::COLUMN_NAME => \'名字\',', $content);
         self::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
     }
@@ -348,7 +348,7 @@ final class EntityTest extends TestCase
         self::assertStringContainsString('self::COLUMN_NAME => \'商品ID\',', $content);
         self::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
         self::assertStringContainsString("'type' => 'bigint'", $content);
-        self::assertStringContainsString('protected ?string $description = null;', $content);
+        self::assertStringContainsString('public ?string $description', $content);
     }
 
     public function testWithTableFieldFloat(): void
@@ -372,7 +372,7 @@ final class EntityTest extends TestCase
         self::assertStringContainsString('self::COLUMN_NAME => \'价格\',', $content);
         self::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
         self::assertStringContainsString("'type' => 'float'", $content);
-        self::assertStringContainsString('protected ?float $price = null;', $content);
+        self::assertStringContainsString('public ?float $price', $content);
     }
 
     public function testWithTableFieldFloat2(): void
@@ -396,7 +396,7 @@ final class EntityTest extends TestCase
         self::assertStringContainsString('self::COLUMN_NAME => \'价格\',', $content);
         self::assertStringContainsString('self::COLUMN_STRUCT => [', $content);
         self::assertStringContainsString("'type' => 'float'", $content);
-        self::assertStringContainsString('protected ?float $price = null;', $content);
+        self::assertStringContainsString('public ?float $price', $content);
     }
 
     protected function clearConsoleFiles(): void

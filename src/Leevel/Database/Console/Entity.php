@@ -437,13 +437,18 @@ class Entity extends Make
 
             $structData[] = <<<EOT
                     ])]
-                    protected ?{$fieldType} \${$fieldName} = null;
+                    public ?{$fieldType} \${$fieldName}
+                    {
+                        set ({$fieldType}|null \$v) {
+                            \$this->{$fieldName} = \$this->set('{$fieldName}', \$v);
+                        }
+                    }
 
                 EOT;
 
             $nowStructData = implode(PHP_EOL, $structData);
             if ($oldStructData && trim($oldStructData) !== trim($nowStructData)) {
-                $oldStructData = str_replace('protected ?', '// protected ?', $oldStructData);
+                $oldStructData = str_replace('public ?', '// public ?', $oldStructData);
                 $struct[] = $oldStructData;
             }
 
