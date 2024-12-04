@@ -83,7 +83,6 @@ EOT,
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
         self::assertSame(1, $post->getId());
-        self::assertSame(1, $post->user_id);
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
         self::assertSame(1, $post->getUserId());
@@ -97,7 +96,6 @@ EOT,
         $postContent = $post->postContent;
 
         $this->assertInstanceof(PostContent::class, $postContent);
-        self::assertSame(1, $postContent->post_id);
         self::assertSame(1, $postContent->postId);
         self::assertSame(1, $postContent['post_id']);
         self::assertSame(1, $postContent['postId']);

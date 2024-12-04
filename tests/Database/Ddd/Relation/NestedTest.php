@@ -137,7 +137,6 @@ EOT,
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
         self::assertSame(1, $post->getId());
-        self::assertSame(1, $post->user_id);
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
         self::assertSame(1, $post->getUserId());

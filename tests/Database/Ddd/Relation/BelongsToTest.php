@@ -84,7 +84,6 @@ EOT,
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
         self::assertSame(1, $post->getId());
-        self::assertSame(1, $post->user_id);
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
         self::assertSame(1, $post->getUserId());
@@ -581,7 +580,6 @@ eot;
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
         self::assertSame(1, $post->getId());
-        self::assertSame(99999, $post->user_id);
         self::assertSame(99999, $post->userId);
         self::assertSame(99999, $post['user_id']);
         self::assertSame(99999, $post->getUserId());
@@ -629,7 +627,6 @@ eot;
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
         self::assertSame(1, $post->getId());
-        self::assertSame(0, $post->user_id);
         self::assertSame(0, $post->userId);
         self::assertSame(0, $post['user_id']);
         self::assertSame(0, $post->getUserId());
@@ -657,7 +654,6 @@ eot;
 
         $this->assertInstanceof(Post::class, $post);
         self::assertNull($post->id);
-        self::assertNull($post->user_id);
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);

@@ -2052,6 +2052,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $this->withProp($prop, $value, fromSet: true)->prop($prop);
     }
 
+    protected function get(string $prop): mixed
+    {
+        return $this->prop($prop);
+    }
+
     /**
      * 构造时填充默认值.
      */

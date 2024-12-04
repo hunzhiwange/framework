@@ -54,6 +54,7 @@ class User extends Entity
     ])]
     public ?Collection $role = null
     {
+        get => $this->get('role');
         set (Collection|null $v) {
             $this->role = $this->set('role', $v);
         }
@@ -69,6 +70,7 @@ class User extends Entity
     ])]
     public ?Collection $roleSoftDeleted = null
     {
+        get => $this->get('roleSoftDeleted');
         set (Collection|null $v) {
             $this->roleSoftDeleted = $this->set('roleSoftDeleted', $v);
         }
@@ -85,6 +87,7 @@ class User extends Entity
     ])]
     public ?Collection $roleMiddleWithSoftDeleted = null
     {
+        get => $this->get('roleMiddleWithSoftDeleted');
         set (Collection|null $v) {
             $this->roleMiddleWithSoftDeleted = $this->set('roleMiddleWithSoftDeleted', $v);
         }
@@ -101,6 +104,7 @@ class User extends Entity
     ])]
     public ?Collection $roleMiddleOnlySoftDeleted = null
     {
+        get => $this->get('roleMiddleOnlySoftDeleted');
         set (Collection|null $v) {
             $this->roleMiddleOnlySoftDeleted = $this->set('roleMiddleOnlySoftDeleted', $v);
         }
@@ -117,6 +121,7 @@ class User extends Entity
     ])]
     public ?Collection $roleRelationScopeNotFound = null
     {
+        get => $this->get('roleRelationScopeNotFound');
         set (Collection|null $v) {
             $this->roleRelationScopeNotFound = $this->set('roleRelationScopeNotFound', $v);
         }
@@ -133,6 +138,7 @@ class User extends Entity
     ])]
     public ?Collection $roleRelationScopeFoundButPrivate = null
     {
+        get => $this->get('roleRelationScopeFoundButPrivate');
         set (Collection|null $v) {
             $this->roleRelationScopeFoundButPrivate = $this->set('roleRelationScopeFoundButPrivate', $v);
         }
@@ -147,6 +153,7 @@ class User extends Entity
     ])]
     public ?Collection $roleNotDefinedMiddleEntity = null
     {
+        get => $this->get('roleNotDefinedMiddleEntity');
         set (Collection|null $v) {
             $this->roleNotDefinedMiddleEntity = $this->set('roleNotDefinedMiddleEntity', $v);
         }
@@ -161,6 +168,7 @@ class User extends Entity
     ])]
     public ?Collection $roleNotDefinedSourceKey = null
     {
+        get => $this->get('roleNotDefinedSourceKey');
         set (Collection|null $v) {
             $this->roleNotDefinedSourceKey = $this->set('roleNotDefinedSourceKey', $v);
         }
@@ -175,6 +183,7 @@ class User extends Entity
     ])]
     public ?Collection $roleNotDefinedTargetKey = null
     {
+        get => $this->get('roleNotDefinedTargetKey');
         set (Collection|null $v) {
             $this->roleNotDefinedTargetKey = $this->set('roleNotDefinedTargetKey', $v);
         }
@@ -189,6 +198,7 @@ class User extends Entity
     ])]
     public ?Collection $roleNotDefinedMiddleSourceKey = null
     {
+        get => $this->get('roleNotDefinedMiddleSourceKey');
         set (Collection|null $v) {
             $this->roleNotDefinedMiddleSourceKey = $this->set('roleNotDefinedMiddleSourceKey', $v);
         }
@@ -203,6 +213,7 @@ class User extends Entity
     ])]
     public ?Collection $roleNotDefinedMiddleTargetKey = null
     {
+        get => $this->get('roleNotDefinedMiddleTargetKey');
         set (Collection|null $v) {
             $this->roleNotDefinedMiddleTargetKey = $this->set('roleNotDefinedMiddleTargetKey', $v);
         }
@@ -219,6 +230,7 @@ class User extends Entity
     ])]
     public ?Collection $roleMiddleField = null
     {
+        get => $this->get('roleMiddleField');
         set (Collection|null $v) {
             $this->roleMiddleField = $this->set('roleMiddleField', $v);
         }
@@ -235,6 +247,7 @@ class User extends Entity
     ])]
     public ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null
     {
+        get => $this->get('roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition');
         set (Collection|null $v) {
             $this->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = $this->set('roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition', $v);
         }
