@@ -18,7 +18,7 @@ class DemoEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id
+    public ?int $id = null
     {
         set (int|null $v) {
             $this->id = $this->set('id', $v);
@@ -27,7 +27,7 @@ class DemoEntity extends Entity
 
     #[Struct([
     ])]
-    public ?string $name
+    public ?string $name = null
     {
         set (string|null $v) {
             $this->name = $this->set('name', $v);

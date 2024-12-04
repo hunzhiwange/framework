@@ -437,7 +437,7 @@ class Entity extends Make
 
             $structData[] = <<<EOT
                     ])]
-                    public ?{$fieldType} \${$fieldName}
+                    public ?{$fieldType} \${$fieldName} = null
                     {
                         set ({$fieldType}|null \$v) {
                             \$this->{$fieldName} = \$this->set('{$fieldName}', \$v);

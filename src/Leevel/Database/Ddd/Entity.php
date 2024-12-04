@@ -460,6 +460,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected array $dataFramework = [];
 
     /**
+     * 是否为原始属性设置.
+     *
+     * - 通过这个标记避免引起属性 set 循环调用
+     */
+    protected bool $rawSetFramework = false;
+
+    /**
      * 全局数据库连接.
      */
     protected static ?string $globalConnectFramework = null;
@@ -871,7 +878,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \InvalidArgumentException
      */
-    public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false, bool $fromSet = false): self
     {
         try {
             static::validate($prop = static::unCamelizeProp($prop));
@@ -888,19 +895,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         }
 
         if ($fromStorage) {
-            $this->propSetter($prop, $value);
+            $this->propSetter($prop, $value, $fromSet);
         } else {
             $constantStruct = static::fields();
 
             if ($ignoreReadonly) {
-                $this->propSetter($prop, $value);
+                $this->propSetter($prop, $value, $fromSet);
             } else {
                 if (false === $ignoreReadonly
                     && isset($constantStruct[$prop][self::READONLY])
                     && true === $constantStruct[$prop][self::READONLY]) {
                     throw new \InvalidArgumentException(sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
                 }
-                $this->propSetter($prop, $value);
+                $this->propSetter($prop, $value, $fromSet);
             }
 
             if (\in_array($prop, $this->changedPropFramework, true)) {
@@ -1942,10 +1949,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Setter.
      */
-    public function setter(string $prop, mixed $value): self
+    public function setter(string $prop, mixed $value, bool $fromSet = false): self
     {
-        //$this->{$this->realProp($prop)} = $value;
         $this->dataFramework[$this->realProp($prop)] = $value;
+
+        if (!$fromSet) {
+            $this->rawSetFramework = true;
+            $this->{$this->realProp($prop)} = $value;
+        }
 
         return $this;
     }
@@ -1956,7 +1967,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     public function getter(string $prop): mixed
     {
         return $this->dataFramework[$this->realProp($prop)] ?? null;
-        //return $this->{$this->realProp($prop)} ?? null;
     }
 
     /**
@@ -2034,7 +2044,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     protected function set(string $prop, mixed $value): mixed
     {
-        return $this->withProp($prop, $value)->prop($prop);
+        if ($this->rawSetFramework) {
+            $this->rawSetFramework = false;
+            return $this->prop($prop);
+        }
+
+        return $this->withProp($prop, $value, fromSet: true)->prop($prop);
     }
 
     /**
@@ -2553,7 +2568,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \RuntimeException
      */
-    protected function propSetter(string $prop, mixed $value): void
+    protected function propSetter(string $prop, mixed $value, bool $fromSet = false): void
     {
         $prop = static::camelizeProp($prop);
         $value = $this->transformPropValue($prop, $value);
@@ -2564,7 +2579,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
                 throw new \RuntimeException(sprintf('Return type of entity setter must be instance of %s.', static::class));
             }
         } else {
-            $this->setter($prop, $value);
+            $this->setter($prop, $value, $fromSet);
         }
     }
 

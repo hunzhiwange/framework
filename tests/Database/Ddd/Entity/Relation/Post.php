@@ -23,40 +23,70 @@ class Post extends Entity
         self::READONLY => true,
         self::COLUMN_NAME => 'ID',
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '标题',
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '用户ID',
     ])]
-    protected ?int $userId = null;
+    public ?int $userId = null
+    {
+        set (int|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '文章摘要',
     ])]
-    protected ?string $summary = null;
+    public ?string $summary = null
+    {
+        set (string|null $v) {
+            $this->summary = $this->set('summary', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '创建时间',
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_FILL => 0,
         self::COLUMN_NAME => '删除时间',
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 
     #[Struct([
         self::BELONGS_TO => User::class,
         self::SOURCE_KEY => 'user_id',
         self::TARGET_KEY => 'id',
     ])]
-    protected ?User $user = null;
+    public ?User $user = null;
 
     #[Struct([
         self::HAS_MANY => Comment::class,
