@@ -18,9 +18,19 @@ class PostContent extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $postId = null;
+    public ?int $postId = null
+    {
+        set (int|null $v) {
+            $this->postId = $this->set('postId', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $content = null;
+    public ?string $content = null
+    {
+        set (string|null $v) {
+            $this->content = $this->set('content', $v);
+        }
+    }
 }

@@ -24,7 +24,12 @@ class PostNew3 extends Entity
             'type' => 'bigint',
         ],
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '标题',
@@ -34,7 +39,12 @@ class PostNew3 extends Entity
             'length' => 64,
         ],
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '用户ID',
@@ -43,7 +53,12 @@ class PostNew3 extends Entity
             'default' => 0,
         ],
     ])]
-    protected ?int $userId = null;
+    public ?int $userId = null
+    {
+        set (int|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '文章摘要',
@@ -53,7 +68,12 @@ class PostNew3 extends Entity
             'length' => 200,
         ],
     ])]
-    protected ?string $summary = null;
+    public ?string $summary = null
+    {
+        set (string|null $v) {
+            $this->summary = $this->set('summary', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '创建时间',
@@ -62,7 +82,12 @@ class PostNew3 extends Entity
             'default' => 'CURRENT_TIMESTAMP',
         ],
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_FILL => 0,
@@ -72,7 +97,12 @@ class PostNew3 extends Entity
             'default' => 0,
         ],
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 
     protected function titleDefaultValue(): string
     {

@@ -18,32 +18,62 @@ class DemoUpdateAutoFillEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::UPDATE_FILL => 'name for '.self::UPDATE_FILL,
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
         self::UPDATE_FILL => null,
     ])]
-    protected ?string $description = null;
+    public ?string $description = null
+    {
+        set (string|null $v) {
+            $this->description = $this->set('description', $v);
+        }
+    }
 
     #[Struct([
         self::UPDATE_FILL => null,
     ])]
-    protected ?string $address = null;
+    public ?string $address = null
+    {
+        set (string|null $v) {
+            $this->address = $this->set('address', $v);
+        }
+    }
 
     #[Struct([
         self::UPDATE_FILL => null,
     ])]
-    protected ?string $fooBar = null;
+    public ?string $fooBar = null
+    {
+        set (string|null $v) {
+            $this->fooBar = $this->set('fooBar', $v);
+        }
+    }
 
     #[Struct([
         self::UPDATE_FILL => null,
     ])]
-    protected ?string $hello = null;
+    public ?string $hello = null
+    {
+        set (string|null $v) {
+            $this->hello = $this->set('hello', $v);
+        }
+    }
 
     protected function fillDescription($old): string
     {

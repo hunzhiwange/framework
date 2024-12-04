@@ -18,14 +18,29 @@ class EntityWithEnum2 extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
         self::ENUM_CLASS => StatusEnum::class,
     ])]
-    protected ?string $status = null;
+    public ?string $status = null
+    {
+        set (string|null $v) {
+            $this->status = $this->set('status', $v);
+        }
+    }
 }

@@ -86,7 +86,12 @@ class Post extends Entity
         self::SOURCE_KEY => 'user_id',
         self::TARGET_KEY => 'id',
     ])]
-    public ?User $user = null;
+    public ?User $user = null
+    {
+        set (User|null $v) {
+            $this->user = $this->set('user', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_MANY => Comment::class,
@@ -94,52 +99,92 @@ class Post extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?Collection $comment = null;
+    public ?Collection $comment = null
+    {
+        set (Collection|null $v) {
+            $this->comment = $this->set('comment', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_ONE => PostContent::class,
         self::SOURCE_KEY => 'id',
         self::TARGET_KEY => 'post_id',
     ])]
-    protected ?PostContent $postContent = null;
+    public ?PostContent $postContent = null
+    {
+        set (PostContent|null $v) {
+            $this->postContent = $this->set('postContent', $v);
+        }
+    }
 
     #[Struct([
         self::BELONGS_TO => User::class,
         self::TARGET_KEY => 'id',
     ])]
-    protected ?int $userNotDefinedSourceKey = null;
+    public ?int $userNotDefinedSourceKey = null
+    {
+        set (int|null $v) {
+            $this->userNotDefinedSourceKey = $this->set('userNotDefinedSourceKey', $v);
+        }
+    }
 
     #[Struct([
         self::BELONGS_TO => User::class,
         self::SOURCE_KEY => 'id',
     ])]
-    protected ?int $userNotDefinedTargetKey = null;
+    public ?int $userNotDefinedTargetKey = null
+    {
+        set (int|null $v) {
+            $this->userNotDefinedTargetKey = $this->set('userNotDefinedTargetKey', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_MANY => Comment::class,
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?int $commentNotDefinedSourceKey = null;
+    public ?int $commentNotDefinedSourceKey = null
+    {
+        set (int|null $v) {
+            $this->commentNotDefinedSourceKey = $this->set('commentNotDefinedSourceKey', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_MANY => Comment::class,
         self::SOURCE_KEY => 'id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?int $commentNotDefinedTargetKey = null;
+    public ?int $commentNotDefinedTargetKey = null
+    {
+        set (int|null $v) {
+            $this->commentNotDefinedTargetKey = $this->set('commentNotDefinedTargetKey', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_ONE => PostContent::class,
         self::TARGET_KEY => 'post_id',
     ])]
-    protected ?int $postContentNotDefinedSourceKey = null;
+    public ?int $postContentNotDefinedSourceKey = null
+    {
+        set (int|null $v) {
+            $this->postContentNotDefinedSourceKey = $this->set('postContentNotDefinedSourceKey', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_ONE => PostContent::class,
         self::SOURCE_KEY => 'id',
     ])]
-    protected ?int $postContentNotDefinedTargetKey = null;
+    public ?int $postContentNotDefinedTargetKey = null
+    {
+        set (int|null $v) {
+            $this->postContentNotDefinedTargetKey = $this->set('postContentNotDefinedTargetKey', $v);
+        }
+    }
 
     protected function relationScopeComment(Relation $relation): void
     {

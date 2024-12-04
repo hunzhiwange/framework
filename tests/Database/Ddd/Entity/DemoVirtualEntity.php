@@ -20,9 +20,19 @@ class DemoVirtualEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 }

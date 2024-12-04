@@ -19,15 +19,30 @@ class User extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -37,7 +52,12 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $role = null;
+    public ?Collection $role = null
+    {
+        set (Collection|null $v) {
+            $this->role = $this->set('role', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -47,7 +67,12 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $roleSoftDeleted = null;
+    public ?Collection $roleSoftDeleted = null
+    {
+        set (Collection|null $v) {
+            $this->roleSoftDeleted = $this->set('roleSoftDeleted', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -58,7 +83,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'withSoftDeleted',
     ])]
-    protected ?Collection $roleMiddleWithSoftDeleted = null;
+    public ?Collection $roleMiddleWithSoftDeleted = null
+    {
+        set (Collection|null $v) {
+            $this->roleMiddleWithSoftDeleted = $this->set('roleMiddleWithSoftDeleted', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -69,7 +99,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'onlySoftDeleted',
     ])]
-    protected ?Collection $roleMiddleOnlySoftDeleted = null;
+    public ?Collection $roleMiddleOnlySoftDeleted = null
+    {
+        set (Collection|null $v) {
+            $this->roleMiddleOnlySoftDeleted = $this->set('roleMiddleOnlySoftDeleted', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -80,7 +115,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'notFound',
     ])]
-    protected ?Collection $roleRelationScopeNotFound = null;
+    public ?Collection $roleRelationScopeNotFound = null
+    {
+        set (Collection|null $v) {
+            $this->roleRelationScopeNotFound = $this->set('roleRelationScopeNotFound', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -91,7 +131,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'foundButPrivate',
     ])]
-    protected ?Collection $roleRelationScopeFoundButPrivate = null;
+    public ?Collection $roleRelationScopeFoundButPrivate = null
+    {
+        set (Collection|null $v) {
+            $this->roleRelationScopeFoundButPrivate = $this->set('roleRelationScopeFoundButPrivate', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -100,7 +145,12 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $roleNotDefinedMiddleEntity = null;
+    public ?Collection $roleNotDefinedMiddleEntity = null
+    {
+        set (Collection|null $v) {
+            $this->roleNotDefinedMiddleEntity = $this->set('roleNotDefinedMiddleEntity', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -109,7 +159,12 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $roleNotDefinedSourceKey = null;
+    public ?Collection $roleNotDefinedSourceKey = null
+    {
+        set (Collection|null $v) {
+            $this->roleNotDefinedSourceKey = $this->set('roleNotDefinedSourceKey', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -118,7 +173,12 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $roleNotDefinedTargetKey = null;
+    public ?Collection $roleNotDefinedTargetKey = null
+    {
+        set (Collection|null $v) {
+            $this->roleNotDefinedTargetKey = $this->set('roleNotDefinedTargetKey', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -127,7 +187,12 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    protected ?Collection $roleNotDefinedMiddleSourceKey = null;
+    public ?Collection $roleNotDefinedMiddleSourceKey = null
+    {
+        set (Collection|null $v) {
+            $this->roleNotDefinedMiddleSourceKey = $this->set('roleNotDefinedMiddleSourceKey', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -136,7 +201,12 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_SOURCE_KEY => 'user_id',
     ])]
-    protected ?Collection $roleNotDefinedMiddleTargetKey = null;
+    public ?Collection $roleNotDefinedMiddleTargetKey = null
+    {
+        set (Collection|null $v) {
+            $this->roleNotDefinedMiddleTargetKey = $this->set('roleNotDefinedMiddleTargetKey', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => Role::class,
@@ -147,7 +217,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleField',
     ])]
-    protected ?Collection $roleMiddleField = null;
+    public ?Collection $roleMiddleField = null
+    {
+        set (Collection|null $v) {
+            $this->roleMiddleField = $this->set('roleMiddleField', $v);
+        }
+    }
 
     #[Struct([
         self::MANY_MANY => RoleSoftDeleted::class,
@@ -158,7 +233,12 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition',
     ])]
-    protected ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null;
+    public ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null
+    {
+        set (Collection|null $v) {
+            $this->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = $this->set('roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition', $v);
+        }
+    }
 
     protected function relationScopeWithSoftDeleted(ManyMany $relation): void
     {

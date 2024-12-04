@@ -18,14 +18,29 @@ class DemoCreatePropWhiteEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_PROP_WHITE => true,
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $description = null;
+    public ?string $description = null
+    {
+        set (string|null $v) {
+            $this->description = $this->set('description', $v);
+        }
+    }
 }

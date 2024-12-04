@@ -17,13 +17,28 @@ class Role extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 }

@@ -20,23 +20,48 @@ class DemoVersion extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $availableNumber = null;
+    public ?string $availableNumber = null
+    {
+        set (string|null $v) {
+            $this->availableNumber = $this->set('availableNumber', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $realNumber = null;
+    public ?string $realNumber = null
+    {
+        set (string|null $v) {
+            $this->realNumber = $this->set('realNumber', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $version = null;
+    public ?int $version = null
+    {
+        set (int|null $v) {
+            $this->version = $this->set('version', $v);
+        }
+    }
 
     protected bool $enabledVersionFramework = true;
 }

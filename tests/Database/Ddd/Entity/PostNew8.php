@@ -24,7 +24,12 @@ class PostNew8 extends Entity
             'type' => 'bigint',
         ],
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '用户ID',
@@ -33,7 +38,12 @@ class PostNew8 extends Entity
             'default' => 0,
         ],
     ])]
-    protected ?float $userId = null;
+    public ?float $userId = null
+    {
+        set (float|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     protected function userIdTransformValue(mixed $value): float
     {

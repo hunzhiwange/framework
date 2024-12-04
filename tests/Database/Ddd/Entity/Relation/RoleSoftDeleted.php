@@ -19,18 +19,38 @@ class RoleSoftDeleted extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_FILL => 0,
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 }

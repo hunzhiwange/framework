@@ -17,5 +17,10 @@ class EntityWithoutPrimaryKeyNullInArray extends Entity
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 }

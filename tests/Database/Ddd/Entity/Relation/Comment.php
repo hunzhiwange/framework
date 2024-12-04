@@ -17,21 +17,46 @@ class Comment extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $postId = null;
+    public ?int $postId = null
+    {
+        set (int|null $v) {
+            $this->postId = $this->set('postId', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $content = null;
+    public ?string $content = null
+    {
+        set (string|null $v) {
+            $this->content = $this->set('content', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 }

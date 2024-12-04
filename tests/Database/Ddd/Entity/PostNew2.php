@@ -24,7 +24,12 @@ class PostNew2 extends Entity
             'type' => 'bigint',
         ],
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '标题',
@@ -35,7 +40,12 @@ class PostNew2 extends Entity
             'format' => [self::class, 'titleFormat'],
         ],
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '用户ID',
@@ -45,7 +55,12 @@ class PostNew2 extends Entity
             'format' => null,
         ],
     ])]
-    protected ?int $userId = null;
+    public ?int $userId = null
+    {
+        set (int|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '文章摘要',
@@ -57,7 +72,12 @@ class PostNew2 extends Entity
             'format_raw' => true,
         ],
     ])]
-    protected ?string $summary = null;
+    public ?string $summary = null
+    {
+        set (string|null $v) {
+            $this->summary = $this->set('summary', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_NAME => '创建时间',
@@ -66,7 +86,12 @@ class PostNew2 extends Entity
             'default' => 'CURRENT_TIMESTAMP',
         ],
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_FILL => 0,
@@ -76,7 +101,12 @@ class PostNew2 extends Entity
             'default' => 0,
         ],
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 
     public static function titleFormat(string $v): string
     {

@@ -20,28 +20,58 @@ class PostForReplace extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $userId = null;
+    public ?int $userId = null
+    {
+        set (int|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $summary = null;
+    public ?string $summary = null
+    {
+        set (string|null $v) {
+            $this->summary = $this->set('summary', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
         self::CREATE_FILL => 0,
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 
     protected function updateReal(): self
     {

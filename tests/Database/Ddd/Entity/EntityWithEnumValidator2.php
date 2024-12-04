@@ -19,7 +19,12 @@ class EntityWithEnumValidator2 extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
         self::COLUMN_VALIDATOR => [
@@ -41,10 +46,20 @@ class EntityWithEnumValidator2 extends Entity
             'max_length' => '{field} 不满足最大长度 {rule} new',
         ],
     ])]
-    protected ?string $title = null;
+    public ?string $title = null
+    {
+        set (string|null $v) {
+            $this->title = $this->set('title', $v);
+        }
+    }
 
     #[Struct([
         self::ENUM_CLASS => StatusEnum::class,
     ])]
-    protected ?int $status = null;
+    public ?int $status = null
+    {
+        set (int|null $v) {
+            $this->status = $this->set('status', $v);
+        }
+    }
 }

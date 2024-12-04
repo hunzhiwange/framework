@@ -17,21 +17,46 @@ class UserRole extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->id = $this->set('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $userId = null;
+    public ?int $userId = null
+    {
+        set (int|null $v) {
+            $this->userId = $this->set('userId', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $roleId = null;
+    public ?int $roleId = null
+    {
+        set (int|null $v) {
+            $this->roleId = $this->set('roleId', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $createAt = null;
+    public ?string $createAt = null
+    {
+        set (string|null $v) {
+            $this->createAt = $this->set('createAt', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $deleteAt = null;
+    public ?int $deleteAt = null
+    {
+        set (int|null $v) {
+            $this->deleteAt = $this->set('deleteAt', $v);
+        }
+    }
 }

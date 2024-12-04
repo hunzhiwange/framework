@@ -17,13 +17,28 @@ class CompositeId extends Entity
 
     #[Struct([
     ])]
-    protected ?int $id1 = null;
+    public ?int $id1 = null
+    {
+        set (int|null $v) {
+            $this->id1 = $this->set('id1', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?int $id2 = null;
+    public ?int $id2 = null
+    {
+        set (int|null $v) {
+            $this->id2 = $this->set('id2', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name = null
+    {
+        set (string|null $v) {
+            $this->name = $this->set('name', $v);
+        }
+    }
 }
