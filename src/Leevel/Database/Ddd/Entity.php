@@ -455,6 +455,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected array $originalFramework = [];
 
     /**
+     * 属性数据.
+     */
+    protected array $dataFramework = [];
+
+    /**
      * 全局数据库连接.
      */
     protected static ?string $globalConnectFramework = null;
@@ -543,42 +548,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             // 缓存一次唯一键
             $this->id(false);
         }
-    }
-
-    /**
-     * 实现魔术方法 __get.
-     */
-    public function __get(string $prop): mixed
-    {
-        return $this->prop($prop);
-    }
-
-    /**
-     * 实现魔术方法 __set.
-     */
-    public function __set(string $prop, mixed $value): void
-    {
-        $this->withProp($prop, $value);
-    }
-
-    /**
-     * 实现魔术方法 __isset.
-     */
-    public function __isset(string $prop): bool
-    {
-        return $this->hasProp($prop);
-    }
-
-    /**
-     * 实现魔术方法 __unset.
-     *
-     * - 代码格式化工具自动将 unset($obj->foo) 修改为 $obj->foo = null
-     *
-     * @codeCoverageIgnore
-     */
-    public function __unset(string $prop): void
-    {
-        $this->withProp($prop, null);
     }
 
     /**
@@ -1975,7 +1944,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function setter(string $prop, mixed $value): self
     {
-        $this->{$this->realProp($prop)} = $value;
+        //$this->{$this->realProp($prop)} = $value;
+        $this->dataFramework[$this->realProp($prop)] = $value;
 
         return $this;
     }
@@ -1985,7 +1955,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function getter(string $prop): mixed
     {
-        return $this->{$this->realProp($prop)} ?? null;
+        return $this->dataFramework[$this->realProp($prop)] ?? null;
+        //return $this->{$this->realProp($prop)} ?? null;
     }
 
     /**
@@ -2059,6 +2030,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             'float', 'double' => self::COLUMN_TYPE_FLOAT,
             default => self::COLUMN_TYPE_STRING,
         };
+    }
+
+    protected function normalize(string $prop, mixed $value): mixed
+    {
+        return $this->withProp($prop, $value)->prop($prop);
     }
 
     /**
@@ -2179,7 +2155,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED) as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED|\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             if ($reflectionProperty->isStatic()) {
                 continue;
             }

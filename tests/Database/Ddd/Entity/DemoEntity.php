@@ -18,9 +18,19 @@ class DemoEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id
+    {
+        set (int|null $v) {
+            $this->id = $this->normalize('id', $v);
+        }
+    }
 
     #[Struct([
     ])]
-    protected ?string $name = null;
+    public ?string $name
+    {
+        set (string|null $v) {
+            $this->name = $this->normalize('name', $v);
+        }
+    }
 }
