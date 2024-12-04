@@ -1275,14 +1275,14 @@ EOT,
         self::assertNull($post1->userId);
         self::assertNull($post1->title);
         self::assertNull($post1->summary);
-        self::assertNull($post1->delete_at);
+        self::assertNull($post1->deleteAt);
 
         $post1->refresh();
         self::assertSame(1, $post1->id);
         self::assertSame(0, $post1->userId);
         self::assertSame('', $post1->title);
         self::assertSame('', $post1->summary);
-        self::assertSame(0, $post1->delete_at);
+        self::assertSame(0, $post1->deleteAt);
     }
 
     #[Api([
@@ -1297,14 +1297,14 @@ EOT,
         self::assertNull($post1->userId);
         self::assertNull($post1->title);
         self::assertNull($post1->summary);
-        self::assertNull($post1->delete_at);
+        self::assertNull($post1->deleteAt);
 
         $post1->refresh(['id', 'title']);
         self::assertSame(1, $post1->id);
         self::assertNull($post1->userId);
         self::assertSame('', $post1->title);
         self::assertNull($post1->summary);
-        self::assertNull($post1->delete_at);
+        self::assertNull($post1->deleteAt);
     }
 
     #[Api([

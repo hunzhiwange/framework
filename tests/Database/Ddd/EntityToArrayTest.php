@@ -525,7 +525,7 @@ EOT,
         $entity->name = '实体名字';
         $entity->description = 'goods name';
         $entity->address = '四川成都';
-        $entity->foo_bar = 'foo';
+        $entity->fooBar = 'foo';
         $entity->hello = 'hello world';
 
         return $entity;
@@ -538,7 +538,7 @@ EOT,
         $entity->name = '实体名字';
         $entity->description = 'goods name';
         $entity->address = '四川成都';
-        $entity->foo_bar = 'foo';
+        $entity->fooBar = 'foo';
         $entity->hello = 'hello world';
 
         return $entity;
@@ -551,7 +551,7 @@ EOT,
         $entity->name = '实体名字';
         $entity->description = 'goods name';
         $entity->address = '四川成都';
-        $entity->foo_bar = 'foo';
+        $entity->fooBar = 'foo';
         $entity->hello = 'hello world';
 
         return $entity;
