@@ -203,16 +203,19 @@ class Entity extends Make
     {
         $oldStructData = [];
         $contentLines = $this->normalizeOldStructData($contentLines, $middleStructIndex, $endStructIndex);
-        $regex = '/#\[Struct\(\[[\s\S]+?\]\)\][\s\S]+?protected[\s]*[\S]+?[\s]*\$([\S]+?)[\s]*=[\s]*[\S]+?;/';
+        
+        // 正则表达式匹配
+        $regex = '/#\[Struct\(\[.*?\]\)\]\s*public\s*\?\w+\s+\$(\w+)\s*=\s*null\s*\{\s*set\s*\([\w\|\?]+?\s+\$v\)\s*\{\s*.*?\s*\}\s*\}/s';
+        
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
-                $oldStructData[UnCamelize::handle($v)] = '    '.trim($matches[0][$i], PHP_EOL).PHP_EOL;
+                $oldStructData[UnCamelize::handle($v)] = '    ' . trim($matches[0][$i], PHP_EOL) . PHP_EOL;
             }
         }
 
         $this->oldStructData = $oldStructData;
     }
-
+    
     /**
      * 整理旧的字段结构数据.
      */
@@ -448,7 +451,7 @@ class Entity extends Make
 
             $nowStructData = implode(PHP_EOL, $structData);
             if ($oldStructData && trim($oldStructData) !== trim($nowStructData)) {
-                $oldStructData = str_replace('public ?', '// public ?', $oldStructData);
+                $oldStructData = $this->commentOutStructs($oldStructData);
                 $struct[] = $oldStructData;
             }
 
@@ -463,6 +466,33 @@ class Entity extends Make
         }
 
         return trim(implode(PHP_EOL, $struct), PHP_EOL);
+    }
+
+    protected function commentOutStructs(string $content): string
+    {
+        $lines = explode(PHP_EOL, $content);
+        $isCommenting = false; // 是否开始注释
+        $commentedLines = [];
+    
+        foreach ($lines as $line) {
+            if (preg_match('/^\s*public\s*\?/', $line)) {
+                $isCommenting = true;
+            }
+    
+            if ($isCommenting) {
+                // 最后一行不加注释
+                if (trim($line) === '') {
+                    $commentedLines[] = $line;
+                    continue;
+                }
+
+                $commentedLines[] = '    // ' . substr($line, 4);
+            } else {
+                $commentedLines[] = $line;
+            }
+        }
+    
+        return implode(PHP_EOL, $commentedLines);
     }
 
     /**
