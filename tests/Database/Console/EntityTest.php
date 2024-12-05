@@ -205,7 +205,7 @@ final class EntityTest extends TestCase
         self::assertTrue(is_file($file));
 
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        self::assertStringContainsString('protected ?Comment $extends1 = null;', $content);
+        self::assertStringContainsString('public ?Comment $extends1 = null', $content);
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
@@ -214,12 +214,15 @@ final class EntityTest extends TestCase
         ], function ($container): void {
             $this->initContainerService($container);
         });
+  
         $result = $this->normalizeContent($result);
 
         self::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
         self::assertStringContainsString('#[Struct([', $content);
-        self::assertStringContainsString('protected ?Comment $extends1 = null;', $content);
+        self::assertStringContainsString('public ?Comment $extends1 = null', $content);
+        self::assertStringContainsString('// public ?int $id = null', $content);
+        self::assertStringContainsString('$this->extends1 = $this->set(\'extends1\', $v);', $content);
     }
 
     public function testWithRefreshButNotExistsOld(): void
@@ -250,7 +253,7 @@ final class EntityTest extends TestCase
         self::assertTrue(is_file($file));
 
         self::assertStringContainsString('class Test extends Entity', $content = file_get_contents($file));
-        self::assertStringContainsString('pr2otected ?Comment $extends1 = null;', $content);
+        self::assertStringContainsString('p2ublic ?Comment $extends1 = null', $content);
 
         $result = $this->runCommand(new Entity(), [
             'command' => 'make:entity',
@@ -259,6 +262,7 @@ final class EntityTest extends TestCase
         ], function ($container): void {
             $this->initContainerService($container);
         });
+        print_r($result);
         $result = $this->normalizeContent($result);
         self::assertStringContainsString($this->normalizeContent('Can not find start and end position of struct.'), $result);
     }

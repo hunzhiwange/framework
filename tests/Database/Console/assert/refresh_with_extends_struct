@@ -35,7 +35,12 @@ class Test extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    protected ?int $id = null;
+    public ?int $id = null
+    {
+        set (int|null $v) {
+            $this->int = $this->set('int', $v);
+        }
+    }
 
     #[Struct([
         self::HAS_MANY => Comment::class,
@@ -43,5 +48,11 @@ class Test extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    protected ?Comment $extends1 = null;
+    public ?Comment $extends1 = null
+    {
+        get => $this->get('extends1');
+        set (Comment|null $v) {
+            $this->extends1 = $this->set('extends1', $v);
+        }
+    }
 }

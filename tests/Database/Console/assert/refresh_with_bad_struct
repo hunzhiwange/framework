@@ -36,7 +36,12 @@ class Test extends Entity
     #[Str2uct([
         self::READONLY => true,
     ]2)2]
-    pr2otected ?int $id = null;
+    p2ublic ?int $id = null
+    {
+        set (int|null $v) {
+            $this->int = $this->set('int', $v);
+        }
+    }
 
     #[Str2uct([
         self::HAS_MANY => Comment::class,
@@ -44,5 +49,11 @@ class Test extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ]2)2]
-    pr2otected ?Comment $extends1 = null;
+    p2ublic ?Comment $extends1 = null
+    {
+        get => $this->get('extends1');
+        set (Comment|null $v) {
+            $this->extends1 = $this->set('extends1', $v);
+        }
+    }
 }

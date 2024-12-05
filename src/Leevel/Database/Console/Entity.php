@@ -203,13 +203,12 @@ class Entity extends Make
     {
         $oldStructData = [];
         $contentLines = $this->normalizeOldStructData($contentLines, $middleStructIndex, $endStructIndex);
-        
+  
         // 正则表达式匹配
-        $regex = '/#\[Struct\(\[.*?\]\)\]\s*public\s*\?\w+\s+\$(\w+)\s*=\s*null\s*\{\s*set\s*\([\w\|\?]+?\s+\$v\)\s*\{\s*.*?\s*\}\s*\}/s';
-        
+        $regex = '/#\[Struct\(\[.*?\]\)\]\s*public\s*\?\w+\s+\$(\w+)\s*=\s*null\s*\{[^}]*\}/s';
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
-                $oldStructData[UnCamelize::handle($v)] = '    ' . trim($matches[0][$i], PHP_EOL) . PHP_EOL;
+                $oldStructData[UnCamelize::handle($v)] = '    ' . trim($matches[0][$i].PHP_EOL.'    }', PHP_EOL) . PHP_EOL;
             }
         }
 
@@ -285,7 +284,16 @@ class Entity extends Make
             }
         }
 
-        if (!$endStructIndex || $startStructIndex > $endStructIndex) {
+        foreach ($contentLines as $i => $v) {
+            if ($i > $endStructIndex && '    }' === $v) {
+                $endStructIndex = $i-1;
+                break;
+            }
+        }
+
+        if (!$startStructIndex 
+            || !$endStructIndex 
+            || $startStructIndex > $endStructIndex) {
             throw new \Exception('Can not find start and end position of struct.');
         }
 
