@@ -262,7 +262,6 @@ final class EntityTest extends TestCase
         ], function ($container): void {
             $this->initContainerService($container);
         });
-        print_r($result);
         $result = $this->normalizeContent($result);
         self::assertStringContainsString($this->normalizeContent('Can not find start and end position of struct.'), $result);
     }
