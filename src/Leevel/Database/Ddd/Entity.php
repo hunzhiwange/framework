@@ -901,7 +901,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
             $this->{$realProp} = $value;
         } finally {
-            // 恢复属性更新行为，避免后续行为被覆盖
+            // 恢复属性更新行为，避免后续行为混乱
             $this->fromStorageFramework = false;
             $this->ignoreReadonlyFramework = false;
             $this->ignoreUndefinedPropFramework = false;
