@@ -40,7 +40,7 @@ class PostNew8 extends Entity
     ])]
     public ?float $userId = null
     {
-        set (float|null $v) {
+        set (float|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }

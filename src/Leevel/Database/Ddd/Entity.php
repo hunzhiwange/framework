@@ -460,13 +460,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     protected array $dataFramework = [];
 
     /**
-     * 是否为原始属性设置.
-     *
-     * - 通过这个标记避免引起属性 set 循环调用
-     */
-    protected bool $rawSetFramework = false;
-
-    /**
      * 全局数据库连接.
      */
     protected static ?string $globalConnectFramework = null;
@@ -504,7 +497,24 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 事件业务唯一标识.
      */
-    protected static array $eventBusinessIdentification = [];
+    protected static array $eventBusinessIdentificationFramework = [];
+
+    /**
+     * 设置属性忽略只读.
+     */
+    protected bool $ignoreReadonlyFramework = false;
+
+    /**
+     * 设置属性是否来源于数据源的数据.
+     *
+     * - 不会被标识为需要更新的数据
+     */
+    protected bool $fromStorageFramework = false;
+
+    /**
+     * 设置属性忽略不存在的属性.
+     */
+    protected bool $ignoreUndefinedPropFramework = false;
 
     /**
      * 构造函数.
@@ -873,16 +883,45 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     /**
      * 设置属性数据.
+     */
+    public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    {
+        try {
+            // 初始化属性更新行为
+            $this->fromStorageFramework = $fromStorage;
+            $this->ignoreReadonlyFramework = $ignoreReadonly;
+            $this->ignoreUndefinedPropFramework = $ignoreUndefinedProp;
+
+            $realProp = $this->realProp($prop, !$ignoreUndefinedProp);
+
+            // 处理忽略未定义属性的特殊逻辑
+            if ($ignoreUndefinedProp && !property_exists($this, $realProp)) {
+                return $this;
+            }
+
+            $this->{$realProp} = $value;
+        } finally {
+            // 恢复属性更新行为，避免后续行为被覆盖
+            $this->fromStorageFramework = false;
+            $this->ignoreReadonlyFramework = false;
+            $this->ignoreUndefinedPropFramework = false;
+        }
+
+        return $this;
+    }
+
+    /**
+     * 内部设置属性数据.
      *
      * @throws \InvalidArgumentException
      */
-    public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false, bool $fromSet = false): self
+    protected function withPropReal(string $prop, mixed $value): mixed
     {
         try {
             static::validate($prop = static::unCamelizeProp($prop));
         } catch (EntityPropNotDefinedException $e) {
-            if ($ignoreUndefinedProp) {
-                return $this;
+            if ($this->ignoreUndefinedPropFramework) {
+                return $value;
             }
 
             throw $e;
@@ -892,29 +931,29 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             throw new \InvalidArgumentException(sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class));
         }
 
-        if ($fromStorage) {
-            $this->propSetter($prop, $value, $fromSet);
-        } else {
-            $constantStruct = static::fields();
-
-            if ($ignoreReadonly) {
-                $this->propSetter($prop, $value, $fromSet);
-            } else {
-                if (false === $ignoreReadonly
-                    && isset($constantStruct[$prop][self::READONLY])
-                    && true === $constantStruct[$prop][self::READONLY]) {
-                    throw new \InvalidArgumentException(sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
-                }
-                $this->propSetter($prop, $value, $fromSet);
-            }
-
-            if (\in_array($prop, $this->changedPropFramework, true)) {
-                return $this;
-            }
-            $this->changedPropFramework[] = $prop;
+        if ($this->fromStorageFramework) {
+            return $this->propSetter($prop, $value);
         }
 
-        return $this;
+        if ($this->ignoreReadonlyFramework) {
+            $value = $this->propSetter($prop, $value);
+        } else {
+            $constantStruct = static::fields();
+            if (false === $this->ignoreReadonlyFramework
+                && isset($constantStruct[$prop][self::READONLY])
+                && true === $constantStruct[$prop][self::READONLY]) {
+                throw new \InvalidArgumentException(sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
+            }
+            $value = $this->propSetter($prop, $value);
+        }
+
+        if (\in_array($prop, $this->changedPropFramework, true)) {
+            return $value;
+        }
+
+        $this->changedPropFramework[] = $prop;
+
+        return $value;
     }
 
     /**
@@ -1494,10 +1533,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         // 业务标识防止重复注册事件
         if (isset($businessIdentification)) {
             $businessIdentification = $event.':'.$businessIdentification;
-            if (isset(static::$eventBusinessIdentification[$businessIdentification])) {
+            if (isset(static::$eventBusinessIdentificationFramework[$businessIdentification])) {
                 return;
             }
-            static::$eventBusinessIdentification[$businessIdentification] = true;
+            static::$eventBusinessIdentificationFramework[$businessIdentification] = true;
         }
 
         // @phpstan-ignore-next-line
@@ -1947,14 +1986,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * Setter.
      */
-    public function setter(string $prop, mixed $value, bool $fromSet = false): self
+    public function setter(string $prop, mixed $value): self
     {
         $this->dataFramework[$this->realProp($prop)] = $value;
-
-        if (!$fromSet) {
-            $this->rawSetFramework = true;
-            $this->{$this->realProp($prop)} = $value;
-        }
 
         return $this;
     }
@@ -2042,12 +2076,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
     protected function set(string $prop, mixed $value): mixed
     {
-        if ($this->rawSetFramework) {
-            $this->rawSetFramework = false;
-            return $this->prop($prop);
-        }
-
-        return $this->withProp($prop, $value, fromSet: true)->prop($prop);
+        return $this->withPropReal($prop, $value);
     }
 
     protected function get(string $prop): mixed
@@ -2559,9 +2588,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
             return null;
         }
 
-        if (method_exists($this, $method)) {
-            return $this->{$method}($prop);
-        }
+        // if (method_exists($this, $method)) {
+        //     return $this->{$method}($prop);
+        // }
 
         return $value;
     }
@@ -2571,19 +2600,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws \RuntimeException
      */
-    protected function propSetter(string $prop, mixed $value, bool $fromSet = false): void
+    protected function propSetter(string $prop, mixed $value): mixed
     {
         $prop = static::camelizeProp($prop);
         $value = $this->transformPropValue($prop, $value);
+        $this->setter($prop, $value);
 
-        $method = 'set'.ucfirst($prop);
-        if (null !== $value && method_exists($this, $method)) {
-            if (!$this->{$method}($value) instanceof static) {
-                throw new \RuntimeException(sprintf('Return type of entity setter must be instance of %s.', static::class));
-            }
-        } else {
-            $this->setter($prop, $value, $fromSet);
-        }
+        return $value;
     }
 
     /**
@@ -2638,9 +2661,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     /**
      * 校验并转换真实属性.
      */
-    protected function realProp(string $prop): string
+    protected function realProp(string $prop, bool $validate = true): string
     {
-        static::validate($prop);
+        static::validate($prop, $validate);
 
         return static::camelizeProp($prop);
     }
@@ -2650,10 +2673,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      *
      * @throws EntityPropNotDefinedException
      */
-    protected static function validate(string $prop): void
+    protected static function validate(string $prop, bool $validate = true): void
     {
         $prop = static::unCamelizeProp($prop);
-        if (!static::hasPropDefined($prop)) {
+        if ($validate && !static::hasPropDefined($prop)) {
             throw new EntityPropNotDefinedException(sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop));
         }
     }
