@@ -576,12 +576,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
     {
         // getter
         if (str_starts_with($method, 'get')) {
-            return $this->getter(lcfirst(substr($method, 3)));
+            return $this->prop(lcfirst(substr($method, 3)));
         }
 
         // setter
         if (str_starts_with($method, 'set')) {
-            $this->setter(lcfirst(substr($method, 3)), $args[0] ?? null);
+            $this->withProp(lcfirst(substr($method, 3)), $args[0] ?? null);
 
             return $this;
         }
@@ -2582,15 +2582,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     protected function propGetter(string $prop): mixed
     {
-        $method = 'get'.ucfirst($prop = static::camelizeProp($prop));
+        $prop = static::camelizeProp($prop);
         $value = $this->getter($prop);
         if (null === $value) {
             return null;
         }
-
-        // if (method_exists($this, $method)) {
-        //     return $this->{$method}($prop);
-        // }
 
         return $value;
     }

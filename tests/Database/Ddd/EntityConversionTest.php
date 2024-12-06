@@ -16,9 +16,9 @@ use Tests\Database\Ddd\Entity\DemoEntity;
     'zh-CN:title' => '实体类型转换',
     'path' => 'orm/conversion',
     'zh-CN:description' => <<<'EOT'
-实体所有的属性设置和获取都会经过 `setter` 和 `setter` 处理，每个实体都有通用的 `setter` 和 `getter`，也支持自定义 `setter` 和 `getter`。
+实体所有的属性设置和获取都会经过 `getter` 和 `setter` 处理，每个实体都有通用的 `getter` 和 `setter`，也支持自定义 `getter` 和 `setter`。
 
-我们可以通过自定义 `setter` 和 `setter` 方法实现属性类型转换。
+我们可以通过属性钩子实现属性类型转换。
 EOT,
 ])]
 final class EntityConversionTest extends TestCase
@@ -44,15 +44,13 @@ EOT,
     {
         $entity = $this->makeEntity();
         $entity->withProp($field, $source);
-
         $assertMethod = \in_array($field, [
             'obj1', 'obj2',
             'obj3', 'obj4',
             'coll1', 'coll2',
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
-
-        self::assertSame($prop, $this->getTestProperty($entity, $field));
+        $this->{$assertMethod}($prop, $entity->{$field});
         $this->{$assertMethod}($conversion, $entity->prop($field));
     }
 
@@ -60,19 +58,18 @@ EOT,
     {
         return [
             // int
-            ['int1', '4.4', 4, 5],
-
+            ['int1', '4.4', 5, 4],
             ['int2', 55, 55, 55],
 
             // float
-            ['float1', '55.02 poolTranscation', 55.02, 56.02],
+            ['float1', '55.02 poolTranscation', 56.02, 55.02],
             ['float2', 55.02, 55.02, 55.02],
             ['float3', 55, 55.0, 55.0],
 
             // string
             [
                 'string1',
-                $stringClass = new class('string1') {
+                new class('string1') {
                     private $value;
 
                     public function __construct($value)
@@ -90,46 +87,36 @@ EOT,
             ],
             ['string2', 'foo', 'foo', 'foo'],
 
+            // bool
             ['bool1', 'google', true, true],
             ['bool2', '', false, false],
             ['bool3', true, true, true],
             ['bool4', false, false, false],
-
             [
                 'obj1',
                 ['hello', 'world'],
-                '{"0":"hello","1":"world"}',
                 json_decode('{"0":"hello","1":"world"}'),
+                '{"0":"hello","1":"world"}',
             ],
             [
                 'obj2',
                 '{"hello":"world"}',
-                '{"hello":"world"}',
                 json_decode('{"hello":"world"}'),
+                '{"hello":"world"}',
             ],
             [
                 'obj3',
-                (object) ['foo' => 'bar', 'hello' => 'world'],
                 '{"foo":"bar","hello":"world"}',
-                json_decode('{"foo":"bar","hello":"world"}'),
+                '{"foo":"bar","hello":"world"}',
+                '"{\"foo\":\"bar\",\"hello\":\"world\"}"',
             ],
-            ['arr1', ['foo', 'bar'], '["foo","bar"]', ['foo', 'bar']],
-            ['arr2', '{"yes":"hello"}', '{"yes":"hello"}', ['yes' => 'hello']],
-            ['json1', ['hello', 'world'], '["hello","world"]', ['hello', 'world']],
-            ['json2', '[{"foo2":"bar2"}]', '[{"foo2":"bar2"}]', [['foo2' => 'bar2']]],
-
-            ['coll1', '{"name":"bar2"}', '{"name":"bar2"}', new Collection([new DemoEntity(['name' => 'bar2'])])],
-            ['coll2', ['name' => 'bar2'], '{"name":"bar2"}', new Collection([new DemoEntity(['name' => 'bar2'])])],
+            ['arr1', ['foo', 'bar'], ['foo', 'bar'], '["foo","bar"]'],
+            ['arr2', '{"yes":"hello"}', ['yes' => 'hello'], '{"yes":"hello"}'],
+            ['json1', ['hello', 'world'], ['hello', 'world'], '["hello","world"]'],
+            ['json2', '[{"foo2":"bar2"}]', [['foo2' => 'bar2']], '[{"foo2":"bar2"}]'],
+            ['coll1', '{"name":"bar2"}', new Collection([new DemoEntity(['name' => 'bar2'])]), '{"name":"bar2"}'],
+            ['coll2', ['name' => 'bar2'], new Collection([new DemoEntity(['name' => 'bar2'])]), '{"name":"bar2"}'],
         ];
-    }
-
-    public function testInvalidSetter(): void
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Return type of entity setter must be instance of Tests\\Database\\Ddd\\Entity\\DemoConversionEntity.');
-
-        $entity = $this->makeEntity();
-        $entity->withProp('invalid_setter', 1);
     }
 
     protected function makeEntity(): DemoConversionEntity
