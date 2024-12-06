@@ -853,8 +853,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
 
         try {
             return $call();
-        } catch (\Throwable $e) {
-            throw $e;
         } finally {
             static::withConnect($oldConnect);
             static::withGlobalConnect($oldGlobalConnect);
