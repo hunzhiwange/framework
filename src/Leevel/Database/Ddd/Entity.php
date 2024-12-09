@@ -1954,19 +1954,19 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         return $this;
     }
 
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->hasProp($index);
+        return $this->hasProp($offset);
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->withProp($index, $newval);
+        $this->withProp($offset, $value);
     }
 
-    public function offsetGet(mixed $index): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->prop($index);
+        return $this->prop($offset);
     }
 
     public function offsetUnset(mixed $offset): void

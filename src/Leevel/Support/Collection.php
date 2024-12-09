@@ -177,21 +177,21 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         return new \ArrayIterator($this->elements);
     }
 
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return isset($this->elements[$index]);
+        return isset($this->elements[$offset]);
     }
 
-    public function offsetGet(mixed $index): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->elements[$index] ?? null;
+        return $this->elements[$offset] ?? null;
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->checkType($index, true);
-        $this->checkType($newval);
-        $this->elements[$index] = $newval;
+        $this->checkType($offset, true);
+        $this->checkType($value);
+        $this->elements[$offset] = $value;
         $this->watchElements();
     }
 
@@ -297,7 +297,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
 
         throw new \UnexpectedValueException(sprintf(
             'The value%s of a collection %s type requires the following types `%s`.',
-            null === $typeIndex ? '' : ' with index '.$typeIndex,
+            null === $typeIndex ? '' : ' with offset '.$typeIndex,
             $isKey ? 'key' : 'value',
             implode(',', $types)
         ));

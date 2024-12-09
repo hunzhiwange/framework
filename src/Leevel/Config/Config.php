@@ -166,19 +166,19 @@ class Config implements IConfig, \ArrayAccess
         }
     }
 
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->has($index);
+        return $this->has($offset);
     }
 
-    public function offsetGet(mixed $index): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->get($index);
+        return $this->get($offset);
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->set($index, $newval);
+        $this->set($offset, $value);
     }
 
     public function offsetUnset(mixed $offset): void

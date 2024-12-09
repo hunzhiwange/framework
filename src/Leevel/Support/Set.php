@@ -25,9 +25,9 @@ class Set extends Vector
         parent::__construct($data, $valueType);
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        parent::offsetSet($index, $newval);
+        parent::offsetSet($offset, $value);
         $this->elements = array_unique($this->elements);
     }
 }

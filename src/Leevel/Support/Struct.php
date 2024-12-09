@@ -50,11 +50,11 @@ final class Struct extends Collection
     /**
      * @throws \InvalidArgumentException
      */
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->checkType($index, true);
-        $this->checkType($newval, typeIndex: $index);
-        $this->elements[$index] = $newval;
+        $this->checkType($offset, true);
+        $this->checkType($value, typeIndex: $offset);
+        $this->elements[$offset] = $value;
 
         if ($this->shouldValidateElement && \count($this->valueTypes) !== \count($this->elements)) {
             throw new \InvalidArgumentException('The number of elements does not match the number of types.');

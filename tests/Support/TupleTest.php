@@ -38,7 +38,7 @@ final class TupleTest extends TestCase
     public function testError(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value with index 1 of a collection value type requires the following types `int`.');
+        $this->expectExceptionMessage('The value with offset 1 of a collection value type requires the following types `int`.');
 
         $data = [
             'hello', 'hello', 'world',
@@ -75,7 +75,7 @@ final class TupleTest extends TestCase
     public function testError3(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value with index 2 of a collection value type requires the following types `string`.');
+        $this->expectExceptionMessage('The value with offset 2 of a collection value type requires the following types `string`.');
 
         $data = [
             'hello', 'hello', 'world',

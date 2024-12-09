@@ -38,7 +38,7 @@ final class StructTest extends TestCase
     public function testError(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value with index b of a collection value type requires the following types `int`.');
+        $this->expectExceptionMessage('The value with offset b of a collection value type requires the following types `int`.');
 
         $data = [
             'a' => 'hello', 'b' => 'hello', 'c' => 'world',

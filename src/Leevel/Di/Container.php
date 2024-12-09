@@ -413,19 +413,19 @@ class Container implements IContainer, \ArrayAccess
         $this->isBootstrap = true;
     }
 
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->exists($index);
+        return $this->exists($offset);
     }
 
-    public function offsetGet(mixed $index): mixed
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->make($index);
+        return $this->make($offset);
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->bind($index, $newval);
+        $this->bind($offset, $value);
     }
 
     public function offsetUnset(mixed $offset): void

@@ -41,16 +41,16 @@ class LinkedList extends \SplDoublyLinkedList
         return parent::pop();
     }
 
-    public function add(mixed $index, mixed $newval): void
+    public function add(mixed $index, mixed $value): void
     {
-        $this->validate($newval);
-        parent::add($index, $newval);
+        $this->validate($value);
+        parent::add($index, $value);
     }
 
-    public function offsetSet(mixed $index, mixed $newval): void
+    public function offsetSet(mixed $index, mixed $value): void
     {
-        $this->validate($newval);
-        parent::offsetSet($index, $newval);
+        $this->validate($value);
+        parent::offsetSet($index, $value);
     }
 
     public function push(mixed $value): void
