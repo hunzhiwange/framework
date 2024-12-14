@@ -67,7 +67,6 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
     }
@@ -127,13 +126,11 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -188,13 +185,11 @@ EOT,
 
         self::assertSame(2, $post->id);
         self::assertSame(2, $post['id']);
-        self::assertSame(2, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(1, $post2->id);
         self::assertSame(1, $post2['id']);
-        self::assertSame(1, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -249,13 +244,11 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -329,13 +322,11 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -403,13 +394,11 @@ EOT,
 
         self::assertSame(2, $post->id);
         self::assertSame(2, $post['id']);
-        self::assertSame(2, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(1, $post2->id);
         self::assertSame(1, $post2['id']);
-        self::assertSame(1, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -477,13 +466,11 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -537,14 +524,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -598,14 +583,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -654,14 +637,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -715,14 +696,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -771,14 +750,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -832,14 +809,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -894,14 +869,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -951,14 +924,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -968,14 +939,12 @@ EOT,
 
         self::assertSame(1, $postAfter->id);
         self::assertSame(1, $postAfter['id']);
-        self::assertSame(1, $postAfter->getId());
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
         self::assertSame(2, $post2After['id']);
-        self::assertSame(2, $post2After->getId());
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -1023,14 +992,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1080,14 +1047,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1097,14 +1062,12 @@ EOT,
 
         self::assertSame(1, $postAfter->id);
         self::assertSame(1, $postAfter['id']);
-        self::assertSame(1, $postAfter->getId());
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
         self::assertSame(2, $post2After['id']);
-        self::assertSame(2, $post2After->getId());
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -1152,14 +1115,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1209,14 +1170,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1226,14 +1185,12 @@ EOT,
 
         self::assertSame(1, $postAfter->id);
         self::assertSame(1, $postAfter['id']);
-        self::assertSame(1, $postAfter->getId());
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
         self::assertSame(2, $post2After['id']);
-        self::assertSame(2, $post2After->getId());
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -1282,14 +1239,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1339,14 +1294,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1356,14 +1309,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1412,14 +1363,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1469,14 +1418,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1486,14 +1433,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1542,14 +1487,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
         self::assertSame(2, $post2['id']);
-        self::assertSame(2, $post2->getId());
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1599,14 +1542,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1616,14 +1557,12 @@ EOT,
 
         self::assertNull($postAfter->id);
         self::assertNull($postAfter['id']);
-        self::assertNull($postAfter->getId());
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
         self::assertNull($post2After['id']);
-        self::assertNull($post2After->getId());
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1661,16 +1600,16 @@ EOT,
             'summary' => 'old',
         ], true);
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('old', $post->getSummary());
-        self::assertSame('old', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('old', $post->summary);
+        self::assertSame('old', $post->title);
 
         $work->persist($post);
         $work->refresh($post);
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('post summary', $post->getSummary());
-        self::assertSame('hello world', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
         $post->title = 'new title';
 
         $work->flush();
@@ -1682,7 +1621,6 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('new title', $post->title);
@@ -1713,16 +1651,16 @@ EOT,
             'summary' => 'old',
         ], true);
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('old', $post->getSummary());
-        self::assertSame('old', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('old', $post->summary);
+        self::assertSame('old', $post->title);
 
         $work->persist($post);
         $work->refresh($post);
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('post summary', $post->getSummary());
-        self::assertSame('hello world', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('post summary', $post->summary);
+        self::assertSame('hello world', $post->title);
 
         self::assertNull($work->flush());
     }
@@ -1767,8 +1705,8 @@ EOT,
             $work->rollBack();
         }
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('new title', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('new title', $post->title);
     }
 
     #[Api([
@@ -1850,8 +1788,8 @@ EOT,
 
         $newPost = Post::select()->findEntity(1);
 
-        self::assertSame(1, $newPost->getId());
-        self::assertSame('new title', $newPost->getTitle());
+        self::assertSame(1, $newPost->id);
+        self::assertSame('new title', $newPost->title);
     }
 
     #[Api([
@@ -1932,13 +1870,13 @@ EOT,
 
         $work->flush();
 
-        self::assertSame(1, $post->getId());
-        self::assertSame('new title', $post->getTitle());
+        self::assertSame(1, $post->id);
+        self::assertSame('new title', $post->title);
 
         $newPost = Post::select()->findEntity(1);
 
-        self::assertSame(1, $newPost->getId());
-        self::assertSame('new title', $newPost->getTitle());
+        self::assertSame(1, $newPost->id);
+        self::assertSame('new title', $newPost->title);
 
         $work->setEntity($post);
     }
@@ -2002,9 +1940,9 @@ EOT,
         );
 
         $post = Post::select()->findEntity(1);
-        self::assertSame(1, $post->getId());
-        self::assertSame('hello world', $post->getTitle());
-        self::assertSame('post summary', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
         self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->delete($post);
         self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));
@@ -2034,9 +1972,9 @@ EOT,
         );
 
         $post = Post::select()->findEntity(1);
-        self::assertSame(1, $post->getId());
-        self::assertSame('hello world', $post->getTitle());
-        self::assertSame('post summary', $post->getSummary());
+        self::assertSame(1, $post->id);
+        self::assertSame('hello world', $post->title);
+        self::assertSame('post summary', $post->summary);
         self::assertSame(UnitOfWork::STATE_NEW, $work->getEntityState($post));
         $work->forceDelete($post);
         self::assertSame(UnitOfWork::STATE_REMOVED, $work->getEntityState($post));

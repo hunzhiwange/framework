@@ -1032,34 +1032,6 @@ eot;
         self::assertNull($entity->title);
     }
 
-    #[Api([
-        'zh-CN:title' => 'setter 设置属性值',
-    ])]
-    public function testCallSetter(): void
-    {
-        $entity = new Post(['id' => 5]);
-        self::assertNull($entity->title);
-        self::assertNull($entity->userId);
-        $entity->setTitle('hello');
-        $entity->setUserId(5);
-        self::assertSame('hello', $entity->title);
-        self::assertSame(5, $entity->userId);
-    }
-
-    #[Api([
-        'zh-CN:title' => 'getter 获取属性值',
-    ])]
-    public function testCallGetter(): void
-    {
-        $entity = new Post(['id' => 5]);
-        self::assertNull($entity->getTitle());
-        self::assertNull($entity->getUserId());
-        $entity->setTitle('hello');
-        $entity->setUserId(5);
-        self::assertSame('hello', $entity->getTitle());
-        self::assertSame(5, $entity->getUserId());
-    }
-
     public function testCallTryLoadRelation(): void
     {
         $this->expectException(\BadMethodCallException::class);

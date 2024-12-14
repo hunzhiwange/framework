@@ -83,26 +83,20 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
-        self::assertSame(1, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertSame(1, $user->id);
         self::assertSame(1, $user['id']);
-        self::assertSame(1, $user->getId());
         self::assertSame('niu', $user->name);
         self::assertSame('niu', $user['name']);
-        self::assertSame('niu', $user->getName());
     }
 
     #[Api([
@@ -579,26 +573,20 @@ eot;
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(99999, $post->userId);
         self::assertSame(99999, $post['user_id']);
-        self::assertSame(99999, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
         self::assertNull($user['id']);
-        self::assertNull($user->getId());
         self::assertNull($user->name);
         self::assertNull($user['name']);
-        self::assertNull($user->getName());
     }
 
     public function testSourceDataIsEmtpy(): void
@@ -626,26 +614,20 @@ eot;
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(0, $post->userId);
         self::assertSame(0, $post['user_id']);
-        self::assertSame(0, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
         self::assertNull($user['id']);
-        self::assertNull($user->getId());
         self::assertNull($user->name);
         self::assertNull($user['name']);
-        self::assertNull($user->getName());
     }
 
     public function testSourceDataIsEmtpyAndValueIsNull(): void
@@ -659,10 +641,8 @@ eot;
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
         self::assertNull($user['id']);
-        self::assertNull($user->getId());
         self::assertNull($user->name);
         self::assertNull($user['name']);
-        self::assertNull($user->getName());
     }
 
     public function testEagerSourceDataIsEmtpy(): void

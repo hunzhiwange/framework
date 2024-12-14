@@ -84,16 +84,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
-        self::assertSame(1, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 
@@ -108,13 +104,10 @@ EOT,
             self::assertSame($n, $k);
             self::assertSame($id, (int) $v->id);
             self::assertSame($id, (int) $v['id']);
-            self::assertSame($id, (int) $v->getId());
             self::assertSame('niu'.$id, $v['title']);
             self::assertSame('niu'.$id, $v->title);
-            self::assertSame('niu'.$id, $v->getTitle());
             self::assertSame('Comment data.'.$id, $v['content']);
             self::assertSame('Comment data.'.$id, $v->content);
-            self::assertSame('Comment data.'.$id, $v->getContent());
 
             ++$n;
         }
@@ -364,16 +357,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
-        self::assertSame(1, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $comment = $post->comment;
 

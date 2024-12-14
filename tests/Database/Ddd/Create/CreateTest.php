@@ -132,8 +132,8 @@ EOT,
             'name' => 'foo',
         ]);
 
-        self::assertSame(5, $entity->getId());
-        self::assertNull($entity->getName());
+        self::assertSame(5, $entity->id);
+        self::assertNull($entity->name);
     }
 
     #[Api([
@@ -155,8 +155,8 @@ EOT,
             'name' => 'foo',
         ]);
 
-        self::assertNull($entity->getId());
-        self::assertSame('foo', $entity->getName());
+        self::assertNull($entity->id);
+        self::assertSame('foo', $entity->name);
     }
 
     #[Api([

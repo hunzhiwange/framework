@@ -82,16 +82,12 @@ EOT,
 
         self::assertSame(1, $post->id);
         self::assertSame(1, $post['id']);
-        self::assertSame(1, $post->getId());
         self::assertSame(1, $post->userId);
         self::assertSame(1, $post['user_id']);
-        self::assertSame(1, $post->getUserId());
         self::assertSame('hello world', $post->title);
         self::assertSame('hello world', $post['title']);
-        self::assertSame('hello world', $post->getTitle());
         self::assertSame('Say hello to the world.', $post->summary);
         self::assertSame('Say hello to the world.', $post['summary']);
-        self::assertSame('Say hello to the world.', $post->getSummary());
 
         $postContent = $post->postContent;
 
@@ -99,10 +95,8 @@ EOT,
         self::assertSame(1, $postContent->postId);
         self::assertSame(1, $postContent['post_id']);
         self::assertSame(1, $postContent['postId']);
-        self::assertSame(1, $postContent->getPostId());
         self::assertSame('I am content with big data.', $postContent->content);
         self::assertSame('I am content with big data.', $postContent['content']);
-        self::assertSame('I am content with big data.', $postContent->getContent());
     }
 
     public function testWithoutRelationCondition(): void

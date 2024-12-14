@@ -574,18 +574,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
      */
     public function __call(string $method, array $args): mixed
     {
-        // getter
-        if (str_starts_with($method, 'get')) {
-            return $this->prop(lcfirst(substr($method, 3)));
-        }
-
-        // setter
-        if (str_starts_with($method, 'set')) {
-            $this->withProp(lcfirst(substr($method, 3)), $args[0] ?? null);
-
-            return $this;
-        }
-
         // relation tips
         try {
             if (static::isRelation($unCamelize = static::unCamelizeProp($method))) {
