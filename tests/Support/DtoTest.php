@@ -94,7 +94,7 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        self::assertSame('foo', $dto1->demo_string_prop);
+        self::assertSame('foo', $dto1->demoStringProp);
     }
 
     #[Api([
@@ -467,79 +467,6 @@ final class DtoTest extends TestCase
         unset($dto1['demo_string_prop']);
     }
 
-    #[Api([
-        'zh-CN:title' => '数据传输对象属性访问魔术方法 __isset 支持',
-    ])]
-    public function testMagicIsset(): void
-    {
-        $dto1 = new Dto1([
-            'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
-        ]);
-        self::assertTrue(isset($dto1->demo_string_prop));
-        self::assertTrue(isset($dto1->demo_int_prop));
-    }
-
-    #[Api([
-        'zh-CN:title' => '数据传输对象属性访问魔术方法 __set 支持',
-    ])]
-    public function testMagicSet(): void
-    {
-        $dto1 = new Dto1([
-            'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
-        ]);
-
-        self::assertSame('foo', $dto1->demo_string_prop);
-        $dto1->demo_string_prop = 'hello';
-        self::assertSame('hello', $dto1->demo_string_prop);
-    }
-
-    #[Api([
-        'zh-CN:title' => '数据传输对象属性访问魔术方法 __get 支持',
-    ])]
-    public function testMagicGet(): void
-    {
-        $dto1 = new Dto1([
-            'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
-        ]);
-        self::assertSame('foo', $dto1->demo_string_prop);
-    }
-
-    #[Api([
-        'zh-CN:title' => '实体属性访问魔术方法 __unset 支持',
-    ])]
-    public function testMagicUnset(): void
-    {
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            'Cannot assign null to property Tests\Support\Fixtures\Dto1::$demoStringProp of type string'
-        );
-
-        $dto1 = new Dto1([
-            'demo_string_prop' => 'foo',
-            'demoIntProp' => 1,
-            'demoFloatProp' => 1.5,
-            'demoObjectProp' => new DtoProp1(),
-            'demoObject2Prop' => new DtoProp2(),
-            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
-        ]);
-        $dto1->demo_string_prop = null;
-    }
-
     public function testToArrayCamelizeStyleButOnlyUnCamelize(): void
     {
         $dto1 = new Dto1([
@@ -571,7 +498,7 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
         self::assertSame(1, $dto1->demoIntProp);
-        $dto1->demo_float_prop = null;
+        $dto1->demoFloatProp = null;
         self::assertNull($dto1->demoFloatProp);
     }
 
@@ -641,6 +568,6 @@ EOT,
         );
 
         $dto = new Dto5(['demoStringProp' => null]);
-        $dto->notFound = 5;
+        $dto['notFound'] = 5;
     }
 }

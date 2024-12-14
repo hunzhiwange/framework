@@ -93,42 +93,6 @@ abstract class Dto implements IArray, \ArrayAccess
     }
 
     /**
-     * 实现魔术方法 __get.
-     */
-    public function __get(string $prop): mixed
-    {
-        return $this->offsetGet($prop);
-    }
-
-    /**
-     * 实现魔术方法 __set.
-     */
-    public function __set(string $prop, mixed $value): void
-    {
-        $this->offsetSet($prop, $value);
-    }
-
-    /**
-     * 实现魔术方法 __isset.
-     */
-    public function __isset(string $prop): bool
-    {
-        return $this->offsetExists($prop);
-    }
-
-    /**
-     * 实现魔术方法 __unset.
-     *
-     * - 代码格式化工具自动将 unset($obj->foo) 修改为 $obj->foo = null
-     *
-     * @codeCoverageIgnore
-     */
-    public function __unset(string $prop): void
-    {
-        $this->offsetUnset($prop);
-    }
-
-    /**
      * 从数组创建数据传输对象.
      */
     public static function fromArray(array $data, bool $ignoreMissingValues = true): static
