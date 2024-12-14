@@ -24,7 +24,7 @@ use Leevel\Validate\IValidator;
 /**
  * 实体 Object Relational Mapping.
  */
-abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
+abstract class Entity implements IArray, IJson, \JsonSerializable
 {
     /**
      * 初始化全局事件.
@@ -1940,26 +1940,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable, \ArrayAccess
         $this->enabledVersionFramework = $version;
 
         return $this;
-    }
-
-    public function offsetExists(mixed $offset): bool
-    {
-        return $this->hasProp($offset);
-    }
-
-    public function offsetSet(mixed $offset, mixed $value): void
-    {
-        $this->withProp($offset, $value);
-    }
-
-    public function offsetGet(mixed $offset): mixed
-    {
-        return $this->prop($offset);
-    }
-
-    public function offsetUnset(mixed $offset): void
-    {
-        $this->withProp($offset, null);
     }
 
     /**

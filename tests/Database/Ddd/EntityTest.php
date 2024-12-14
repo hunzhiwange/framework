@@ -939,63 +939,6 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetExists 支持',
-    ])]
-    public function testArrayAccessOffsetExists(): void
-    {
-        $entity = new Post(['id' => 5, 'title' => 'hello']);
-        self::assertTrue(isset($entity['title']));
-        self::assertFalse(isset($entity['user_id']));
-    }
-
-    #[Api([
-        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetSet 支持',
-    ])]
-    public function testArrayAccessOffsetSet(): void
-    {
-        $entity = new Post(['id' => 5]);
-        self::assertFalse(isset($entity['title']));
-        self::assertNull($entity->title);
-        $entity['title'] = 'world';
-        self::assertTrue(isset($entity['title']));
-        self::assertSame('world', $entity->title);
-    }
-
-    #[Api([
-        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetGet 支持',
-    ])]
-    public function testArrayAccessOffsetGet(): void
-    {
-        $entity = new Post(['id' => 5]);
-        self::assertNull($entity['title']);
-        $entity['title'] = 'world';
-        self::assertSame('world', $entity['title']);
-    }
-
-    #[Api([
-        'zh-CN:title' => '实体属性数组访问 ArrayAccess.offsetUnset 支持',
-    ])]
-    public function testArrayAccessOffsetUnset(): void
-    {
-        $entity = new Post(['id' => 5]);
-        self::assertNull($entity['title']);
-        $entity['title'] = 'world';
-        self::assertSame('world', $entity['title']);
-        unset($entity['title']);
-        self::assertNull($entity['title']);
-    }
-
-    #[Api([
-        'zh-CN:title' => '实体属性访问魔术方法 __isset 支持',
-    ])]
-    public function testMagicIsset(): void
-    {
-        $entity = new Post(['id' => 5, 'title' => 'hello']);
-        self::assertTrue(isset($entity->title));
-        self::assertFalse(isset($entity->userId));
-    }
-
-    #[Api([
         'zh-CN:title' => '实体属性访问魔术方法 __set 支持',
     ])]
     public function testMagicSet(): void

@@ -83,13 +83,9 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
-        self::assertSame(1, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $comment = $post->comment;
 
@@ -103,10 +99,7 @@ EOT,
             self::assertInstanceOf(Comment::class, $v);
             self::assertSame($n, $k);
             self::assertSame($id, (int) $v->id);
-            self::assertSame($id, (int) $v['id']);
-            self::assertSame('niu'.$id, $v['title']);
             self::assertSame('niu'.$id, $v->title);
-            self::assertSame('Comment data.'.$id, $v['content']);
             self::assertSame('Comment data.'.$id, $v->content);
 
             ++$n;
@@ -356,13 +349,9 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
-        self::assertSame(1, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $comment = $post->comment;
 

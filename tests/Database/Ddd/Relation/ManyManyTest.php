@@ -129,9 +129,7 @@ EOT,
         $user = User::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -141,22 +139,18 @@ EOT,
 
         $this->assertInstanceof(Role::class, $role1);
         self::assertSame(1, $role1->id);
-        self::assertSame(1, $role1['id']);
         self::assertSame('管理员', $role1->name);
-        self::assertSame('管理员', $role1['name']);
 
         $role2 = $role[1];
 
         self::assertSame(3, $role2->id);
-        self::assertSame(3, $role2['id']);
         self::assertSame('会员', $role2->name);
-        self::assertSame('会员', $role2['name']);
 
         self::assertCount(2, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
-        self::assertSame(3, $role[1]['id']);
-        self::assertSame('会员', $role[1]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
+        self::assertSame(3, $role[1]->id);
+        self::assertSame('会员', $role[1]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
@@ -243,9 +237,7 @@ EOT,
         ;
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -255,23 +247,19 @@ EOT,
 
         $this->assertInstanceof(Role::class, $role1);
         self::assertSame(1, $role1->id);
-        self::assertSame(1, $role1['id']);
         self::assertSame('管理员', $role1->name);
-        self::assertSame('管理员', $role1['name']);
 
         $role2 = $role[1];
 
         $this->assertInstanceof(Role::class, $role2);
         self::assertSame(3, $role2->id);
-        self::assertSame(3, $role2['id']);
         self::assertSame('会员', $role2->name);
-        self::assertSame('会员', $role2['name']);
 
         self::assertCount(2, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
-        self::assertSame(3, $role[1]['id']);
-        self::assertSame('会员', $role[1]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
+        self::assertSame(3, $role[1]->id);
+        self::assertSame('会员', $role[1]->name);
 
         $middle = $role[0]->middle();
         self::assertSame(1, $middle->userId);
@@ -358,9 +346,7 @@ EOT,
         ;
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -485,9 +471,7 @@ EOT,
         $user = User::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -558,9 +542,7 @@ EOT,
         $user = User::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -619,9 +601,7 @@ EOT,
         ;
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -855,9 +835,7 @@ EOT,
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleSoftDeleted;
 
@@ -875,23 +853,19 @@ eot;
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
         self::assertSame(1, $role1->id);
-        self::assertSame(1, $role1['id']);
         self::assertSame('管理员', $role1->name);
-        self::assertSame('管理员', $role1['name']);
 
         $role2 = $role[1];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role2);
         self::assertSame(3, $role2->id);
-        self::assertSame(3, $role2['id']);
         self::assertSame('会员', $role2->name);
-        self::assertSame('会员', $role2['name']);
 
         self::assertCount(2, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
-        self::assertSame(3, $role[1]['id']);
-        self::assertSame('会员', $role[1]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
+        self::assertSame(3, $role[1]->id);
+        self::assertSame('会员', $role[1]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
@@ -981,9 +955,7 @@ eot;
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleSoftDeleted;
 
@@ -1001,16 +973,14 @@ eot;
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
         self::assertSame(1, $role1->id);
-        self::assertSame(1, $role1['id']);
         self::assertSame('管理员', $role1->name);
-        self::assertSame('管理员', $role1['name']);
 
         $role2 = $role[1] ?? null;
         self::assertNull($role2);
 
         self::assertCount(1, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
@@ -1107,9 +1077,7 @@ EOT,
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleMiddleWithSoftDeleted;
 
@@ -1127,23 +1095,19 @@ eot;
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
         self::assertSame(1, $role1->id);
-        self::assertSame(1, $role1['id']);
         self::assertSame('管理员', $role1->name);
-        self::assertSame('管理员', $role1['name']);
 
         $role2 = $role[1];
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role2);
         self::assertSame(3, $role2->id);
-        self::assertSame(3, $role2['id']);
         self::assertSame('会员', $role2->name);
-        self::assertSame('会员', $role2['name']);
 
         self::assertCount(2, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
-        self::assertSame(3, $role[1]['id']);
-        self::assertSame('会员', $role[1]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
+        self::assertSame(3, $role[1]->id);
+        self::assertSame('会员', $role[1]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
@@ -1245,9 +1209,7 @@ EOT,
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleMiddleOnlySoftDeleted;
 
@@ -1265,19 +1227,15 @@ eot;
 
         $this->assertInstanceof(RoleSoftDeleted::class, $role1);
         self::assertSame(3, $role1->id);
-        self::assertSame(3, $role1['id']);
         self::assertSame('会员', $role1->name);
-        self::assertSame('会员', $role1['name']);
 
         $role2 = $role[1];
 
         self::assertNull($role2);
 
         self::assertCount(1, $role);
-        self::assertSame(3, $role[0]['id']);
-        self::assertSame('会员', $role[0]['name']);
-        self::assertNull($role[1]['id'] ?? null);
-        self::assertNull($role[1]['name'] ?? null);
+        self::assertSame(3, $role[0]->id);
+        self::assertSame('会员', $role[0]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRoleSoftDeleted::class, $middle);
@@ -1374,9 +1332,7 @@ EOT,
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition;
 
@@ -1489,9 +1445,7 @@ EOT,
         );
 
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->roleMiddleField;
 
@@ -1510,9 +1464,7 @@ eot;
 
         $this->assertInstanceof(Role::class, $role1);
         self::assertSame(2, $role1->id);
-        self::assertSame(2, $role1['id']);
         self::assertSame('版主', $role1->name);
-        self::assertSame('版主', $role1['name']);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);

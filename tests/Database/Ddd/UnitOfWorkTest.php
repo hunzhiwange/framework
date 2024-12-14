@@ -66,7 +66,6 @@ EOT,
         $work->flush();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
     }
@@ -125,12 +124,10 @@ EOT,
         );
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -184,12 +181,10 @@ EOT,
         );
 
         self::assertSame(2, $post->id);
-        self::assertSame(2, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(1, $post2->id);
-        self::assertSame(1, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -243,12 +238,10 @@ EOT,
         );
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -321,12 +314,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -393,12 +384,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(2, $post->id);
-        self::assertSame(2, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(1, $post2->id);
-        self::assertSame(1, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -465,12 +454,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
     }
@@ -523,13 +510,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -582,13 +567,11 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -636,13 +619,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -695,13 +676,11 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -749,13 +728,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -808,13 +785,11 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('new post title', $post->title);
         self::assertSame('new post summary', $post->summary);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('new post2 title', $post2->title);
         self::assertSame('new post2 summary', $post2->summary);
@@ -868,13 +843,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -923,13 +896,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -938,13 +909,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertSame(1, $postAfter->id);
-        self::assertSame(1, $postAfter['id']);
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
-        self::assertSame(2, $post2After['id']);
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -991,13 +960,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1046,13 +1013,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1061,13 +1026,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertSame(1, $postAfter->id);
-        self::assertSame(1, $postAfter['id']);
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
-        self::assertSame(2, $post2After['id']);
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -1114,13 +1077,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1169,13 +1130,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1184,13 +1143,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertSame(1, $postAfter->id);
-        self::assertSame(1, $postAfter['id']);
         self::assertSame(1, $postAfter->userId);
         self::assertSame('post summary', $postAfter->summary);
         self::assertSame('hello world', $postAfter->title);
 
         self::assertSame(2, $post2After->id);
-        self::assertSame(2, $post2After['id']);
         self::assertSame(2, $post2After->userId);
         self::assertSame('foo bar', $post2After->summary);
         self::assertSame('hello world', $post2After->title);
@@ -1238,13 +1195,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1293,13 +1248,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1308,13 +1261,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1362,13 +1313,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1417,13 +1366,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1432,13 +1379,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1486,13 +1431,11 @@ EOT,
         $this->assertInstanceof(Post::class, $post2);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('hello world', $post->title);
 
         self::assertSame(2, $post2->id);
-        self::assertSame(2, $post2['id']);
         self::assertSame(2, $post2->userId);
         self::assertSame('foo bar', $post2->summary);
         self::assertSame('hello world', $post2->title);
@@ -1541,13 +1484,11 @@ EOT,
         $post2After = Post::select()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1556,13 +1497,11 @@ EOT,
         $post2After = Post::withSoftDeleted()->findEntity(2);
 
         self::assertNull($postAfter->id);
-        self::assertNull($postAfter['id']);
         self::assertNull($postAfter->userId);
         self::assertNull($postAfter->title);
         self::assertNull($postAfter->summary);
 
         self::assertNull($post2After->id);
-        self::assertNull($post2After['id']);
         self::assertNull($post2After->userId);
         self::assertNull($post2After->title);
         self::assertNull($post2After->summary);
@@ -1620,7 +1559,6 @@ EOT,
         $this->assertInstanceof(Post::class, $post);
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
         self::assertSame('post summary', $post->summary);
         self::assertSame('new title', $post->title);

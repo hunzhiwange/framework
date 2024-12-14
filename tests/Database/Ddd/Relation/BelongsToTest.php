@@ -82,21 +82,15 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
-        self::assertSame(1, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
     }
 
     #[Api([
@@ -572,21 +566,15 @@ eot;
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(99999, $post->userId);
-        self::assertSame(99999, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
-        self::assertNull($user['id']);
         self::assertNull($user->name);
-        self::assertNull($user['name']);
     }
 
     public function testSourceDataIsEmtpy(): void
@@ -613,21 +601,15 @@ eot;
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(0, $post->userId);
-        self::assertSame(0, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
-        self::assertNull($user['id']);
         self::assertNull($user->name);
-        self::assertNull($user['name']);
     }
 
     public function testSourceDataIsEmtpyAndValueIsNull(): void
@@ -640,9 +622,7 @@ eot;
 
         $this->assertInstanceof(User::class, $user);
         self::assertNull($user->id);
-        self::assertNull($user['id']);
         self::assertNull($user->name);
-        self::assertNull($user['name']);
     }
 
     public function testEagerSourceDataIsEmtpy(): void

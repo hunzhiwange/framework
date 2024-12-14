@@ -135,21 +135,15 @@ EOT,
         $post = Post::select()->where('id', 1)->findOne();
 
         self::assertSame(1, $post->id);
-        self::assertSame(1, $post['id']);
         self::assertSame(1, $post->userId);
-        self::assertSame(1, $post['user_id']);
         self::assertSame('hello world', $post->title);
-        self::assertSame('hello world', $post['title']);
         self::assertSame('Say hello to the world.', $post->summary);
-        self::assertSame('Say hello to the world.', $post['summary']);
 
         $user = $post->user;
 
         $this->assertInstanceof(User::class, $user);
         self::assertSame(1, $user->id);
-        self::assertSame(1, $user['id']);
         self::assertSame('niu', $user->name);
-        self::assertSame('niu', $user['name']);
 
         $role = $user->role;
 
@@ -159,22 +153,18 @@ EOT,
 
         $this->assertInstanceof(Role::class, $user1);
         self::assertSame(1, $user1->id);
-        self::assertSame(1, $user1['id']);
         self::assertSame('管理员', $user1->name);
-        self::assertSame('管理员', $user1['name']);
 
         $user2 = $role[1];
         $this->assertInstanceof(Role::class, $user2);
         self::assertSame(3, $user2->id);
-        self::assertSame(3, $user2['id']);
         self::assertSame('会员', $user2->name);
-        self::assertSame('会员', $user2['name']);
 
         self::assertCount(2, $role);
-        self::assertSame(1, $role[0]['id']);
-        self::assertSame('管理员', $role[0]['name']);
-        self::assertSame(3, $role[1]['id']);
-        self::assertSame('会员', $role[1]['name']);
+        self::assertSame(1, $role[0]->id);
+        self::assertSame('管理员', $role[0]->name);
+        self::assertSame(3, $role[1]->id);
+        self::assertSame('会员', $role[1]->name);
 
         $middle = $role[0]->middle();
         $this->assertInstanceof(UserRole::class, $middle);
