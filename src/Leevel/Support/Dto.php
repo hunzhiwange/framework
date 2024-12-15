@@ -12,7 +12,7 @@ use Leevel\Support\Str\UnCamelize;
 /**
  * 数据传输对象.
  */
-abstract class Dto implements IArray, \ArrayAccess
+abstract class Dto implements IArray
 {
     /**
      * 驼峰法命名属性缓存.
@@ -93,9 +93,6 @@ abstract class Dto implements IArray, \ArrayAccess
         if (!$this->ignoreMissingValuesFramework && $data) {
             throw new \UnexpectedValueException(sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className));
         }
-
-        // 遍历校验所有公共属性值是否初始化
-        $this->all();
     }
 
     /**
@@ -199,28 +196,54 @@ abstract class Dto implements IArray, \ArrayAccess
         });
     }
 
-    public function offsetExists(mixed $offset): bool
+    /**
+     * 是否存在属性数据.
+     */
+    public function hasProp(string $prop): bool
     {
-        return isset($this->{$this->validateCamelizeProperties($offset)});
+        return isset($this->{$this->validateCamelizeProperties($prop)});
     }
 
-    public function offsetGet(mixed $offset): mixed
+    /**
+     * 获取属性数据.
+     */
+    public function getProp(string $prop): mixed
     {
-        return $this->{$this->validateCamelizeProperties($offset)};
+        return $this->{$this->validateCamelizeProperties($prop)};
     }
 
-    public function offsetSet(mixed $offset, mixed $value): void
+    /**
+     * 批量设置属性数据.
+     */
+    public function setProps(array $props): self
     {
-        $prop = $this->validateCamelizeProperties($offset);
+        foreach ($props as $prop => $value) {
+            $this->setProp($prop, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 设置属性数据.
+     */
+    public function setProp(string $prop, mixed $value): self
+    {
+        $prop = $this->validateCamelizeProperties($prop);
         $this->setData($prop, $value);
         $this->{$prop} = $value;
+
+        return $this;
     }
 
-    public function offsetUnset(mixed $offset): void
+    /**
+     * 删除属性数据.
+     */
+    public function deleteProp(string $prop): void
     {
-        $prop = $this->validateCamelizeProperties($offset);
+        $prop = $this->validateCamelizeProperties($prop);
         $this->{$prop} = null;
-        $this->unsetData($prop);
+        $this->deleteData($prop);
     }
 
     protected function set(string $prop, mixed $value): mixed
@@ -247,7 +270,7 @@ abstract class Dto implements IArray, \ArrayAccess
         $this->dataFramework[$camelizeProp] = $value;
     }
 
-    protected function unsetData(string $camelizeProp): void
+    protected function deleteData(string $camelizeProp): void
     {
         unset($this->dataFramework[$camelizeProp]);
     }
@@ -265,7 +288,7 @@ abstract class Dto implements IArray, \ArrayAccess
     protected function fillDefaultValue(string $camelizeProp, mixed $defaultValue): void
     {
         if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
-            $this->offsetSet($camelizeProp, $this->{$defaultValueMethod}());
+            $this->setProp($camelizeProp, $this->{$defaultValueMethod}());
         } elseif (isset($defaultValue)) {
             $this->setData($camelizeProp, $defaultValue);
         }
@@ -280,7 +303,7 @@ abstract class Dto implements IArray, \ArrayAccess
             return;
         }
 
-        $this->offsetSet($camelizeProp, $this->transformValue($camelizeProp, $value, $defaultType));
+        $this->setProp($camelizeProp, $this->transformValue($camelizeProp, $value, $defaultType));
     }
 
     protected function transformValue(string $camelizeProp, mixed $value, ?string $defaultType): mixed

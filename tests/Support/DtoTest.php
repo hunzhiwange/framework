@@ -384,9 +384,9 @@ final class DtoTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetExists 支持',
+        'zh-CN:title' => '是否存在属性数据 hasProp',
     ])]
-    public function testOffsetExists(): void
+    public function testHasProp(): void
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
@@ -397,14 +397,14 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        self::assertTrue(isset($dto1['demo_string_prop']));
-        self::assertTrue(isset($dto1['demoStringProp']));
+        self::assertTrue($dto1->hasProp('demo_string_prop'));
+        self::assertTrue($dto1->hasProp('demoStringProp'));
     }
 
     #[Api([
-        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetSet 支持',
+        'zh-CN:title' => '设置属性数据 setProp',
     ])]
-    public function testOffsetSet(): void
+    public function testSetProp(): void
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
@@ -415,19 +415,38 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        $dto1['demo_string_prop'] = 'hello_world';
-        self::assertSame('hello_world', $dto1['demo_string_prop']);
-        self::assertSame('hello_world', $dto1['demoStringProp']);
+        $dto1->setProp('demo_string_prop', 'hello_world');
+        self::assertSame('hello_world', $dto1->getProp('demo_string_prop'));
+        self::assertSame('hello_world', $dto1->getProp('demoStringProp'));
 
-        $dto1['demo_string_prop'] = 'hello_world2';
-        self::assertSame('hello_world2', $dto1['demo_string_prop']);
-        self::assertSame('hello_world2', $dto1['demoStringProp']);
+        $dto1->setProp('demo_string_prop', 'hello_world2');
+        self::assertSame('hello_world2', $dto1->getProp('demo_string_prop'));
+        self::assertSame('hello_world2', $dto1->getProp('demoStringProp'));
     }
 
     #[Api([
-        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetGet 支持',
+        'zh-CN:title' => '批量设置属性数据 setProps',
     ])]
-    public function testOffsetGet(): void
+    public function testSetProps(): void
+    {
+        $dto1 = new Dto1();
+        $dto1->setProps([
+            'demo_string_prop' => 'foo',
+            'demoIntProp' => 1,
+            'demoFloatProp' => 1.5,
+            'demoObjectProp' => new DtoProp1(),
+            'demoObject2Prop' => new DtoProp2(),
+            'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
+        ]);
+
+        self::assertSame('foo', $dto1->getProp('demo_string_prop'));
+        self::assertSame('foo', $dto1->getProp('demoStringProp'));
+    }
+
+    #[Api([
+        'zh-CN:title' => '获取属性数据 getProp',
+    ])]
+    public function testGetProp(): void
     {
         $dto1 = new Dto1([
             'demo_string_prop' => 'foo',
@@ -438,14 +457,14 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        self::assertSame('foo', $dto1['demo_string_prop']);
-        self::assertSame('foo', $dto1['demoStringProp']);
+        self::assertSame('foo', $dto1->getProp('demo_string_prop'));
+        self::assertSame('foo', $dto1->getProp('demoStringProp'));
     }
 
     #[Api([
-        'zh-CN:title' => '数据传输对象属性数组访问 ArrayAccess.offsetUnset 支持',
+        'zh-CN:title' => '删除属性数据 deleteProp',
     ])]
-    public function testOffsetUnset(): void
+    public function testDeleteProp(): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(
@@ -461,10 +480,10 @@ final class DtoTest extends TestCase
             'demoObject3Prop' => new Dto2(['demoStringProp' => 'hello world']),
         ]);
 
-        self::assertSame('foo', $dto1['demo_string_prop']);
-        self::assertSame('foo', $dto1['demoStringProp']);
+        self::assertSame('foo', $dto1->getProp('demo_string_prop'));
+        self::assertSame('foo', $dto1->getProp('demoStringProp'));
 
-        unset($dto1['demo_string_prop']);
+        $dto1->deleteProp('demo_string_prop');
     }
 
     public function testToArrayCamelizeStyleButOnlyUnCamelize(): void
@@ -568,7 +587,7 @@ EOT,
         );
 
         $dto = new Dto5(['demoStringProp' => null]);
-        $dto['notFound'] = 5;
+        $dto->setProp('notFound', 5);
     }
 
     public function test7(): void
