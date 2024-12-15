@@ -987,7 +987,7 @@ class Repository implements ISelect
     public function validateDataExists(array $data, ?string $field = null, string $countField = '*', ?\Closure $condition = null): void
     {
         if (!$field) {
-            $field = $this->entity->singlePrimaryKey();
+            $field = $this->entity->getSinglePrimaryKey();
         }
 
         $select = $this->getEntitySelect();

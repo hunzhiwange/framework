@@ -798,7 +798,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         }
 
         if (\defined($entity::class.'::REPOSITORY')) {
-            $name = (string) static::entityConstant('REPOSITORY');
+            $name = (string) static::getEntityConstant('REPOSITORY');
 
             /** @var Repository $repository */
             $repository = new $name($entity, static::eventDispatch());
@@ -834,8 +834,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             return static::virtualMeta();
         }
 
-        return Meta::instance(static::table())
-            ->setDatabaseConnect(static::connect())
+        return Meta::instance(static::getTable())
+            ->setDatabaseConnect(static::getConnect())
         ;
     }
 
@@ -844,8 +844,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     public static function connectSandbox(?string $connect, \Closure $call): mixed
     {
-        $oldConnect = static::connect();
-        $oldGlobalConnect = static::globalConnect();
+        $oldConnect = static::getConnect();
+        $oldGlobalConnect = static::getGlobalConnect();
         static::setConnect($connect);
         static::setGlobalConnect($connect);
 
@@ -947,7 +947,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取属性数据.
      */
-    public function prop(string $prop): mixed
+    public function getProp(string $prop): mixed
     {
         static::validate($prop = static::unCamelizeProp($prop));
         if (!static::isRelation($prop)) {
@@ -962,7 +962,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     public function hasProp(string $prop): bool
     {
-        return null !== $this->prop($prop);
+        return null !== $this->getProp($prop);
     }
 
     /**
@@ -1096,7 +1096,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $this->isSoftDeleteFramework = true;
         $this->clearChanged();
-        $this->setProp(static::deleteAtColumn(), time());
+        $this->setProp(static::getDeleteAtColumn(), time());
 
         return $this->update();
     }
@@ -1108,7 +1108,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $this->isSoftRestoreFramework = true;
         $this->clearChanged();
-        $this->setProp(static::deleteAtColumn(), 0);
+        $this->setProp(static::getDeleteAtColumn(), 0);
 
         return $this->update();
     }
@@ -1118,7 +1118,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     public function softDeleted(): bool
     {
-        return (int) $this->prop(static::deleteAtColumn()) > 0;
+        return (int) $this->getProp(static::getDeleteAtColumn()) > 0;
     }
 
     /**
@@ -1126,7 +1126,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    public static function deleteAtColumn(): string
+    public static function getDeleteAtColumn(): string
     {
         if (!static::definedEntityConstant('DELETE_AT')) {
             throw new \InvalidArgumentException(sprintf(
@@ -1135,7 +1135,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             ));
         }
 
-        $deleteAt = (string) static::entityConstant('DELETE_AT');
+        $deleteAt = (string) static::getEntityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
             throw new \InvalidArgumentException(sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
@@ -1246,7 +1246,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         if (false === $id) {
             // @todo 查看一下和现在的设计冲突
             if (static::definedEntityConstant('UNIQUE')) {
-                foreach ((array) static::entityConstant('UNIQUE') as $uniqueKey) {
+                foreach ((array) static::getEntityConstant('UNIQUE') as $uniqueKey) {
                     if (false !== $id = $this->parseUniqueKeyValue($uniqueKey)) {
                         break;
                     }
@@ -1637,7 +1637,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     public static function primaryKey(): array
     {
-        $key = (array) static::entityConstant('ID');
+        $key = (array) static::getEntityConstant('ID');
         if (\in_array(null, $key, true)) {
             $key = [];
         }
@@ -1666,7 +1666,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     public static function autoIncrement(): ?string
     {
         // @phpstan-ignore-next-line
-        return static::entityConstant('AUTO');
+        return static::getEntityConstant('AUTO');
     }
 
     /**
@@ -1684,7 +1684,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 返回所有字段名字.
      */
-    public static function columnNames(): array
+    public static function getColumnNames(): array
     {
         $columnNames = [];
         foreach (static::fields() as $field => $v) {
@@ -1699,7 +1699,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 返回字段名字.
      */
-    public static function columnName(string $column): string
+    public static function getColumnName(string $column): string
     {
         $name = static::fields()[$column][static::COLUMN_NAME] ?? '';
         if (!$name) {
@@ -1712,7 +1712,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 返回字段验证规则.
      */
-    public static function columnValidators(string $validatorScenes, array $validatorFields = []): array
+    public static function getColumnValidators(string $validatorScenes, array $validatorFields = []): array
     {
         $validatorRules = [];
         $validatorMessages = [];
@@ -1780,7 +1780,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    public static function singlePrimaryKey(): string
+    public static function getSinglePrimaryKey(): string
     {
         $key = static::primaryKey();
         if (\count($key) > 1) {
@@ -1793,9 +1793,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 返回设置表.
      */
-    public static function table(): string
+    public static function getTable(): string
     {
-        return (string) static::entityConstant('TABLE');
+        return (string) static::getEntityConstant('TABLE');
     }
 
     /**
@@ -1948,7 +1948,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     public static function shouldVirtual(): bool
     {
         return static::definedEntityConstant('VIRTUAL')
-            && true === static::entityConstant('VIRTUAL');
+            && true === static::getEntityConstant('VIRTUAL');
     }
 
     /**
@@ -1980,7 +1980,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取全局数据库连接.
      */
-    public static function globalConnect(): ?string
+    public static function getGlobalConnect(): ?string
     {
         return static::$globalConnectFramework;
     }
@@ -2000,10 +2000,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * Get database connect.
      */
-    public static function connect(): ?string
+    public static function getConnect(): ?string
     {
         if (!(static::definedEntityConstant('WITHOUT_GLOBAL_CONNECT')
-                && true === static::entityConstant('WITHOUT_GLOBAL_CONNECT'))
+                && true === static::getEntityConstant('WITHOUT_GLOBAL_CONNECT'))
             && static::$globalConnectFramework) {
             return static::$globalConnectFramework;
         }
@@ -2016,7 +2016,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取实体常量.
      */
-    public static function entityConstant(string $const): mixed
+    public static function getEntityConstant(string $const): mixed
     {
         // @phpstan-ignore-next-line
         return \constant(static::class.'::'.$const);
@@ -2049,7 +2049,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
     protected function get(string $prop): mixed
     {
-        return $this->prop($prop);
+        return $this->getProp($prop);
     }
 
     /**
@@ -2245,7 +2245,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     protected static function selectAndDestroyEntitys(array $ids, string $type, bool $forceDelete = false): int
     {
         $entitys = static::select()
-            ->whereIn(static::singlePrimaryKey(), $ids)
+            ->whereIn(static::getSinglePrimaryKey(), $ids)
             ->findAll()
         ;
 
@@ -2274,12 +2274,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
                 break;
 
             case self::ONLY_SOFT_DELETED:
-                $select->where(static::deleteAtColumn(), '>', 0);
+                $select->where(static::getDeleteAtColumn(), '>', 0);
 
                 break;
 
             case self::WITHOUT_SOFT_DELETED:
-                $select->where(static::deleteAtColumn(), 0);
+                $select->where(static::getDeleteAtColumn(), 0);
 
                 break;
 
@@ -2417,7 +2417,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
             $this->clearChanged();
             if ($hasVersion) {
-                $constantVersion = (string) static::entityConstant('VERSION');
+                $constantVersion = (string) static::getEntityConstant('VERSION');
                 $this->setProp($constantVersion, $condition[$constantVersion] + 1);
             }
 
@@ -2490,9 +2490,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             return false;
         }
 
-        $constantVersion = (string) static::entityConstant('VERSION');
+        $constantVersion = (string) static::getEntityConstant('VERSION');
         if (!isset($condition[$constantVersion])) {
-            if (null === ($versionData = $this->prop($constantVersion))) {
+            if (null === ($versionData = $this->getProp($constantVersion))) {
                 return false;
             }
             $condition[$constantVersion] = $versionData;
@@ -2539,7 +2539,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             if (!\array_key_exists($prop, $propKey)) {
                 continue;
             }
-            $saveData[$prop] = $this->prop($prop);
+            $saveData[$prop] = $this->getProp($prop);
         }
 
         return $saveData;
@@ -2603,7 +2603,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         if (null === $value) {
             $camelizeClass = 'fill'.ucfirst(static::camelizeProp($prop));
             if (method_exists($this, $camelizeClass)) {
-                $value = $this->{$camelizeClass}($this->prop($prop));
+                $value = $this->{$camelizeClass}($this->getProp($prop));
             }
         }
 
@@ -2669,7 +2669,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         if (!$entity->hasField($field)) {
             throw new \InvalidArgumentException(sprintf(
                 'The field `%s`.`%s` of entity `%s` was not defined.',
-                $entity->table(),
+                $entity->getTable(),
                 $field,
                 $entity::class
             ));
@@ -2733,7 +2733,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $result = [];
         foreach ($key as $value) {
-            if (null === ($tmp = $this->prop($value))) {
+            if (null === ($tmp = $this->getProp($value))) {
                 continue;
             }
             $result[$value] = $tmp;

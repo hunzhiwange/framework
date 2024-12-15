@@ -60,7 +60,7 @@ class HasMany extends Relation
     {
         $maps = $this->buildMap($result);
         foreach ($entities as &$entity) {
-            $key = $entity->prop($this->sourceKey);
+            $key = $entity->getProp($this->sourceKey);
             $entity->setRelationProp(
                 $relation,
                 $this->getRelationValue($maps[$key] ?? [], $type)
@@ -95,7 +95,7 @@ class HasMany extends Relation
 
         /** @var Entity $value */
         foreach ($result as $value) {
-            $maps[$value->prop($this->targetKey)][] = $value;
+            $maps[$value->getProp($this->targetKey)][] = $value;
         }
 
         return $maps;

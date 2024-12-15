@@ -51,7 +51,7 @@ EOT,
             'collection1', 'collection2',
         ], true) ? 'assertEquals' : 'assertSame';
         $this->{$assertMethod}($prop, $entity->{$field});
-        $this->{$assertMethod}($conversion, $entity->prop($field));
+        $this->{$assertMethod}($conversion, $entity->getProp($field));
     }
 
     public static function getBaseUseData(): array

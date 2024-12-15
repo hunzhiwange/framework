@@ -960,7 +960,7 @@ abstract class Relation implements IRelation
 
     public function getSourceValue(): mixed
     {
-        return $this->sourceEntity->prop($this->sourceKey);
+        return $this->sourceEntity->getProp($this->sourceKey);
     }
 
     protected function callSelectMethodChain(string $method, mixed ...$args): self
@@ -1003,7 +1003,7 @@ abstract class Relation implements IRelation
     protected function getEntityKey(array $entities, string $key): array
     {
         $values = array_map(static function (Entity $entity) use ($key): mixed {
-            return $entity->prop($key);
+            return $entity->getProp($key);
         }, $entities);
 
         return array_unique(array_values($values));

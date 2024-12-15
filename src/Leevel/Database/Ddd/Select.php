@@ -887,7 +887,7 @@ class Select implements ISelect
     {
         $result = $this->select
             ->if(\is_int($idOrCondition) || \is_string($idOrCondition))
-            ->where($this->entity->singlePrimaryKey(), '=', $idOrCondition)
+            ->where($this->entity->getSinglePrimaryKey(), '=', $idOrCondition)
             ->elif($idOrCondition instanceof \Closure || \is_array($idOrCondition))
             ->where($idOrCondition)
             ->fi()
@@ -908,7 +908,7 @@ class Select implements ISelect
 
         $result = $this->select
             ->if(\is_array($idsOrCondition))
-            ->whereIn($this->entity->singlePrimaryKey(), $idsOrCondition)
+            ->whereIn($this->entity->getSinglePrimaryKey(), $idsOrCondition)
             ->elif($idsOrCondition instanceof \Closure)
             ->where($idsOrCondition)
             ->fi()
@@ -923,13 +923,13 @@ class Select implements ISelect
     public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
     {
         // 没有查询主键字段，自动补上主键自动
-        $singlePrimaryKey = $this->entity->singlePrimaryKey();
+        $singlePrimaryKey = $this->entity->getSinglePrimaryKey();
         if (!\in_array('*', $column, true) && !\in_array($singlePrimaryKey, $column, true)) {
             $column[] = $singlePrimaryKey;
         }
 
         $result = $this->findEntity($idOrCondition, $column);
-        if (null !== $result->prop($singlePrimaryKey)) {
+        if (null !== $result->getProp($singlePrimaryKey)) {
             return $result;
         }
 

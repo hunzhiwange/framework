@@ -302,7 +302,7 @@ EOT,
             'status' => 5,
         ], true);
 
-        [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
+        [$validatorRules, $validatorMessages] = EntityWithEnum::getColumnValidators('store');
         $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
         $result = $validator->fail();
         self::assertTrue($result);
@@ -329,7 +329,7 @@ eot;
             'title' => 'foo',
             'status' => 5,
         ]);
-        [$validatorRules, $validatorMessages] = EntityWithEnum::columnValidators('store');
+        [$validatorRules, $validatorMessages] = EntityWithEnum::getColumnValidators('store');
 
         $validator = new Validator($entity->toArray(), $validatorRules, $validatorMessages);
         $result = $validator->fail();
@@ -352,7 +352,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(默认场景)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(默认场景)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -363,7 +363,7 @@ EOT,
     ])]
     public function testColumnValidators(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators(EntityWithEnumValidator::VALIDATOR_SCENES);
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::getColumnValidators(EntityWithEnumValidator::VALIDATOR_SCENES);
 
         $data = <<<'eot'
 {
@@ -415,7 +415,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(继承场景)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(继承场景)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -432,7 +432,7 @@ EOT,
     ])]
     public function testColumnValidators2(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('store');
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::getColumnValidators('store');
 
         $data = <<<'eot'
 {
@@ -473,7 +473,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(合并场景)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(合并场景)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -492,7 +492,7 @@ EOT,
     ])]
     public function testColumnValidators3(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update');
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::getColumnValidators('update');
 
         $data = <<<'eot'
 {
@@ -534,7 +534,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(替换场景)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(替换场景)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -554,7 +554,7 @@ EOT,
     ])]
     public function testColumnValidators4(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update_new');
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::getColumnValidators('update_new');
 
         $data = <<<'eot'
 {
@@ -595,7 +595,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(指定字段)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(指定字段)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -606,7 +606,7 @@ EOT,
     ])]
     public function testColumnValidators5(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::columnValidators('update_new', ['title']);
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator::getColumnValidators('update_new', ['title']);
 
         $data = <<<'eot'
 {
@@ -637,7 +637,7 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'columnValidators 返回字段验证规则(支持自定义消息)',
+        'zh-CN:title' => 'getColumnValidators 返回字段验证规则(支持自定义消息)',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -648,7 +648,7 @@ EOT,
     ])]
     public function testColumnValidators6(): void
     {
-        [$validatorRules, $validatorMessages] = EntityWithEnumValidator2::columnValidators('update_new', ['title']);
+        [$validatorRules, $validatorMessages] = EntityWithEnumValidator2::getColumnValidators('update_new', ['title']);
 
         $data = <<<'eot'
 {
@@ -688,7 +688,7 @@ eot;
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Enum `EnumClassNotFound` is not exists.');
 
-        EntityWithEnumValidator3::columnValidators('update_new', ['title']);
+        EntityWithEnumValidator3::getColumnValidators('update_new', ['title']);
     }
 
     #[Api([
@@ -885,14 +885,14 @@ eot;
 
         $entity = new EntityWithoutAnyField();
         self::assertNull($entity->primaryKey());
-        $entity->singlePrimaryKey();
+        $entity->getSinglePrimaryKey();
     }
 
     public function testSinglePrimaryKeyNotFoundAndAllIsKeyAndFoundOne(): void
     {
         $entity = new EntityWithoutPrimaryKey();
         self::assertSame(['name'], $entity->primaryKey());
-        self::assertSame('name', $entity->singlePrimaryKey());
+        self::assertSame('name', $entity->getSinglePrimaryKey());
     }
 
     public function testSinglePrimaryKeyNotFoundAndFoundMoreThanOne(): void
@@ -904,7 +904,7 @@ eot;
 
         $entity = new WithoutPrimarykeyAndAllAreKey();
         self::assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
-        $entity->singlePrimaryKey();
+        $entity->getSinglePrimaryKey();
     }
 
     public function testSinglePrimaryKeyNotSupportComposite(): void
@@ -915,7 +915,7 @@ eot;
         );
 
         $entity = new CompositeId();
-        $entity->singlePrimaryKey();
+        $entity->getSinglePrimaryKey();
     }
 
     #[Api([
@@ -1088,7 +1088,7 @@ eot;
     #[Api([
         'zh-CN:title' => 'getNewed 确定对象是否对应数据库中的一条记录',
     ])]
-    public function testNewed(): void
+    public function testGetNewed(): void
     {
         $entity = new Post();
         self::assertTrue($entity->getNewed());
@@ -1103,7 +1103,7 @@ eot;
     #[Api([
         'zh-CN:title' => 'setNewed 设置确定对象是否对应数据库中的一条记录',
     ])]
-    public function testWithNewed(): void
+    public function testSethNewed(): void
     {
         $entity = new Post();
         self::assertTrue($entity->getNewed());
@@ -1124,7 +1124,7 @@ eot;
     #[Api([
         'zh-CN:title' => 'getOriginal 获取原始数据',
     ])]
-    public function testOriginal(): void
+    public function testGetOriginal(): void
     {
         $entity = new Post();
         self::assertSame([], $entity->getOriginal());
@@ -2191,7 +2191,7 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'columnNames 回所有字段名字',
+        'zh-CN:title' => 'getColumnNames 回所有字段名字',
     ])]
     public function testColumnNames(): void
     {
@@ -2211,24 +2211,24 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                Post::columnNames(),
+                Post::getColumnNames(),
             )
         );
     }
 
     #[Api([
-        'zh-CN:title' => 'columnName 返回字段名字',
+        'zh-CN:title' => 'getColumnName 返回字段名字',
     ])]
     public function testColumnName(): void
     {
         $this->initI18n();
 
-        self::assertSame('用户ID', Post::columnName('user_id'));
+        self::assertSame('用户ID', Post::getColumnName('user_id'));
     }
 
     public function testColumnName2(): void
     {
-        self::assertSame('', Post::columnName('user_id_not_found'));
+        self::assertSame('', Post::getColumnName('user_id_not_found'));
     }
 
     #[Api([

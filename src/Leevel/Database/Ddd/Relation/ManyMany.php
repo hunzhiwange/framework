@@ -113,7 +113,7 @@ class ManyMany extends Relation
     {
         $maps = $this->buildMap($result);
         foreach ($entities as $entity) {
-            $key = $entity->prop($this->sourceKey);
+            $key = $entity->getProp($this->sourceKey);
             $entity->setRelationProp(
                 $relation,
                 $this->targetEntity->collection($maps[$key] ?? []),
@@ -210,7 +210,7 @@ class ManyMany extends Relation
     {
         $this->emptySourceData = false;
         $middleCondition = [
-            $this->middleTargetKey => Condition::raw('['.$this->targetEntity->table().'.'.$this->targetKey.']'),
+            $this->middleTargetKey => Condition::raw('['.$this->targetEntity->getTable().'.'.$this->targetKey.']'),
         ];
         $this->prepareMiddleSoftDeleted($middleCondition);
 
@@ -221,12 +221,12 @@ class ManyMany extends Relation
 
         $this->select
             ->join(
-                $this->middleEntity->table(),
+                $this->middleEntity->getTable(),
                 $middleField,
                 $middleCondition,
             )
             ->whereIn(
-                $this->middleEntity->table().'.'.$this->middleSourceKey,
+                $this->middleEntity->getTable().'.'.$this->middleSourceKey,
                 $sourceValue,
             )
             ->asSome()
@@ -253,7 +253,7 @@ class ManyMany extends Relation
             $value = 0;
         }
 
-        $field = $this->middleEntity->table().'.'.$this->middleEntity::deleteAtColumn();
+        $field = $this->middleEntity->getTable().'.'.$this->middleEntity::getDeleteAtColumn();
         $middleCondition[$field] = $value;
     }
 
@@ -264,7 +264,7 @@ class ManyMany extends Relation
     {
         $data = [];
         foreach ($entitys as $sourceEntity) {
-            if ($value = $sourceEntity->prop($this->sourceKey)) {
+            if ($value = $sourceEntity->getProp($this->sourceKey)) {
                 $data[] = $value;
             }
         }
@@ -282,7 +282,7 @@ class ManyMany extends Relation
         /** @var Entity $entity */
         foreach ($result as $entity) {
             // @phpstan-ignore-next-line
-            $maps[$entity->getMiddle()->prop($this->middleSourceKey)][] = $entity;
+            $maps[$entity->getMiddle()->getProp($this->middleSourceKey)][] = $entity;
         }
 
         return $maps;
