@@ -131,7 +131,7 @@ class Unique
             if (!empty($param[3]) && self::PLACEHOLDER !== $param[3]) {
                 $primaryKey = $param[3];
             } else {
-                if (1 === \count($primaryKey = $select->entity()->primaryKey())) {
+                if (1 === \count($primaryKey = $select->entity()->getPrimaryKey())) {
                     $primaryKey = reset($primaryKey);
                 } else {
                     $withoutPrimary = false;
