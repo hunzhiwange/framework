@@ -11,6 +11,7 @@ use Tests\Support\Fixtures\Dto3;
 use Tests\Support\Fixtures\Dto4;
 use Tests\Support\Fixtures\Dto5;
 use Tests\Support\Fixtures\Dto6;
+use Tests\Support\Fixtures\Dto7;
 use Tests\Support\Fixtures\DtoProp1;
 use Tests\Support\Fixtures\DtoProp2;
 use Tests\Support\Fixtures\DtoToArray;
@@ -98,7 +99,7 @@ final class DtoTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'strict 从数组或者数据传输对象创建不可变数据传输对象',
+        'zh-CN:title' => 'strict 从数组创建严格的数据传输对象（不能忽略传入数据的丢失的值）',
     ])]
     public function testStrict(): void
     {
@@ -106,7 +107,6 @@ final class DtoTest extends TestCase
         $this->expectExceptionMessage(
             'Public properties `demo_not_found` of data transfer object `Tests\\Support\\Fixtures\\Dto1` was not defined.'
         );
-
         Dto1::strict([
             'demo_not_found' => 1,
             'demo_string_prop' => 'foo',
@@ -569,5 +569,43 @@ EOT,
 
         $dto = new Dto5(['demoStringProp' => null]);
         $dto['notFound'] = 5;
+    }
+
+    public function test7(): void
+    {
+        $dto = new Dto6([
+            'int1' => 'string',
+            'string2' => 123456,
+            'float3' => 'world',
+            'bool4' => 0,
+            'array5' => 'hello',
+        ]);
+        self::assertSame(0, $dto->int1);
+        self::assertSame('123456', $dto->string2);
+        self::assertSame(0.0, $dto->float3);
+        self::assertFalse($dto->bool4);
+        self::assertSame(['hello'], $dto->array5);
+
+        $dto->int1 = 5.5;
+        self::assertSame(5, $dto->int1);
+    }
+
+    public function test8(): void
+    {
+        $dto = new Dto7([
+            'int1' => 'string',
+            'string2' => 123456,
+            'float3' => 'world',
+            'bool4' => 0,
+            'array5' => 'hello',
+        ]);
+        self::assertSame(1, $dto->int1);
+        self::assertSame('123456', $dto->string2);
+        self::assertSame(0.0, $dto->float3);
+        self::assertFalse($dto->bool4);
+        self::assertSame(['hello'], $dto->array5);
+
+        $dto->int1 = 5.5;
+        self::assertSame(6, $dto->int1);
     }
 }

@@ -65,6 +65,11 @@ abstract class Dto implements IArray, \ArrayAccess
     protected bool $ignoreNullValueWhenToArrayFramework = false;
 
     /**
+     * 属性数据.
+     */
+    protected array $dataFramework = [];
+
+    /**
      * 构造函数.
      *
      * @throws \UnexpectedValueException
@@ -75,6 +80,7 @@ abstract class Dto implements IArray, \ArrayAccess
         if (!isset(static::$propertiesCachedFramework[$className = static::class])) {
             static::propertiesCache($className);
         }
+
         $this->fillDefaultValueWhenConstruct();
         foreach ($data as $prop => $value) {
             $camelizeProp = static::camelizePropertiesName($prop);
@@ -205,12 +211,45 @@ abstract class Dto implements IArray, \ArrayAccess
 
     public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->{$this->validateCamelizeProperties($offset)} = $value;
+        $prop = $this->validateCamelizeProperties($offset);
+        $this->setData($prop, $value);
+        $this->{$prop} = $value;
     }
 
     public function offsetUnset(mixed $offset): void
     {
-        $this->{$this->validateCamelizeProperties($offset)} = null;
+        $prop = $this->validateCamelizeProperties($offset);
+        $this->{$prop} = null;
+        $this->unsetData($prop);
+    }
+
+    protected function set(string $prop, mixed $value): mixed
+    {
+        $className = static::class;
+        $camelizeProp = static::camelizePropertiesName($prop);
+        if (isset(static::$propertiesCachedFramework[$className]['name'][$camelizeProp])) {
+            $value = $this->transformValue($camelizeProp, $value, static::$propertiesCachedFramework[$className]['type'][$camelizeProp]);
+        }
+
+        $this->setData($camelizeProp, $value);
+
+        return $value;
+    }
+
+    protected function get(string $prop): mixed
+    {
+        $prop = $this->validateCamelizeProperties($prop);
+        return $this->dataFramework[$prop] ?? null;
+    }
+
+    protected function setData(string $camelizeProp, mixed $value): void
+    {
+        $this->dataFramework[$camelizeProp] = $value;
+    }
+
+    protected function unsetData(string $camelizeProp): void
+    {
+        unset($this->dataFramework[$camelizeProp]);
     }
 
     /**
@@ -219,9 +258,16 @@ abstract class Dto implements IArray, \ArrayAccess
     protected function fillDefaultValueWhenConstruct(): void
     {
         foreach (static::$propertiesCachedFramework[static::class]['name'] as $camelizeProp => $v) {
-            if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
-                $this->{$camelizeProp} = $this->{$defaultValueMethod}();
-            }
+            $this->fillDefaultValue($camelizeProp, static::$propertiesCachedFramework[static::class]['default_value'][$camelizeProp]);
+        }
+    }
+
+    protected function fillDefaultValue(string $camelizeProp, mixed $defaultValue): void
+    {
+        if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
+            $this->offsetSet($camelizeProp, $this->{$defaultValueMethod}());
+        } elseif (isset($defaultValue)) {
+            $this->setData($camelizeProp, $defaultValue);
         }
     }
 
@@ -234,12 +280,23 @@ abstract class Dto implements IArray, \ArrayAccess
             return;
         }
 
+        $this->offsetSet($camelizeProp, $this->transformValue($camelizeProp, $value, $defaultType));
+    }
+
+    protected function transformValue(string $camelizeProp, mixed $value, ?string $defaultType): mixed
+    {
+        if ($this->ignoreNullValueFramework && null === $value) {
+            return null;
+        }
+
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
-            $this->{$camelizeProp} = $this->{$transformValueMethod}($value);
-        } elseif (!$this->ignoreBuiltinTransformValueFramework && $defaultType && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
-            $this->{$camelizeProp} = $this->{$builtinTransformValueMethod}($value);
+            return $this->{$transformValueMethod}($value);
+        } elseif (!$this->ignoreBuiltinTransformValueFramework 
+            && $defaultType 
+            && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
+            return $this->{$builtinTransformValueMethod}($value);
         } else {
-            $this->{$camelizeProp} = $value;
+            return $value;
         }
     }
 
@@ -330,6 +387,7 @@ abstract class Dto implements IArray, \ArrayAccess
             }
             static::$propertiesCachedFramework[$className]['name'][$name] = static::unCamelizePropertiesName($name);
             static::$propertiesCachedFramework[$className]['type'][$name] = $propertyType;
+            static::$propertiesCachedFramework[$className]['default_value'][$name] = $reflectionProperty->getDefaultValue();
         }
     }
 
