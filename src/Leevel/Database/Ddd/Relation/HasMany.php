@@ -61,7 +61,7 @@ class HasMany extends Relation
         $maps = $this->buildMap($result);
         foreach ($entities as &$entity) {
             $key = $entity->prop($this->sourceKey);
-            $entity->withRelationProp(
+            $entity->setRelationProp(
                 $relation,
                 $this->getRelationValue($maps[$key] ?? [], $type)
             );

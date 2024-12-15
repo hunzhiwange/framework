@@ -983,7 +983,7 @@ class Select implements ISelect
     protected function getRelation(string $name, null|array|\Closure|string $relationScope = null): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name, $relationScope): Relation {
-            return $this->entity->relation($name, $relationScope);
+            return $this->entity->getRelation($name, $relationScope);
         });
 
         $nested = $this->nestedRelation($name);

@@ -289,7 +289,7 @@ EOT,
             ;
         }
 
-        $commentRelation = Post::make()->relation('comment');
+        $commentRelation = Post::make()->getRelation('comment');
 
         $this->assertInstanceof(HasMany::class, $commentRelation);
         self::assertSame('id', $commentRelation->getSourceKey());

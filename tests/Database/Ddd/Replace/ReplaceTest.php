@@ -51,7 +51,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -66,7 +66,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -92,7 +92,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -107,7 +107,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -136,7 +136,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->condition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
@@ -151,7 +151,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -188,7 +188,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->replace();
 
         $data = <<<'eot'
@@ -203,7 +203,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -243,7 +243,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->condition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
@@ -258,7 +258,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -306,7 +306,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 

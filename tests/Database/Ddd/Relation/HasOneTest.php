@@ -226,7 +226,7 @@ EOT,
                 ])
         );
 
-        $postContentRelation = Post::make()->relation('postContent');
+        $postContentRelation = Post::make()->getRelation('postContent');
 
         $this->assertInstanceof(HasOne::class, $postContentRelation);
         self::assertSame('id', $postContentRelation->getSourceKey());

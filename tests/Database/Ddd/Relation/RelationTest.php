@@ -127,7 +127,7 @@ EOT,
             'Prop `summary` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` is not a relation type.'
         );
 
-        $notARelation = Post::make()->relation('summary');
+        $notARelation = Post::make()->getRelation('summary');
     }
 
     protected function getDatabaseTable(): array

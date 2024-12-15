@@ -624,11 +624,11 @@ final class RepositoryTest extends TestCase
             'title' => 'new title',
             'user_id' => 0,
         ]);
-        self::assertTrue($post->newed());
+        self::assertTrue($post->getNewed());
         $repository->replaceEntity($post);
         self::assertSame($insertSql = 'SQL: [129] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:named_param_id,:named_param_title,:named_param_user_id) | Params:  3 | Key: Name: [15] :named_param_id | paramno=0 | name=[15] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [18] :named_param_title | paramno=1 | name=[18] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [20] :named_param_user_id | paramno=2 | name=[20] ":named_param_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
         self::assertSame([], $post->changed());
-        self::assertFalse($post->newed()); // 新增数据后实体变为对应数据库一条记录非新记录
+        self::assertFalse($post->getNewed()); // 新增数据后实体变为对应数据库一条记录非新记录
         $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
         self::assertSame($insertSql, $repository->getLastSql());
 

@@ -489,9 +489,9 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'relation 读取关联',
+        'zh-CN:title' => 'getRelation 读取关联',
     ])]
-    public function testRelationAsMethod(): void
+    public function testGetRelationAsMethod(): void
     {
         $connect = $this->createDatabaseConnect();
 
@@ -516,7 +516,7 @@ eot;
                 ]),
         );
 
-        $userRelation = Post::make()->relation('user');
+        $userRelation = Post::make()->getRelation('user');
 
         $this->assertInstanceof(BelongsTo::class, $userRelation);
         self::assertSame('user_id', $userRelation->getSourceKey());

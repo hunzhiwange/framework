@@ -43,7 +43,7 @@ EOT,
     public function testBaseUse($field, $source, $prop, $conversion): void
     {
         $entity = $this->makeEntity();
-        $entity->withProp($field, $source);
+        $entity->setProp($field, $source);
         $assertMethod = \in_array($field, [
             'obj1', 'obj2',
             'obj3', 'obj4',

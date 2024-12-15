@@ -27,7 +27,7 @@ class BelongsTo extends Relation
         /** @var Entity $value */
         foreach ($entities as $value) {
             $key = $value->prop($this->sourceKey);
-            $value->withRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
+            $value->setRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
         }
 
         return $entities;

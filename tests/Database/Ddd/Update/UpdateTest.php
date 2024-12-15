@@ -58,7 +58,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->save();
 
         $data = <<<'eot'
@@ -75,7 +75,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -95,7 +95,7 @@ EOT,
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
         self::assertSame(['name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
         $entity->update();
 
         $data = <<<'eot'
@@ -112,7 +112,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -138,7 +138,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -176,7 +176,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -197,7 +197,7 @@ EOT,
         self::assertSame([
             ['id' => 5],
             [],
-        ], $entity->flushData());
+        ], $entity->getFlushData());
     }
 
     public function testAutoFillWithCustomField(): void
@@ -223,7 +223,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -264,7 +264,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -295,7 +295,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -329,7 +329,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -363,7 +363,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -390,7 +390,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -402,7 +402,7 @@ EOT,
         self::assertSame([
             ['id' => 1],
             [],
-        ], $entity->flushData());
+        ], $entity->getFlushData());
     }
 
     #[Api([
@@ -415,7 +415,7 @@ EOT,
         self::assertSame([
             ['id' => 1],
             [],
-        ], $entity->flushData());
+        ], $entity->getFlushData());
     }
 
     #[Api([
@@ -470,7 +470,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -508,7 +508,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 
@@ -536,7 +536,7 @@ EOT,
         self::assertSame([
             ['id1' => 2, 'id2' => 3],
             [],
-        ], $entity->flushData());
+        ], $entity->getFlushData());
         self::assertSame(0, $entity->flush());
     }
 

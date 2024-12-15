@@ -53,7 +53,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame('foo', $entity->name);
         self::assertSame(['id', 'name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
 
         $entity->delete();
 
@@ -68,7 +68,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 

@@ -471,7 +471,7 @@ final class EntityJsonSerializeTest extends TestCase
         $entity->title = 'I am title';
         $entity->summary = 'I am summary';
         $entity->userId = 7;
-        $entity->withRelationProp('user', $user);
+        $entity->setRelationProp('user', $user);
 
         return $entity;
     }
@@ -495,7 +495,7 @@ final class EntityJsonSerializeTest extends TestCase
         $this->assertInstanceof(DemoToArrayShowPropNullRelationEntity::class, $entity);
         $entity->name = 'I am name';
         $entity->description = 'I am description';
-        $entity->withRelationProp('target', $target);
+        $entity->setRelationProp('target', $target);
 
         return $entity;
     }

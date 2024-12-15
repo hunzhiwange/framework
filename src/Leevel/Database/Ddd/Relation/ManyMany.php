@@ -114,7 +114,7 @@ class ManyMany extends Relation
         $maps = $this->buildMap($result);
         foreach ($entities as $entity) {
             $key = $entity->prop($this->sourceKey);
-            $entity->withRelationProp(
+            $entity->setRelationProp(
                 $relation,
                 $this->targetEntity->collection($maps[$key] ?? []),
             );
@@ -144,7 +144,7 @@ class ManyMany extends Relation
             $value = (array) $value;
             $middleEntity = new $middleEntityClass($this->normalizeMiddelEntityData($value), true, true);
             $targetEntity = new $targetEntityClass($value, true, true);
-            $targetEntity->withMiddle($middleEntity);
+            $targetEntity->setMiddle($middleEntity);
             $result[] = $targetEntity;
         }
 
@@ -282,7 +282,7 @@ class ManyMany extends Relation
         /** @var Entity $entity */
         foreach ($result as $entity) {
             // @phpstan-ignore-next-line
-            $maps[$entity->middle()->prop($this->middleSourceKey)][] = $entity;
+            $maps[$entity->getMiddle()->prop($this->middleSourceKey)][] = $entity;
         }
 
         return $maps;

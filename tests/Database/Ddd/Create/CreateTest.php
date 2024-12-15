@@ -58,7 +58,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame('foo', $entity->name);
         self::assertSame(['name'], $entity->changed());
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
 
         $entity->save();
 
@@ -73,7 +73,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -93,7 +93,7 @@ EOT,
         self::assertSame('foo', $entity->name);
         self::assertSame(['name'], $entity->changed());
 
-        self::assertNull($entity->flushData());
+        self::assertNull($entity->getFlushData());
 
         $entity->create();
 
@@ -108,7 +108,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -190,7 +190,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -214,7 +214,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -225,7 +225,7 @@ EOT,
         $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new DemoEntity();
-        $entity->withProp('not_exists', 'hello');
+        $entity->setProp('not_exists', 'hello');
     }
 
     public function testPropNotExist2(): void
@@ -251,7 +251,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -286,7 +286,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -317,7 +317,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -345,7 +345,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -372,7 +372,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -396,7 +396,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -427,7 +427,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -451,7 +451,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
     }
@@ -473,7 +473,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->flushData()
+                $entity->getFlushData()
             )
         );
 

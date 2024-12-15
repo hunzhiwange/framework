@@ -555,7 +555,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             $this->originalFramework = $data;
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
-                    $this->withProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
+                    $this->setProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
                 }
             }
         }
@@ -578,7 +578,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         try {
             if (static::isRelation($unCamelize = static::unCamelizeProp($method))) {
                 throw new \BadMethodCallException(sprintf(
-                    'Method `%s` is not exits,maybe you can try `%s::make()->relation(\'%s\')`.',
+                    'Method `%s` is not exits,maybe you can try `%s::make()->getRelation(\'%s\')`.',
                     $method,
                     static::class,
                     $unCamelize
@@ -629,7 +629,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         if (!$this->newedFramework) {
             foreach (static::primaryKey() as $value) {
-                $this->withProp($value, null, false, true);
+                $this->setProp($value, null, false, true);
             }
             $this->newedFramework = true;
         }
@@ -846,24 +846,24 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $oldConnect = static::connect();
         $oldGlobalConnect = static::globalConnect();
-        static::withConnect($connect);
-        static::withGlobalConnect($connect);
+        static::setConnect($connect);
+        static::setGlobalConnect($connect);
 
         try {
             return $call();
         } finally {
-            static::withConnect($oldConnect);
-            static::withGlobalConnect($oldGlobalConnect);
+            static::setConnect($oldConnect);
+            static::setGlobalConnect($oldGlobalConnect);
         }
     }
 
     /**
      * 批量设置属性数据.
      */
-    public function withProps(array $data, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function setProps(array $data, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         foreach ($data as $prop => $value) {
-            $this->withProp($prop, $value, $fromStorage, $ignoreReadonly, $ignoreUndefinedProp);
+            $this->setProp($prop, $value, $fromStorage, $ignoreReadonly, $ignoreUndefinedProp);
         }
 
         return $this;
@@ -872,7 +872,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 设置属性数据.
      */
-    public function withProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
+    public function setProp(string $prop, mixed $value, bool $fromStorage = false, bool $ignoreReadonly = false, bool $ignoreUndefinedProp = false): self
     {
         try {
             // 初始化属性更新行为
@@ -903,7 +903,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    protected function withPropReal(string $prop, mixed $value): mixed
+    protected function setPropReal(string $prop, mixed $value): mixed
     {
         try {
             static::validate($prop = static::unCamelizeProp($prop));
@@ -954,7 +954,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             return $this->propGetter($prop);
         }
 
-        return $this->relationProp($prop);
+        return $this->getRelationProp($prop);
     }
 
     /**
@@ -1096,7 +1096,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $this->isSoftDeleteFramework = true;
         $this->clearChanged();
-        $this->withProp(static::deleteAtColumn(), time());
+        $this->setProp(static::deleteAtColumn(), time());
 
         return $this->update();
     }
@@ -1108,7 +1108,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $this->isSoftRestoreFramework = true;
         $this->clearChanged();
-        $this->withProp(static::deleteAtColumn(), 0);
+        $this->setProp(static::deleteAtColumn(), 0);
 
         return $this->update();
     }
@@ -1198,7 +1198,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取数据持久化.
      */
-    public function flushData(): ?array
+    public function getFlushData(): ?array
     {
         return $this->flushDataFramework;
     }
@@ -1206,7 +1206,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 设置确定对象是否对应数据库中的一条记录.
      */
-    public function withNewed(bool $newed = true): self
+    public function setNewed(bool $newed = true): self
     {
         $this->newedFramework = $newed;
 
@@ -1216,7 +1216,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 确定对象是否对应数据库中的一条记录.
      */
-    public function newed(): bool
+    public function getNewed(): bool
     {
         return $this->newedFramework;
     }
@@ -1224,7 +1224,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取原始数据.
      */
-    public function original(): array
+    public function getOriginal(): array
     {
         return $this->originalFramework;
     }
@@ -1271,7 +1271,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             ->findOne()
         ;
         foreach ((array) $data as $k => $v) {
-            $this->withProp($k, $v, true, true, true);
+            $this->setProp($k, $v, true, true, true);
         }
     }
 
@@ -1305,7 +1305,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    public function relation(string $prop, null|array|\Closure|string $relationScope = null): Relation
+    public function getRelation(string $prop, null|array|\Closure|string $relationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
             throw new \InvalidArgumentException(sprintf(
@@ -1373,7 +1373,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 取得关联数据.
      */
-    public function relationProp(string $prop): mixed
+    public function getRelationProp(string $prop): mixed
     {
         static::validate($prop);
         if ($result = $this->propGetter($prop)) {
@@ -1386,7 +1386,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 设置关联数据.
      */
-    public function withRelationProp(string $prop, mixed $value): self
+    public function setRelationProp(string $prop, mixed $value): self
     {
         static::validate($prop);
         $this->propSetter($prop, $value);
@@ -1405,7 +1405,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 设置多对多中间实体.
      */
-    public function withMiddle(self $middle): void
+    public function setMiddle(self $middle): void
     {
         $this->relationMiddleFramework = $middle;
     }
@@ -1413,7 +1413,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 获取多对多中间实体.
      */
-    public function middle(): ?self
+    public function getMiddle(): ?self
     {
         return $this->relationMiddleFramework;
     }
@@ -1972,7 +1972,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 设置全局数据库连接.
      */
-    public static function withGlobalConnect(?string $connect = null): void
+    public static function setGlobalConnect(?string $connect = null): void
     {
         static::$globalConnectFramework = $connect ?: null;
     }
@@ -1988,7 +1988,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * Set database connect.
      */
-    public static function withConnect(?string $connect = null): void
+    public static function setConnect(?string $connect = null): void
     {
         if ($connect) {
             static::$databaseConnectFramework[static::class] = $connect;
@@ -2044,7 +2044,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
     protected function set(string $prop, mixed $value): mixed
     {
-        return $this->withPropReal($prop, $value);
+        return $this->setPropReal($prop, $value);
     }
 
     protected function get(string $prop): mixed
@@ -2064,7 +2064,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         foreach ($fields as $field => $v) {
             $camelizeProp = static::camelizeProp($field);
             if (method_exists($this, $defaultValueMethod = $camelizeProp.'DefaultValue')) {
-                $this->withProp($field, $this->{$defaultValueMethod}(), $fromStorage, true, $ignoreUndefinedProp);
+                $this->setProp($field, $this->{$defaultValueMethod}(), $fromStorage, true, $ignoreUndefinedProp);
             }
         }
     }
@@ -2296,7 +2296,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         $this->handleEvent(self::BEFORE_SAVE_EVENT);
 
         foreach ($data as $k => $v) {
-            $this->withProp($k, $v);
+            $this->setProp($k, $v);
         }
 
         $this->handleEvent(self::BEFORE_SAVING_EVENT);
@@ -2343,7 +2343,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
                 $lastInsertId = static::meta()->insert($saveData);
             }
             if (($auto = $this->autoIncrement()) && $lastInsertId) {
-                $this->withProp($auto, $lastInsertId, true, true, true);
+                $this->setProp($auto, $lastInsertId, true, true, true);
             }
             $this->newedFramework = false;
             $this->clearChanged();
@@ -2418,7 +2418,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             $this->clearChanged();
             if ($hasVersion) {
                 $constantVersion = (string) static::entityConstant('VERSION');
-                $this->withProp($constantVersion, $condition[$constantVersion] + 1);
+                $this->setProp($constantVersion, $condition[$constantVersion] + 1);
             }
 
             $this->handleEvent(self::AFTER_UPDATED_EVENT);
@@ -2607,7 +2607,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             }
         }
 
-        $this->withProp($prop, $value);
+        $this->setProp($prop, $value);
     }
 
     /**
@@ -2615,9 +2615,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     protected function loadDataFromRelation(string $prop): mixed
     {
-        $relation = $this->relation($prop);
+        $relation = $this->getRelation($prop);
         $result = $relation->sourceQuery();
-        $this->withRelationProp($prop, $result);
+        $this->setRelationProp($prop, $result);
 
         return $result;
     }

@@ -17,7 +17,7 @@ trait Connect
     /**
      * Set database connect.
      */
-    public static function withConnect(?string $connect = null): void
+    public static function setConnect(?string $connect = null): void
     {
         static::$connect = $connect;
     }

@@ -166,12 +166,12 @@ EOT,
         self::assertSame(3, $role[1]->id);
         self::assertSame('会员', $role[1]->name);
 
-        $middle = $role[0]->middle();
+        $middle = $role[0]->getMiddle();
         $this->assertInstanceof(UserRole::class, $middle);
         self::assertSame(1, $middle->userId);
         self::assertSame(1, $middle->roleId);
 
-        $middle = $role[1]->middle();
+        $middle = $role[1]->getMiddle();
         $this->assertInstanceof(UserRole::class, $middle);
         self::assertSame(1, $middle->userId);
         self::assertSame(3, $middle->roleId);

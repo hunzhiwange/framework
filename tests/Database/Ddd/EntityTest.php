@@ -125,12 +125,12 @@ final class EntityTest extends TestCase
     }
 
     #[Api([
-        'zh-CN:title' => 'withProps 批量设置属性数据',
+        'zh-CN:title' => 'setProps 批量设置属性数据',
     ])]
     public function testWithProps(): void
     {
         $entity = new Post();
-        $entity->withProps([
+        $entity->setProps([
             'title' => 'foo',
             'summary' => 'bar',
         ]);
@@ -979,7 +979,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->relation(\'user\')`.'
+            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->getRelation(\'user\')`.'
         );
 
         $entity = new Post();
@@ -1086,55 +1086,55 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'newed 确定对象是否对应数据库中的一条记录',
+        'zh-CN:title' => 'getNewed 确定对象是否对应数据库中的一条记录',
     ])]
     public function testNewed(): void
     {
         $entity = new Post();
-        self::assertTrue($entity->newed());
+        self::assertTrue($entity->getNewed());
 
         $entity = new Post(['id' => 5]);
-        self::assertTrue($entity->newed());
+        self::assertTrue($entity->getNewed());
 
         $entity = new Post(['id' => 5], true);
-        self::assertFalse($entity->newed());
+        self::assertFalse($entity->getNewed());
     }
 
     #[Api([
-        'zh-CN:title' => 'withNewed 设置确定对象是否对应数据库中的一条记录',
+        'zh-CN:title' => 'setNewed 设置确定对象是否对应数据库中的一条记录',
     ])]
     public function testWithNewed(): void
     {
         $entity = new Post();
-        self::assertTrue($entity->newed());
-        $entity->withNewed(false);
-        self::assertFalse($entity->newed());
+        self::assertTrue($entity->getNewed());
+        $entity->setNewed(false);
+        self::assertFalse($entity->getNewed());
 
         $entity = new Post(['id' => 5]);
-        self::assertTrue($entity->newed());
-        $entity->withNewed(false);
-        self::assertFalse($entity->newed());
+        self::assertTrue($entity->getNewed());
+        $entity->setNewed(false);
+        self::assertFalse($entity->getNewed());
 
         $entity = new Post(['id' => 5], true);
-        self::assertFalse($entity->newed());
-        $entity->withNewed(true);
-        self::assertTrue($entity->newed());
+        self::assertFalse($entity->getNewed());
+        $entity->setNewed(true);
+        self::assertTrue($entity->getNewed());
     }
 
     #[Api([
-        'zh-CN:title' => 'original 获取原始数据',
+        'zh-CN:title' => 'getOriginal 获取原始数据',
     ])]
     public function testOriginal(): void
     {
         $entity = new Post();
-        self::assertSame([], $entity->original());
+        self::assertSame([], $entity->getOriginal());
 
         $entity = new Post($data = [
             'title' => 'hello',
             'summary' => 'world',
             'foo' => 'bar',
         ], false, true);
-        self::assertSame($data, $entity->original());
+        self::assertSame($data, $entity->getOriginal());
         self::assertSame('hello', $entity->title);
         self::assertSame('world', $entity->summary);
     }
@@ -1874,7 +1874,7 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        self::assertTrue($post->newed());
+        self::assertTrue($post->getNewed());
         self::assertNull($post->id);
         self::assertSame('hello world', $post->title);
         self::assertSame(1, $post->userId);
@@ -1891,7 +1891,7 @@ EOT,
             'delete_at' => 0,
         ], true);
 
-        self::assertFalse($post->newed());
+        self::assertFalse($post->getNewed());
         self::assertSame(1, $post->id);
         self::assertSame('hello world', $post->title);
         self::assertSame(1, $post->userId);
@@ -1910,7 +1910,7 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        self::assertTrue($post->newed());
+        self::assertTrue($post->getNewed());
         self::assertNull($post->id);
         self::assertSame('hello world', $post->title);
         self::assertSame(1, $post->userId);
@@ -1930,7 +1930,7 @@ EOT,
             'delete_at' => 0,
         ]);
 
-        self::assertFalse($post->newed());
+        self::assertFalse($post->getNewed());
         self::assertSame(1, $post->id);
         self::assertSame('hello world', $post->title);
         self::assertSame(1, $post->userId);
