@@ -57,7 +57,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['name'], $entity->changed());
+        self::assertSame(['name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
         $entity->save();
 
@@ -94,7 +94,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['name'], $entity->changed());
+        self::assertSame(['name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
         $entity->update();
 

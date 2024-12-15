@@ -511,7 +511,7 @@ final class RepositoryTest extends TestCase
         self::assertSame(5, $post->id);
         self::assertSame('foo', $post->title);
         self::assertSame(0, $post->userId);
-        self::assertSame([], $post->changed());
+        self::assertSame([], $post->getChanged());
         $repository->createEntity($post);
         self::assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
 
@@ -551,7 +551,7 @@ final class RepositoryTest extends TestCase
         self::assertSame(1, $repository->updateEntity($post = new Post(['id' => 1, 'title' => 'new title'])));
 
         self::assertSame('SQL: [90] UPDATE `post` SET `post`.`title` = :named_param_title WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [18] :named_param_title | paramno=0 | name=[18] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\' WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
-        self::assertSame([], $post->changed());
+        self::assertSame([], $post->getChanged());
         self::assertSame(0, $repository->updateEntity($post));
     }
 
@@ -583,7 +583,7 @@ final class RepositoryTest extends TestCase
         self::assertSame('SQL: [130] UPDATE `post` SET `post`.`title` = :named_param_title,`post`.`user_id` = :named_param_user_id WHERE `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [18] :named_param_title | paramno=0 | name=[18] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [20] :named_param_user_id | paramno=1 | name=[20] ":named_param_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`title` = \'new title\',`post`.`user_id` = 1 WHERE `post`.`id` = 1 LIMIT 1)', $repository->getLastSql());
 
         self::assertSame(1, $affectedRow);
-        self::assertSame([], $post->changed());
+        self::assertSame([], $post->getChanged());
 
         $repository->replaceEntity($post); // 新增一条数据.
         self::assertSame('SQL: [31] INSERT INTO `post` () VALUES () | Params:  0 (INSERT INTO `post` () VALUES ())', $repository->getLastSql());
@@ -627,7 +627,7 @@ final class RepositoryTest extends TestCase
         self::assertTrue($post->getNewed());
         $repository->replaceEntity($post);
         self::assertSame($insertSql = 'SQL: [129] INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (:named_param_id,:named_param_title,:named_param_user_id) | Params:  3 | Key: Name: [15] :named_param_id | paramno=0 | name=[15] ":named_param_id" | is_param=1 | param_type=1 | Key: Name: [18] :named_param_title | paramno=1 | name=[18] ":named_param_title" | is_param=1 | param_type=2 | Key: Name: [20] :named_param_user_id | paramno=2 | name=[20] ":named_param_user_id" | is_param=1 | param_type=1 (INSERT INTO `post` (`post`.`id`,`post`.`title`,`post`.`user_id`) VALUES (2,\'new title\',0))', $repository->getLastSql());
-        self::assertSame([], $post->changed());
+        self::assertSame([], $post->getChanged());
         self::assertFalse($post->getNewed()); // 新增数据后实体变为对应数据库一条记录非新记录
         $repository->replaceEntity($post); // 更新数据，但是没有数据需要更新不做任何处理.
         self::assertSame($insertSql, $repository->getLastSql());

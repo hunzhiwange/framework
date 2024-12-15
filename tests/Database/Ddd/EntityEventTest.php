@@ -24,7 +24,7 @@ final class EntityEventTest extends TestCase
     #[\Override]
     protected function tearDown(): void
     {
-        Entity::withEventDispatch(null);
+        Entity::setEventDispatch(null);
     }
 
     #[Api([
@@ -33,9 +33,9 @@ final class EntityEventTest extends TestCase
     public function testBaseUse(): void
     {
         $dispatch = new Dispatch(new Container());
-        self::assertNull(Entity::eventDispatch());
-        Entity::withEventDispatch($dispatch);
-        $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
+        self::assertNull(Entity::getEventDispatch());
+        Entity::setEventDispatch($dispatch);
+        $this->assertInstanceof(Dispatch::class, Entity::getEventDispatch());
 
         $test = new DemoEventEntity(['name' => 'foo']);
         DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, static function (): void {
@@ -78,11 +78,11 @@ EOT,
     public function testSupportEvent($event): void
     {
         $dispatch = new Dispatch(new Container());
-        self::assertNull(Entity::eventDispatch());
-        Entity::withEventDispatch($dispatch);
-        $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
+        self::assertNull(Entity::getEventDispatch());
+        Entity::setEventDispatch($dispatch);
+        $this->assertInstanceof(Dispatch::class, Entity::getEventDispatch());
 
-        $supportEvent = DemoEventEntity::supportEvent();
+        $supportEvent = DemoEventEntity::getSupportEvent();
         self::assertTrue(\in_array($event, $supportEvent, true));
     }
 
@@ -113,9 +113,9 @@ EOT,
         $this->expectExceptionMessage('Event `not_support` do not support.');
 
         $dispatch = new Dispatch(new Container());
-        self::assertNull(Entity::eventDispatch());
-        Entity::withEventDispatch($dispatch);
-        $this->assertInstanceof(Dispatch::class, Entity::eventDispatch());
+        self::assertNull(Entity::getEventDispatch());
+        Entity::setEventDispatch($dispatch);
+        $this->assertInstanceof(Dispatch::class, Entity::getEventDispatch());
         DemoEventEntity::event('not_support', static function (): void {});
     }
 

@@ -44,8 +44,8 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
 
         self::assertSame(DemoEntity::TABLE, $entity->getTable());
-        self::assertSame([DemoEntity::ID], $entity->primaryKey());
-        self::assertSame(DemoEntity::AUTO, $entity->autoIncrement());
+        self::assertSame([DemoEntity::ID], $entity->getPrimaryKey());
+        self::assertSame(DemoEntity::AUTO, $entity->getAutoIncrement());
     }
 
     #[Api([

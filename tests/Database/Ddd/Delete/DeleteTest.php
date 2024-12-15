@@ -52,7 +52,7 @@ EOT,
 
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
 
         $entity->delete();
@@ -121,9 +121,9 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         $post->softDelete()->flush();
-        self::assertTrue($post->softDeleted());
+        self::assertTrue($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -186,9 +186,9 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -377,9 +377,9 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         $post->softDelete()->flush();
-        self::assertTrue($post->softDeleted());
+        self::assertTrue($post->isSoftDeleted());
 
         $post1 = Post::select()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -403,9 +403,9 @@ EOT,
         self::assertSame(0, $post2->deleteAt);
 
         $newPost = Post::withSoftDeleted()->findEntity(1);
-        self::assertTrue($newPost->softDeleted());
+        self::assertTrue($newPost->isSoftDeleted());
         $newPost->softRestore()->flush();
-        self::assertFalse($newPost->softDeleted());
+        self::assertFalse($newPost->isSoftDeleted());
 
         $restorePost1 = Post::select()->findEntity(1);
         self::assertSame(0, $restorePost1->deleteAt);
@@ -457,14 +457,14 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         $post->delete()->flush();
         $sql1 = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`id` = 1 LIMIT 1)';
         $time = time();
         self::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
         self::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
-        self::assertTrue($post->softDeleted());
+        self::assertTrue($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -527,14 +527,14 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
-        $post->condition(['user_id' => 99999])->delete()->flush();
+        self::assertFalse($post->isSoftDeleted());
+        $post->setCondition(['user_id' => 99999])->delete()->flush();
         $sql1 = 'SQL: [135] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  3 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [13] :post_user_id | paramno=1 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=2 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = ';
         $sql2 = ' WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)';
         $time = time();
         self::assertTrue(str_contains(Post::select()->getLastSql(), $sql1));
         self::assertTrue(str_contains(Post::select()->getLastSql(), $sql2));
-        self::assertTrue($post->softDeleted());
+        self::assertTrue($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -632,10 +632,10 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         $post->forceDelete()->flush();
         self::assertSame('SQL: [55] DELETE FROM `post` WHERE `post`.`id` = :post_id LIMIT 1 | Params:  1 | Key: Name: [8] :post_id | paramno=0 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -698,10 +698,10 @@ EOT,
         self::assertSame('post summary', $post->summary);
         self::assertSame(0, $post->deleteAt);
 
-        self::assertFalse($post->softDeleted());
-        $post->condition(['user_id' => 99999])->forceDelete()->flush();
+        self::assertFalse($post->isSoftDeleted());
+        $post->setCondition(['user_id' => 99999])->forceDelete()->flush();
         self::assertSame('SQL: [92] DELETE FROM `post` WHERE `post`.`user_id` = :post_user_id AND `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [13] :post_user_id | paramno=0 | name=[13] ":post_user_id" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (DELETE FROM `post` WHERE `post`.`user_id` = 99999 AND `post`.`id` = 1 LIMIT 1)', Post::select()->getLastSql());
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $post1 = Post::withSoftDeleted()->findEntity(1);
         $this->assertInstanceof(Post::class, $post1);
@@ -733,7 +733,7 @@ EOT,
         );
 
         $entity = new PostContent();
-        $entity->softDeleted();
+        $entity->isSoftDeleted();
     }
 
     public function testDeleteAtColumnNotFound(): void
@@ -744,7 +744,7 @@ EOT,
         );
 
         $entity = new SoftDeleteNotFoundDeleteAtField();
-        $entity->softDeleted();
+        $entity->isSoftDeleted();
     }
 
     public function testDeleteWithoutPrimaryKey(): void

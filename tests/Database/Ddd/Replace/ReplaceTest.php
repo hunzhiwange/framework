@@ -50,7 +50,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
         $entity->replace();
 
@@ -91,7 +91,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
         $entity->replace();
 
@@ -135,9 +135,9 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
-        $entity->condition(['name' => 'hello'])->replace();
+        $entity->setCondition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
             [
@@ -187,7 +187,7 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
         $entity->replace();
 
@@ -242,9 +242,9 @@ EOT,
         $this->assertInstanceof(Entity::class, $entity);
         self::assertSame(1, $entity->id);
         self::assertSame('foo', $entity->name);
-        self::assertSame(['id', 'name'], $entity->changed());
+        self::assertSame(['id', 'name'], $entity->getChanged());
         self::assertNull($entity->getFlushData());
-        $entity->condition(['name' => 'hello'])->replace();
+        $entity->setCondition(['name' => 'hello'])->replace();
 
         $data = <<<'eot'
             [

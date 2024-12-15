@@ -291,9 +291,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         self::assertCount(2, $posts);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
@@ -364,9 +364,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         self::assertCount(2, $posts);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
@@ -437,9 +437,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         self::assertCount(2, $posts);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
@@ -510,9 +510,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         self::assertCount(2, $posts);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'
@@ -583,9 +583,9 @@ final class SelectTest extends TestCase
         $this->assertInstanceof(Collection::class, $posts);
         self::assertCount(2, $posts);
 
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
         self::assertSame(1, Post::softDestroy([1]));
-        self::assertFalse($post->softDeleted());
+        self::assertFalse($post->isSoftDeleted());
 
         $posts = $select->findAll();
         $sql = <<<'eot'

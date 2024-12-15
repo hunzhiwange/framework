@@ -30,7 +30,7 @@ class Register extends Provider
      */
     public function bootstrap(IDispatch $event): void
     {
-        $this->eventDispatch($event);
+        $this->setEventDispatch($event);
         $this->meta();
     }
 
@@ -87,9 +87,9 @@ class Register extends Provider
     /**
      * 设置实体事件.
      */
-    protected function eventDispatch(IDispatch $event): void
+    protected function setEventDispatch(IDispatch $event): void
     {
-        Entity::withEventDispatch($event);
+        Entity::setEventDispatch($event);
     }
 
     /**

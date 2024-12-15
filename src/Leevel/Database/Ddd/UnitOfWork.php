@@ -948,7 +948,7 @@ class UnitOfWork
      */
     protected function validateUniqueKeyData(Entity $entity, string $type): void
     {
-        if (false === $entity->id()) {
+        if (false === $entity->getId()) {
             throw new \InvalidArgumentException(sprintf('Entity `%s` has no unique key data for %s.', $entity::class, $type));
         }
     }

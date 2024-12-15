@@ -137,7 +137,7 @@ final class EntityTest extends TestCase
 
         self::assertSame('foo', $entity->title);
         self::assertSame('bar', $entity->summary);
-        self::assertSame(['title', 'summary'], $entity->changed());
+        self::assertSame(['title', 'summary'], $entity->getChanged());
     }
 
     #[Api([
@@ -715,7 +715,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed()
+                $entity->getChanged()
             )
         );
 
@@ -731,7 +731,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 1
             )
         );
@@ -747,7 +747,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed()
+                $entity->getChanged()
             )
         );
 
@@ -764,7 +764,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 1
             )
         );
@@ -783,7 +783,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed()
+                $entity->getChanged()
             )
         );
 
@@ -799,7 +799,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 1,
             )
         );
@@ -815,7 +815,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 2,
             )
         );
@@ -834,7 +834,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed()
+                $entity->getChanged()
             )
         );
 
@@ -850,7 +850,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 1,
             )
         );
@@ -864,7 +864,7 @@ eot;
         self::assertSame(
             $data,
             $this->varJson(
-                $entity->changed(),
+                $entity->getChanged(),
                 2,
             )
         );
@@ -873,7 +873,7 @@ eot;
     public function testPrimaryKeyHasNullInArrayIsEmpty(): void
     {
         $entity = new EntityWithoutPrimaryKeyNullInArray();
-        self::assertSame(['name'], $entity->primaryKey());
+        self::assertSame(['name'], $entity->getPrimaryKey());
     }
 
     public function testSinglePrimaryKeyNotFound(): void
@@ -884,14 +884,14 @@ eot;
         );
 
         $entity = new EntityWithoutAnyField();
-        self::assertNull($entity->primaryKey());
+        self::assertNull($entity->getPrimaryKey());
         $entity->getSinglePrimaryKey();
     }
 
     public function testSinglePrimaryKeyNotFoundAndAllIsKeyAndFoundOne(): void
     {
         $entity = new EntityWithoutPrimaryKey();
-        self::assertSame(['name'], $entity->primaryKey());
+        self::assertSame(['name'], $entity->getPrimaryKey());
         self::assertSame('name', $entity->getSinglePrimaryKey());
     }
 
@@ -903,7 +903,7 @@ eot;
         );
 
         $entity = new WithoutPrimarykeyAndAllAreKey();
-        self::assertSame(['goods_id', 'description', 'name'], $entity->primaryKey());
+        self::assertSame(['goods_id', 'description', 'name'], $entity->getPrimaryKey());
         $entity->getSinglePrimaryKey();
     }
 
@@ -919,12 +919,12 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'idCondition 获取查询主键条件',
+        'zh-CN:title' => 'getIdCondition 获取查询主键条件',
     ])]
     public function testIdCondition(): void
     {
         $entity = new Post(['id' => 5]);
-        self::assertSame(['id' => 5], $entity->idCondition());
+        self::assertSame(['id' => 5], $entity->getIdCondition());
     }
 
     public function testIdConditionHasNoPrimaryKeyData(): void
@@ -935,7 +935,7 @@ eot;
         );
 
         $entity = new Post();
-        self::assertNull($entity->idCondition());
+        self::assertNull($entity->getIdCondition());
     }
 
     #[Api([
@@ -1140,19 +1140,19 @@ eot;
     }
 
     #[Api([
-        'zh-CN:title' => 'id 获取主键值',
+        'zh-CN:title' => 'getId 获取主键值',
     ])]
     public function testId(): void
     {
         $entity = new Post();
-        self::assertFalse($entity->id());
+        self::assertFalse($entity->getId());
 
         $entity = new Post(['id' => 5]);
-        self::assertSame(['id' => 5], $entity->id());
+        self::assertSame(['id' => 5], $entity->getId());
     }
 
     #[Api([
-        'zh-CN:title' => 'id 获取复合主键值',
+        'zh-CN:title' => 'getId 获取复合主键值',
         'zh-CN:description' => <<<'EOT'
 **fixture 定义**
 
@@ -1166,16 +1166,16 @@ EOT,
     public function testCompositeId(): void
     {
         $entity = new CompositeId();
-        self::assertFalse($entity->id(false));
-        self::assertFalse($entity->id());
+        self::assertFalse($entity->getId(false));
+        self::assertFalse($entity->getId());
 
         $entity = new CompositeId(['id1' => 5]);
-        self::assertFalse($entity->id(false));
-        self::assertFalse($entity->id());
+        self::assertFalse($entity->getId(false));
+        self::assertFalse($entity->getId());
 
         $entity = new CompositeId(['id1' => 5, 'id2' => 8]);
-        self::assertSame(['id1' => 5, 'id2' => 8], $entity->id(false));
-        self::assertSame(['id1' => 5, 'id2' => 8], $entity->id());
+        self::assertSame(['id1' => 5, 'id2' => 8], $entity->getId(false));
+        self::assertSame(['id1' => 5, 'id2' => 8], $entity->getId());
     }
 
     #[Api([
@@ -1540,7 +1540,7 @@ EOT,
         self::assertSame(
             1,
             $testVersion
-                ->condition($condition)
+                ->setCondition($condition)
                 ->update()
                 ->flush()
         );
@@ -1591,7 +1591,7 @@ EOT,
         self::assertSame(
             1,
             $testVersion
-                ->condition($condition)
+                ->setCondition($condition)
                 ->update()
                 ->flush()
         );
@@ -1629,14 +1629,14 @@ EOT,
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        self::assertSame(1, $testVersion->version(true)->update()->flush());
+        self::assertSame(1, $testVersion->setVersion(true)->update()->flush());
         self::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->refresh();
         $condition = ['available_number' => $testVersion->availableNumber];
         $testVersion->name = 'hello';
         $testVersion->availableNumber = Condition::raw('[available_number]+8');
-        self::assertSame(1, $testVersion->condition($condition)->update()->flush());
+        self::assertSame(1, $testVersion->setCondition($condition)->update()->flush());
         self::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=2 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=3 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`id` = 1 AND `test_version`.`version` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
@@ -1667,7 +1667,7 @@ EOT,
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        self::assertSame(1, $testVersion->version(false)->update()->flush());
+        self::assertSame(1, $testVersion->setVersion(false)->update()->flush());
         self::assertSame('SQL: [254] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = :test_version_id LIMIT 1 | Params:  2 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3 WHERE `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->name = 'hello';
@@ -1702,14 +1702,14 @@ EOT,
         $testVersion->name = 'aniu';
         $testVersion->availableNumber = Condition::raw('[available_number]+1');
         $testVersion->realNumber = Condition::raw('[real_number]+3');
-        self::assertSame(1, $testVersion->version(true)->update()->flush());
+        self::assertSame(1, $testVersion->setVersion(true)->update()->flush());
         self::assertSame('SQL: [361] UPDATE `test_version` SET `test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = :test_version_id AND `test_version`.`version` = :test_version_version LIMIT 1 | Params:  3 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [16] :test_version_id | paramno=1 | name=[16] ":test_version_id" | is_param=1 | param_type=1 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`name` = \'aniu\',`test_version`.`available_number` = `test_version`.`available_number`+1,`test_version`.`real_number` = `test_version`.`real_number`+3,`test_version`.`version` = `test_version`.`version`+1 WHERE `test_version`.`id` = 1 AND `test_version`.`version` = 0 LIMIT 1)', $testVersion->select()->getLastSql());
 
         $testVersion->refresh();
         $condition = ['available_number' => $testVersion->availableNumber, DemoVersion::VERSION => 9999];
         $testVersion->name = 'hello';
         $testVersion->availableNumber = Condition::raw('[available_number]+8');
-        self::assertSame(0, $testVersion->condition($condition)->update()->flush());
+        self::assertSame(0, $testVersion->setCondition($condition)->update()->flush());
         self::assertSame('SQL: [370] UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = :named_param_name,`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = :test_version_available_number AND `test_version`.`version` = :test_version_version AND `test_version`.`id` = :test_version_id LIMIT 1 | Params:  4 | Key: Name: [17] :named_param_name | paramno=0 | name=[17] ":named_param_name" | is_param=1 | param_type=2 | Key: Name: [30] :test_version_available_number | paramno=1 | name=[30] ":test_version_available_number" | is_param=1 | param_type=2 | Key: Name: [21] :test_version_version | paramno=2 | name=[21] ":test_version_version" | is_param=1 | param_type=1 | Key: Name: [16] :test_version_id | paramno=3 | name=[16] ":test_version_id" | is_param=1 | param_type=1 (UPDATE `test_version` SET `test_version`.`version` = `test_version`.`version`+1,`test_version`.`name` = \'hello\',`test_version`.`available_number` = `test_version`.`available_number`+8 WHERE `test_version`.`available_number` = \'1.0000\' AND `test_version`.`version` = 9999 AND `test_version`.`id` = 1 LIMIT 1)', $testVersion->select()->getLastSql());
     }
 
@@ -1750,7 +1750,7 @@ EOT,
         );
 
         $withoutPrimarykey = WithoutPrimarykey::select()->findEntity(1);
-        self::assertSame(['goods_id'], WithoutPrimarykey::primaryKey());
+        self::assertSame(['goods_id'], WithoutPrimarykey::getPrimaryKey());
 
         $this->assertInstanceof(WithoutPrimarykey::class, $withoutPrimarykey);
         self::assertSame(1, $withoutPrimarykey->goodsId);
@@ -1799,7 +1799,7 @@ EOT,
         );
 
         $withoutPrimarykey = WithoutPrimarykeyAndAllAreKey::select()->findOne();
-        self::assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::primaryKey());
+        self::assertSame(['goods_id', 'description', 'name'], WithoutPrimarykeyAndAllAreKey::getPrimaryKey());
 
         $this->assertInstanceof(WithoutPrimarykeyAndAllAreKey::class, $withoutPrimarykey);
         self::assertSame(1, $withoutPrimarykey->goodsId);
