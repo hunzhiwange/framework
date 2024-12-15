@@ -31,7 +31,7 @@ class Register extends Provider
     public function bootstrap(IDispatch $event): void
     {
         $this->setEventDispatch($event);
-        $this->meta();
+        $this->setMeta();
     }
 
     public static function providers(): array
@@ -95,7 +95,7 @@ class Register extends Provider
     /**
      * Meta 设置数据库管理.
      */
-    protected function meta(): void
+    protected function setMeta(): void
     {
         Meta::setDatabaseResolver(fn (): Manager => $this->container['databases']);
     }

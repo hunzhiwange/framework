@@ -524,7 +524,7 @@ class UnitOfWork
     /**
      * 返回数据库连接.
      */
-    public function connect(): IDatabase
+    public function getConnect(): IDatabase
     {
         if (!$this->entity) {
             $this->initDefaultEntity();
@@ -543,7 +543,7 @@ class UnitOfWork
      */
     public function beginTransaction(): void
     {
-        $this->connect()->beginTransaction();
+        $this->getConnect()->beginTransaction();
     }
 
     /**
@@ -551,7 +551,7 @@ class UnitOfWork
      */
     public function rollBack(): void
     {
-        $this->connect()->rollBack();
+        $this->getConnect()->rollBack();
         $this->close();
     }
 
@@ -560,7 +560,7 @@ class UnitOfWork
      */
     public function commit(): void
     {
-        $this->connect()->commit();
+        $this->getConnect()->commit();
         $this->close();
     }
 

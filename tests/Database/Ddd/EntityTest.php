@@ -2079,14 +2079,14 @@ EOT,
     }
 
     #[Api([
-        'zh-CN:title' => 'meta 返回实体类的元对象(虚拟实体)',
+        'zh-CN:title' => 'getMeta 返回实体类的元对象(虚拟实体)',
     ])]
     public function testMeta1(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The virtual entity does not support select');
 
-        DemoVirtualEntity::meta();
+        DemoVirtualEntity::getMeta();
     }
 
     #[Api([
@@ -2250,7 +2250,7 @@ EOT,
     public function test13(): void
     {
         $entity = new PostNew5();
-        $this->invokeTestMethod($entity, 'formatPropValue', ['foo', 'bar']);
+        $this->invokeTestMethod($entity, 'getFormatPropValue', ['foo', 'bar']);
     }
 
     public function test14(): void
