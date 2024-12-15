@@ -51,11 +51,11 @@ EOT,
         ];
 
         $collection = new Template($data);
-        self::assertSame($collection['key'], 'hello');
-        self::assertSame($collection['title'], 'world');
-        self::assertInstanceOf(VectorDto::class, $collection['data']);
-        self::assertSame($collection['data'], $templateData);
-        self::assertSame($collection['data']->toArray(), $sourceTemplateData);
+        self::assertSame($collection->key, 'hello');
+        self::assertSame($collection->title, 'world');
+        self::assertInstanceOf(VectorDto::class, $collection->data);
+        self::assertSame($collection->data, $templateData);
+        self::assertSame($collection->data->toArray(), $sourceTemplateData);
     }
 
     public function testError(): void
