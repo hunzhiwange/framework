@@ -203,7 +203,7 @@ class Entity extends Make
     {
         $oldStructData = [];
         $contentLines = $this->normalizeOldStructData($contentLines, $middleStructIndex, $endStructIndex);
-  
+
         // 正则表达式匹配
         $regex = '/#\[Struct\(\[.*?\]\)\]\s*public\s*\?\w+\s+\$(\w+)\s*=\s*null\s*\{[^}]*\}/s';
         if (preg_match_all($regex, $contentLines, $matches)) {
@@ -214,7 +214,7 @@ class Entity extends Make
 
         $this->oldStructData = $oldStructData;
     }
-    
+
     /**
      * 整理旧的字段结构数据.
      */
@@ -291,8 +291,8 @@ class Entity extends Make
             }
         }
 
-        if (!$startStructIndex 
-            || !$endStructIndex 
+        if (!$startStructIndex
+            || !$endStructIndex
             || $startStructIndex > $endStructIndex) {
             throw new \Exception('Can not find start and end position of struct.');
         }
@@ -446,11 +446,15 @@ class Entity extends Make
                     EOT;
             }
 
+            // HTTP 请求传递的数据都是字符串
+            // 这里默认兼容一下字符串传递的方式
+            $requestFieldType = 'string' === $fieldType ? '' : '|string';
+
             $structData[] = <<<EOT
                     ])]
                     public ?{$fieldType} \${$fieldName} = null
                     {
-                        set ({$fieldType}|null \$v) {
+                        set ({$fieldType}|{$requestFieldType}|null \$v) {
                             \$this->{$fieldName} = \$this->set('{$fieldName}', \$v);
                         }
                     }
@@ -481,12 +485,12 @@ class Entity extends Make
         $lines = explode(PHP_EOL, $content);
         $isCommenting = false; // 是否开始注释
         $commentedLines = [];
-    
+
         foreach ($lines as $line) {
             if (preg_match('/^\s*public\s*\?/', $line)) {
                 $isCommenting = true;
             }
-    
+
             if ($isCommenting) {
                 // 最后一行不加注释
                 if (trim($line) === '') {
@@ -499,7 +503,7 @@ class Entity extends Make
                 $commentedLines[] = $line;
             }
         }
-    
+
         return implode(PHP_EOL, $commentedLines);
     }
 

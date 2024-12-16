@@ -25,7 +25,7 @@ class Post extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -45,7 +45,7 @@ class Post extends Entity
     ])]
     public ?int $userId = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
@@ -76,7 +76,7 @@ class Post extends Entity
     ])]
     public ?int $deleteAt = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }
@@ -128,7 +128,7 @@ class Post extends Entity
     public ?int $userNotDefinedSourceKey = null
     {
         get => $this->get('userNotDefinedSourceKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->userNotDefinedSourceKey = $this->set('userNotDefinedSourceKey', $v);
         }
     }
@@ -140,7 +140,7 @@ class Post extends Entity
     public ?int $userNotDefinedTargetKey = null
     {
         get => $this->get('userNotDefinedTargetKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->userNotDefinedTargetKey = $this->set('userNotDefinedTargetKey', $v);
         }
     }
@@ -153,7 +153,7 @@ class Post extends Entity
     public ?int $commentNotDefinedSourceKey = null
     {
         get => $this->get('commentNotDefinedSourceKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->commentNotDefinedSourceKey = $this->set('commentNotDefinedSourceKey', $v);
         }
     }
@@ -166,7 +166,7 @@ class Post extends Entity
     public ?int $commentNotDefinedTargetKey = null
     {
         get => $this->get('commentNotDefinedTargetKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->commentNotDefinedTargetKey = $this->set('commentNotDefinedTargetKey', $v);
         }
     }
@@ -178,7 +178,7 @@ class Post extends Entity
     public ?int $postContentNotDefinedSourceKey = null
     {
         get => $this->get('postContentNotDefinedSourceKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->postContentNotDefinedSourceKey = $this->set('postContentNotDefinedSourceKey', $v);
         }
     }
@@ -190,7 +190,7 @@ class Post extends Entity
     public ?int $postContentNotDefinedTargetKey = null
     {
         get => $this->get('postContentNotDefinedTargetKey');
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->postContentNotDefinedTargetKey = $this->set('postContentNotDefinedTargetKey', $v);
         }
     }

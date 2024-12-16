@@ -20,7 +20,7 @@ class DemoUpdateAutoFillEntity extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -75,22 +75,22 @@ class DemoUpdateAutoFillEntity extends Entity
         }
     }
 
-    protected function fillDescription($old): string
+    protected function fillDescription(mixed $old): string
     {
         return 'set description.';
     }
 
-    protected function fillAddress($old): string
+    protected function fillAddress(mixed $old): string
     {
         return 'address is set now.';
     }
 
-    protected function fillFooBar($old): string
+    protected function fillFooBar(mixed $old): string
     {
         return 'foo bar.';
     }
 
-    protected function fillHello($old): string
+    protected function fillHello(mixed $old): string
     {
         return 'hello field.';
     }

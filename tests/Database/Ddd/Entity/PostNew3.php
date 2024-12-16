@@ -26,7 +26,7 @@ class PostNew3 extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -55,7 +55,7 @@ class PostNew3 extends Entity
     ])]
     public ?int $userId = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
@@ -99,7 +99,7 @@ class PostNew3 extends Entity
     ])]
     public ?int $deleteAt = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }

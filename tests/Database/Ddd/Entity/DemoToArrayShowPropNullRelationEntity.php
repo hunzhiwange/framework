@@ -19,7 +19,7 @@ class DemoToArrayShowPropNullRelationEntity extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }

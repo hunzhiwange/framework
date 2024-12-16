@@ -20,7 +20,7 @@ class WithoutPrimarykey extends Entity
     ])]
     public ?int $goodsId = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->goodsId = $this->set('goodsId', $v);
         }
     }

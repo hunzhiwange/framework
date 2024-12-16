@@ -37,7 +37,7 @@ class Test extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->int = $this->set('int', $v);
         }
     }

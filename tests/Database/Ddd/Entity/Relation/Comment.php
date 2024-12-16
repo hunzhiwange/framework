@@ -19,7 +19,7 @@ class Comment extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -37,7 +37,7 @@ class Comment extends Entity
     ])]
     public ?int $postId = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->postId = $this->set('postId', $v);
         }
     }

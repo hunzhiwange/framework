@@ -20,7 +20,7 @@ class PostContent extends Entity
     ])]
     public ?int $postId = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->postId = $this->set('postId', $v);
         }
     }

@@ -21,7 +21,7 @@ class EntityWithEnumValidator2 extends Entity
     ])]
     public ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -58,7 +58,7 @@ class EntityWithEnumValidator2 extends Entity
     ])]
     public ?int $status = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->status = $this->set('status', $v);
         }
     }

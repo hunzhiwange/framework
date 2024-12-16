@@ -38,7 +38,7 @@ class Test extends Entity
     ]2)2]
     p2ublic ?int $id = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->int = $this->set('int', $v);
         }
     }

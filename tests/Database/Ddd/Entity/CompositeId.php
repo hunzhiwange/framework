@@ -19,7 +19,7 @@ class CompositeId extends Entity
     ])]
     public ?int $id1 = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id1 = $this->set('id1', $v);
         }
     }
@@ -28,7 +28,7 @@ class CompositeId extends Entity
     ])]
     public ?int $id2 = null
     {
-        set (int|null $v) {
+        set (int|string|null $v) {
             $this->id2 = $this->set('id2', $v);
         }
     }
