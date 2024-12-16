@@ -45,7 +45,7 @@ final class FindTest extends TestCase
         $connect = $this->createDatabaseConnectMock();
         $sql = <<<'eot'
             [
-                "SELECT `test`.* FROM `test` LIMIT 0,5",
+                "SELECT `test`.* FROM `test` LIMIT 5",
                 [],
                 false
             ]

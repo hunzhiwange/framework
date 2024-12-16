@@ -16,7 +16,7 @@ interface IApp extends IContainer
      *
      * @var string
      */
-    public const string VERSION = 'v2.0.4';
+    public const string VERSION = 'v2.0.5';
 
     /**
      * 默认环境变量名字.

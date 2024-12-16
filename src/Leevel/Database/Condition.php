@@ -1105,7 +1105,11 @@ class Condition implements ICondition
             return $this;
         }
 
-        return $this->limit(0, $count);
+        $this->configs['limitCount'] = $count;
+        $this->configs['limitOffset'] = null;
+        $this->configs['limitQuery'] = true;
+
+        return $this;
     }
 
     public function limit(int $offset = 0, int $count = 0): self

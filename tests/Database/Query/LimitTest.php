@@ -106,7 +106,7 @@ final class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` LIMIT 0,15",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 15",
                 [],
                 false
             ]
@@ -132,7 +132,7 @@ final class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` LIMIT 0,6",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 6",
                 [],
                 false
             ]
@@ -161,7 +161,7 @@ final class LimitTest extends TestCase
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` LIMIT 0,5",
+                "SELECT `test_query`.* FROM `test_query` LIMIT 5",
                 [],
                 false
             ]
