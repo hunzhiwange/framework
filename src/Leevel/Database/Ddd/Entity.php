@@ -277,6 +277,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     public const string COLUMN_COMMENT = 'column_comment';
 
     /**
+     * 字段接口备注.
+     */
+    public const string COLUMN_API_COMMENT = 'column_api_comment';
+
+    /**
      * 字段验证器.
      */
     public const string COLUMN_VALIDATOR = 'column_validator';
@@ -458,6 +463,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      * 属性数据.
      */
     protected array $dataFramework = [];
+
+    /**
+     * 转换数组加上注释.
+     */
+    protected static bool $toArrayCommentFramework = false;
 
     /**
      * 全局数据库连接.
@@ -1486,6 +1496,14 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     }
 
     /**
+     * 设置转换数组是否加上注释.
+     */
+    public static function setToArrayCommentFramework(bool $toArrayComment = true): void
+    {
+        static::$toArrayCommentFramework = $toArrayComment;
+    }
+
+    /**
      * 返回实体事件处理器.
      */
     public static function getEventDispatch(): ?IDispatch
@@ -1833,6 +1851,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
     public function toArray(): array
     {
+        $fields = static::getFields();
         $prop = $this->normalizeWhiteAndBlack($this->getFields(), 'show_prop');
         $result = [];
         foreach ($prop as $k => $config) {
@@ -1861,9 +1880,17 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
             $result[$k] = $value;
 
+            $toArrayComment = '';
+            if (static::$toArrayCommentFramework) {
+                $result['#'.$k] = $toArrayComment = static::parseToArrayComment($fields, $unCamelizeProp);
+            }
+
             // 格式化后用一个新字段存储
             if ($this->shouldFormatPropValue($k)) {
                 $result[$unCamelizeProp.'_formated'] = $this->getFormatPropValue($k, $value);
+                if (static::$toArrayCommentFramework) {
+                    $result['#'.$unCamelizeProp.'_formated'] = $toArrayComment.'「formated」';
+                }
             }
         }
 
@@ -2156,6 +2183,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     protected function floatBuiltinTransformValue(mixed $value): float
     {
         return (float) $value;
+    }
+
+    protected static function parseToArrayComment(array $fields, string $unCamelizeProp): string
+    {
+        return trim(($fields[$unCamelizeProp][self::COLUMN_NAME] ?? '')
+            .' '.($fields[$unCamelizeProp][self::COLUMN_COMMENT] ?? '')
+            .' '.($fields[$unCamelizeProp][self::COLUMN_API_COMMENT] ?? ''));
     }
 
     /**
@@ -2723,6 +2757,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
                 }
             }
             $data[$prop.'_'.self::ENUM_SUFFIX] = implode(self::ENUM_SEPARATE, $tempValue);
+
+            if (static::$toArrayCommentFramework) {
+                $data['#'.$prop.'_'.self::ENUM_SUFFIX] = static::parseToArrayComment($fields, $prop).'「enum」';
+            }
         }
     }
 
