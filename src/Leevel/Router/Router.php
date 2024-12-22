@@ -312,7 +312,8 @@ class Router implements IRouter
             $response = $this->container->call($bind, $this->matchedVars($request));
             if (!$response instanceof Response) {
                 if (ShouldJson::handle($response)) {
-                    $response = JsonResponse::fromJsonString(ConvertJson::handle($response, JSON_UNESCAPED_UNICODE));
+                    $response = JsonResponse::fromJsonString(ConvertJson::handle($response))
+                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
                 } else {
                     $response = new Response((string) $response);
                 }

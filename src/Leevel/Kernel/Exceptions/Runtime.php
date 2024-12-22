@@ -61,10 +61,11 @@ abstract class Runtime implements IRuntime
             if (!$response instanceof Response) {
                 if (ShouldJson::handle($response)) {
                     $response = JsonResponse::fromJsonString(
-                        ConvertJson::handle($response, JSON_UNESCAPED_UNICODE),
-                        $this->normalizeStatusCode($e),
-                        $this->normalizeHeaders($e),
-                    );
+                            ConvertJson::handle($response),
+                            $this->normalizeStatusCode($e),
+                            $this->normalizeHeaders($e),
+                        )
+                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
                 } else {
                     $response = new Response(
                         $response,
@@ -188,10 +189,11 @@ abstract class Runtime implements IRuntime
         }
 
         return JsonResponse::fromJsonString(
-            json_encode($data, JSON_UNESCAPED_UNICODE) ?: '',
-            $this->normalizeStatusCode($e),
-            $this->normalizeHeaders($e)
-        );
+            json_encode($data) ?: '',
+                $this->normalizeStatusCode($e),
+                $this->normalizeHeaders($e)
+            )
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
     }
 
     /**
