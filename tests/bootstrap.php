@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use NunoMaduro\Collision\Provider;
 
 error_reporting(E_ALL);
 ini_set('xdebug.max_nesting_level', '200');
@@ -19,3 +20,6 @@ if (false === is_file($vendorDir.'/autoload.php')) {
 }
 
 include $vendorDir.'/autoload.php';
+
+// 注册 PHPUNIT 友好提示
+new Provider()->register();
