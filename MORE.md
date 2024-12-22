@@ -52,7 +52,7 @@ Pass hook
 
 ```
 git commit -h
-git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
+git commit -n -m 'pass hook' # bypass pre-commit and commit-msg hooks
 ```
 
 ## PHPStan 
