@@ -9,23 +9,19 @@ _____________                           _______________
 
 ## Run Tests
 
-```diff
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework      
-$composer install
-$cp tests/config.php tests/config.local.php // Modify the config
-$php vendor/bin/phinx migrate
-+ $php build/phpunit tests
-+ $composer test
-+ $composer test-coverage
+```
+cd /data/codes/queryphp/vendor/hunzhiwange/framework      
+composer install
+cp tests/config.php tests/config.local.php // Modify the config
+php vendor/bin/phinx migrate
+php build/phpunit tests
 ```
 
 ## Framework Command
 
 ```
-$cd /data/codes/queryphp
-$php leevel make:docwithin vendor/hunzhiwange/framework/tests
-$php leevel make:ide:helper Leevel\\Cache\\ICache
-$php leevel make:ide:helper:function vendor/hunzhiwange/framework/src/Leevel/Support/Arr
+cd /data/codes/queryphp
+php leevel make:docwithin vendor/hunzhiwange/framework/tests
 ```
 
 ## Unified Code Style
@@ -38,11 +34,9 @@ It can be used without installation,we download a version for you.
 
 ### Base use
 
-```diff
-$cd /data/codes/queryphp/vendor/hunzhiwange/framework
-- $php-cs-fixer fix --config=.php_cs.dist
-+ $php build/php-cs-fixer fix --config=.php_cs.dist
-+ $composer php-cs-fixer
+```
+cd /data/codes/queryphp/vendor/hunzhiwange/framework
+php build/php-cs-fixer fix --config=.php_cs.dist
 ```
 
 ### With Git hooks
@@ -63,9 +57,8 @@ Pass hook
 
 ## PHPStan 
 
-```diff
-- $php build/phpstan analyse
-+ $composer phpstan
+```
+php build/phpstan analyse
 ```
 
 ## License
