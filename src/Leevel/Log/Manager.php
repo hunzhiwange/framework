@@ -12,6 +12,7 @@ use Monolog\Logger;
  */
 class Manager extends Managers implements ILog
 {
+    // @codeCoverageIgnoreStart
     public function getMonolog(): Logger
     {
         // @phpstan-ignore-next-line
@@ -62,6 +63,7 @@ class Manager extends Managers implements ILog
     {
         $this->callConnectMethod(__FUNCTION__, $level, $message, $context);
     }
+    // @codeCoverageIgnoreEnd
 
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ILog
     {

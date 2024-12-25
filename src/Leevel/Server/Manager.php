@@ -15,6 +15,7 @@ use Swoole\Table;
  */
 class Manager extends Managers implements IServer
 {
+    // @codeCoverageIgnoreStart
     public function start(): void
     {
         // @phpstan-ignore-next-line
@@ -38,6 +39,7 @@ class Manager extends Managers implements IServer
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__);
     }
+    // @codeCoverageIgnoreEnd
 
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IServer
     {

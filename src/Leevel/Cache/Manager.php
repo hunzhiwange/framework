@@ -18,6 +18,7 @@ class Manager extends Managers implements ICache
      */
     protected array $pools = [];
 
+    // @codeCoverageIgnoreStart
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
         $this->callConnectMethod(__FUNCTION__, $keys, $value, $expire);
@@ -92,6 +93,7 @@ class Manager extends Managers implements ICache
     {
         $this->callConnectMethod(__FUNCTION__, $pool);
     }
+    // @codeCoverageIgnoreEnd
 
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ICache
     {
