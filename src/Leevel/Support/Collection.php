@@ -203,6 +203,11 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
         $this->watchElements();
     }
 
+    public function put(mixed $offset, mixed $value): void
+    {
+        $this->offsetSet($offset, $value);
+    }
+
     public function count(): int
     {
         return \count($this->elements);
