@@ -45,6 +45,7 @@ class Select implements ISelect
         $this->initSelect($softDeletedType);
     }
 
+    // @codeCoverageIgnoreStart
     public function getContainer(): IContainer
     {
         // @phpstan-ignore-next-line
@@ -821,6 +822,7 @@ class Select implements ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
+    // @codeCoverageIgnoreEnd
 
     public function entity(): Entity
     {

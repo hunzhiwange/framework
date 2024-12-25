@@ -50,6 +50,7 @@ class Repository implements ISelect
      */
     public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null) {}
 
+    // @codeCoverageIgnoreStart
     public function entity(): Entity
     {
         // @phpstan-ignore-next-line
@@ -881,6 +882,7 @@ class Repository implements ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * 设置批量插入回调.

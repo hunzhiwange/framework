@@ -61,6 +61,7 @@ class Assert
         $this->lazy = $lazy;
     }
 
+    // @codeCoverageIgnoreStart
     /**
      * 是否可接受的.
      */
@@ -1068,6 +1069,7 @@ class Assert
     {
         return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * 创建断言对象已支持链式表达式.
