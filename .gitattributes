@@ -31,3 +31,4 @@
 /.php_cs.dist export-ignore
 /.github export-ignore
 /.php-cs-fixer.dist.php export-ignore
+/migration.php export-ignore
