@@ -28,6 +28,7 @@ class Manager extends Managers implements IDatabase
      */
     protected array $poolTransactions = [];
 
+    // @codeCoverageIgnoreStart
     public function getContainer(): IContainer
     {
         // @phpstan-ignore-next-line
@@ -825,6 +826,7 @@ class Manager extends Managers implements IDatabase
         // @phpstan-ignore-next-line
         return $this->callConnectMethod($method, ...$args);
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * 取得配置命名空间.

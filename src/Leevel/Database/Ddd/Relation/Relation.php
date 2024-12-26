@@ -73,6 +73,7 @@ abstract class Relation implements IRelation
         $this->addRelationCondition();
     }
 
+    // @codeCoverageIgnoreStart
     public function entity(): Entity
     {
         // @phpstan-ignore-next-line
@@ -904,6 +905,7 @@ abstract class Relation implements IRelation
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
+    // @codeCoverageIgnoreEnd
 
     public function getSelect(): Select
     {

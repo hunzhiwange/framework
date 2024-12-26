@@ -11,6 +11,7 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers implements ISession
 {
+    // @codeCoverageIgnoreStart
     public function start(?string $sessionId = null): void
     {
         $this->callConnectMethod(__FUNCTION__, $sessionId);
@@ -193,6 +194,7 @@ class Manager extends Managers implements ISession
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__, $maxLifetime);
     }
+    // @codeCoverageIgnoreEnd
 
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ISession
     {

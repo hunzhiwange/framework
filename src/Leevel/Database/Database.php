@@ -140,6 +140,7 @@ abstract class Database implements IDatabase
         $this->close();
     }
 
+    // @codeCoverageIgnoreStart
     public function forPage(int $page, int $perPage = 10): Select
     {
         return $this->callSelectMethodChain(__FUNCTION__, $page, $perPage);
@@ -748,6 +749,7 @@ abstract class Database implements IDatabase
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
+    // @codeCoverageIgnoreEnd
 
     public function getContainer(): IContainer
     {
