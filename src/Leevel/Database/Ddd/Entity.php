@@ -1849,7 +1849,17 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         return $entity;
     }
 
+    public function toArrayWithMustColumn(array $mustColumn = []): array
+    {
+        return $this->toArrayReal($mustColumn);
+    }
+
     public function toArray(): array
+    {
+        return $this->toArrayReal();
+    }
+
+    protected function toArrayReal(array $mustColumn = []): array
     {
         $fields = static::getFields();
         $prop = $this->normalizeWhiteAndBlack($this->getFields(), 'show_prop');
@@ -1858,6 +1868,15 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             $isRelationProp = static::isRelation($k);
             $unCamelizeProp = static::unCamelizeProp($k);
             $value = $this->propGetter($unCamelizeProp);
+
+            // 虚拟字段属性钩子支持
+            // 关联模型不需要处理，因为会导致不必要的数据库查询
+            if (null === $value
+                && $mustColumn
+                && \in_array($k, $mustColumn, true)) {
+                $value = $this->{static::camelizeProp($k)};
+            }
+
             if (null === $value) {
                 if (!\array_key_exists(self::SHOW_PROP_NULL, $config)) {
                     continue;
