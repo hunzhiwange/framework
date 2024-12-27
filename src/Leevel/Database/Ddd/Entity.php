@@ -1869,8 +1869,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             $unCamelizeProp = static::unCamelizeProp($k);
             $value = $this->propGetter($unCamelizeProp);
 
-            // 虚拟字段属性钩子支持
-            // 关联模型不需要处理，因为会导致不必要的数据库查询
+            // 强制查询字段
+            // 支持虚拟字段属性钩子
             if (null === $value
                 && $mustColumn
                 && \in_array($k, $mustColumn, true)) {
