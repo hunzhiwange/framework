@@ -2063,7 +2063,9 @@ class Condition implements ICondition
             $this->conditionSubExpression(function (self $condition) use ($type, $cond): void {
                 $cond($condition);
                 $tmp = $condition->{'parse'.ucwords($type)}(true);
-                $this->setConditionItem('('.$tmp.')', ':string');
+                // 修复 orWhere 未生效的问题
+                // @todo 类似的 :string 都需要检查一下有不有同样的问题
+                $this->setConditionItem('('.$tmp.')', ':stringSimple');
             });
 
             return $this;
