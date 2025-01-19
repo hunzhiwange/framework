@@ -160,12 +160,12 @@ EOT,
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON (`test_query_subsql`.`id` < :test_query_subsql_id AND `test_query_subsql`.`name` LIKE :test_query_subsql_name)",
+                "SELECT `test_query`.*,`test_query_subsql`.`name`,`test_query_subsql`.`value` FROM `test_query` INNER JOIN `test_query_subsql` ON (`test_query_subsql`.`id` < :sub1_test_query_subsql_id AND `test_query_subsql`.`name` LIKE :sub1_test_query_subsql_name)",
                 {
-                    "test_query_subsql_id": [
+                    "sub1_test_query_subsql_id": [
                         5
                     ],
-                    "test_query_subsql_name": [
+                    "sub1_test_query_subsql_name": [
                         "hello"
                     ]
                 },

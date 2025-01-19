@@ -86,9 +86,9 @@ EOT,
 
         $sql = <<<'eot'
 [
-    "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :sub1_t_id",
+    "DELETE t FROM `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `h`.`name` = `t`.`name` WHERE `t`.`id` = :t_id",
     {
-        "sub1_t_id": [
+        "t_id": [
             1
         ]
     },

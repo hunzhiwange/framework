@@ -166,12 +166,12 @@ EOT,
 
         $sql = <<<'eot'
 [
-    "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :sub1_named_param_name WHERE `t`.`id` = :sub1_t_id",
+    "UPDATE `test_query` `t` INNER JOIN `test_query_subsql` `h` ON `t`.`id` = `h`.`value` SET `t`.`name` = :named_param_name WHERE `t`.`id` = :t_id",
     {
-        "sub1_named_param_name": [
+        "named_param_name": [
             "小猪"
         ],
-        "sub1_t_id": [
+        "t_id": [
             503
         ]
     },
