@@ -2775,6 +2775,9 @@ class ClassStaticDemo1
         return 'foo' === $value;
     }
 
+    /**
+     * @throws ValidatorException
+     */
     public static function demoValidator4(mixed $value, array $param, Validator $validator): bool
     {
         throw new ValidatorException('我的名字验证失败');

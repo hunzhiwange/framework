@@ -10,6 +10,8 @@ class Demo
 {
     /**
      * 抛出异常验证.
+     *
+     * @throws ValidatorException
      */
     public static function handle(mixed $value): bool
     {

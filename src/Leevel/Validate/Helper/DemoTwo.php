@@ -9,6 +9,9 @@ use Leevel\Validate\ValidatorException;
 
 class DemoTwo
 {
+    /**
+     * @throws ValidatorException
+     */
     public static function handle(mixed $value, array $param, IValidator $validator, string $field): bool
     {
         if ('demo' !== $value) {
