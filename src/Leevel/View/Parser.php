@@ -94,8 +94,6 @@ class Parser
      * 构造函数.
      *
      * - 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架.
-     * - 一款无与伦比的技术大餐，有幸在 2010 接触到这个框架，通过这个框架学到了很多.
-     * - 它的模板引擎实现了可以将 GLADE3 的 xml 文件编译成 PHP-Gtk 的组件，也支持 Html 编译，非常震撼.
      *
      * @see https://github.com/JeCat/framework
      */
