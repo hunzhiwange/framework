@@ -532,7 +532,7 @@ EOT,
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :sub1_test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
+    "SELECT `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`votes`,`test_query`.`title`,`test_query`.`id` HAVING `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
     {
         "test_query_votes": [
             100
@@ -540,7 +540,7 @@ EOT,
         "test_query_title": [
             "Admin"
         ],
-        "sub1_test_query_id": [
+        "test_query_id": [
             5
         ]
     },
@@ -556,7 +556,7 @@ eot;
                     ->setColumns('votes,title,id')
                     ->groupBy('votes,title,id')
                     ->having('id', 5)
-                    ->orHaving(static function ($select): void {
+                    ->orHaving(static function (Condition $select): void {
                         $select
                             ->having('votes', '>', 100)
                             ->having('title', '<>', 'Admin')
@@ -696,12 +696,12 @@ eot;
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.`hello`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
+    "SELECT `test_query`.`hello`,`test_query`.`id` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
     {
         "test_query_subor_test_query_id": [
             "你好"
         ],
-        "sub1_test_query_hello": [
+        "test_query_hello": [
             "world"
         ]
     },
@@ -736,12 +736,12 @@ eot;
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :sub2_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :sub2_sub1_test_query_suband_test_query_id OR `test_query`.`value` = :sub2_sub1_test_query_suband_test_query_value OR (`test_query`.`child_one` > :sub1_sub1_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub1_sub1_test_query_subor_test_query_child_two))",
+    "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :sub2_sub1_test_query_suband_test_query_id OR `test_query`.`value` = :sub2_sub1_test_query_suband_test_query_value OR (`test_query`.`child_one` > :sub2_sub2_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub2_sub2_test_query_subor_test_query_child_two))",
     {
-        "sub1_sub1_test_query_subor_test_query_child_one": [
+        "sub2_sub2_test_query_subor_test_query_child_one": [
             "123"
         ],
-        "sub1_sub1_test_query_subor_test_query_child_two": [
+        "sub2_sub2_test_query_subor_test_query_child_two": [
             "123"
         ],
         "sub2_sub1_test_query_suband_test_query_id": [
@@ -756,7 +756,7 @@ eot;
         "test_query_subor_test_query_value": [
             "helloworld"
         ],
-        "sub2_test_query_hello": [
+        "sub1_test_query_hello": [
             "111"
         ]
     },
@@ -1091,7 +1091,7 @@ EOT,
                     ->table('test_query')
                     ->setColumns('name,id')
                     ->groupBy('name,id')
-                    ->havingBetween('id', [static function ($select): void {
+                    ->havingBetween('id', [static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1132,7 +1132,7 @@ EOT,
                     ->table('test_query')
                     ->setColumns('name,id')
                     ->groupBy('name,id')
-                    ->havingIn('id', [static function ($select): void {
+                    ->havingIn('id', [static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1425,7 +1425,7 @@ EOT,
                     ->table('test_query')
                     ->setColumns('id')
                     ->groupBy('id')
-                    ->havingIn('id', static function ($select): void {
+                    ->havingIn('id', static function (Condition $select): void {
                         $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(),
@@ -1551,7 +1551,7 @@ EOT,
                     ->table('test_query')
                     ->setColumns('id')
                     ->groupBy('id')
-                    ->having('id', '=', static function ($select): void {
+                    ->having('id', '=', static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)

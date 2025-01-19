@@ -818,7 +818,7 @@ EOT,
                 $connect
                     ->table('test_query')
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 1);
                         }
                     )
@@ -942,7 +942,7 @@ EOT,
                     ->table('test_query')
                     ->where(
                         [
-                            ':exists' => static function ($select): void {
+                            ':exists' => static function (Condition $select): void {
                                 $select
                                     ->table('test_query_subsql')
                                     ->where('id', 1)
@@ -982,7 +982,7 @@ EOT,
                 $connect
                     ->table('test_query')
                     ->whereNotExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select
                                 ->table('test_query_subsql')
                                 ->where('id', 1)
@@ -1004,7 +1004,7 @@ EOT,
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :sub1_test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id OR (`test_query`.`votes` > :test_query_votes AND `test_query`.`title` <> :test_query_title)",
                 {
                     "test_query_votes": [
                         100
@@ -1012,7 +1012,7 @@ EOT,
                     "test_query_title": [
                         "Admin"
                     ],
-                    "sub1_test_query_id": [
+                    "test_query_id": [
                         5
                     ]
                 },
@@ -1026,7 +1026,7 @@ EOT,
                 $connect
                     ->table('test_query')
                     ->where('id', 5)
-                    ->orWhere(static function ($select): void {
+                    ->orWhere(static function (Condition $select): void {
                         $select
                             ->where('votes', '>', 100)
                             ->where('title', '<>', 'Admin')
@@ -1039,7 +1039,7 @@ EOT,
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :sub1_test_query_id OR `test_query`.`name` = :sub1_test_query_name AND (`test_query`.`votes` > :test_query_votes OR `test_query`.`title` <> :test_query_title)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id OR `test_query`.`name` = :test_query_name AND (`test_query`.`votes` > :test_query_votes OR `test_query`.`title` <> :test_query_title)",
                 {
                     "test_query_votes": [
                         100
@@ -1047,10 +1047,10 @@ EOT,
                     "test_query_title": [
                         "Admin"
                     ],
-                    "sub1_test_query_id": [
+                    "test_query_id": [
                         5
                     ],
-                    "sub1_test_query_name": [
+                    "test_query_name": [
                         "小牛"
                     ]
                 },
@@ -1065,7 +1065,7 @@ EOT,
                     ->table('test_query')
                     ->where('id', 5)
                     ->orWhere('name', '小牛')
-                    ->where(static function ($select): void {
+                    ->where(static function (Condition $select): void {
                         $select
                             ->where('votes', '>', 100)
                             ->orWhere('title', '<>', 'Admin')
@@ -1074,6 +1074,201 @@ EOT,
                     ->findAll(),
                 $connect,
                 1
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'orWhere 查询条件支持分组',
+    ])]
+    public function testOrWhereGroup(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND (`test_query`.`votes` > :test_query_votes OR `test_query`.`title` <> :test_query_title)",
+                {
+                    "test_query_votes": [
+                        100
+                    ],
+                    "test_query_title": [
+                        "Admin"
+                    ],
+                    "test_query_id": [
+                        5
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        self::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 5)
+                    ->where(static function (Condition $select): void {
+                        $select
+                            ->orWhere('votes', '>', 100)
+                            ->orWhere('title', '<>', 'Admin')
+                        ;
+                    })
+                    ->findAll(),
+                $connect
+            )
+        );
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND ((`test_query`.`id` = :sub1_test_query_id AND `test_query`.`votes` NOT LIKE :sub1_test_query_votes AND `test_query`.`title` NOT LIKE :sub1_test_query_title) OR (`test_query`.`title` = :sub2_test_query_title AND `test_query`.`id` NOT LIKE :sub2_test_query_id AND `test_query`.`votes` NOT LIKE :sub2_test_query_votes))",
+                {
+                    "sub2_test_query_title": [
+                        5
+                    ],
+                    "sub2_test_query_id": [
+                        "%hello%"
+                    ],
+                    "sub2_test_query_votes": [
+                        "%world%"
+                    ],
+                    "sub1_test_query_id": [
+                        5
+                    ],
+                    "sub1_test_query_votes": [
+                        "%hello%"
+                    ],
+                    "sub1_test_query_title": [
+                        "%world%"
+                    ],
+                    "test_query_id": [
+                        99
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        self::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 99)
+                    ->where(static function (Condition $select): void {
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('id', 5)
+                                    ->where('votes', 'not like', '%hello%')
+                                    ->where('title', 'not like', '%world%');
+                        });
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('title', 5)
+                                   ->where('id', 'not like', '%hello%')
+                                   ->where('votes', 'not like', '%world%');
+                        });
+                    })
+                    ->findAll(),
+                $connect
+            )
+        );
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND ((`test_query`.`id` = :sub1_test_query_id AND `test_query`.`votes` NOT LIKE :sub1_test_query_votes AND `test_query`.`title` NOT LIKE :sub1_test_query_title) OR (`test_query`.`id` = :sub2_test_query_id AND `test_query`.`votes` NOT LIKE :sub2_test_query_votes AND `test_query`.`title` NOT LIKE :sub2_test_query_title))",
+                {
+                    "sub2_test_query_id": [
+                        6
+                    ],
+                    "sub2_test_query_votes": [
+                        "%hello123%"
+                    ],
+                    "sub2_test_query_title": [
+                        "%world456%"
+                    ],
+                    "sub1_test_query_id": [
+                        5
+                    ],
+                    "sub1_test_query_votes": [
+                        "%hello%"
+                    ],
+                    "sub1_test_query_title": [
+                        "%world%"
+                    ],
+                    "test_query_id": [
+                        99
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        self::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 99)
+                    ->where(static function (Condition $select): void {
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('id', 5)
+                                ->where('votes', 'not like', '%hello%')
+                                ->where('title', 'not like', '%world%');
+                        });
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('id', 6)
+                                ->where('votes', 'not like', '%hello123%')
+                                ->where('title', 'not like', '%world456%');
+                        });
+                    })
+                    ->findAll(),
+                $connect
+            )
+        );
+    }
+
+    #[Api([
+        'zh-CN:title' => 'orWhere 查询条件支持分组',
+    ])]
+    public function testOrWhereGroupBug1(): void
+    {
+        $connect = $this->createDatabaseConnectMock();
+
+        $sql = <<<'eot'
+            [
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`id` = :test_query_id AND ((`test_query`.`id` = :sub1_test_query_id) OR (`test_query`.`id` = :sub2_test_query_id))",
+                {
+                    "sub2_test_query_id": [
+                        "two"
+                    ],
+                    "sub1_test_query_id": [
+                        "one"
+                    ],
+                    "test_query_id": [
+                        "parent"
+                    ]
+                },
+                false
+            ]
+            eot;
+
+        self::assertSame(
+            $sql,
+            $this->varJsonSql(
+                $connect
+                    ->table('test_query')
+                    ->where('id', 'parent')
+                    ->where(static function (Condition $select): void {
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('id', 'one');
+                        });
+
+                        $select->orWhere(function (Condition $select): void {
+                            $select->where('id', 'two');
+                        });
+                    })
+                    ->findAll(),
+                $connect
             )
         );
     }
@@ -1225,12 +1420,12 @@ EOT,
 
         $sql = <<<'eot'
             [
-                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
+                "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id)",
                 {
                     "test_query_subor_test_query_id": [
                         "你好"
                     ],
-                    "sub1_test_query_hello": [
+                    "test_query_hello": [
                         "world"
                     ]
                 },
@@ -1261,12 +1456,12 @@ EOT,
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub2_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :sub2_sub1_test_query_suband_test_query_id2 OR `test_query`.`value2` = :sub2_sub1_test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :sub1_sub1_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub1_sub1_test_query_subor_test_query_child_two))",
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :sub2_sub1_test_query_suband_test_query_id2 OR `test_query`.`value2` = :sub2_sub1_test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :sub2_sub2_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub2_sub2_test_query_subor_test_query_child_two))",
     {
-        "sub1_sub1_test_query_subor_test_query_child_one": [
+        "sub2_sub2_test_query_subor_test_query_child_one": [
             "123"
         ],
-        "sub1_sub1_test_query_subor_test_query_child_two": [
+        "sub2_sub2_test_query_subor_test_query_child_two": [
             "123"
         ],
         "sub2_sub1_test_query_suband_test_query_id2": [
@@ -1281,7 +1476,7 @@ EOT,
         "test_query_subor_test_query_value": [
             "helloworld"
         ],
-        "sub2_test_query_hello": [
+        "sub1_test_query_hello": [
             "111"
         ]
     },
@@ -1494,13 +1689,13 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
@@ -1536,13 +1731,13 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
@@ -1578,13 +1773,13 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereNotExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereNotExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
@@ -1620,13 +1815,13 @@ eot;
                     ->table('test_query')
                     ->if($condition)
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
                     ->else()
                     ->whereExists(
-                        static function ($select): void {
+                        static function (Condition $select): void {
                             $select->table('test_query_subsql')->where('id', 2);
                         }
                     )
@@ -1727,7 +1922,7 @@ EOT,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->whereBetween('id', [static function ($select): void {
+                    ->whereBetween('id', [static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -1766,7 +1961,7 @@ EOT,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->whereIn('id', [static function ($select): void {
+                    ->whereIn('id', [static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)
@@ -2084,7 +2279,7 @@ EOT,
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->whereIn('id', static function ($select): void {
+                    ->whereIn('id', static function (Condition $select): void {
                         $select->table('test_query_subsql', 'id');
                     })
                     ->findAll(),
@@ -2508,7 +2703,7 @@ eot;
             $this->varJsonSql(
                 $connect
                     ->table('test_query')
-                    ->where('id', '=', static function ($select): void {
+                    ->where('id', '=', static function (Condition $select): void {
                         $select
                             ->table('test_query_subsql', 'id')
                             ->where('id', 1)

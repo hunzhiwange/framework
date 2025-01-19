@@ -190,7 +190,9 @@ class Condition implements ICondition
      */
     public function setSubExpressionBindParamsPrefixId(int $subExpressionBindParamsPrefixId): void
     {
-        $this->subExpressionBindParamsPrefixId = $subExpressionBindParamsPrefixId;
+        // 将上一层的嵌套层数累加到子层级
+        // 防止多层嵌套重复的前缀
+        $this->subExpressionBindParamsPrefixId += $subExpressionBindParamsPrefixId;
     }
 
     /**
@@ -1897,14 +1899,11 @@ class Condition implements ICondition
     {
         $condition = new static($this->connect);
         $condition->setTable($table ?? $this->getTable());
-        if ($this->subExpressionBindParamsPrefixId) {
-            $condition->setSubExpressionBindParamsPrefixId($this->subExpressionBindParamsPrefixId);
-        }
+        ++$this->subExpressionBindParamsPrefixId;
+        $condition->setSubExpressionBindParamsPrefixId($this->subExpressionBindParamsPrefixId);
         $call($condition);
         $this->bindParams = array_merge($condition->getBindParams(), $this->bindParams);
         $condition->resetBindParams();
-
-        ++$this->subExpressionBindParamsPrefixId;
     }
 
     protected function analyseConditionFieldValueObjectExpression(string $fieldName, Select|self $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
@@ -2017,7 +2016,8 @@ class Condition implements ICondition
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams) ?: '', '_');
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
-        $bindParams = ($this->subExpressionBindParamsPrefixId ? 'sub'.$this->subExpressionBindParamsPrefixId.'_' : '').$this->bindParamsPrefix.$bindParams;
+        // 默认层级为1,为了保持和之前的兼容性,需要减1
+        $bindParams = ($this->subExpressionBindParamsPrefixId > 1 ? 'sub'.($this->subExpressionBindParamsPrefixId - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
