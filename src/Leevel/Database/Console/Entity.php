@@ -454,7 +454,7 @@ class Entity extends Make
                     ])]
                     public ?{$fieldType} \${$fieldName} = null
                     {
-                        set ({$fieldType}|{$requestFieldType}|null \$v) {
+                        set ({$fieldType}{$requestFieldType}|null \$v) {
                             \$this->{$fieldName} = \$this->set('{$fieldName}', \$v);
                         }
                     }
