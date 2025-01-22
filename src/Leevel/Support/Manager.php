@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leevel\Support;
 
 use Leevel\Di\IContainer;
+use Leevel\Support\Str\Camelize;
 
 /**
  * 管理器.
@@ -213,7 +214,7 @@ abstract class Manager
      */
     protected function makeConnect(string $connect, string $driver, ?string $driverClass = null, mixed ...$arguments): object
     {
-        if (method_exists($this, $makeDriver = 'makeConnect'.ucwords($driver))) {
+        if (method_exists($this, $makeDriver = 'makeConnect'.ucfirst(Camelize::handle($driver)))) {
             return $this->{$makeDriver}($connect, $driverClass, ...$arguments);
         }
 
