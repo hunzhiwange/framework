@@ -86,7 +86,7 @@ abstract class Provider
     }
 
     /**
-     * 注册服务别名.
+     * 注册服务上下文键值.
      */
     protected function registerContextKeys(): void
     {
