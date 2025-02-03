@@ -314,8 +314,8 @@ abstract class Dto implements IArray
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             return $this->{$transformValueMethod}($value);
-        } elseif (!$this->ignoreBuiltinTransformValueFramework 
-            && $defaultType 
+        } elseif (!$this->ignoreBuiltinTransformValueFramework
+            && $defaultType
             && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             return $this->{$builtinTransformValueMethod}($value);
         } else {
@@ -351,18 +351,18 @@ abstract class Dto implements IArray
     /**
      * 转换属性命名风格.
      */
-    protected function convertPropertyNamingStyle(array $propertys, bool $unCamelizeNamingStyle): array
+    protected function convertPropertyNamingStyle(array $properties, bool $unCamelizeNamingStyle): array
     {
         if (!$unCamelizeNamingStyle) {
             return array_map(
                 static fn (string $property) => static::camelizePropertiesName($property),
-                $propertys,
+                $properties,
             );
         }
 
         return array_map(
             static fn (string $property) => static::unCamelizePropertiesName($property),
-            $propertys,
+            $properties,
         );
     }
 
