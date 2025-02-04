@@ -24,6 +24,16 @@ class Vector extends Collection
         parent::__construct($data, $valueType ? [$valueType] : []);
     }
 
+    /**
+     * 添加数组元素.
+     */
+    public function push(mixed $value): static
+    {
+        $this->offsetSet(count($this->elements), $value);
+
+        return $this;
+    }
+
     protected function watchElements(): void
     {
         if (!array_is_list($this->elements)) {
