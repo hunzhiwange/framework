@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 服务器拒绝请求: 403.
  */
-abstract class ForbiddenHttpException extends HttpException
+class ForbiddenHttpException extends HttpException
 {
     /**
      * 构造函数.

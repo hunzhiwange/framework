@@ -7,7 +7,7 @@ namespace Leevel\Kernel\Exceptions;
 /**
  * HTTP 异常.
  */
-abstract class HttpException extends \RuntimeException
+class HttpException extends \RuntimeException
 {
     /**
      * HTTP 状态.

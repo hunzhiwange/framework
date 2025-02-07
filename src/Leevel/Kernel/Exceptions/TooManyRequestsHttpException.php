@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 用户在给定的时间内发送了太多的请求: 429.
  */
-abstract class TooManyRequestsHttpException extends HttpException
+class TooManyRequestsHttpException extends HttpException
 {
     /**
      * 构造函数.

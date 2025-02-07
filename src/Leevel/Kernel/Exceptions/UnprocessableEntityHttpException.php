@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 请求格式正确，但是由于含有语义错误，无法响应: 422.
  */
-abstract class UnprocessableEntityHttpException extends HttpException
+class UnprocessableEntityHttpException extends HttpException
 {
     /**
      * 构造函数.
