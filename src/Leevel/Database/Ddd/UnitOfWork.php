@@ -656,11 +656,9 @@ class UnitOfWork
         };
     }
 
-    protected function setDefaultEntity(null|\Closure|Entity $entity): void
+    protected function setDefaultEntity(Entity $entity): void
     {
-        if (null === $entity && $this->entity) {
-            $this->setEntity();
-        } elseif (!$this->entity && $entity instanceof Entity) {
+        if (!$this->entity) {
             $this->entity = $entity;
         }
     }
@@ -761,7 +759,10 @@ class UnitOfWork
 
         $this->entityCreates[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
-        $this->setDefaultEntity($entity);
+
+        if ($entity instanceof Entity) {
+            $this->setDefaultEntity($entity);
+        }
 
         return $this;
     }
@@ -787,7 +788,10 @@ class UnitOfWork
 
         $this->entityUpdates[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
-        $this->setDefaultEntity($entity);
+
+        if ($entity instanceof Entity) {
+            $this->setDefaultEntity($entity);
+        }
 
         return $this;
     }
@@ -810,7 +814,10 @@ class UnitOfWork
 
         $this->entityReplaces[$id] = $entity;
         $this->entityStates[$id] = self::STATE_MANAGED;
-        $this->setDefaultEntity($entity);
+
+        if ($entity instanceof Entity) {
+            $this->setDefaultEntity($entity);
+        }
 
         return $this;
     }
@@ -833,10 +840,6 @@ class UnitOfWork
             }
 
             if ($remove) {
-                if ($this->entity && spl_object_id($this->entity) === $id) {
-                    $this->setDefaultEntity(null);
-                }
-
                 return $this;
             }
         }
@@ -850,10 +853,6 @@ class UnitOfWork
             }
 
             if ($remove) {
-                if ($this->entity && spl_object_id($this->entity) === $id) {
-                    $this->setDefaultEntity(null);
-                }
-
                 return $this;
             }
         }
@@ -867,10 +866,6 @@ class UnitOfWork
             }
 
             if ($remove) {
-                if ($this->entity && spl_object_id($this->entity) === $id) {
-                    $this->setDefaultEntity(null);
-                }
-
                 return $this;
             }
         }
@@ -886,7 +881,10 @@ class UnitOfWork
         $this->{'deletesFlag'.$position}[spl_object_id($entity)] = $priority;
         $this->entityDeletes[$id] = $entity;
         $this->entityStates[$id] = self::STATE_REMOVED;
-        $this->setDefaultEntity($entity);
+
+        if ($entity instanceof Entity) {
+            $this->setDefaultEntity($entity);
+        }
 
         return $this;
     }
