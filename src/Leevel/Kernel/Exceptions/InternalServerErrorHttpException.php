@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 服务器遇到错误，无法完成请求: 500.
  */
-abstract class InternalServerErrorHttpException extends HttpException
+class InternalServerErrorHttpException extends HttpException
 {
     /**
      * 构造函数.

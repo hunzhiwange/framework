@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 用户发出的请求针对的是不存在的记录: 404.
  */
-abstract class NotFoundHttpException extends HttpException
+class NotFoundHttpException extends HttpException
 {
     /**
      * 构造函数.

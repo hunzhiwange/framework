@@ -159,7 +159,7 @@ abstract class Runtime implements IRuntime
         }
 
         if (!$this->isHttpException($e)) {
-            $e = new class(500, $e->getMessage(), $e->getCode()) extends HttpException {};
+            $e = new HttpException(500, $e->getMessage(), $e->getCode());
         }
 
         return $this->rendorWithHttpExceptionView($e);
@@ -315,7 +315,7 @@ abstract class Runtime implements IRuntime
         if ($e instanceof EntityNotFoundException
             || $e instanceof RouterNotFoundException
             || $e instanceof DataNotFoundException) {
-            $e = new class($e->getMessage(), $e->getCode()) extends NotFoundHttpException {};
+            $e = new NotFoundHttpException($e->getMessage(), $e->getCode());
         }
 
         return $e;

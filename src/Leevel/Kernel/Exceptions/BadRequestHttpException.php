@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 服务器不理解请求的语法: 400.
  */
-abstract class BadRequestHttpException extends HttpException
+class BadRequestHttpException extends HttpException
 {
     /**
      * 构造函数.

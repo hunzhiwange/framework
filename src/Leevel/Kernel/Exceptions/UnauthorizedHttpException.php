@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 对于需要登录的网页，服务器可能返回此响应: 401.
  */
-abstract class UnauthorizedHttpException extends HttpException
+class UnauthorizedHttpException extends HttpException
 {
     /**
      * 构造函数.

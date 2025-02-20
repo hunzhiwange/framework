@@ -9,7 +9,7 @@ namespace Leevel\Kernel\Exceptions;
  *
  * - 禁用请求中指定的方法: 405.
  */
-abstract class MethodNotAllowedHttpException extends HttpException
+class MethodNotAllowedHttpException extends HttpException
 {
     /**
      * 构造函数.
