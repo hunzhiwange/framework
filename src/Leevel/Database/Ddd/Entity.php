@@ -562,7 +562,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         $this->fillDefaultValueWhenConstruct($fromStorage, $ignoreUndefinedProp);
 
         if ($data) {
-            $this->originalFramework = $data;
+            if ($fromStorage) {
+                $this->originalFramework = $data;
+            }
             foreach ($this->normalizeWhiteAndBlack($data, 'construct_prop') as $prop => $_) {
                 if (isset($data[$prop])) {
                     $this->setProp($prop, $data[$prop], $fromStorage, true, $ignoreUndefinedProp);
@@ -946,6 +948,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         }
 
         if (\in_array($prop, $this->changedPropFramework, true)) {
+            return $value;
+        }
+
+        // 比对原始数据
+        if (array_key_exists($prop, $this->originalFramework)
+            && $value === $this->originalFramework[$prop]) {
             return $value;
         }
 
