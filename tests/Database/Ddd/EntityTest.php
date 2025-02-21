@@ -1134,7 +1134,7 @@ eot;
             'summary' => 'world',
             'foo' => 'bar',
         ], false, true);
-        self::assertSame($data, $entity->getOriginal());
+        self::assertSame([], $entity->getOriginal());
         self::assertSame('hello', $entity->title);
         self::assertSame('world', $entity->summary);
     }
