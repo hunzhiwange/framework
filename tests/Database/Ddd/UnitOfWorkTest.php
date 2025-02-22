@@ -16,7 +16,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 
 #[Api([
     'zh-CN:title' => '事务工作单元',
-    'path' => 'orm/unitofwork',
+    'path' => 'orm/unitOfWork',
     'zh-CN:description' => <<<'EOT'
 用事务工作单元更好地处理数据库相关工作。
 EOT,
@@ -27,8 +27,8 @@ final class UnitOfWorkTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        if (isset($GLOBALS['unitofwork'])) {
-            unset($GLOBALS['unitofwork']);
+        if (isset($GLOBALS['unitOfWork'])) {
+            unset($GLOBALS['unitOfWork']);
         }
     }
 
@@ -36,8 +36,8 @@ final class UnitOfWorkTest extends TestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        if (isset($GLOBALS['unitofwork'])) {
-            unset($GLOBALS['unitofwork']);
+        if (isset($GLOBALS['unitOfWork'])) {
+            unset($GLOBALS['unitOfWork']);
         }
     }
 
@@ -101,10 +101,10 @@ EOT,
         $work->persist($post);
         $work->persist($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -119,7 +119,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -158,10 +158,10 @@ EOT,
         $work->persistBefore($post2);
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -176,7 +176,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -215,10 +215,10 @@ EOT,
         $work->persist($post);
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -233,7 +233,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -286,10 +286,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -304,7 +304,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -356,10 +356,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -374,7 +374,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -426,10 +426,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -444,7 +444,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -539,10 +539,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -557,7 +557,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -648,10 +648,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -666,7 +666,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -757,10 +757,10 @@ EOT,
         self::assertTrue($work->registered($post2));
 
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -775,7 +775,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -860,10 +860,10 @@ EOT,
         $work->delete($post);
         $work->delete($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -883,7 +883,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -977,10 +977,10 @@ EOT,
         $work->delete($post);
         $work->deleteBefore($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -1000,7 +1000,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -1094,10 +1094,10 @@ EOT,
         $work->deleteAfter($post);
         $work->delete($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -1117,7 +1117,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -1212,10 +1212,10 @@ EOT,
         $work->forceDelete($post);
         $work->forceDelete($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -1235,7 +1235,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -1330,10 +1330,10 @@ EOT,
         $work->forceDelete($post);
         $work->forceDeleteBefore($post2);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -1353,7 +1353,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -1448,10 +1448,10 @@ EOT,
         $work->forceDeleteAfter($post2);
         $work->forceDelete($post);
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         self::assertTrue($work->deleted($post));
@@ -1471,7 +1471,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -1611,7 +1611,7 @@ EOT,
     ])]
     public function testBeginTransaction(): void
     {
-        $work = UnitOfWork::make();
+        $work = UnitOfWork::make(new Post());
 
         $this->assertInstanceof(UnitOfWork::class, $work);
 
@@ -1631,12 +1631,12 @@ EOT,
 
         $work->beginTransaction();
 
+
         $post = Post::select()->findEntity(1);
         $work->update($post);
 
         try {
             $post->title = 'new title';
-            $work->flush();
             $work->commit();
         } catch (\Throwable) {
             $work->close();
@@ -1699,7 +1699,7 @@ EOT,
     ])]
     public function testTransaction(): void
     {
-        $work = UnitOfWork::make();
+        $work = UnitOfWork::make(new Post());
 
         $this->assertInstanceof(UnitOfWork::class, $work);
 
@@ -1745,7 +1745,7 @@ EOT,
             'SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry \'1\' for key'
         );
 
-        $work = UnitOfWork::make();
+        $work = UnitOfWork::make(new Post());
 
         $this->assertInstanceof(UnitOfWork::class, $work);
 
@@ -3080,10 +3080,10 @@ EOT,
         self::assertTrue($work->replaced($post));
         self::assertTrue($work->replaced($post2));
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -3098,7 +3098,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -3141,10 +3141,10 @@ EOT,
         self::assertTrue($work->replaced($post));
         self::assertTrue($work->replaced($post2));
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -3159,7 +3159,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -3202,10 +3202,10 @@ EOT,
         self::assertTrue($work->replaced($post));
         self::assertTrue($work->replaced($post2));
         $work->on($post2, static function (): void {
-            $GLOBALS['unitofwork'][] = 1;
+            $GLOBALS['unitOfWork'][] = 1;
         });
         $work->on($post, static function (): void {
-            $GLOBALS['unitofwork'][] = 2;
+            $GLOBALS['unitOfWork'][] = 2;
         });
 
         $work->flush();
@@ -3220,7 +3220,7 @@ EOT,
         self::assertSame(
             $data,
             $this->varJson(
-                $GLOBALS['unitofwork']
+                $GLOBALS['unitOfWork']
             )
         );
 
@@ -3473,7 +3473,7 @@ EOT,
     ])]
     public function test1(): void
     {
-        $work = UnitOfWork::make();
+        $work = UnitOfWork::make(new CompositeId());
 
         $connect = $this->createDatabaseConnect();
 
@@ -3492,6 +3492,29 @@ EOT,
 
         self::assertSame(1, $connect->table('composite_id')->findCount());
         self::assertSame(0, $work->getFlushResult($compositeCall));
+    }
+
+    public function test3(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(
+            'Default entity is not set.'
+        );
+
+        $work = UnitOfWork::make();
+
+        $compositeId = new CompositeId([
+            'id1' => 1,
+            'id2' => 2,
+            'name' => 'old',
+        ]);
+        $compositeCall = static function () use ($compositeId): mixed {
+            return $compositeId->save()->flush();
+        };
+
+        $work->persist($compositeCall);
+
+        $work->flush();
     }
 
     protected function getDatabaseTable(): array

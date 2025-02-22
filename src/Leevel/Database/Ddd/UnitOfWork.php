@@ -513,8 +513,12 @@ class UnitOfWork
     /**
      * 设置实体.
      */
-    public function setEntity(?Entity $entity = null): self
+    public function setEntity(Entity $entity, bool $force = false): self
     {
+        if (!$force && $this->entity) {
+            return $this;
+        }
+
         $this->entity = $entity;
         $this->connection = null;
 
@@ -523,15 +527,17 @@ class UnitOfWork
 
     /**
      * 返回数据库连接.
+     *
+     * @throws \Exception
      */
     public function getConnect(): IDatabase
     {
-        if (!$this->entity) {
-            $this->initDefaultEntity();
-        }
-
         if ($this->connection) {
             return $this->connection;
+        }
+
+        if (!$this->entity) {
+            throw new \Exception('Default entity is not set.');
         }
 
         // @phpstan-ignore-next-line
@@ -647,22 +653,6 @@ class UnitOfWork
         return self::STATE_NEW;
     }
 
-    protected function initDefaultEntity(): void
-    {
-        $this->entity = new class() extends Entity {
-            public const string TABLE = '';
-            public const null ID = null;
-            public const ?string AUTO = null;
-        };
-    }
-
-    protected function setDefaultEntity(Entity $entity): void
-    {
-        if (!$this->entity) {
-            $this->entity = $entity;
-        }
-    }
-
     /**
      * 强制删除标识.
      */
@@ -761,7 +751,7 @@ class UnitOfWork
         $this->entityStates[$id] = self::STATE_MANAGED;
 
         if ($entity instanceof Entity) {
-            $this->setDefaultEntity($entity);
+            $this->setEntity($entity);
         }
 
         return $this;
@@ -790,7 +780,7 @@ class UnitOfWork
         $this->entityStates[$id] = self::STATE_MANAGED;
 
         if ($entity instanceof Entity) {
-            $this->setDefaultEntity($entity);
+            $this->setEntity($entity);
         }
 
         return $this;
@@ -816,7 +806,7 @@ class UnitOfWork
         $this->entityStates[$id] = self::STATE_MANAGED;
 
         if ($entity instanceof Entity) {
-            $this->setDefaultEntity($entity);
+            $this->setEntity($entity);
         }
 
         return $this;
@@ -883,7 +873,7 @@ class UnitOfWork
         $this->entityStates[$id] = self::STATE_REMOVED;
 
         if ($entity instanceof Entity) {
-            $this->setDefaultEntity($entity);
+            $this->setEntity($entity);
         }
 
         return $this;
