@@ -31,6 +31,11 @@ class Validator implements IValidator
     protected array $data = [];
 
     /**
+     * 元数据.
+     */
+    protected array $metaData = [];
+
+    /**
      * 验证规则.
      */
     protected array $rules = [];
@@ -75,12 +80,13 @@ class Validator implements IValidator
     /**
      * 构造函数.
      */
-    final public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [])
+    final public function __construct(array $data = [], array $rules = [], array $names = [], array $messages = [], array $metaData = [])
     {
         $this->data($data);
         $this->rule($rules);
         $this->name($names);
         $this->message($messages);
+        $this->metaData($metaData);
     }
 
     /**
@@ -188,6 +194,7 @@ class Validator implements IValidator
         }
 
         $this->data = $data;
+        $this->metaData = array_merge($data, $this->metaData);
 
         return $this;
     }
@@ -199,6 +206,34 @@ class Validator implements IValidator
         }
 
         $this->data = array_merge($this->data, $data);
+        $this->metaData = array_merge($data, $this->metaData);
+
+        return $this;
+    }
+
+    public function getMetaData(): array
+    {
+        return $this->metaData;
+    }
+
+    public function metaData(array $metaData): IValidator
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        $this->metaData = $metaData;
+
+        return $this;
+    }
+
+    public function addMetaData(array $metaData): IValidator
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+
+        $this->metaData = array_merge($this->metaData, $metaData);
 
         return $this;
     }
@@ -329,12 +364,22 @@ class Validator implements IValidator
 
     public function getFieldValue(string $rule): mixed
     {
+        return $this->getFieldValueReal($rule);
+    }
+
+    public function getMetaValue(string $rule): mixed
+    {
+        return $this->getFieldValueReal($rule, true);
+    }
+
+    protected function getFieldValueReal(string $rule, bool $metaData = false): mixed
+    {
         if (!str_contains($rule, '.')) {
-            return $this->data[$rule] ?? null;
+            return $metaData ? ($this->metaData[$rule] ?? null) : ($this->data[$rule] ?? null);
         }
 
         $parts = explode('.', $rule);
-        $data = $this->data;
+        $data = $metaData ? $this->metaData : $this->data;
         foreach ($parts as $part) {
             if (!isset($data[$part])) {
                 return null;
