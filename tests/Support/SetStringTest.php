@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'SetString 没有重复项的字符串有序数据结构',
-    'path' => 'component/collection/set_string',
+    'path' => 'component/collection/set-string',
 ])]
 final class SetStringTest extends TestCase
 {

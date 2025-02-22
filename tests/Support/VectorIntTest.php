@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'VectorInt 动态数组',
-    'path' => 'component/collection/vectorint',
+    'path' => 'component/collection/vector-int',
 ])]
 final class VectorIntTest extends TestCase
 {

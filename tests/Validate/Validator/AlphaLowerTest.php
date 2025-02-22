@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证是否都是小写',
-    'path' => 'validate/validator/alphalower',
+    'path' => 'validate/validator/alpha-lower',
 ])]
 final class AlphaLowerTest extends TestCase
 {

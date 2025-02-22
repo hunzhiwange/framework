@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'Tagself 保护标签',
-    'path' => 'template/tagself',
+    'path' => 'template/tag-self',
     'zh-CN:description' => <<<'EOT'
 可以使用 tagself 标签来防止模板标签被解析，在特殊场景非常有用。
 EOT,

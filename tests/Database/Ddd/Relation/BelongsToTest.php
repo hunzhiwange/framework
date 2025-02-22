@@ -15,7 +15,7 @@ use Tests\Database\Ddd\Entity\Relation\User;
 
 #[Api([
     'zh-CN:title' => 'belongsTo 从属关联',
-    'path' => 'orm/belongsto',
+    'path' => 'orm/belongs-to',
     'zh-CN:description' => <<<'EOT'
 从属关联也是一对一的关联的一种，比如一篇文章属于某个用户发表。
 

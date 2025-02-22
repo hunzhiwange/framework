@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'Foreach 增强循环',
-    'path' => 'template/foreachplus',
+    'path' => 'template/foreach-plus',
     'zh-CN:description' => <<<'EOT'
 foreach+ 标签主要用于在模板中循环输出数据集或者多维数组。
 EOT,

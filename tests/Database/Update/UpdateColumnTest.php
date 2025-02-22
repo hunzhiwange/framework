@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([
     'zh-CN:title' => '更新字段.updateColumn',
-    'path' => 'database/update/updatecolumn',
+    'path' => 'database/update/update-column',
 ])]
 final class UpdateColumnTest extends TestCase
 {

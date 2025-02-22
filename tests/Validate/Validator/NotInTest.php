@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否不处于某个范围',
-    'path' => 'validate/validator/notin',
+    'path' => 'validate/validator/not-in',
 ])]
 final class NotInTest extends TestCase
 {

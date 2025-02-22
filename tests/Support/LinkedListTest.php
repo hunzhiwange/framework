@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '双向链表',
-    'path' => 'component/linkedlist',
+    'path' => 'component/linked-list',
     'zh-CN:description' => <<<'EOT'
 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性。
 

@@ -9,7 +9,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([
     'zh-CN:title' => '查询单条数据.findOne',
-    'path' => 'database/read/findone',
+    'path' => 'database/read/find-one',
 ])]
 final class FindOneTest extends TestCase
 {

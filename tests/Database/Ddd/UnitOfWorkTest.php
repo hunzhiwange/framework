@@ -16,7 +16,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 
 #[Api([
     'zh-CN:title' => '事务工作单元',
-    'path' => 'orm/unitOfWork',
+    'path' => 'orm/unit-of-work',
     'zh-CN:description' => <<<'EOT'
 用事务工作单元更好地处理数据库相关工作。
 EOT,

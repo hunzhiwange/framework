@@ -16,7 +16,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '初始化载入配置',
-    'path' => 'architecture/kernel/bootstrap/loadconfig',
+    'path' => 'architecture/kernel/bootstrap/load-config',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 在内核执行过程中会执行初始化，分为 4 个步骤，载入配置、载入语言包、注册异常运行时和遍历服务提供者注册服务。
 

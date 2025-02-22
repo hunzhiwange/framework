@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为中文、数字和字母',
-    'path' => 'validate/validator/chinesealphanum',
+    'path' => 'validate/validator/chinese-alpha-num',
 ])]
 final class ChineseAlphaNumTest extends TestCase
 {

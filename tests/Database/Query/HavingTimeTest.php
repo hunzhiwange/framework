@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 #[Api([
     'title' => 'Query lang.havingDate',
     'zh-CN:title' => '查询语言.havingDate',
-    'path' => 'database/query/havingdate',
+    'path' => 'database/query/having-date',
 ])]
 final class HavingTimeTest extends TestCase
 {

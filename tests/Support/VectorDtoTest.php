@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'VectorDto 动态数组',
-    'path' => 'component/collection/vectordto',
+    'path' => 'component/collection/vector-dto',
 ])]
 final class VectorDtoTest extends TestCase
 {

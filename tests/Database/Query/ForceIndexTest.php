@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 #[Api([
     'title' => 'Query lang.forceIndex',
     'zh-CN:title' => '查询语言.forceIndex',
-    'path' => 'database/query/forceindex',
+    'path' => 'database/query/force-index',
 ])]
 final class ForceIndexTest extends TestCase
 {

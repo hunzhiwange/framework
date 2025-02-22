@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证是否为数组',
-    'path' => 'validate/validator/isarray',
+    'path' => 'validate/validator/is-array',
 ])]
 final class IsArrayTest extends TestCase
 {

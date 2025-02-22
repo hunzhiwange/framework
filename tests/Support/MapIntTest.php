@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'MapInt 映射是键值为 int 的有序键值数据结构',
-    'path' => 'component/collection/map_int',
+    'path' => 'component/collection/map-int',
 ])]
 final class MapIntTest extends TestCase
 {

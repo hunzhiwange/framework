@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '转换响应对象',
-    'path' => 'server/transformresponse',
+    'path' => 'server/transform-response',
     'zh-CN:description' => <<<'EOT'
 Leevel 响应转 Swoole 响应后，然后传递给 Swoole 完成响应给用户。
 EOT,

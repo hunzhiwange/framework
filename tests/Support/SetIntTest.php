@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'SetInt 没有重复项的整型有序数据结构',
-    'path' => 'component/collection/set_int',
+    'path' => 'component/collection/set-int',
 ])]
 final class SetIntTest extends TestCase
 {

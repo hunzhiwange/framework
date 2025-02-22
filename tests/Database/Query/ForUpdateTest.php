@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 #[Api([
     'title' => 'Query lang.forUpdate',
     'zh-CN:title' => '查询语言.forUpdate',
-    'path' => 'database/query/forupdate',
+    'path' => 'database/query/for-update',
     'zh-CN:description' => <<<'EOT'
 对数据库悲观锁的支持，排它锁和共享锁。
 EOT,

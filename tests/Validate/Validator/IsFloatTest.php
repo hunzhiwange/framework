@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证是否为浮点数',
-    'path' => 'validate/validator/isfloat',
+    'path' => 'validate/validator/is-float',
 ])]
 final class IsFloatTest extends TestCase
 {

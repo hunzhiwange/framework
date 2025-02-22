@@ -18,7 +18,7 @@ use Tests\Database\Ddd\Entity\Relation\UserRoleSoftDeleted;
 
 #[Api([
     'zh-CN:title' => 'manyMany 多对多关联',
-    'path' => 'orm/manymany',
+    'path' => 'orm/many-many',
     'zh-CN:description' => <<<'EOT'
 多对多的关联是一种常用的关联，比如用户与角色属于多对多的关系。
 

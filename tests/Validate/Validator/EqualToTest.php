@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.两个字段是否相同',
-    'path' => 'validate/validator/equalto',
+    'path' => 'validate/validator/equal-to',
 ])]
 final class EqualToTest extends TestCase
 {

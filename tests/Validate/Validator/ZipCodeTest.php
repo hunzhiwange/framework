@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为中国邮政编码',
-    'path' => 'validate/validator/zipcode',
+    'path' => 'validate/validator/zip-code',
 ])]
 final class ZipCodeTest extends TestCase
 {

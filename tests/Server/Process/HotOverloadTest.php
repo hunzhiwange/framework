@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '代码热重启进程',
-    'path' => 'server/process/hotoverload',
+    'path' => 'server/process/hot-overload',
     'zh-CN:description' => <<<'EOT'
 监听某些目录，当代码发生变化，重启服务方便开发调试。
 EOT,

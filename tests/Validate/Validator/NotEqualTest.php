@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.两个值是否不相同',
-    'path' => 'validate/validator/notequal',
+    'path' => 'validate/validator/not-equal',
     'zh-CN:description' => <<<'EOT'
 全等匹配，为了严禁。
 EOT,

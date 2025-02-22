@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'MapString 映射是键值为 string 的有序键值数据结构',
-    'path' => 'component/collection/map_string',
+    'path' => 'component/collection/map-string',
 ])]
 final class MapStringTest extends TestCase
 {

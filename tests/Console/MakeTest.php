@@ -13,7 +13,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '通用代码生成器基类',
-    'path' => 'component/console/makecommand',
+    'path' => 'component/console/make-command',
     'zh-CN:description' => <<<'EOT'
 在项目实际开发中经常需要生成一个基础模板，QueryPHP 对这一场景进行了封装，提供了一个基础的代码生成器基类，
 可以十分便捷地生成你需要的模板代码。

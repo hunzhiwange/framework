@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.字符串是否为数字和字母',
-    'path' => 'validate/validator/alphanum',
+    'path' => 'validate/validator/alpha-num',
 ])]
 final class AlphaNumTest extends TestCase
 {

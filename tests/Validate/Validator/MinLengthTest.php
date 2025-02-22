@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证数据最小长度',
-    'path' => 'validate/validator/minlength',
+    'path' => 'validate/validator/min-length',
 ])]
 final class MinLengthTest extends TestCase
 {

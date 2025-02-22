@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'JSON Response',
-    'path' => 'component/http/jsonresponse',
+    'path' => 'component/http/json-response',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 针对 API 开发可以直接返回一个 `\Leevel\Http\JsonResponse` 响应对象。
 EOT,

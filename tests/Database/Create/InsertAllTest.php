@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([
     'zh-CN:title' => '批量写入数据.insertAll',
-    'path' => 'database/create/insertall',
+    'path' => 'database/create/insert-all',
 ])]
 final class InsertAllTest extends TestCase
 {

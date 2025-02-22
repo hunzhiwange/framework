@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 #[Api([
     'title' => 'Query lang.whereDate',
     'zh-CN:title' => '查询语言.whereDate',
-    'path' => 'database/query/wheredate',
+    'path' => 'database/query/where-date',
 ])]
 final class TimeTest extends TestCase
 {

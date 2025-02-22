@@ -15,7 +15,7 @@ use Tests\Database\Ddd\Entity\Relation\PostContent;
 
 #[Api([
     'zh-CN:title' => 'hasOne 一对一关联',
-    'path' => 'orm/hasone',
+    'path' => 'orm/has-one',
     'zh-CN:description' => <<<'EOT'
 一对一的关联是一种常用的关联，比如一篇文章与文章内容属于一对一的关系。
 

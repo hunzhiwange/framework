@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'Redirect Response',
-    'path' => 'component/http/redirectresponse',
+    'path' => 'component/http/redirect-response',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 针对页面重定向可以直接返回一个 `\Leevel\Http\RedirectResponse` 响应对象。
 EOT,

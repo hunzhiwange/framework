@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证数据最大长度',
-    'path' => 'validate/validator/maxlength',
+    'path' => 'validate/validator/max-length',
 ])]
 final class MaxLengthTest extends TestCase
 {

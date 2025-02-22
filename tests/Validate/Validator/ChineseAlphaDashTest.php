@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为中文、数字、下划线、短横线和字母',
-    'path' => 'validate/validator/chinesealphadash',
+    'path' => 'validate/validator/chinese-alpha-dash',
 ])]
 final class ChineseAlphaDashTest extends TestCase
 {

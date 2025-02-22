@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.未处于 betweenEqual 范围，包含等于',
-    'path' => 'validate/validator/notbetweenequal',
+    'path' => 'validate/validator/not-between-equal',
 ])]
 final class NotBetweenEqualTest extends TestCase
 {

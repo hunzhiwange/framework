@@ -14,7 +14,7 @@ use Tests\Database\Ddd\Entity\Relation\Post;
 
 #[Api([
     'zh-CN:title' => 'hasMany 一对多关联',
-    'path' => 'orm/hasmany',
+    'path' => 'orm/has-many',
     'zh-CN:description' => <<<'EOT'
 一对多的关联是一种常用的关联，比如一篇文章与文章评论属于一对多的关系。
 

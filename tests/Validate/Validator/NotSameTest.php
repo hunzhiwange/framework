@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.两个值是否完全相同',
-    'path' => 'validate/validator/notsame',
+    'path' => 'validate/validator/not-same',
 ])]
 final class NotSameTest extends TestCase
 {

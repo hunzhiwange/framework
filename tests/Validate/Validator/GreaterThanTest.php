@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.大于',
-    'path' => 'validate/validator/greaterthan',
+    'path' => 'validate/validator/greater-than',
 ])]
 final class GreaterThanTest extends TestCase
 {

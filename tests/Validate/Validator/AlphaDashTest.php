@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.符串是否为数字、下划线、短横线和字母',
-    'path' => 'validate/validator/alphadash',
+    'path' => 'validate/validator/alpha-dash',
 ])]
 final class AlphaDashTest extends TestCase
 {

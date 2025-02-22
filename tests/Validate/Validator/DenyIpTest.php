@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.验证 IP 许可',
-    'path' => 'validate/validator/denyip',
+    'path' => 'validate/validator/deny-ip',
 ])]
 final class DenyIpTest extends TestCase
 {

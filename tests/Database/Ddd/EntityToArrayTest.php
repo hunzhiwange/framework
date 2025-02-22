@@ -18,7 +18,7 @@ use Tests\Database\Ddd\Entity\Relation\User;
 
 #[Api([
     'zh-CN:title' => '实体导出数组',
-    'path' => 'orm/toarray',
+    'path' => 'orm/to-array',
     'zh-CN:description' => <<<'EOT'
 我们可以将实体导出为数组来方便处理数据。
 EOT,

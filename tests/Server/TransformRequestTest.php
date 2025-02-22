@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '转换请求对象',
-    'path' => 'server/transformrequest',
+    'path' => 'server/transform-request',
     'zh-CN:description' => <<<'EOT'
 Swoole 请求转换 Leevel 的请求后，然后传递给 Kernel 完成请求到响应的过程。
 EOT,

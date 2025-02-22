@@ -11,7 +11,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 #[Api([
     'title' => 'Query lang.groupBy',
     'zh-CN:title' => '查询语言.groupBy',
-    'path' => 'database/query/groupby',
+    'path' => 'database/query/group-by',
     'zh-CN:description' => <<<'EOT'
 ## groupBy 函数原型
 

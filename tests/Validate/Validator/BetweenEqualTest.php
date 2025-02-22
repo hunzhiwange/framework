@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.处于 betweenEqual 范围，包含全等',
-    'path' => 'validate/validator/betweenequal',
+    'path' => 'validate/validator/between-equal',
 ])]
 final class BetweenEqualTest extends TestCase
 {

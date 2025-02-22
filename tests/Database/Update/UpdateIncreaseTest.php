@@ -10,7 +10,7 @@ use Tests\Database\DatabaseTestCase as TestCase;
 
 #[Api([
     'zh-CN:title' => '更新字段递增.updateIncrease',
-    'path' => 'database/update/updateincrease',
+    'path' => 'database/update/update-increase',
 ])]
 final class UpdateIncreaseTest extends TestCase
 {

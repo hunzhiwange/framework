@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => 'MapStringMixed 映射是键值为 string 的混合型有序键值数据结构',
-    'path' => 'component/collection/map_string_mixed',
+    'path' => 'component/collection/map-string-mixed',
 ])]
 final class MapStringMixedTest extends TestCase
 {

@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为大写英文字母',
-    'path' => 'validate/validator/alphaupper',
+    'path' => 'validate/validator/alpha-upper',
 ])]
 final class AlphaUpperTest extends TestCase
 {

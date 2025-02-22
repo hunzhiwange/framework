@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '运行命令代码',
-    'path' => 'component/console/runcommand',
+    'path' => 'component/console/run-command',
     'zh-CN:description' => <<<'EOT'
 有时候我们需要在非命令行调用命令，比如在控制器等地方直接运行命令行代码，系统对这种场景进行了简单封装。
 EOT,

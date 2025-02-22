@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.值是否不为空',
-    'path' => 'validate/validator/notempty',
+    'path' => 'validate/validator/not-empty',
 ])]
 final class NotEmptyTest extends TestCase
 {

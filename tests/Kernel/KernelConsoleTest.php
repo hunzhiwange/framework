@@ -21,7 +21,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '命令行内核',
-    'path' => 'architecture/kernel/kernelconsole',
+    'path' => 'architecture/kernel/kernel-console',
     'zh-CN:description' => <<<'EOT'
 QueryPHP 命令行流程为入口接受输入，经过内核 kernel 传入输入，经过命令行应用程序调用命令执行业务，最后返回输出结果。
 

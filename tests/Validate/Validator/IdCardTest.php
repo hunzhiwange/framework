@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为大陆身份证',
-    'path' => 'validate/validator/idcard',
+    'path' => 'validate/validator/id-card',
 ])]
 final class IdCardTest extends TestCase
 {

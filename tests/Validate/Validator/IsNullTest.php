@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 #[Api([
     'zh-CN:title' => '验证器.是否为 null',
-    'path' => 'validate/validator/isnull',
+    'path' => 'validate/validator/is-null',
 ])]
 final class IsNullTest extends TestCase
 {
