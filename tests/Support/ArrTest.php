@@ -34,8 +34,8 @@ final class ArrTest extends TestCase
         self::assertSame(['a', 'b'], Normalize::handle('a,b'));
         self::assertSame(['a', 'b'], Normalize::handle(['a', 'b']));
         self::assertSame(['a'], Normalize::handle(['a', '']));
-        self::assertSame(['a'], Normalize::handle(['a', ''], ',', true));
-        self::assertSame(['a', ' 0 '], Normalize::handle(['a', ' 0 '], ',', true));
+        self::assertSame(['a', ''], Normalize::handle(['a', ''], ',', ['']));
+        self::assertSame(['a', '0'], Normalize::handle(['a', ' 0 '], ',', ['0']));
         self::assertSame(['a', '0'], Normalize::handle(['a', ' 0 '], ','));
     }
 
@@ -112,10 +112,11 @@ final class ArrTest extends TestCase
         $result = Normalize::handle(['hello', 'world', ' ', '0']);
 
         $json = <<<'eot'
-            [
-                "hello",
-                "world"
-            ]
+            {
+                "0": "hello",
+                "1": "world",
+                "3": "0"
+            }
             eot;
 
         self::assertSame(
@@ -131,13 +132,13 @@ final class ArrTest extends TestCase
     ])]
     public function testNormalizeArrNotFilterEmpty(): void
     {
-        $result = Normalize::handle(['hello', 'world', ' ', '0'], ',', true);
+        $result = Normalize::handle(['hello', 'world', ' ', '0'], ',', ['']);
 
         $json = <<<'eot'
             [
                 "hello",
                 "world",
-                " "
+                ""
             ]
             eot;
 
