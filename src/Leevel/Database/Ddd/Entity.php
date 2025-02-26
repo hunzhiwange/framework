@@ -332,6 +332,11 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     public const string COLUMN_TYPE_STRING = 'string';
 
     /**
+     * 来自存储的值.
+     */
+    public const string FROM_STORAGE_VALUE = '7a4f8d3e1b2c3d4e5f6g7h8i9j0k1l2m3n4p5q6r7s8t9u0v';
+
+    /**
      * 已修改的实体属性.
      */
     protected array $changedPropFramework = [];
@@ -889,9 +894,8 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             $this->ignoreReadonlyFramework = $ignoreReadonly;
             $this->ignoreUndefinedPropFramework = $ignoreUndefinedProp;
 
-            $realProp = $this->realProp($prop, !$ignoreUndefinedProp);
-
             // 处理忽略未定义属性的特殊逻辑
+            $realProp = $this->realProp($prop, !$ignoreUndefinedProp);
             if ($ignoreUndefinedProp && !property_exists($this, $realProp)) {
                 return $this;
             }
@@ -1874,13 +1878,18 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         foreach ($prop as $k => $config) {
             $isRelationProp = static::isRelation($k);
             $unCamelizeProp = static::unCamelizeProp($k);
-            $value = $this->propGetter($unCamelizeProp);
 
-            // 强制查询字段
-            // 支持虚拟字段属性钩子
-            if (null === $value
-                && $mustColumn
-                && \in_array($k, $mustColumn, true)) {
+            if (!empty($config[self::VIRTUAL_COLUMN]) || $isRelationProp) {
+                $value = $this->propGetter($unCamelizeProp);
+
+                // 强制查询字段
+                // 支持虚拟字段属性钩子
+                if (null === $value
+                    && $mustColumn
+                    && \in_array($k, $mustColumn, true)) {
+                    $value = $this->{static::camelizeProp($k)};
+                }
+            } else {
                 $value = $this->{static::camelizeProp($k)};
             }
 
@@ -2095,8 +2104,13 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         };
     }
 
-    protected function set(string $prop, mixed $value): mixed
+    protected function set(string $prop, mixed $value, mixed $rawValue = self::FROM_STORAGE_VALUE): mixed
     {
+        // 来自数据库等原始数据，直接设置原始属性值
+        if (self::FROM_STORAGE_VALUE !== $rawValue && $this->fromStorageFramework) {
+            $value = $rawValue;
+        }
+
         return $this->setPropReal($prop, $value);
     }
 
