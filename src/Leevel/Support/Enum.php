@@ -105,10 +105,10 @@ trait Enum
         $data = static::descriptions($group);
 
         return false !== ($key = array_search($normalizeValue, $data['value'], true)) ?
-                $data['description'][$key] :
-                throw new \OutOfBoundsException(
-                    sprintf('Value `%s` is not part of %s:%s',  $value instanceof self ? self::class : (string) $value, static::class, $group)
-                );
+            $data['description'][$key] :
+            throw new \OutOfBoundsException(
+                sprintf('Value `%s` is not part of %s:%s',  $value instanceof self ? self::class : (string) $value, static::class, $group)
+            );
     }
 
     /**
@@ -140,9 +140,9 @@ trait Enum
 
         if ($group) {
             return $descriptionsCached[$group] ??
-                    throw new \OutOfBoundsException(
-                        sprintf('Group `%s` is not part of %s', $group, $className)
-                    );
+                throw new \OutOfBoundsException(
+                    sprintf('Group `%s` is not part of %s', $group, $className)
+                );
         }
 
         return $descriptionsCached;
@@ -205,7 +205,7 @@ trait Enum
      * 底层枚举值转换.
      *
      * - 可用于将数字或者字符串转换为对应的枚举值
-     * 
+     *
      * @throws \OutOfBoundsException
      */
     protected static function convertEnumValue(null|bool|float|int|self|string $value): null|bool|float|int|self|string
@@ -260,7 +260,14 @@ trait Enum
                     $description = $attribute->getArguments()[0] ?? '';
                 }
                 $descriptionsCached[$className][$group]['value'][$key] = $value;
-                $descriptionsCached[$className][$group]['description'][$key] = $description;
+
+                if (!isset($descriptionsCached[$className][$group]['description'][$key])) {
+                    $descriptionsCached[$className][$group]['description'][$key] = $description;
+                } else {
+                    // 第一条信息为消息
+                    // 后面的为帮助信息,帮助信息支持多条
+                    $descriptionsCached[$className][$group]['help'][$key][] = $description;
+                }
             }
         }
 
