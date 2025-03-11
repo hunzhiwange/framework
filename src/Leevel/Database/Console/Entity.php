@@ -450,6 +450,11 @@ class Entity extends Make
             // 这里默认兼容一下字符串传递的方式
             $requestFieldType = 'string' === $fieldType ? '' : '|string';
 
+            // decimal 类型的数字需要支持多种类型转换
+            if ('decimal' === $val['type']) {
+                $requestFieldType = '|int|float';
+            }
+
             $structData[] = <<<EOT
                     ])]
                     public ?{$fieldType} \${$fieldName} = null
