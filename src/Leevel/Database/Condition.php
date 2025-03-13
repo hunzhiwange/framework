@@ -56,6 +56,11 @@ class Condition implements ICondition
     protected static ?string $rawRandKey = null;
 
     /**
+     * 父级条件构造器.
+     */
+    protected ?Condition $parentCondition = null;
+
+    /**
      * 数据库连接.
      */
     protected IDatabase $connect;
@@ -66,9 +71,9 @@ class Condition implements ICondition
     protected array $bindParams = [];
 
     /**
-     * 子表达式绑定参数前缀 ID.
+     * 子表达式等级.
      */
-    protected int $subExpressionBindParamsPrefixId = 0;
+    protected int $subExpressionLevel = 0;
 
     /**
      * 支持的聚合类型.
@@ -169,9 +174,10 @@ class Condition implements ICondition
     /**
      * 构造函数.
      */
-    public function __construct(IDatabase $connect)
+    public function __construct(IDatabase $connect, ?Condition $parentCondition = null)
     {
         $this->connect = $connect;
+        $this->parentCondition = $parentCondition;
         $this->initConfig();
     }
 
@@ -186,13 +192,27 @@ class Condition implements ICondition
     }
 
     /**
-     * 设置子表达式绑定参数前缀 ID.
+     * 递增子表达式等级.
      */
-    public function setSubExpressionBindParamsPrefixId(int $subExpressionBindParamsPrefixId): void
+    public function increaseSubExpressionLevel(): void
     {
-        // 将上一层的嵌套层数累加到子层级
-        // 防止多层嵌套重复的前缀
-        $this->subExpressionBindParamsPrefixId += $subExpressionBindParamsPrefixId;
+        if (isset($this->parentCondition)) {
+            $this->parentCondition->increaseSubExpressionLevel();
+        } else {
+            $this->subExpressionLevel++;
+        }
+    }
+
+    /**
+     * 获取子表达式等级.
+     */
+    public function getSubExpressionLevel(): int
+    {
+        if (isset($this->parentCondition)) {
+            return $this->parentCondition->getSubExpressionLevel();
+        } else {
+            return $this->subExpressionLevel;
+        }
     }
 
     /**
@@ -1349,7 +1369,7 @@ class Condition implements ICondition
     {
         // 处理条件表达式
         if (\is_string($expression)
-              && str_contains($expression, ',')
+            && str_contains($expression, ',')
             && preg_match_all('/'.static::raw('(.+?)').'/', $expression, $matches)) {
             $expression = str_replace(
                 $matches[1][0],
@@ -1897,11 +1917,10 @@ class Condition implements ICondition
 
     protected function conditionSubExpression(\Closure $call, ?string $table = null): void
     {
-        $condition = new static($this->connect);
+        $condition = new static($this->connect, $this);
         $condition->setTable($table ?? $this->getTable());
-        ++$this->subExpressionBindParamsPrefixId;
-        $condition->setSubExpressionBindParamsPrefixId($this->subExpressionBindParamsPrefixId);
         $call($condition);
+        $condition->increaseSubExpressionLevel();
         $this->bindParams = array_merge($condition->getBindParams(), $this->bindParams);
         $condition->resetBindParams();
     }
@@ -1972,7 +1991,7 @@ class Condition implements ICondition
         return $cond[0].' '.
             strtoupper($cond[1]).' '.
             (
-                1 === \count($inData) && isset($inData[0]) && str_starts_with($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
+            1 === \count($inData) && isset($inData[0]) && str_starts_with($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
             );
     }
 
@@ -2016,8 +2035,10 @@ class Condition implements ICondition
             $bindParams = trim(preg_replace('/[^A-Za-z0-9\_]/', '_', $bindParams) ?: '', '_');
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
+
+        $subExpressionLevel = $this->getSubExpressionLevel();
         // 默认层级为1,为了保持和之前的兼容性,需要减1
-        $bindParams = ($this->subExpressionBindParamsPrefixId > 1 ? 'sub'.($this->subExpressionBindParamsPrefixId - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
+        $bindParams = ($subExpressionLevel > 1 ? 'sub'.($subExpressionLevel - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
@@ -2334,13 +2355,13 @@ class Condition implements ICondition
             $table = $names->makeSql(true);
             if (!$alias) {
                 $alias = $names instanceof Select ?
-                            $names->databaseCondition()->getAlias() :
-                            $names->getAlias();
+                    $names->databaseCondition()->getAlias() :
+                    $names->getAlias();
             }
             $parseSchema = false;
         } elseif ($names instanceof \Closure) {
             // 回调方法
-            $condition = new static($this->connect);
+            $condition = new static($this->connect, $this);
             $condition->setTable($this->getTable());
             $names($condition);
             $table = $condition->makeSql(true);
