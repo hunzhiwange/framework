@@ -2426,6 +2426,8 @@ class Condition implements ICondition
                 array_shift($args);
             }
 
+            // JOIN 查询提升级别避免冲突
+            $this->increaseSubExpressionLevel();
             $this->conditionSubExpression(static function (self $condition) use ($args, &$cond): void {
                 $condition->where(...$args);
                 $cond = $condition->parseWhere(true);
