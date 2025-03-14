@@ -2038,7 +2038,7 @@ class Condition implements ICondition
 
         $subExpressionLevel = $this->getSubExpressionLevel();
         // 默认层级为1,为了保持和之前的兼容性,需要减1
-        $bindParams = ($subExpressionLevel > 1 ? 'sub'.($subExpressionLevel - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
+        $bindParams = ($subExpressionLevel > 1 ? 'leevel'.($subExpressionLevel - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
