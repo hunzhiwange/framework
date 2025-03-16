@@ -17,7 +17,7 @@ final class TestQuerySubsql extends Migration
                 `hello` varchar(255) NOT NULL DEFAULT '',
                 `test` varchar(255) NOT NULL DEFAULT '',
                 PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于子查询的表';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于子查询的表';
             EOT;
     }
 }

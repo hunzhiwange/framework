@@ -14,7 +14,7 @@ final class Role extends Migration
                 `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名字',
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色';
             EOT;
     }
 }

@@ -16,7 +16,7 @@ final class TestUnique extends Migration
                 `identity` varchar(64) NOT NULL DEFAULT '' COMMENT '唯一标识符',
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `uniq_identity` (`identity`) USING BTREE COMMENT '唯一值'
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带有唯一值的表';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='带有唯一值的表';
             EOT;
     }
 }

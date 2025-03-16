@@ -16,7 +16,7 @@ final class Comment extends Migration
                 `content` varchar(200) NOT NULL DEFAULT '' COMMENT '评论内容',
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='评论';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='评论';
             EOT;
     }
 }

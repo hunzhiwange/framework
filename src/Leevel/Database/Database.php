@@ -53,7 +53,7 @@ abstract class Database implements IDatabase
             'name' => '',
             'user' => '',
             'password' => '',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'configs' => [
                 \PDO::ATTR_PERSISTENT => false,
                 \PDO::ATTR_CASE => \PDO::CASE_NATURAL,

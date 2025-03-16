@@ -16,7 +16,7 @@ final class TestVersion extends Migration
                 `real_number` decimal(14,4) NOT NULL DEFAULT '0.0000' COMMENT '实际库存',
                 PRIMARY KEY (`id`),
                 `version` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '版本'
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='带版本字段的表';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='带版本字段的表';
             EOT;
     }
 }

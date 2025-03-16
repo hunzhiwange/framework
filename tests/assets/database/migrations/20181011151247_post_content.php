@@ -14,7 +14,7 @@ final class PostContent extends Migration
                 `content` text NOT NULL COMMENT '文章内容',
                 PRIMARY KEY (`post_id`),
                 KEY `idx_post_id` (`post_id`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='文章内容';
             EOT;
     }
 }

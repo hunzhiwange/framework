@@ -88,7 +88,7 @@ EOT,
 可以用 Navicat For Mysql 创建一个数据库 `queryphp_development_db`.
 
 ```
-CREATE DATABASE IF NOT EXISTS queryphp_development_db DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS queryphp_development_db DEFAULT CHARSET utf8mb4;
 ```
 
 **修改 .env**
@@ -244,7 +244,7 @@ QueryPHP 推崇通过编写测试用例来让代码变得可维护，所以这�
 可以用 Navicat For Mysql 创建一个数据库 `queryphp_development_test`.
 
 ```
-CREATE DATABASE IF NOT EXISTS queryphp_development_test DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS queryphp_development_test DEFAULT CHARSET utf8mb4;
 ```
 
 **修改 .env**
@@ -569,7 +569,7 @@ QueryPHP 底层框架拥有 3000 多例测试用例，这些测试用例需要�
 可以用 Navicat For Mysql 创建一个数据库 `test`.
 
 ```
-CREATE DATABASE IF NOT EXISTS test DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS test DEFAULT CHARSET utf8mb4;
 ```
 
 **复制一份配置文件并修改**

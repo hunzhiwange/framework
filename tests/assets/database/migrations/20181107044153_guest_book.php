@@ -15,7 +15,7 @@ final class GuestBook extends Migration
                 `content` longtext NOT NULL COMMENT '评论内容',
                 `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                 PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='留言板';
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='留言板';
             EOT;
     }
 }

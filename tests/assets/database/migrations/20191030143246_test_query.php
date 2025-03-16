@@ -54,7 +54,7 @@ final class TestQuery extends Migration
                 KEY `idx_statusindex` (`status`) USING BTREE,
                 KEY `idx_nameindex` (`name`) USING BTREE,
                 KEY `idx_testindex` (`test`) USING BTREE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于查询的表';
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于查询的表';
             EOT;
     }
 }

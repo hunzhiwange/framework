@@ -53,7 +53,7 @@ trait Database
                 'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset' => 'utf8',
+                'charset' => 'utf8mb4',
                 'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
@@ -80,7 +80,7 @@ trait Database
                 'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
                 'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                 'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                'charset' => 'utf8',
+                'charset' => 'utf8mb4',
                 'configs' => [
                     \PDO::ATTR_PERSISTENT => false,
                     \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
@@ -162,7 +162,7 @@ trait Database
                         'name' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['NAME'],
                         'user' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['USER'],
                         'password' => $GLOBALS['LEEVEL_ENV']['DATABASE']['MYSQL']['PASSWORD'],
-                        'charset' => 'utf8',
+                        'charset' => 'utf8mb4',
                         'configs' => [
                             \PDO::ATTR_PERSISTENT => false,
                             \PDO::ATTR_CASE => \PDO::CASE_NATURAL,
