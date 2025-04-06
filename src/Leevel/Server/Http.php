@@ -123,10 +123,21 @@ class Http extends Server implements IServer
             return;
         }
 
+        $this->addSwooleHttpContext($swooleRequest, $swooleResponse);
         $request = $this->normalizeRequest($swooleRequest);
         $response = $this->dispatchRouter($request);
         $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
         $swooleResponse->end();
+    }
+
+    protected function addSwooleHttpContext(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
+    {
+        // 添加 Swoole 响应上下文
+        // 方便业务中做流数据响应
+        $this->container->addContextKeys(SwooleHttpRequest::class);
+        $this->container->instance(SwooleHttpRequest::class, $swooleRequest);
+        $this->container->addContextKeys(SwooleHttpResponse::class);
+        $this->container->instance(SwooleHttpResponse::class, $swooleResponse);
     }
 
     /**
