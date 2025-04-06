@@ -132,7 +132,7 @@ class Http extends Server implements IServer
 
     protected function addSwooleHttpContext(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
-        // 添加 Swoole 响应上下文
+        // 添加 Swoole 请求上下文
         // 方便业务中做流数据响应
         $this->container->addContextKeys(SwooleHttpRequest::class);
         $this->container->instance(SwooleHttpRequest::class, $swooleRequest);
