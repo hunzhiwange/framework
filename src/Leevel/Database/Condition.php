@@ -1233,7 +1233,7 @@ class Condition implements ICondition
                 $group = $this->configs['group'];
                 $this->configs['group'] = [];
                 $this->configs['aggregate'] = [];
-                $this->addAggregate('COUNT', Condition::raw('DISTINCT '.implode(',', $group)), 'row_count');
+                $this->addAggregate('COUNT', static::raw('DISTINCT '.implode(',', $group)), 'row_count');
             }
         }
 
