@@ -1212,18 +1212,28 @@ class Condition implements ICondition
         $sql['comment'] = $this->parseComment();
         $sql['select'] = 'SELECT';
 
-        // 统计查询不支持 order by
-        if (!empty($this->configs['order']) && !empty($this->configs['aggregate'])) {
-            $shouldSearchCount = false;
-            foreach ($this->configs['aggregate'] as $aggregateValue) {
-                if (isset($aggregateValue[0]) && 'COUNT' === $aggregateValue[0]) {
-                    $shouldSearchCount = true;
+        // 统计查询需要特殊处理
+        $shouldSearchCount = false;
+        foreach ($this->configs['aggregate'] as $aggregateValue) {
+            if (isset($aggregateValue[0]) && 'COUNT' === $aggregateValue[0]) {
+                $shouldSearchCount = true;
 
-                    break;
-                }
+                break;
             }
-            if ($shouldSearchCount) {
-                $this->configs['order'] = [];
+        }
+
+        if ($shouldSearchCount) {
+            // 统计查询不支持 order by,所以清理掉 order
+            $this->configs['order'] = [];
+
+            // 统计查询不支持 group by
+            // 如果有 group by,则清理掉 group by
+            // 并把 group by 的字段添加到 aggregate 中
+            if (!empty($this->configs['group'])) {
+                $group = $this->configs['group'];
+                $this->configs['group'] = [];
+                $this->configs['aggregate'] = [];
+                $this->addAggregate('COUNT', Condition::raw('DISTINCT '.implode(',', $group)), 'row_count');
             }
         }
 
@@ -1346,7 +1356,7 @@ class Condition implements ICondition
             ->send([$this, $middlewaresConfigs])
             ->through($extendMiddlewares)
             ->then($then)
-        ;
+            ;
     }
 
     /**
@@ -1359,7 +1369,7 @@ class Condition implements ICondition
             ->send([$this, $this->configs['middlewaresConfigs'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
-        ;
+            ;
     }
 
     /**
