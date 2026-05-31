@@ -1157,15 +1157,17 @@ EOT,
                     ->table('test_query')
                     ->where('id', 99)
                     ->where(static function (Condition $select): void {
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('id', 5)
-                                    ->where('votes', 'not like', '%hello%')
-                                    ->where('title', 'not like', '%world%');
+                                ->where('votes', 'not like', '%hello%')
+                                ->where('title', 'not like', '%world%')
+                            ;
                         });
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('title', 5)
-                                   ->where('id', 'not like', '%hello%')
-                                   ->where('votes', 'not like', '%world%');
+                                ->where('id', 'not like', '%hello%')
+                                ->where('votes', 'not like', '%world%')
+                            ;
                         });
                     })
                     ->findAll(),
@@ -1210,15 +1212,17 @@ EOT,
                     ->table('test_query')
                     ->where('id', 99)
                     ->where(static function (Condition $select): void {
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('id', 5)
                                 ->where('votes', 'not like', '%hello%')
-                                ->where('title', 'not like', '%world%');
+                                ->where('title', 'not like', '%world%')
+                            ;
                         });
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('id', 6)
                                 ->where('votes', 'not like', '%hello123%')
-                                ->where('title', 'not like', '%world456%');
+                                ->where('title', 'not like', '%world456%')
+                            ;
                         });
                     })
                     ->findAll(),
@@ -1259,11 +1263,11 @@ EOT,
                     ->table('test_query')
                     ->where('id', 'parent')
                     ->where(static function (Condition $select): void {
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('id', 'one');
                         });
 
-                        $select->orWhere(function (Condition $select): void {
+                        $select->orWhere(static function (Condition $select): void {
                             $select->where('id', 'two');
                         });
                     })
@@ -1456,18 +1460,18 @@ EOT,
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :sub2_sub1_test_query_suband_test_query_id2 OR `test_query`.`value2` = :sub2_sub1_test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :sub2_sub2_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub2_sub2_test_query_subor_test_query_child_two))",
+    "SELECT `test_query`.* FROM `test_query` WHERE `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id2` LIKE :test_query_suband_test_query_id2 OR `test_query`.`value2` = :test_query_suband_test_query_value2 OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
     {
-        "sub2_sub2_test_query_subor_test_query_child_one": [
+        "test_query_subor_test_query_child_one": [
             "123"
         ],
-        "sub2_sub2_test_query_subor_test_query_child_two": [
+        "test_query_subor_test_query_child_two": [
             "123"
         ],
-        "sub2_sub1_test_query_suband_test_query_id2": [
+        "test_query_suband_test_query_id2": [
             "你好2"
         ],
-        "sub2_sub1_test_query_suband_test_query_value2": [
+        "test_query_suband_test_query_value2": [
             "helloworld2"
         ],
         "test_query_subor_test_query_id": [
@@ -1476,7 +1480,7 @@ EOT,
         "test_query_subor_test_query_value": [
             "helloworld"
         ],
-        "sub1_test_query_hello": [
+        "test_query_hello": [
             "111"
         ]
     },

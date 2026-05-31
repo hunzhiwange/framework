@@ -116,7 +116,7 @@ class ManyMany extends Relation
             $key = $entity->getProp($this->sourceKey);
             $entity->setRelationProp(
                 $relation,
-                $this->targetEntity->collection($maps[$key] ?? []),
+                $this->targetEntity->collection(null === $key ? [] : ($maps[$key] ?? [])),
             );
         }
 
@@ -282,7 +282,11 @@ class ManyMany extends Relation
         /** @var Entity $entity */
         foreach ($result as $entity) {
             // @phpstan-ignore-next-line
-            $maps[$entity->getMiddle()->getProp($this->middleSourceKey)][] = $entity;
+            $key = $entity->getMiddle()->getProp($this->middleSourceKey);
+            if (null === $key) {
+                continue;
+            }
+            $maps[$key][] = $entity;
         }
 
         return $maps;

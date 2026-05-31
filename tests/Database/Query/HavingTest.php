@@ -736,18 +736,18 @@ eot;
 
         $sql = <<<'eot'
 [
-    "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :sub1_test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :sub2_sub1_test_query_suband_test_query_id OR `test_query`.`value` = :sub2_sub1_test_query_suband_test_query_value OR (`test_query`.`child_one` > :sub2_sub2_test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :sub2_sub2_test_query_subor_test_query_child_two))",
+    "SELECT `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` FROM `test_query` GROUP BY `test_query`.`hello`,`test_query`.`id`,`test_query`.`value`,`test_query`.`child_one`,`test_query`.`child_two` HAVING `test_query`.`hello` = :test_query_hello OR (`test_query`.`id` LIKE :test_query_subor_test_query_id AND `test_query`.`value` = :test_query_subor_test_query_value) AND (`test_query`.`id` LIKE :test_query_suband_test_query_id OR `test_query`.`value` = :test_query_suband_test_query_value OR (`test_query`.`child_one` > :test_query_subor_test_query_child_one AND `test_query`.`child_two` LIKE :test_query_subor_test_query_child_two))",
     {
-        "sub2_sub2_test_query_subor_test_query_child_one": [
+        "test_query_subor_test_query_child_one": [
             "123"
         ],
-        "sub2_sub2_test_query_subor_test_query_child_two": [
+        "test_query_subor_test_query_child_two": [
             "123"
         ],
-        "sub2_sub1_test_query_suband_test_query_id": [
+        "test_query_suband_test_query_id": [
             "你好"
         ],
-        "sub2_sub1_test_query_suband_test_query_value": [
+        "test_query_suband_test_query_value": [
             "helloworld"
         ],
         "test_query_subor_test_query_id": [
@@ -756,7 +756,7 @@ eot;
         "test_query_subor_test_query_value": [
             "helloworld"
         ],
-        "sub1_test_query_hello": [
+        "test_query_hello": [
             "111"
         ]
     },

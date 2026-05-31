@@ -125,7 +125,7 @@ class Migrator
 
             $this->requireFilePath($filePath);
             if (!class_exists($className)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Could not find class "%s" in file "%s"',
                     $className,
                     $filePath
@@ -137,7 +137,7 @@ class Migrator
             /** @var Seed $seed */
             $seed = new $className($environment, $this->input, $this->output);
             if (!$seed instanceof Seed) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The class "%s" in file "%s" must extend %s',
                     $className,
                     $filePath,
@@ -176,7 +176,7 @@ class Migrator
             $className = $this->parseClassName($filePath);
 
             if (isset($fileNames[$className])) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Migration "%s" has the same name as "%s"',
                     basename($filePath),
                     $className,
@@ -189,7 +189,7 @@ class Migrator
             $this->requireFilePath($filePath);
 
             if (!class_exists($className)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Could not find class "%s" in file "%s"',
                     $className,
                     $filePath
@@ -200,7 +200,7 @@ class Migrator
             $migration = new $className($environment, $this->input, $this->output);
 
             if (!$migration instanceof Migration) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The class "%s" in file "%s" must extend %s',
                     $className,
                     $filePath,
@@ -236,7 +236,7 @@ class Migrator
             $sql = <<<'EOT'
             CREATE TABLE `migration_log` (
               `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-              `migration` varchar(300) NOT NULL DEFAULT '' COMMENT '迁移名字',
+              `migration` varchar(180) NOT NULL DEFAULT '' COMMENT '迁移名字',
               `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
               `update_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
               `delete_at` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间 0=未删除;大于0=删除时间;',

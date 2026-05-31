@@ -97,7 +97,7 @@ class GettextGenerator
 
         foreach ($phpScanner->getTranslations() as $translations) {
             if (false === $generator->generateFile($translations, $generatedLanguageFile)) {
-                throw new \RuntimeException(sprintf('Failed to generate gettext file %s.', $generatedLanguageFile));
+                throw new \RuntimeException(\sprintf('Failed to generate gettext file %s.', $generatedLanguageFile));
             }
         }
     }
@@ -110,6 +110,7 @@ class GettextGenerator
                 return new PhpFunctionsScanner(['gettext', '__']);
             }
         };
+        $phpScanner->setDefaultDomain('');
         $phpScanner->extractCommentsStartingWith('i18n:', 'Translators:');
         $phpScanner->addReferences(false);
         $this->scanFile($phpScanner, $dirs);
@@ -136,7 +137,7 @@ class GettextGenerator
         string $namespace,
         Loader $loader
     ): Translations {
-        $translations = Translations::create();
+        $translations = Translations::create('');
         $translations->setDescription($namespace);
         $translations->setLanguage($language);
         $this->setTranslationsHeaders($translations, $namespace);

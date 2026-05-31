@@ -40,12 +40,12 @@ class Subject implements \SplSubject
 
     public function attach(\SplObserver $observer): void
     {
-        $this->observers->attach($observer);
+        $this->observers->offsetSet($observer);
     }
 
     public function detach(\SplObserver $observer): void
     {
-        $this->observers->detach($observer);
+        $this->observers->offsetUnset($observer);
     }
 
     public function notify(): void
@@ -68,13 +68,13 @@ class Subject implements \SplSubject
         } else {
             if (\is_string($observerRaw = $observer) // @phpstan-ignore-line
                 && null === ($observer = $this->container->make($observer, throw: false))) { // @phpstan-ignore-line
-                throw new \InvalidArgumentException(sprintf('Observer `%s` is invalid.', $observerRaw));
+                throw new \InvalidArgumentException(\sprintf('Observer `%s` is invalid.', $observerRaw));
             }
 
             if (!$observer instanceof \SplObserver) {
                 if (!\is_callable([$observer, 'handle'])) {
                     // @phpstan-ignore-next-line
-                    throw new \InvalidArgumentException(sprintf('Observer `%s` is invalid.', $observer::class));
+                    throw new \InvalidArgumentException(\sprintf('Observer `%s` is invalid.', $observer::class));
                 }
 
                 /** @phpstan-ignore-next-line */

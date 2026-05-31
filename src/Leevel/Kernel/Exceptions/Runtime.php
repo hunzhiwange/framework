@@ -18,6 +18,7 @@ use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -61,11 +62,12 @@ abstract class Runtime implements IRuntime
             if (!$response instanceof Response) {
                 if (ShouldJson::handle($response)) {
                     $response = JsonResponse::fromJsonString(
-                            ConvertJson::handle($response),
-                            $this->normalizeStatusCode($e),
-                            $this->normalizeHeaders($e),
-                        )
-                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+                        ConvertJson::handle($response),
+                        $this->normalizeStatusCode($e),
+                        $this->normalizeHeaders($e),
+                    )
+                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE)
+                    ;
                 } else {
                     $response = new Response(
                         $response,
@@ -190,10 +192,11 @@ abstract class Runtime implements IRuntime
 
         return JsonResponse::fromJsonString(
             json_encode($data) ?: '',
-                $this->normalizeStatusCode($e),
-                $this->normalizeHeaders($e)
-            )
-            ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+            $this->normalizeStatusCode($e),
+            $this->normalizeHeaders($e)
+        )
+            ->setEncodingOptions(JSON_UNESCAPED_UNICODE)
+        ;
     }
 
     /**
@@ -235,12 +238,29 @@ abstract class Runtime implements IRuntime
      */
     protected function renderExceptionWithWhoops(\Throwable $e): string
     {
+        $this->loadWhoopsPlainTextHandler();
+
         $whoops = $this->makeWhoops();
         $prettyPage = new PrettyPageHandler();
         $prettyPage->handleUnconditionally(true);
         $whoops->pushHandler($prettyPage);
 
         return $whoops->handleException($e);
+    }
+
+    /**
+     * 加载 Whoops 纯文本处理器.
+     */
+    protected function loadWhoopsPlainTextHandler(): void
+    {
+        if (class_exists(PlainTextHandler::class, false)) {
+            return;
+        }
+
+        $errorReporting = error_reporting();
+        error_reporting($errorReporting & ~E_DEPRECATED);
+        class_exists(PlainTextHandler::class);
+        error_reporting($errorReporting);
     }
 
     /**
@@ -337,7 +357,7 @@ abstract class Runtime implements IRuntime
     protected function renderWithFile(string $filepath, array $vars = []): string
     {
         if (!is_file($filepath)) {
-            throw new \Exception(sprintf('Exception file %s is not exist.', $filepath));
+            throw new \Exception(\sprintf('Exception file %s is not exist.', $filepath));
         }
 
         extract($vars);
@@ -359,7 +379,7 @@ abstract class Runtime implements IRuntime
     protected function renderJsonWithFile(string $filepath, array $vars = []): array
     {
         if (!is_file($filepath)) {
-            throw new \Exception(sprintf('Exception file %s is not exist.', $filepath));
+            throw new \Exception(\sprintf('Exception file %s is not exist.', $filepath));
         }
 
         extract($vars);

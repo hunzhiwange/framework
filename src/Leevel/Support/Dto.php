@@ -91,7 +91,7 @@ abstract class Dto implements IArray
         }
 
         if (!$this->ignoreMissingValuesFramework && $data) {
-            throw new \UnexpectedValueException(sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className));
+            throw new \UnexpectedValueException(\sprintf('Public properties `%s` of data transfer object `%s` was not defined.', implode(',', array_keys($data)), $className));
         }
     }
 
@@ -180,11 +180,11 @@ abstract class Dto implements IArray
         }
 
         $all = array_map(static function ($value) use ($unCamelizeNamingStyle) {
-            return $value instanceof IArray ?
-                    ($value instanceof self && !$unCamelizeNamingStyle ?
-                        $value->camelizeNamingStyle()->toArray() :
-                        $value->toArray()) :
-                    $value;
+            return $value instanceof IArray
+                    ? ($value instanceof self && !$unCamelizeNamingStyle
+                        ? $value->camelizeNamingStyle()->toArray()
+                        : $value->toArray())
+                    : $value;
         }, $all);
 
         if (!$this->ignoreNullValueWhenToArrayFramework) {
@@ -262,6 +262,7 @@ abstract class Dto implements IArray
     protected function get(string $prop): mixed
     {
         $prop = $this->validateCamelizeProperties($prop);
+
         return $this->dataFramework[$prop] ?? null;
     }
 
@@ -314,13 +315,14 @@ abstract class Dto implements IArray
 
         if (method_exists($this, $transformValueMethod = $camelizeProp.'TransformValue')) {
             return $this->{$transformValueMethod}($value);
-        } elseif (!$this->ignoreBuiltinTransformValueFramework
+        }
+        if (!$this->ignoreBuiltinTransformValueFramework
             && $defaultType
             && method_exists($this, $builtinTransformValueMethod = $defaultType.'BuiltinTransformValue')) {
             return $this->{$builtinTransformValueMethod}($value);
-        } else {
-            return $value;
         }
+
+        return $value;
     }
 
     protected function intBuiltinTransformValue(mixed $value): int
@@ -376,7 +378,7 @@ abstract class Dto implements IArray
         $className = static::class;
         $camelizeProp = static::camelizePropertiesName($prop);
         if (!isset(static::$propertiesCachedFramework[$className]['name'][$camelizeProp])) {
-            throw new \UnexpectedValueException(sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className));
+            throw new \UnexpectedValueException(\sprintf('Public properties `%s` of data transfer object `%s` was not defined.', $camelizeProp, $className));
         }
 
         return $camelizeProp;
@@ -390,6 +392,7 @@ abstract class Dto implements IArray
         static::$propertiesCachedFramework[$className] = [
             'type' => [],
             'name' => [],
+            'default_value' => [],
         ];
 
         /** @phpstan-ignore-next-line */
@@ -410,7 +413,7 @@ abstract class Dto implements IArray
             }
             static::$propertiesCachedFramework[$className]['name'][$name] = static::unCamelizePropertiesName($name);
             static::$propertiesCachedFramework[$className]['type'][$name] = $propertyType;
-            static::$propertiesCachedFramework[$className]['default_value'][$name] = $reflectionProperty->getDefaultValue();
+            static::$propertiesCachedFramework[$className]['default_value'][$name] = $reflectionProperty->hasDefaultValue() ? $reflectionProperty->getDefaultValue() : null;
         }
     }
 

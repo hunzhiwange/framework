@@ -174,7 +174,7 @@ class Condition implements ICondition
     /**
      * 构造函数.
      */
-    public function __construct(IDatabase $connect, ?Condition $parentCondition = null)
+    public function __construct(IDatabase $connect, ?self $parentCondition = null)
     {
         $this->connect = $connect;
         $this->parentCondition = $parentCondition;
@@ -188,7 +188,7 @@ class Condition implements ICondition
      */
     public function __call(string $method, array $args): mixed
     {
-        throw new ConditionErrorException(sprintf('Condition method %s not found.', $method));
+        throw new ConditionErrorException(\sprintf('Condition method %s not found.', $method));
     }
 
     /**
@@ -199,7 +199,7 @@ class Condition implements ICondition
         if (isset($this->parentCondition)) {
             $this->parentCondition->increaseSubExpressionLevel();
         } else {
-            $this->subExpressionLevel++;
+            ++$this->subExpressionLevel;
         }
     }
 
@@ -210,9 +210,9 @@ class Condition implements ICondition
     {
         if (isset($this->parentCondition)) {
             return $this->parentCondition->getSubExpressionLevel();
-        } else {
-            return $this->subExpressionLevel;
         }
+
+        return $this->subExpressionLevel;
     }
 
     /**
@@ -417,7 +417,7 @@ class Condition implements ICondition
         }
 
         if (!\in_array($type, ['date', 'month', 'day', 'year'], true)) {
-            throw new \InvalidArgumentException(sprintf('Time type `%s` is invalid.', $type));
+            throw new \InvalidArgumentException(\sprintf('Time type `%s` is invalid.', $type));
         }
 
         $this->setInTimeCondition($type);
@@ -718,7 +718,7 @@ class Condition implements ICondition
         }
 
         if (!isset(static::$indexTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid Index type `%s`.', $type));
+            throw new \InvalidArgumentException(\sprintf('Invalid Index type `%s`.', $type));
         }
 
         $type = strtoupper($type);
@@ -819,7 +819,7 @@ class Condition implements ICondition
         }
 
         if (!isset(static::$unionTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Invalid UNION type `%s`.', $type));
+            throw new \InvalidArgumentException(\sprintf('Invalid UNION type `%s`.', $type));
         }
 
         if (!\is_array($selects)) {
@@ -1339,7 +1339,7 @@ class Condition implements ICondition
             }
 
             if (!$validMiddleware) {
-                throw new \InvalidArgumentException(sprintf('Condition middleware %s was invalid.', $v));
+                throw new \InvalidArgumentException(\sprintf('Condition middleware %s was invalid.', $v));
             }
         }
 
@@ -1356,7 +1356,7 @@ class Condition implements ICondition
             ->send([$this, $middlewaresConfigs])
             ->through($extendMiddlewares)
             ->then($then)
-            ;
+        ;
     }
 
     /**
@@ -1369,7 +1369,7 @@ class Condition implements ICondition
             ->send([$this, $this->configs['middlewaresConfigs'] ?? [], $makeSql])
             ->through($extendMiddlewares)
             ->then($then)
-            ;
+        ;
     }
 
     /**
@@ -1627,8 +1627,8 @@ class Condition implements ICondition
                 continue;
             }
 
-            $index .= ($index ? ' ' : '').$type.' INDEX('.
-                implode(',', $this->configs['index'][$type]).')';
+            $index .= ($index ? ' ' : '').$type.' INDEX('
+                .implode(',', $this->configs['index'][$type]).')';
         }
 
         return $index;
@@ -1921,18 +1921,27 @@ class Condition implements ICondition
         // 剔除第一个逻辑符
         array_shift($sqlCond);
 
-        return (false === $child ? strtoupper($condType).' ' : '').
-            implode(' ', $sqlCond);
+        return (false === $child ? strtoupper($condType).' ' : '')
+            .implode(' ', $sqlCond);
     }
 
-    protected function conditionSubExpression(\Closure $call, ?string $table = null): void
+    protected function conditionSubExpression(\Closure $call, ?string $table = null, bool $withBindParamsPrefix = false): void
     {
         $condition = new static($this->connect, $this);
         $condition->setTable($table ?? $this->getTable());
+        if ($withBindParamsPrefix) {
+            $condition->setBindParamsPrefix($this->createSubExpressionBindParamsPrefix());
+        }
         $call($condition);
-        $condition->increaseSubExpressionLevel();
         $this->bindParams = array_merge($condition->getBindParams(), $this->bindParams);
         $condition->resetBindParams();
+    }
+
+    protected function createSubExpressionBindParamsPrefix(): string
+    {
+        ++$this->subExpressionLevel;
+
+        return $this->bindParamsPrefix.'sub'.$this->subExpressionLevel;
     }
 
     protected function analyseConditionFieldValueObjectExpression(string $fieldName, Select|self $fieldValueItem, int $condKey, array &$rawCondKey, array &$condGenerateBindParams): string
@@ -1963,8 +1972,8 @@ class Condition implements ICondition
             return $cond[0].' '.strtoupper($cond[1]).' '.$cond[2];
         }
 
-        $sql = $cond[0].' '.strtoupper($cond[1]).' '.':'.
-            ($bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]));
+        $sql = $cond[0].' '.strtoupper($cond[1]).' '.':'
+            .($bindParams = $condGenerateBindParams[0] ?? $this->generateBindParams($cond[0]));
         $this->bind($bindParams, $cond[2]);
 
         return $sql;
@@ -1998,10 +2007,10 @@ class Condition implements ICondition
             }
         }
 
-        return $cond[0].' '.
-            strtoupper($cond[1]).' '.
-            (
-            1 === \count($inData) && isset($inData[0]) && str_starts_with($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
+        return $cond[0].' '
+            .strtoupper($cond[1]).' '
+            .(
+                1 === \count($inData) && isset($inData[0]) && str_starts_with($inData[0], '(') ? $inData[0] : '('.implode(',', $inData).')'
             );
     }
 
@@ -2046,9 +2055,7 @@ class Condition implements ICondition
             $bindParams = preg_replace('/[\_]{2,}/', '_', $bindParams);
         }
 
-        $subExpressionLevel = $this->getSubExpressionLevel();
-        // 默认层级为1,为了保持和之前的兼容性,需要减1
-        $bindParams = ($subExpressionLevel > 1 ? 'leevel'.($subExpressionLevel - 1).'_' : '').$this->bindParamsPrefix.$bindParams;
+        $bindParams = $this->bindParamsPrefix.$bindParams;
         if (isset($this->bindParamsCache[$bindParams])) {
             $tmp = $bindParams.'_'.$this->bindParamsCache[$bindParams];
             if (isset($this->bindParamsCache[$tmp])) {
@@ -2097,7 +2104,7 @@ class Condition implements ICondition
                 // 修复 orWhere 未生效的问题
                 // @todo 类似的 :string 都需要检查一下有不有同样的问题
                 $this->setConditionItem('('.$tmp.')', ':stringSimple');
-            });
+            }, withBindParamsPrefix: null !== $this->parentCondition);
 
             return $this;
         }
@@ -2202,9 +2209,9 @@ class Condition implements ICondition
         }
 
         if ($cond instanceof self || $cond instanceof Select) {
-            $cond = $cond instanceof Select ?
-                $cond->databaseCondition()->makeSql() :
-                $cond->makeSql();
+            $cond = $cond instanceof Select
+                ? $cond->databaseCondition()->makeSql()
+                : $cond->makeSql();
         } elseif ($cond instanceof \Closure) {
             $this->conditionSubExpression(function (self $condition) use ($key, &$cond): void {
                 // @phpstan-ignore-next-line
@@ -2353,7 +2360,7 @@ class Condition implements ICondition
             $tmp = $names;
             foreach ($tmp as $alias => $names) {
                 if (!\is_string($alias)) {
-                    throw new \InvalidArgumentException(sprintf('Alias must be string,but %s given.', \gettype($alias)));
+                    throw new \InvalidArgumentException(\sprintf('Alias must be string,but %s given.', \gettype($alias)));
                 }
 
                 break;
@@ -2364,9 +2371,9 @@ class Condition implements ICondition
             // 对象子表达式
             $table = $names->makeSql(true);
             if (!$alias) {
-                $alias = $names instanceof Select ?
-                    $names->databaseCondition()->getAlias() :
-                    $names->getAlias();
+                $alias = $names instanceof Select
+                    ? $names->databaseCondition()->getAlias()
+                    : $names->getAlias();
             }
             $parseSchema = false;
         } elseif ($names instanceof \Closure) {
@@ -2436,8 +2443,6 @@ class Condition implements ICondition
                 array_shift($args);
             }
 
-            // JOIN 查询提升级别避免冲突
-            $this->increaseSubExpressionLevel();
             $this->conditionSubExpression(static function (self $condition) use ($args, &$cond): void {
                 $condition->where(...$args);
                 $cond = $condition->parseWhere(true);
@@ -2712,7 +2717,7 @@ class Condition implements ICondition
             case 'day':
                 $value = (int) $value;
                 if ($value > 31) {
-                    throw new \InvalidArgumentException(sprintf('Days can only be less than 31,but %s given.', $value));
+                    throw new \InvalidArgumentException(\sprintf('Days can only be less than 31,but %s given.', $value));
                 }
 
                 $date = getdate();
@@ -2723,7 +2728,7 @@ class Condition implements ICondition
             case 'month':
                 $value = (int) $value;
                 if ($value > 12) {
-                    throw new \InvalidArgumentException(sprintf('Months can only be less than 12,but %s given.', $value));
+                    throw new \InvalidArgumentException(\sprintf('Months can only be less than 12,but %s given.', $value));
                 }
 
                 $date = getdate();
