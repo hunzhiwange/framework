@@ -12,7 +12,7 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=8.4.1",
+        "php": ">=8.5.6",
         "leevel/support": "^2.0",
         "league/flysystem": "^4.0.0",
         "league/flysystem-sftp-v3": "^4.0.0",

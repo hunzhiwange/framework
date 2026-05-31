@@ -12,14 +12,18 @@ trait Helper
     /**
      * 执行方法.
      */
-    protected function invokeTestMethod(object|string $classObj, string $method, array $args = []): mixed
+    protected function invokeTestMethod(object|string $methodName, array|string $testArguments, array $args = []): mixed
     {
-        $method = $this->parseTestMethod($classObj, $method);
-        if ($args) {
-            return $method->invokeArgs($classObj, $args);
+        if (\is_string($methodName) && \is_array($testArguments)) {
+            return parent::invokeTestMethod($methodName, $testArguments);
         }
 
-        return $method->invoke($classObj);
+        $method = $this->parseTestMethod($methodName, $testArguments);
+        if ($args) {
+            return $method->invokeArgs($methodName, $args);
+        }
+
+        return $method->invoke($methodName);
     }
 
     /**
@@ -78,7 +82,9 @@ trait Helper
         /** @phpstan-ignore-next-line */
         $reflected = new \ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
-        $property->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $property->setAccessible(true);
+        }
 
         return $property;
     }
@@ -90,7 +96,9 @@ trait Helper
     {
         /** @phpstan-ignore-next-line */
         $method = new \ReflectionMethod($classOrObject, $method);
-        $method->setAccessible(true);
+        if (\PHP_VERSION_ID < 80100) {
+            $method->setAccessible(true);
+        }
 
         return $method;
     }
@@ -116,7 +124,7 @@ trait Helper
 
         [$traceDir, $className] = $this->makeLogsDir();
         file_put_contents(
-            $traceDir.'/'.sprintf('%s::%s.log', $className, $method),
+            $traceDir.'/'.\sprintf('%s::%s.log', $className, $method),
             $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
         );
 

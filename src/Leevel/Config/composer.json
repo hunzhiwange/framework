@@ -12,7 +12,7 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=8.4.1",
+        "php": ">=8.5.6",
         "vlucas/phpdotenv": "^5.6.1"
     },
     "suggest": {
