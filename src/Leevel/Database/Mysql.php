@@ -87,7 +87,7 @@ GROUP BY
         $uniqueIndexes = [];
         foreach ($data as $row) {
             $row = (array) $row;
-            $indexName = $row['INDEX_NAME'];
+            $indexName = (string) $row['INDEX_NAME'];
             $columns = explode(',', (string) $row['COLUMNS']);
             $comment = $row['INDEX_COMMENT'] ?? '';
             if ('PRIMARY' === $indexName) {

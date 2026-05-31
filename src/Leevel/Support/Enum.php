@@ -237,6 +237,8 @@ trait Enum
 
     /**
      * 类描述数据缓存.
+     *
+     * @param class-string $className
      */
     protected static function descriptionsCache(string $className): array
     {

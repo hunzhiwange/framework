@@ -21,9 +21,9 @@
         "leevel/log": "^2.0",
         "leevel/http": "^2.0",
         "leevel/session": "^2.0",
-        "leevel/debugbar": "^1.0.0",
-        "symfony/var-dumper": "^7.2.0",
-        "symfony/http-foundation": "^7.2.0"
+        "php-debugbar/php-debugbar": "^3.7.6",
+        "symfony/var-dumper": "^8.1.0",
+        "symfony/http-foundation": "^8.1.0"
     },
     "suggest": {
         "leevel/console": "Required to use the make commands (^2.0).",

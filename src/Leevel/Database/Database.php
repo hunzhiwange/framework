@@ -1061,7 +1061,13 @@ abstract class Database implements IDatabase
                     } elseif (\is_float($value)) {
                         $values[] = (string) $value;
                     } elseif (\is_array($value)) {
-                        $values[] = implode(',', $value);
+                        $values[] = implode(',', array_map(static fn (mixed $item): string => match (true) {
+                            \is_string($item) => $item,
+                            \is_int($item), \is_float($item) => (string) $item,
+                            \is_bool($item) => $item ? '1' : '0',
+                            null === $item => 'NULL',
+                            default => '',
+                        }, $value));
                     } elseif (null === $value) {
                         $values[] = 'NULL';
                     }

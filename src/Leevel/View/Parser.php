@@ -429,9 +429,10 @@ class Parser
             // 单标签节点
             $tailTag = $tailStack->pop();
             if (!$tailTag || !$this->findHeadTag($tag, $tailTag)) {
-                if (true !== $nodeTag[$tag['name']]['single']) {
+                $tagName = (string) $tag['name'];
+                if (true !== $nodeTag[$tagName]['single']) {
                     // @phpstan-ignore-next-line
-                    throw new \InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tag['name']).
+                    throw new \InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tagName).
                         PHP_EOL.$this->getLocation($tag['position']));
                 }
 
@@ -442,9 +443,9 @@ class Parser
 
                 $themeNode = [
                     'content' => $tag['content'],
-                    'compiler' => (string) $tag['name'].$compiler,
+                    'compiler' => $tagName.$compiler,
                     'source' => $tag['source'],
-                    'name' => $tag['name'],
+                    'name' => $tagName,
                 ];
                 $themeNode['position'] = $tag['position'];
                 $themeNode = $this->normalizeThemeStruct($themeNode);

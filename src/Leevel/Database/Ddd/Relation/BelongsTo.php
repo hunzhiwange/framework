@@ -26,8 +26,11 @@ class BelongsTo extends Relation
 
         /** @var Entity $value */
         foreach ($entities as $value) {
-            $key = $value->getProp($this->sourceKey);
-            $value->setRelationProp($relation, $maps[$key] ?? $this->targetEntity->make());
+            $key = $this->normalizeRelationKey($value->getProp($this->sourceKey));
+            $value->setRelationProp(
+                $relation,
+                null === $key ? $this->targetEntity->make() : ($maps[$key] ?? $this->targetEntity->make())
+            );
         }
 
         return $entities;
@@ -65,7 +68,12 @@ class BelongsTo extends Relation
 
         /** @var Entity $entity */
         foreach ($result as $entity) {
-            $maps[$entity->getProp($this->targetKey)] = $entity;
+            $key = $this->normalizeRelationKey($entity->getProp($this->targetKey));
+            if (null === $key) {
+                continue;
+            }
+
+            $maps[$key] = $entity;
         }
 
         return $maps;

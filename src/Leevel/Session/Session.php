@@ -316,7 +316,10 @@ abstract class Session implements ISession
      */
     protected function popItem(string $key, array $value): void
     {
-        $this->set($key, array_diff((array) $this->get($key, []), $value));
+        $this->set($key, array_filter(
+            (array) $this->get($key, []),
+            static fn (mixed $item): bool => !\in_array($item, $value, true)
+        ));
     }
 
     /**

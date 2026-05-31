@@ -278,7 +278,7 @@ abstract class Make extends Command
     /**
      * 设置自定义变量替换.
      */
-    protected function setCustomReplaceKeyValue(mixed $key, mixed $value = null): void
+    protected function setCustomReplaceKeyValue(array|int|string $key, mixed $value = null): void
     {
         if (\is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);

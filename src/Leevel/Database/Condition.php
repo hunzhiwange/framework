@@ -697,6 +697,10 @@ class Condition implements ICondition
                 $this->bindParams[$key] = $item;
             }
         } else {
+            if (!\is_int($names) && !\is_string($names)) {
+                throw new \InvalidArgumentException('The bind name must be an integer or string.');
+            }
+
             if (!\is_array($value)) {
                 // 参数绑定类型可能为0，所以需要用isset判断
                 // https://www.php.net/manual/en/pdo.constants.php
@@ -1840,6 +1844,7 @@ class Condition implements ICondition
 
                 // 分析是否存在自动格式化时间标识
                 $findTime = null;
+                $cond[1] = (string) $cond[1];
                 if (str_starts_with($cond[1], '@')) {
                     foreach (['date', 'month', 'day', 'year'] as $timeType) {
                         if (0 === stripos($cond[1], '@'.$timeType)) {
@@ -2023,10 +2028,17 @@ class Condition implements ICondition
             throw new \InvalidArgumentException('The [not] between param value must be an array which not less than two elements.');
         }
 
+        if (!\is_string($cond[0]) || !\is_string($cond[1])) {
+            throw new \InvalidArgumentException('The [not] between condition field and operator must be strings.');
+        }
+
         $betweenValue = $bindParams = [];
         foreach ($cond[2] as $k => $v) {
             if (\in_array($k, $rawCondKey, true)) {
-                $betweenValue[$k] = $cond[2][$k];
+                if (!\is_scalar($cond[2][$k]) && null !== $cond[2][$k]) {
+                    throw new \InvalidArgumentException('The [not] between raw value must be scalar or null.');
+                }
+                $betweenValue[$k] = (string) $cond[2][$k];
             } else {
                 if (!$bindParams) {
                     $bindParams = [
@@ -2038,6 +2050,10 @@ class Condition implements ICondition
                 $betweenValue[$k] = ':'.$tmpBindParams;
                 $this->bind($tmpBindParams, $cond[2][$k]);
             }
+        }
+
+        if (!isset($betweenValue[0], $betweenValue[1])) {
+            throw new \InvalidArgumentException('The [not] between param value must contain two sequential elements.');
         }
 
         return $cond[0].' '.strtoupper($cond[1]).' '.$betweenValue[0].' AND '.$betweenValue[1];

@@ -344,8 +344,9 @@ EOT,
         self::assertStringContainsString('{"foo":"bar",":trace":', $content);
         self::assertStringContainsString('"php":{"version":', $content);
         self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
-        self::assertStringContainsString('{"message":"hello","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
-        self::assertStringContainsString('{"message":"world","message_html":null,"is_string":true,"label":"'.$level.'",', $content);
+        self::assertStringContainsString('{"message":"hello","message_html":null,"message_json":null,"is_string":true,', $content);
+        self::assertStringContainsString('{"message":"world","message_html":null,"message_json":null,"is_string":true,', $content);
+        self::assertStringContainsString('"label":"'.$level.'",', $content);
     }
 
     public static function getMessageLevelsData(): array
@@ -466,7 +467,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"time":{"start"', $content);
+        self::assertStringContainsString('"time":{"count":', $content);
 
         self::assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }
@@ -495,7 +496,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"time":{"start"', $content);
+        self::assertStringContainsString('"time":{"count":', $content);
 
         self::assertStringContainsString('"measures":[{"label":"time_label","start":', $content);
     }
@@ -519,7 +520,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"time":{"start"', $content);
+        self::assertStringContainsString('"time":{"count":', $content);
 
         self::assertStringContainsString('"measures":[]', $content);
     }
@@ -543,7 +544,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"time":{"start"', $content);
+        self::assertStringContainsString('"time":{"count":', $content);
 
         self::assertStringContainsString('"measures":[{"label":"time_test","start":1', $content);
 
@@ -575,7 +576,7 @@ EOT,
 
         $content = $response->getContent();
 
-        self::assertStringContainsString('"time":{"start"', $content);
+        self::assertStringContainsString('"time":{"count":', $content);
 
         self::assertStringContainsString('"measures":[{"label":"time_test","start":', $content);
     }

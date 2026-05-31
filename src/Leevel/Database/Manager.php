@@ -944,6 +944,10 @@ class Manager extends Managers implements IDatabase
             }
 
             foreach ($config['slave'] as &$slave) {
+                if (!\is_array($slave)) {
+                    throw new \InvalidArgumentException('Database config `slave` item must be an array.');
+                }
+
                 $slave = array_merge($slave, $source);
             }
         }

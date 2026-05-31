@@ -15,7 +15,7 @@ trait Helper
     protected function invokeTestMethod(object|string $methodName, array|string $testArguments, array $args = []): mixed
     {
         if (\is_string($methodName) && \is_array($testArguments)) {
-            return parent::invokeTestMethod($methodName, $testArguments);
+            return $this->parseTestMethod($this, $methodName)->invokeArgs($this, $testArguments);
         }
 
         $method = $this->parseTestMethod($methodName, $testArguments);
@@ -82,9 +82,6 @@ trait Helper
         /** @phpstan-ignore-next-line */
         $reflected = new \ReflectionClass($classOrObject);
         $property = $reflected->getProperty($prop);
-        if (\PHP_VERSION_ID < 80100) {
-            $property->setAccessible(true);
-        }
 
         return $property;
     }
@@ -96,9 +93,6 @@ trait Helper
     {
         /** @phpstan-ignore-next-line */
         $method = new \ReflectionMethod($classOrObject, $method);
-        if (\PHP_VERSION_ID < 80100) {
-            $method->setAccessible(true);
-        }
 
         return $method;
     }

@@ -1004,11 +1004,20 @@ abstract class Relation implements IRelation
      */
     protected function getEntityKey(array $entities, string $key): array
     {
-        $values = array_map(static function (Entity $entity) use ($key): mixed {
-            return $entity->getProp($key);
-        }, $entities);
+        $values = [];
+        foreach ($entities as $entity) {
+            $value = $this->normalizeRelationKey($entity->getProp($key));
+            if (null !== $value) {
+                $values[] = $value;
+            }
+        }
 
-        return array_unique(array_values($values));
+        return array_unique($values);
+    }
+
+    protected function normalizeRelationKey(mixed $key): int|string|null
+    {
+        return \is_int($key) || \is_string($key) ? $key : null;
     }
 
     /**

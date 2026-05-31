@@ -16,7 +16,7 @@
         "leevel/support": "^2.0",
         "leevel/cache": "^2.0",
         "leevel/http": "^2.0",
-        "firebase/php-jwt": "^6.10.1"
+        "firebase/php-jwt": "^7.0.5"
     },
     "suggest": {
         "leevel/session": "Required to use the session based guard (^2.0)."

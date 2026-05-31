@@ -286,6 +286,11 @@ class ManyMany extends Relation
             if (null === $key) {
                 continue;
             }
+            $key = $this->normalizeRelationKey($key);
+            if (null === $key) {
+                continue;
+            }
+
             $maps[$key][] = $entity;
         }
 

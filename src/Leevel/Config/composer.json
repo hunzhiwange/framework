@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "vlucas/phpdotenv": "^5.6.1"
+        "vlucas/phpdotenv": "^5.6.3"
     },
     "suggest": {
         "leevel/console": "Required to use the make commands (^2.0).",

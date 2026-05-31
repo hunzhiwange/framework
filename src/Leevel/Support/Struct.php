@@ -54,7 +54,7 @@ final class Struct extends Collection
     {
         $this->checkType($offset, true);
         $this->checkType($value, typeIndex: $offset);
-        $this->elements[$offset] = $value;
+        $this->elements[$this->normalizeArrayKey($offset)] = $value;
 
         if ($this->shouldValidateElement && \count($this->valueTypes) !== \count($this->elements)) {
             throw new \InvalidArgumentException('The number of elements does not match the number of types.');

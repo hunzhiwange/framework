@@ -118,7 +118,7 @@ trait Database
                 ]
                 eot;
             $this->assertSame(
-                sprintf($sql, $table),
+                \sprintf($sql, $table),
                 $this->varJsonSql(
                     $connect
                         ->table($table)
@@ -210,7 +210,7 @@ trait Database
         ]);
 
         $container->singleton('config', $config);
-        $eventDispatch = $this->createMock(IDispatch::class);
+        $eventDispatch = $this->createStub(IDispatch::class);
         $this->assertNull($eventDispatch->handle('event'));
         $container->singleton(IDispatch::class, $eventDispatch);
         $cacheManager = $this->createCacheManager($container, $config, 'file');
@@ -230,7 +230,7 @@ trait Database
         $this->assertInstanceof(Container::class, $manager->container());
 
         if ('redis' === $connect) {
-            $redis = new PhpRedis($config->get('cache\\connect.redis'));
+            $redis = new PhpRedis($config->get('cache\connect.redis'));
             $container->singleton('redis', $redis);
         }
 

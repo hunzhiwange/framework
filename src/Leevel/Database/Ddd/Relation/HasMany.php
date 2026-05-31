@@ -95,7 +95,12 @@ class HasMany extends Relation
 
         /** @var Entity $value */
         foreach ($result as $value) {
-            $maps[$value->getProp($this->targetKey)][] = $value;
+            $key = $this->normalizeRelationKey($value->getProp($this->targetKey));
+            if (null === $key) {
+                continue;
+            }
+
+            $maps[$key][] = $value;
         }
 
         return $maps;

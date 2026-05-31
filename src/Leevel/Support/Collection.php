@@ -179,11 +179,19 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
 
     public function offsetExists(mixed $offset): bool
     {
+        if (!\is_int($offset) && !\is_string($offset)) {
+            return false;
+        }
+
         return isset($this->elements[$offset]);
     }
 
     public function offsetGet(mixed $offset): mixed
     {
+        if (!\is_int($offset) && !\is_string($offset)) {
+            return null;
+        }
+
         return $this->elements[$offset] ?? null;
     }
 
@@ -191,12 +199,20 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
     {
         $this->checkType($offset, true);
         $this->checkType($value);
-        $this->elements[$offset] = $value;
+        if (null === $offset) {
+            $this->elements[] = $value;
+        } else {
+            $this->elements[$this->normalizeArrayKey($offset)] = $value;
+        }
         $this->watchElements();
     }
 
     public function offsetUnset(mixed $offset): void
     {
+        if (!\is_int($offset) && !\is_string($offset)) {
+            return;
+        }
+
         if (isset($this->elements[$offset])) {
             unset($this->elements[$offset]);
         }
@@ -344,4 +360,13 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
      * 监听集合元素发生变化.
      */
     protected function watchElements(): void {}
+
+    protected function normalizeArrayKey(mixed $offset): int|string
+    {
+        if (\is_int($offset) || \is_string($offset)) {
+            return $offset;
+        }
+
+        throw new \UnexpectedValueException('The collection offset must be an integer or string.');
+    }
 }

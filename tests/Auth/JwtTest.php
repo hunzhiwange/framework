@@ -12,7 +12,7 @@ final class JwtTest extends TestCase
 {
     public function testBaseUse(): void
     {
-        $token = new Jwt(['auth_key' => 'hello', 'token' => 'hello']);
+        $token = new Jwt(['auth_key' => '12345678901234567890123456789012', 'token' => 'hello']);
 
         self::assertFalse($token->isLogin());
         self::assertSame([], $token->getLogin());
@@ -38,7 +38,7 @@ final class JwtTest extends TestCase
             'Token name was not set.'
         );
 
-        $token = new Jwt(['auth_key' => 'hello', 'token' => '']);
+        $token = new Jwt(['auth_key' => '12345678901234567890123456789012', 'token' => '']);
         $token->isLogin();
     }
 }
