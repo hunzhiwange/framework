@@ -21,12 +21,12 @@
         "leevel/i18n": "^2.1"
     },
     "require-dev": {
-        "swoole/ide-helper": "^6.0.2"
+        "swoole/ide-helper": "^6.2.1"
     },
     "suggest": {
         "leevel/kernel": "Required to use the make commands (^2.0).",
         "leevel/console": "Required to use the make commands (^2.0).",
-        "ext-swoole": "Required to use swoole (^6.0.2)."
+        "ext-swoole": "Required to use swoole (^6.2.1)."
     },
     "autoload": {
         "psr-4": {
