@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.5.6",
         "ext-openssl": "*",
-        "leevel/support": "^2.0"
+        "leevel/support": "^2.1"
     },
     "autoload": {
         "psr-4": {

@@ -13,9 +13,9 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "leevel/i18n": "^2.0",
-        "leevel/support": "^2.0",
-        "leevel/di": "^2.0"
+        "leevel/i18n": "^2.1",
+        "leevel/support": "^2.1",
+        "leevel/di": "^2.1"
     },
     "suggest": {
         "leevel/database": "Required to use database unique rule (^2.0)."

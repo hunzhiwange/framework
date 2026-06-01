@@ -13,8 +13,8 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "leevel/di": "^2.0",
-        "leevel/support": "^2.0",
+        "leevel/di": "^2.1",
+        "leevel/support": "^2.1",
         "gettext/gettext": "^5.7.3",
         "gettext/php-scanner": "^2.0.1"
     },
