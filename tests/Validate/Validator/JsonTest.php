@@ -15,7 +15,7 @@ use Tests\TestCase;
 ])]
 final class JsonTest extends TestCase
 {
-    #[DataProvider('baseUseProvider')]
+    #[DataProvider('provideBaseUseCases')]
     #[Api([
         'zh-CN:title' => '验证通过的数据',
         'zh-CN:description' => <<<'EOT'
@@ -48,7 +48,7 @@ EOT,
         self::assertTrue($validate->success());
     }
 
-    public static function baseUseProvider(): array
+    public static function provideBaseUseCases(): iterable
     {
         return [
             ['"abc"'],
@@ -57,7 +57,7 @@ EOT,
         ];
     }
 
-    #[DataProvider('badProvider')]
+    #[DataProvider('provideBadCases')]
     #[Api([
         'zh-CN:title' => '未验证通过的数据',
         'zh-CN:description' => <<<'EOT'
@@ -90,7 +90,7 @@ EOT,
         self::assertFalse($validate->success());
     }
 
-    public static function badProvider(): array
+    public static function provideBadCases(): iterable
     {
         return [
             ['not numeric'],

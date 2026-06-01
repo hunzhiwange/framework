@@ -15,26 +15,17 @@ return [
             'AUTH_KEY' => '7becb888f518b20224a988906df51e05',
         ],
         ':deferred_providers' => [
-            0 => [
-            ],
-            1 => [
-            ],
+            0 => [],
+            1 => [],
         ],
         ':composer' => [
-            'providers' => [
-            ],
-            'ignores' => [
-            ],
-            'commands' => [
-            ],
-            'configs' => [
-            ],
-            'i18ns' => [
-            ],
-            'i18n-paths' => [
-            ],
-            'metas' => [
-            ],
+            'providers' => [],
+            'ignores' => [],
+            'commands' => [],
+            'configs' => [],
+            'i18ns' => [],
+            'i18n-paths' => [],
+            'metas' => [],
         ],
     ],
 ];

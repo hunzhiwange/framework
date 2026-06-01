@@ -15,11 +15,9 @@ class DemoReadonlyUpdateEntity extends Entity
 
     public const string AUTO = 'id';
 
-    #[Struct([
-    ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -27,18 +25,15 @@ class DemoReadonlyUpdateEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $description = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $description = null {
+        set(string|null $v) {
             $this->description = $this->set('description', $v);
         }
     }

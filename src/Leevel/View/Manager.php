@@ -12,7 +12,7 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers implements IView
 {
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function display(string $file, array $vars = [], ?string $ext = null): string
     {
         // @phpstan-ignore-next-line
@@ -38,8 +38,8 @@ class Manager extends Managers implements IView
     {
         $this->callConnectMethod(__FUNCTION__);
     }
-    // @codeCoverageIgnoreEnd
 
+    /** @codeCoverageIgnoreEnd */
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IView
     {
         return parent::connect($connect, $newConnect, ...$arguments);

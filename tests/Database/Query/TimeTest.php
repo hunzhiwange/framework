@@ -45,9 +45,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -83,9 +83,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -122,9 +122,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -161,9 +161,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -196,9 +196,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -231,9 +231,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -269,9 +269,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -304,9 +304,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -339,9 +339,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -376,9 +376,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -410,9 +410,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -444,9 +444,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -483,9 +483,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -522,9 +522,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -562,9 +562,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -602,9 +602,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -641,9 +641,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $value),
-            sprintf($sql, $value2),
-            sprintf($sql, $value3)
+            \sprintf($sql, $value),
+            \sprintf($sql, $value2),
+            \sprintf($sql, $value3)
         );
     }
 
@@ -701,9 +701,9 @@ final class TimeTest extends TestCase
                     $connect
                 ),
                 [
-                    sprintf($sql, $year, $month, $day, $date),
-                    sprintf($sql, $year, $month, $day, $date2),
-                    sprintf($sql, $year, $month, $day, $date3),
+                    \sprintf($sql, $year, $month, $day, $date),
+                    \sprintf($sql, $year, $month, $day, $date2),
+                    \sprintf($sql, $year, $month, $day, $date3),
                 ],
                 true
             )
@@ -759,9 +759,9 @@ final class TimeTest extends TestCase
                     ->findOne(),
                 $connect
             ),
-            sprintf($sql, $year, $month, $day, $date),
-            sprintf($sql, $year, $month, $day, $date2),
-            sprintf($sql, $year, $month, $day, $date3)
+            \sprintf($sql, $year, $month, $day, $date),
+            \sprintf($sql, $year, $month, $day, $date2),
+            \sprintf($sql, $year, $month, $day, $date3)
         );
     }
 
@@ -869,9 +869,9 @@ final class TimeTest extends TestCase
                     ->findAll(),
                 $connect
             ),
-            sprintf($sql, $time),
-            sprintf($sql, $time2),
-            sprintf($sql, $time3)
+            \sprintf($sql, $time),
+            \sprintf($sql, $time2),
+            \sprintf($sql, $time3)
         );
     }
 
@@ -913,9 +913,9 @@ final class TimeTest extends TestCase
                     ->findAll(),
                 $connect
             ),
-            sprintf($sql, $time),
-            sprintf($sql, $time2),
-            sprintf($sql, $time3)
+            \sprintf($sql, $time),
+            \sprintf($sql, $time2),
+            \sprintf($sql, $time3)
         );
     }
 
@@ -959,9 +959,9 @@ final class TimeTest extends TestCase
                     ->findAll(),
                 $connect
             ),
-            sprintf($sql, $time),
-            sprintf($sql, $time2),
-            sprintf($sql, $time3)
+            \sprintf($sql, $time),
+            \sprintf($sql, $time2),
+            \sprintf($sql, $time3)
         );
     }
 
@@ -990,7 +990,7 @@ final class TimeTest extends TestCase
         $time2 = mktime(0, 0, 0, $date['mon'], 6, $date['year']);
 
         self::assertSame(
-            sprintf($sql, $time, $time2),
+            \sprintf($sql, $time, $time2),
             $this->varJsonSql(
                 $connect
                     ->table('test_query')

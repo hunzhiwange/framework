@@ -69,7 +69,7 @@ final class LoadI18nTest extends TestCase
             return $config;
         });
 
-        self::assertSame('en-US', $container['config']['i18n\\default']);
+        self::assertSame('en-US', $container['config']['i18n\default']);
         self::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         self::assertFalse($app->isCachedI18n('en-US'));
         self::assertSame($appPath.'/i18n', $app->i18nPath());
@@ -127,7 +127,7 @@ EOT,
             return $config;
         });
 
-        self::assertSame('en-US', $container['config']['i18n\\default']);
+        self::assertSame('en-US', $container['config']['i18n\default']);
         self::assertSame($appPath.'/storage/bootstrap/i18n/en-US.php', $app->i18nCachedPath('en-US'));
         self::assertFalse($app->isCachedI18n('en-US'));
         self::assertSame($appPath.'/i18n', $app->i18nPath());
@@ -153,7 +153,7 @@ EOT,
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            sprintf('I18n dir %s is not exist.', __DIR__.'/app/extend/notFound')
+            \sprintf('I18n dir %s is not exist.', __DIR__.'/app/extend/notFound')
         );
 
         $bootstrap = new LoadI18n();

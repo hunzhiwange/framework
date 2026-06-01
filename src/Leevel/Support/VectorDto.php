@@ -25,7 +25,7 @@ final class VectorDto extends Vector
     public static function fromRequest(array $data, string $dtoClass): self
     {
         if (!is_subclass_of($dtoClass, Dto::class)) {
-            throw new \InvalidArgumentException(sprintf('Dto class %s must be subclass of %s.', $dtoClass, Dto::class));
+            throw new \InvalidArgumentException(\sprintf('Dto class %s must be subclass of %s.', $dtoClass, Dto::class));
         }
 
         $dtoItems = [];

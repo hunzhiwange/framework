@@ -225,17 +225,17 @@ interface ISelect extends IBaseSelect
     /**
      * 通过主键或条件查找实体.
      */
-    public function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity;
+    public function findEntity(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity;
 
     /**
      * 通过主键或条件查找多个实体.
      */
-    public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): EntityCollection;
+    public function findMany(array|\Closure|null $idsOrCondition = null, array $column = ['*']): EntityCollection;
 
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity;
+    public function findOrFail(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity;
 
     /**
      * 获取查询.

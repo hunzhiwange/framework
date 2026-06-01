@@ -35,7 +35,7 @@ class Application extends SymfonyApplication
             $command->setContainer($this->container);
         }
 
-        return parent::add($command);
+        return parent::addCommand($command);
     }
 
     /**

@@ -175,7 +175,7 @@ abstract class KernelConsole implements IKernelConsole
             ->container()
             ->make('config')
         ;
-        $replace = (array) $config->get('console\\template', []) ?: [];
+        $replace = (array) $config->get('console\template', []) ?: [];
         Make::setGlobalReplace($replace);
     }
 

@@ -107,7 +107,7 @@ final class LogTest extends TestCase
         }
     }
 
-    #[DataProvider('baseUseProvider')]
+    #[DataProvider('provideBaseUseCases')]
     #[Api([
         'zh-CN:title' => 'log 基本使用',
         'zh-CN:description' => <<<'EOT'
@@ -132,7 +132,7 @@ EOT,
         DeleteDirectory::handle(__DIR__.'/cacheLog');
     }
 
-    public static function baseUseProvider(): array
+    public static function provideBaseUseCases(): iterable
     {
         return [
             ['emergency'],

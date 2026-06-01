@@ -15,7 +15,7 @@ use Tests\TestCase;
 ])]
 final class RegexTest extends TestCase
 {
-    #[DataProvider('baseUseProvider')]
+    #[DataProvider('provideBaseUseCases')]
     #[Api([
         'zh-CN:title' => '验证通过的数据',
         'zh-CN:description' => <<<'EOT'
@@ -42,7 +42,7 @@ EOT,
         self::assertTrue($validate->success());
     }
 
-    public static function baseUseProvider(): array
+    public static function provideBaseUseCases(): iterable
     {
         return [
             [2, '/^[0-9]+$/'],
@@ -54,7 +54,7 @@ EOT,
         ];
     }
 
-    #[DataProvider('badProvider')]
+    #[DataProvider('provideBadCases')]
     #[Api([
         'zh-CN:title' => '未验证通过的数据',
         'zh-CN:description' => <<<'EOT'
@@ -81,7 +81,7 @@ EOT,
         self::assertFalse($validate->success());
     }
 
-    public static function badProvider(): array
+    public static function provideBadCases(): iterable
     {
         return [
             ['中国', '/^[0-9]+$/'],

@@ -64,7 +64,7 @@ final class EntityCollectionTest extends TestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'The value of a collection value type requires the following types `Tests\\Database\\Ddd\\Entity\\DemoEntity`.'
+            'The value of a collection value type requires the following types `Tests\Database\Ddd\Entity\DemoEntity`.'
         );
 
         $data = [
@@ -77,7 +77,7 @@ final class EntityCollectionTest extends TestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'The value of a collection value type requires the following types `Leevel\\Database\\Ddd\\Entity`.'
+            'The value of a collection value type requires the following types `Leevel\Database\Ddd\Entity`.'
         );
 
         $data = [
@@ -90,7 +90,7 @@ final class EntityCollectionTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Value types `stdClass` must be a subclass of `Leevel\\Database\\Ddd\\Entity`.'
+            'Value types `stdClass` must be a subclass of `Leevel\Database\Ddd\Entity`.'
         );
 
         $data = [

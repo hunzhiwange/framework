@@ -11,7 +11,7 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers implements IAuth
 {
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function isLogin(): bool
     {
         // @phpstan-ignore-next-line
@@ -45,8 +45,8 @@ class Manager extends Managers implements IAuth
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__);
     }
-    // @codeCoverageIgnoreEnd
 
+    /** @codeCoverageIgnoreEnd */
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IAuth
     {
         return parent::connect($connect, $newConnect, ...$arguments);

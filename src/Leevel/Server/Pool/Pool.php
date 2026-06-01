@@ -278,7 +278,7 @@ abstract class Pool
     protected function validateIdleConnections(): void
     {
         if ($this->maxIdleConnections < 1) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 '`max_idle_connections` `%d` of connections must greater than or equal to min `%d`.',
                 $this->maxIdleConnections,
                 1

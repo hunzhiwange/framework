@@ -15,7 +15,7 @@ trait Enum
     /**
      * 验证是否为有效的枚举值.
      */
-    public static function isValid(null|bool|float|int|self|string $value, string $group = Msg::class): bool
+    public static function isValid(bool|float|int|self|string|null $value, string $group = Msg::class): bool
     {
         try {
             $value = static::convertEnumValue($value);
@@ -54,31 +54,31 @@ trait Enum
     public static function valueByKey(string $key): mixed
     {
         if (!enum_exists(static::class)) {
-            return \defined(static::class.'::'.$key) ?
-                \constant(static::class.'::'.$key) : // @phpstan-ignore-line
-                throw new \OutOfBoundsException(
-                    sprintf('Key `%s` is not part of %s', $key, static::class)
+            return \defined(static::class.'::'.$key)
+                ? \constant(static::class.'::'.$key) // @phpstan-ignore-line
+                : throw new \OutOfBoundsException(
+                    \sprintf('Key `%s` is not part of %s', $key, static::class)
                 );
         }
 
         foreach (static::cases() as $v) {
             if ($v->name === $key) {
-                return $v->value ??
-                    throw new \OutOfBoundsException(
-                        sprintf('Key `%s` of %s does not have a value.', $key, static::class)
+                return $v->value
+                    ?? throw new \OutOfBoundsException(
+                        \sprintf('Key `%s` of %s does not have a value.', $key, static::class)
                     );
             }
         }
 
         throw new \OutOfBoundsException(
-            sprintf('Key `%s` is not part of %s', $key, static::class)
+            \sprintf('Key `%s` is not part of %s', $key, static::class)
         );
     }
 
     /**
      * 获取给定值的键.
      */
-    public static function searchKey(null|bool|float|int|self|string $value, string $group = Msg::class): false|int|string
+    public static function searchKey(bool|float|int|self|string|null $value, string $group = Msg::class): false|int|string
     {
         try {
             $value = static::convertEnumValue($value);
@@ -98,16 +98,16 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function description(null|bool|float|int|self|string $value, string $group = Msg::class): string
+    public static function description(bool|float|int|self|string|null $value, string $group = Msg::class): string
     {
         $value = static::convertEnumValue($value);
         $normalizeValue = static::normalizeEnumValue($value, $group);
         $data = static::descriptions($group);
 
-        return false !== ($key = array_search($normalizeValue, $data['value'], true)) ?
-            $data['description'][$key] :
-            throw new \OutOfBoundsException(
-                sprintf('Value `%s` is not part of %s:%s',  $value instanceof self ? self::class : (string) $value, static::class, $group)
+        return false !== ($key = array_search($normalizeValue, $data['value'], true))
+            ? $data['description'][$key]
+            : throw new \OutOfBoundsException(
+                \sprintf('Value `%s` is not part of %s:%s', $value instanceof self ? self::class : (string) $value, static::class, $group)
             );
     }
 
@@ -116,14 +116,14 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    public static function value(string $description, string $group = Msg::class): null|bool|float|int|self|string
+    public static function value(string $description, string $group = Msg::class): bool|float|int|self|string|null
     {
         $data = static::descriptions($group);
 
-        return false !== ($key = array_search($description, $data['description'], true)) ?
-            $data['value'][$key] :
-            throw new \OutOfBoundsException(
-                sprintf('Description `%s` is not part of %s:%s', $description, static::class, $group)
+        return false !== ($key = array_search($description, $data['description'], true))
+            ? $data['value'][$key]
+            : throw new \OutOfBoundsException(
+                \sprintf('Description `%s` is not part of %s:%s', $description, static::class, $group)
             );
     }
 
@@ -139,9 +139,9 @@ trait Enum
         $descriptionsCached = static::descriptionsCache($className = static::class);
 
         if ($group) {
-            return $descriptionsCached[$group] ??
-                throw new \OutOfBoundsException(
-                    sprintf('Group `%s` is not part of %s', $group, $className)
+            return $descriptionsCached[$group]
+                ?? throw new \OutOfBoundsException(
+                    \sprintf('Group `%s` is not part of %s', $group, $className)
                 );
         }
 
@@ -196,7 +196,7 @@ trait Enum
      *
      * - 可用于将数据库中的值转换成标准类型
      */
-    protected static function normalizeEnumValue(null|bool|float|int|self|string $value, string $group): null|bool|float|int|self|string
+    protected static function normalizeEnumValue(bool|float|int|self|string|null $value, string $group): bool|float|int|self|string|null
     {
         return $value;
     }
@@ -208,7 +208,7 @@ trait Enum
      *
      * @throws \OutOfBoundsException
      */
-    protected static function convertEnumValue(null|bool|float|int|self|string $value): null|bool|float|int|self|string
+    protected static function convertEnumValue(bool|float|int|self|string|null $value): bool|float|int|self|string|null
     {
         // 枚举特殊处理一下值
         if (!enum_exists(static::class) || $value instanceof self) {
@@ -257,8 +257,8 @@ trait Enum
                     /** @phpstan-ignore-next-line */
                     $description = $attribute->newInstance()() ?? '';
                 } else {
-                    $group = false === str_contains($group, '\\') ? $group :
-                        substr($group, strripos($group, '\\') + 1);
+                    $group = false === str_contains($group, '\\') ? $group
+                        : substr($group, strripos($group, '\\') + 1);
                     $description = $attribute->getArguments()[0] ?? '';
                 }
                 $descriptionsCached[$className][$group]['value'][$key] = $value;

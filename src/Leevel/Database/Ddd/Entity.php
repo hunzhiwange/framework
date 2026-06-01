@@ -557,7 +557,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             // 检查定义的枚举类
             if (isset($v[self::ENUM_CLASS])) {
                 if (!enum_exists($v[self::ENUM_CLASS])) {
-                    throw new \Exception(sprintf('Enum `%s` is not exists.', $v[self::ENUM_CLASS]));
+                    throw new \Exception(\sprintf('Enum `%s` is not exists.', $v[self::ENUM_CLASS]));
                 }
 
                 static::$hasDefinedEnumFramework = true;
@@ -591,7 +591,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         // relation tips
         try {
             if (static::isRelation($unCamelize = static::unCamelizeProp($method))) {
-                throw new \BadMethodCallException(sprintf(
+                throw new \BadMethodCallException(\sprintf(
                     'Method `%s` is not exits,maybe you can try `%s::make()->getRelation(\'%s\')`.',
                     $method,
                     static::class,
@@ -602,7 +602,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         }
 
         // other method tips
-        throw new \BadMethodCallException(sprintf(
+        throw new \BadMethodCallException(\sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
             $method,
             static::class,
@@ -617,7 +617,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      */
     public static function __callStatic(string $method, array $args): void
     {
-        throw new \BadMethodCallException(sprintf(
+        throw new \BadMethodCallException(\sprintf(
             'Method `%s` is not exits,maybe you can try `%s::select|make()->%s(...)`.',
             $method,
             static::class,
@@ -778,7 +778,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 通过主键或条件查找实体.
      */
-    public static function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findEntity(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findEntity($idOrCondition, $column);
     }
@@ -786,7 +786,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 通过主键或条件查找多个实体.
      */
-    public static function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): EntityCollection
+    public static function findMany(array|\Closure|null $idsOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): EntityCollection
     {
         return static::select($softDeletedType)->findMany($idsOrCondition, $column);
     }
@@ -794,7 +794,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     /**
      * 通过主键或条件查找实体，未找到则抛出异常.
      */
-    public static function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
+    public static function findOrFail(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*'], int $softDeletedType = self::WITHOUT_SOFT_DELETED): static
     {
         return static::select($softDeletedType)->findOrFail($idOrCondition, $column);
     }
@@ -909,60 +909,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         }
 
         return $this;
-    }
-
-    /**
-     * 内部设置属性数据.
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function setPropReal(string $prop, mixed $value): mixed
-    {
-        try {
-            static::validate($prop = static::unCamelizeProp($prop));
-        } catch (EntityPropNotDefinedException $e) {
-            if ($this->ignoreUndefinedPropFramework) {
-                return $value;
-            }
-
-            throw $e;
-        }
-
-        if (static::isRelation($prop)) {
-            throw new \InvalidArgumentException(sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class));
-        }
-
-        if ($this->fromStorageFramework) {
-            $this->originalFramework[$prop] = $value;
-
-            return $this->propSetter($prop, $value);
-        }
-
-        if ($this->ignoreReadonlyFramework) {
-            $value = $this->propSetter($prop, $value);
-        } else {
-            $constantStruct = static::getFields();
-            if (false === $this->ignoreReadonlyFramework
-                && isset($constantStruct[$prop][self::READONLY])
-                && true === $constantStruct[$prop][self::READONLY]) {
-                throw new \InvalidArgumentException(sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
-            }
-            $value = $this->propSetter($prop, $value);
-        }
-
-        if (\in_array($prop, $this->changedPropFramework, true)) {
-            return $value;
-        }
-
-        // 比对原始数据
-        if (array_key_exists($prop, $this->originalFramework)
-            && $value === $this->originalFramework[$prop]) {
-            return $value;
-        }
-
-        $this->changedPropFramework[] = $prop;
-
-        return $value;
     }
 
     /**
@@ -1150,7 +1096,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     public static function getDeleteAtColumn(): string
     {
         if (!static::isDefinedEntityConstant('DELETE_AT')) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Entity `%s` soft delete field was not defined.',
                 static::class
             ));
@@ -1158,7 +1104,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
         $deleteAt = (string) static::getEntityConstant('DELETE_AT');
         if (!static::hasField($deleteAt)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Entity `%s` soft delete field `%s` was not found.',
                 static::class,
                 $deleteAt
@@ -1326,10 +1272,10 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
      *
      * @throws \InvalidArgumentException
      */
-    public function getRelation(string $prop, null|array|\Closure|string $relationScope = null): Relation
+    public function getRelation(string $prop, array|\Closure|string|null $relationScope = null): Relation
     {
         if (!static::isRelation($prop)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Prop `%s` of entity `%s` is not a relation type.',
                 $prop,
                 static::class,
@@ -1682,7 +1628,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
                 }
             }
             if (!$key) {
-                throw new \InvalidArgumentException(sprintf('Entity %s has no primary key.', static::class));
+                throw new \InvalidArgumentException(\sprintf('Entity %s has no primary key.', static::class));
             }
         }
 
@@ -1781,7 +1727,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
             $enumClass = $v[self::ENUM_CLASS];
             if (!enum_exists($enumClass)) {
-                throw new \Exception(sprintf('Enum `%s` is not exists.', $enumClass));
+                throw new \Exception(\sprintf('Enum `%s` is not exists.', $enumClass));
             }
 
             $validatorRules[$field] ??= [];
@@ -1813,7 +1759,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $key = static::getPrimaryKey();
         if (\count($key) > 1) {
-            throw new \InvalidArgumentException(sprintf('Entity %s does not support composite primary keys.', static::class));
+            throw new \InvalidArgumentException(\sprintf('Entity %s does not support composite primary keys.', static::class));
         }
 
         return reset($key);
@@ -1870,72 +1816,6 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         return $this->toArrayReal();
     }
 
-    protected function toArrayReal(array $mustColumn = []): array
-    {
-        $fields = static::getFields();
-        $prop = $this->normalizeWhiteAndBlack($this->getFields(), 'show_prop');
-        $result = [];
-        foreach ($prop as $k => $config) {
-            $isRelationProp = static::isRelation($k);
-            $unCamelizeProp = static::unCamelizeProp($k);
-
-            if (!empty($config[self::VIRTUAL_COLUMN]) || $isRelationProp) {
-                $value = $this->propGetter($unCamelizeProp);
-
-                // 强制查询字段
-                // 支持虚拟字段属性钩子
-                if (null === $value
-                    && $mustColumn
-                    && \in_array($k, $mustColumn, true)) {
-                    $value = $this->{static::camelizeProp($k)};
-                }
-            } else {
-                $value = $this->{static::camelizeProp($k)};
-            }
-
-            if (null === $value) {
-                if (!\array_key_exists(self::SHOW_PROP_NULL, $config)) {
-                    continue;
-                }
-                $value = $config[self::SHOW_PROP_NULL];
-                if ($this->showPropEachCallbackFramework) {
-                    $showPropEachCallback = $this->showPropEachCallbackFramework;
-                    $value = $showPropEachCallback($value, $k);
-                }
-            } elseif ($isRelationProp) {
-                if ($this->showPropEachCallbackFramework) {
-                    $showPropEachCallback = $this->showPropEachCallbackFramework;
-                    $value = $showPropEachCallback($value, $k);
-                }
-                $value = $value->toArray();
-            } elseif ($this->showPropEachCallbackFramework) {
-                $showPropEachCallback = $this->showPropEachCallbackFramework;
-                $value = $showPropEachCallback($value, $k);
-            }
-
-            $result[$k] = $value;
-
-            $toArrayComment = '';
-            if (static::$toArrayCommentFramework) {
-                $result['#'.$k] = $toArrayComment = static::parseToArrayComment($fields, $unCamelizeProp);
-            }
-
-            // 格式化后用一个新字段存储
-            if ($this->shouldFormatPropValue($k)) {
-                $result[$unCamelizeProp.'_formated'] = $this->getFormatPropValue($k, $value);
-                if (static::$toArrayCommentFramework) {
-                    $result['#'.$unCamelizeProp.'_formated'] = $toArrayComment.'「formated」';
-                }
-            }
-        }
-
-        if ($result) {
-            static::prepareEnum($result);
-        }
-
-        return $result;
-    }
-
     public function toJson(?int $config = null): string
     {
         return ConvertJson::handle($this->toArray(), $config);
@@ -1978,7 +1858,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         if (false === ($id = $this->getId($cached))) {
             // @todo 唯一键重复，保存提示这个错误，需要优化
-            throw new EntityIdentifyConditionException(sprintf('Entity %s has no identify condition data.', static::class));
+            throw new EntityIdentifyConditionException(\sprintf('Entity %s has no identify condition data.', static::class));
         }
 
         return $id;
@@ -2070,9 +1950,9 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             return static::$globalConnectFramework;
         }
 
-        return static::$databaseConnectFramework[static::class] ??
-            (\defined($constConnect = static::class.'::CONNECT') ?
-                \constant($constConnect) : null); // @phpstan-ignore-line
+        return static::$databaseConnectFramework[static::class]
+            ?? (\defined($constConnect = static::class.'::CONNECT')
+                ? \constant($constConnect) : null); // @phpstan-ignore-line
     }
 
     /**
@@ -2102,6 +1982,126 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
             'float', 'double' => self::COLUMN_TYPE_FLOAT,
             default => self::COLUMN_TYPE_STRING,
         };
+    }
+
+    /**
+     * 内部设置属性数据.
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function setPropReal(string $prop, mixed $value): mixed
+    {
+        try {
+            static::validate($prop = static::unCamelizeProp($prop));
+        } catch (EntityPropNotDefinedException $e) {
+            if ($this->ignoreUndefinedPropFramework) {
+                return $value;
+            }
+
+            throw $e;
+        }
+
+        if (static::isRelation($prop)) {
+            throw new \InvalidArgumentException(\sprintf('Cannot set a relation prop `%s` on entity `%s`.', $prop, static::class));
+        }
+
+        if ($this->fromStorageFramework) {
+            $this->originalFramework[$prop] = $value;
+
+            return $this->propSetter($prop, $value);
+        }
+
+        if ($this->ignoreReadonlyFramework) {
+            $value = $this->propSetter($prop, $value);
+        } else {
+            $constantStruct = static::getFields();
+            if (false === $this->ignoreReadonlyFramework
+                && isset($constantStruct[$prop][self::READONLY])
+                && true === $constantStruct[$prop][self::READONLY]) {
+                throw new \InvalidArgumentException(\sprintf('Cannot set a read-only prop `%s` on entity `%s`.', $prop, static::class));
+            }
+            $value = $this->propSetter($prop, $value);
+        }
+
+        if (\in_array($prop, $this->changedPropFramework, true)) {
+            return $value;
+        }
+
+        // 比对原始数据
+        if (\array_key_exists($prop, $this->originalFramework)
+            && $value === $this->originalFramework[$prop]) {
+            return $value;
+        }
+
+        $this->changedPropFramework[] = $prop;
+
+        return $value;
+    }
+
+    protected function toArrayReal(array $mustColumn = []): array
+    {
+        $fields = static::getFields();
+        $prop = $this->normalizeWhiteAndBlack($this->getFields(), 'show_prop');
+        $result = [];
+        foreach ($prop as $k => $config) {
+            $isRelationProp = static::isRelation($k);
+            $unCamelizeProp = static::unCamelizeProp($k);
+
+            if (!empty($config[self::VIRTUAL_COLUMN]) || $isRelationProp) {
+                $value = $this->propGetter($unCamelizeProp);
+
+                // 强制查询字段
+                // 支持虚拟字段属性钩子
+                if (null === $value
+                    && $mustColumn
+                    && \in_array($k, $mustColumn, true)) {
+                    $value = $this->{static::camelizeProp($k)};
+                }
+            } else {
+                $value = $this->{static::camelizeProp($k)};
+            }
+
+            if (null === $value) {
+                if (!\array_key_exists(self::SHOW_PROP_NULL, $config)) {
+                    continue;
+                }
+                $value = $config[self::SHOW_PROP_NULL];
+                if ($this->showPropEachCallbackFramework) {
+                    $showPropEachCallback = $this->showPropEachCallbackFramework;
+                    $value = $showPropEachCallback($value, $k);
+                }
+            } elseif ($isRelationProp) {
+                if ($this->showPropEachCallbackFramework) {
+                    $showPropEachCallback = $this->showPropEachCallbackFramework;
+                    $value = $showPropEachCallback($value, $k);
+                }
+                $value = $value->toArray();
+            } elseif ($this->showPropEachCallbackFramework) {
+                $showPropEachCallback = $this->showPropEachCallbackFramework;
+                $value = $showPropEachCallback($value, $k);
+            }
+
+            $result[$k] = $value;
+
+            $toArrayComment = '';
+            if (static::$toArrayCommentFramework) {
+                $result['#'.$k] = $toArrayComment = static::parseToArrayComment($fields, $unCamelizeProp);
+            }
+
+            // 格式化后用一个新字段存储
+            if ($this->shouldFormatPropValue($k)) {
+                $result[$unCamelizeProp.'_formated'] = $this->getFormatPropValue($k, $value);
+                if (static::$toArrayCommentFramework) {
+                    $result['#'.$unCamelizeProp.'_formated'] = $toArrayComment.'「formated」';
+                }
+            }
+        }
+
+        if ($result) {
+            static::prepareEnum($result);
+        }
+
+        return $result;
     }
 
     protected function set(string $prop, mixed $value, mixed $rawValue = self::FROM_STORAGE_VALUE): mixed
@@ -2244,7 +2244,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
         /** @phpstan-ignore-next-line */
         $reflectionClass = new \ReflectionClass($className);
-        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED|\ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
+        foreach ($reflectionClass->getProperties(\ReflectionProperty::IS_PROTECTED | \ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
             if ($reflectionProperty->isStatic()) {
                 continue;
             }
@@ -2276,7 +2276,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         foreach (['TABLE', 'ID', 'AUTO'] as $item) {
             if (!static::isDefinedEntityConstant($item)) {
-                throw new \InvalidArgumentException(sprintf('The entity const %s was not defined.', $item));
+                throw new \InvalidArgumentException(\sprintf('The entity const %s was not defined.', $item));
             }
         }
     }
@@ -2301,7 +2301,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     protected static function validateSupportEvent(string $event): void
     {
         if (!\in_array($event, static::getSupportEvent(), true)) {
-            throw new \InvalidArgumentException(sprintf('Event `%s` do not support.', $event));
+            throw new \InvalidArgumentException(\sprintf('Event `%s` do not support.', $event));
         }
     }
 
@@ -2358,7 +2358,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
                 break;
 
             default:
-                throw new \InvalidArgumentException(sprintf('Invalid soft deleted type %d.', $softDeletedType));
+                throw new \InvalidArgumentException(\sprintf('Invalid soft deleted type %d.', $softDeletedType));
         }
     }
 
@@ -2715,7 +2715,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         $prop = static::unCamelizeProp($prop);
         if ($validate && !static::hasPropDefined($prop)) {
-            throw new EntityPropNotDefinedException(sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop));
+            throw new EntityPropNotDefinedException(\sprintf('Entity `%s` prop or field of struct `%s` was not defined.', static::class, $prop));
         }
     }
 
@@ -2728,7 +2728,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     {
         foreach ($field as $v) {
             if (!isset($defined[$v])) {
-                throw new \InvalidArgumentException(sprintf('Relation `%s` field was not defined.', $v));
+                throw new \InvalidArgumentException(\sprintf('Relation `%s` field was not defined.', $v));
             }
         }
     }
@@ -2741,7 +2741,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
     protected function validateRelationField(self $entity, string $field): void
     {
         if (!$entity->hasField($field)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The field `%s`.`%s` of entity `%s` was not defined.',
                 $entity->getTable(),
                 $field,
@@ -2884,7 +2884,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 
         // 如果关联作用域为 private 会触发 __call 魔术方法中的异常
         if (!method_exists($this, $call[1])) {
-            throw new \BadMethodCallException(sprintf(
+            throw new \BadMethodCallException(\sprintf(
                 'Relation scope `%s` of entity `%s` is not exits.',
                 $call[1],
                 static::class,
@@ -2895,7 +2895,7 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
         return \Closure::fromCallable($call);
     }
 
-    protected function prepareRelationScope(array $defined, null|array|\Closure|string $relationScope): ?\Closure
+    protected function prepareRelationScope(array $defined, array|\Closure|string|null $relationScope): ?\Closure
     {
         if (!isset($defined[self::RELATION_SCOPE]) && !$relationScope) {
             return null;
@@ -2934,12 +2934,12 @@ abstract class Entity implements IArray, IJson, \JsonSerializable
 }
 
 // @codeCoverageIgnoreStart
-if (!\function_exists(__NAMESPACE__.'\\__')) {
+if (!\function_exists(__NAMESPACE__.'\__')) {
     /** @codeCoverageIgnoreEnd */
-    function __(string $text, null|bool|float|int|string ...$data): string
+    function __(string $text, bool|float|int|string|null ...$data): string
     {
         if (!class_exists(Gettext::class)) {
-            return sprintf($text, ...$data); // @codeCoverageIgnore
+            return \sprintf($text, ...$data); // @codeCoverageIgnore
         }
 
         return Gettext::handle($text, ...$data);

@@ -105,7 +105,7 @@ class Unique
     {
         if (\is_string($param[0])) {
             if (!class_exists($param[0])) {
-                throw new \InvalidArgumentException(sprintf('Validate entity `%s` was not found.', $param[0]));
+                throw new \InvalidArgumentException(\sprintf('Validate entity `%s` was not found.', $param[0]));
             }
 
             $entity = new $param[0]();
@@ -114,7 +114,7 @@ class Unique
         }
 
         if (!$entity instanceof Entity) {
-            throw new \InvalidArgumentException(sprintf('Validate entity `%s` must be an entity.', $entity::class));
+            throw new \InvalidArgumentException(\sprintf('Validate entity `%s` must be an entity.', $entity::class));
         }
 
         return $entity;

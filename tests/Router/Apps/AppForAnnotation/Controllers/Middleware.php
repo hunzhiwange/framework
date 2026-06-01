@@ -37,7 +37,7 @@ class Middleware
 
     #[Route(
         path: '/middleware/test4',
-        middlewares: ['Tests\\Router\\Middlewares\\Demo1'],
+        middlewares: ['Tests\Router\Middlewares\Demo1'],
     )]
     public function world(): string
     {

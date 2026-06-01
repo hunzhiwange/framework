@@ -297,7 +297,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
      *
      * @throws \UnexpectedValueException
      */
-    protected function checkType(mixed $value, bool $isKey = false, null|int|string $typeIndex = null): void
+    protected function checkType(mixed $value, bool $isKey = false, int|string|null $typeIndex = null): void
     {
         $types = $isKey ? $this->keyTypes : $this->valueTypes;
         if (!$types) {
@@ -316,7 +316,7 @@ class Collection implements IArray, IJson, \IteratorAggregate, \ArrayAccess, \Co
             return;
         }
 
-        throw new \UnexpectedValueException(sprintf(
+        throw new \UnexpectedValueException(\sprintf(
             'The value%s of a collection %s type requires the following types `%s`.',
             null === $typeIndex ? '' : ' with offset '.$typeIndex,
             $isKey ? 'key' : 'value',

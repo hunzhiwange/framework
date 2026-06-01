@@ -449,7 +449,7 @@ final class AppTest extends TestCase
         $app = $this->createApp($appPath);
         self::assertSame(
             \dirname(__DIR__, 2).'/src/Leevel/Kernel/Console',
-            realpath($app->namespacePath('Leevel\\Kernel\\Console'))
+            realpath($app->namespacePath('Leevel\Kernel\Console'))
         );
     }
 
@@ -483,12 +483,12 @@ final class AppTest extends TestCase
         $appPath = \dirname(__DIR__, 2);
         $composer = require $appPath.'/vendor/autoload.php';
         $composer->addPsr4('', [
-            'Foo\\Bar' => $appPath.'/tests/Kernel/assert',
+            'Foo\Bar' => $appPath.'/tests/Kernel/assert',
         ]);
         $app = $this->createApp($appPath);
         self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
-            realpath($app->namespacePath('Foo\\Bar\\Hello'))
+            realpath($app->namespacePath('Foo\Bar\Hello'))
         );
         $this->setTestProperty($composer, 'fallbackDirsPsr4', []);
     }
@@ -530,7 +530,7 @@ final class AppTest extends TestCase
         $app = $this->createApp($appPath);
         self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
-            realpath($app->namespacePath('Foo\\Bar_Hello'))
+            realpath($app->namespacePath('Foo\Bar_Hello'))
         );
         $this->setTestProperty($composer, 'prefixesPsr0', []);
     }
@@ -545,7 +545,7 @@ final class AppTest extends TestCase
         $app = $this->createApp($appPath);
         self::assertSame(
             $appPath.'/tests/Kernel/assert/Foo/Bar/Hello',
-            realpath($app->namespacePath('Foo\\Bar_Hello'))
+            realpath($app->namespacePath('Foo\Bar_Hello'))
         );
         $this->setTestProperty($composer, 'fallbackDirsPsr0', []);
     }
@@ -814,7 +814,7 @@ EOT,
         self::assertSame(__DIR__.'/hello', $app->themesPath());
     }
 
-    #[DataProvider('envProvider')]
+    #[DataProvider('provideEnvCases')]
     #[Api([
         'zh-CN:title' => 'env 获取应用的环境变量',
         'zh-CN:description' => <<<'EOT'
@@ -833,7 +833,7 @@ EOT,
         self::assertSame($envValue, $app->env($name));
     }
 
-    public static function envProvider(): array
+    public static function provideEnvCases(): iterable
     {
         return [
             ['bar', 'true', true],
@@ -912,7 +912,7 @@ class ProviderDeferTest1 extends Provider
     {
         return [
             'foo' => [
-                'Tests\\Kernel\\ProviderDeferTest1',
+                'Tests\Kernel\ProviderDeferTest1',
             ],
         ];
     }
@@ -946,12 +946,12 @@ class ConfigTest
         if (':deferred_providers' === $name) {
             return [
                 [
-                    'foo' => 'Tests\\Kernel\\ProviderDeferTest1',
+                    'foo' => 'Tests\Kernel\ProviderDeferTest1',
                 ],
                 [
-                    'Tests\\Kernel\\ProviderDeferTest1' => [
+                    'Tests\Kernel\ProviderDeferTest1' => [
                         'foo' => [
-                            'Tests\\Kernel\\ProviderDeferTest1',
+                            'Tests\Kernel\ProviderDeferTest1',
                         ],
                     ],
                 ],

@@ -382,7 +382,7 @@ class Debug
      */
     protected function formatMessage(string $level, string $message, array $context = []): string
     {
-        return sprintf(
+        return \sprintf(
             '[%s] %s %s: %s'.PHP_EOL,
             new \DateTime()->format('Y-m-d H:i:s u'),
             $message,

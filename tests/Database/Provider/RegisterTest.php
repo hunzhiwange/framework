@@ -65,7 +65,7 @@ final class RegisterTest extends TestCase
         $container->alias($test->providers());
 
         $test->bootstrap($this->createMock(IDispatch::class));
-        $manager = $container->make('Leevel\\Database\\Manager');
+        $manager = $container->make('Leevel\Database\Manager');
         $data = ['name' => 'tom', 'content' => 'I love movie.'];
         self::assertSame(
             1,

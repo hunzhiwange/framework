@@ -31,7 +31,7 @@ final class RouterTest extends TestCase
         $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -51,7 +51,7 @@ final class RouterTest extends TestCase
         $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);

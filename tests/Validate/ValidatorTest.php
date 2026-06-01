@@ -457,8 +457,7 @@ EOT,
     public function testAddData(): void
     {
         $validate = new Validator(
-            [
-            ],
+            [],
             [
                 'name' => 'required|min_length:20|'.IValidator::OPTIONAL,
             ],
@@ -500,8 +499,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -548,8 +546,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -585,8 +582,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -629,8 +625,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -696,8 +691,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -733,8 +727,7 @@ EOT,
             [
                 'name' => '中国',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '用户名',
             ]
@@ -1406,14 +1399,14 @@ EOT,
                 'name' => 1,
             ],
             [
-                'name' => 'Tests\\Validate\\NotFound',
+                'name' => 'Tests\Validate\NotFound',
             ],
             [
                 'name' => '地名',
             ]
         );
 
-        $validate->extend('tests\\validate\\not_found', 'Tests\\Validate\\NotFound');
+        $validate->extend('tests\validate\not_found', 'Tests\Validate\NotFound');
 
         $validate->success();
     }
@@ -1512,7 +1505,7 @@ EOT,
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            'Validate rule Leevel\\Validate\\Helper\\DemoOne is invalid.'
+            'Validate rule Leevel\Validate\Helper\DemoOne is invalid.'
         );
 
         $validate = new Validator(
@@ -1536,7 +1529,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Extend class Tests\\Validate\\NotFound is not valid.'
+            'Extend class Tests\Validate\NotFound is not valid.'
         );
 
         $validate = new Validator(
@@ -1553,7 +1546,7 @@ EOT,
 
         $container = new Container();
         $validate->setContainer($container);
-        $validate->extend('custom_foobar', 'Tests\\Validate\\NotFound');
+        $validate->extend('custom_foobar', 'Tests\Validate\NotFound');
         $validate->success();
     }
 
@@ -1579,7 +1572,7 @@ EOT,
         $validate->success();
     }
 
-    #[DataProvider('skipRuleProvider')]
+    #[DataProvider('provideSkipRuleCases')]
     public function testSkipRule(string $skipRule): void
     {
         $validate = new Validator(
@@ -1597,7 +1590,7 @@ EOT,
         self::assertTrue($validate->success());
     }
 
-    public static function skipRuleProvider(): array
+    public static function provideSkipRuleCases(): iterable
     {
         return [
             [IValidator::OPTIONAL],
@@ -2110,8 +2103,7 @@ EOT,
                 'nafoo' => '',
                 'nabar' => '',
             ],
-            [
-            ],
+            [],
             [
                 'name' => '地名',
                 'nafoo' => 'foo',

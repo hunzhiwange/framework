@@ -58,8 +58,8 @@ class File extends Log implements ILog
             throw new \InvalidArgumentException('Path for log has not set.');
         }
 
-        return $this->config['path'].'/'.$this->config['channel'].'.'.
-            $level.'/'.($category ? $category.'-' : '').
-            date($this->config['name']).'.log';
+        return $this->config['path'].'/'.$this->config['channel'].'.'
+            .$level.'/'.($category ? $category.'-' : '')
+            .date($this->config['name']).'.log';
     }
 }

@@ -34,12 +34,12 @@ abstract class Stop extends Command
     protected function close(string $pidPath): void
     {
         if (!file_exists($pidPath)) {
-            throw new \InvalidArgumentException(sprintf('Pid path `%s` was not found.', $pidPath));
+            throw new \InvalidArgumentException(\sprintf('Pid path `%s` was not found.', $pidPath));
         }
 
         $pid = (int) file_get_contents($pidPath);
         if (!Process::kill($pid, SIG_DFL)) {
-            throw new \InvalidArgumentException(sprintf('Pid `%s` was not found.', $pid));
+            throw new \InvalidArgumentException(\sprintf('Pid `%s` was not found.', $pid));
         }
 
         Process::kill($pid, SIGTERM);
@@ -48,7 +48,7 @@ abstract class Stop extends Command
             unlink($pidPath);
         }
 
-        $message = sprintf('Process %d has stoped.', $pid);
+        $message = \sprintf('Process %d has stoped.', $pid);
         $this->info($message);
     }
 }

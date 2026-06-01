@@ -51,7 +51,7 @@ final class GenerateTest extends TestCase
         foreach (['zh-CN', 'en-US'] as $i18n) {
             self::assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf(
+                    \sprintf(
                         'I18n file base generate succeed at %s.',
                         str_replace('[i18n]', $i18n, $cacheFile)
                     )

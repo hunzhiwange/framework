@@ -18,6 +18,6 @@ class TidyPath
             $path = str_replace('/', '\\', $path);
         }
 
-        return rtrim($path, '\\/');
+        return rtrim($path, '\/');
     }
 }

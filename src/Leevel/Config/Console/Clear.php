@@ -30,7 +30,7 @@ class Clear extends Command
         $this->line('Start to clear cache config.');
         $cachePath = $app->configCachedPath();
         $this->clearCache($cachePath);
-        $this->info(sprintf('Config cache files %s clear succeed.', $cachePath));
+        $this->info(\sprintf('Config cache files %s clear succeed.', $cachePath));
 
         return self::SUCCESS;
     }
@@ -41,7 +41,7 @@ class Clear extends Command
     protected function clearCache(string $cachePath): void
     {
         if (!is_file($cachePath)) {
-            $this->warn(sprintf('Config cache files %s have been cleaned up.', $cachePath));
+            $this->warn(\sprintf('Config cache files %s have been cleaned up.', $cachePath));
 
             return;
         }

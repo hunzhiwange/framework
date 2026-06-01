@@ -33,8 +33,8 @@ class MiddlewareParser
 
             [$m, $params] = $this->parseMiddlewareParams($m);
             if (isset($middlewareGroups[$m])) {
-                $temp = \is_array($middlewareGroups[$m]) ?
-                    $middlewareGroups[$m] : [$middlewareGroups[$m]];
+                $temp = \is_array($middlewareGroups[$m])
+                    ? $middlewareGroups[$m] : [$middlewareGroups[$m]];
                 foreach ($temp as $item) {
                     [$item, $params] = $this->parseMiddlewareParams($item);
                     $result[] = $this->packageMiddleware($middlewareAlias[$item] ?? $item, $params);
@@ -61,7 +61,7 @@ class MiddlewareParser
      */
     protected function normalizeMiddleware(array $middlewares, string $method): array
     {
-        $middlewares = array_map(static function (string $item) use ($method) : string|false {
+        $middlewares = array_map(static function (string $item) use ($method): string|false {
             if (!str_contains($item, ':')) {
                 $realClass = $item;
             } else {
@@ -70,7 +70,7 @@ class MiddlewareParser
 
             // ignore group like `web` or `api`
             if (str_contains($realClass, '\\') && !class_exists($realClass)) {
-                throw new \InvalidArgumentException(sprintf('Middleware %s was not found.', $realClass));
+                throw new \InvalidArgumentException(\sprintf('Middleware %s was not found.', $realClass));
             }
 
             if (!method_exists($realClass, $method)) {

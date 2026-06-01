@@ -86,7 +86,7 @@ final class GettextGeneratorTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Failed to generate gettext file %s.', $filePath)
+            \sprintf('Failed to generate gettext file %s.', $filePath)
         );
 
         $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();

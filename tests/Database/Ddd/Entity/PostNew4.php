@@ -24,9 +24,8 @@ class PostNew4 extends Entity
             'type' => 'bigint',
         ],
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -38,9 +37,8 @@ class PostNew4 extends Entity
             'default' => 0,
         ],
     ])]
-    public ?float $userId = null
-    {
-        set (float|string|null $v) {
+    public ?float $userId = null {
+        set(float|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }

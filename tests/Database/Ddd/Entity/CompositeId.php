@@ -15,29 +15,23 @@ class CompositeId extends Entity
 
     public const ?string AUTO = null;
 
-    #[Struct([
-    ])]
-    public ?int $id1 = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $id1 = null {
+        set(int|string|null $v) {
             $this->id1 = $this->set('id1', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $id2 = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $id2 = null {
+        set(int|string|null $v) {
             $this->id2 = $this->set('id2', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }

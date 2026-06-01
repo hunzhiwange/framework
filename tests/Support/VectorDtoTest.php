@@ -61,7 +61,7 @@ EOT,
     public function testError(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('The value of a collection value type requires the following types `Leevel\\Support\\Dto`');
+        $this->expectExceptionMessage('The value of a collection value type requires the following types `Leevel\Support\Dto`');
 
         $data = [
             1, 'string', 3, 4,
@@ -73,7 +73,7 @@ EOT,
     public function testError1(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Dto class not_found_class must be subclass of Leevel\\Support\\Dto');
+        $this->expectExceptionMessage('Dto class not_found_class must be subclass of Leevel\Support\Dto');
 
         VectorDto::fromRequest([
             [

@@ -222,7 +222,7 @@ EOT,
     public function testPropNotExist(): void
     {
         $this->expectException(EntityPropNotDefinedException::class);
-        $this->expectExceptionMessage('Entity `Tests\\Database\\Ddd\\Entity\\DemoEntity` prop or field of struct `not_exists` was not defined.');
+        $this->expectExceptionMessage('Entity `Tests\Database\Ddd\Entity\DemoEntity` prop or field of struct `not_exists` was not defined.');
 
         $entity = new DemoEntity();
         $entity->setProp('not_exists', 'hello');
@@ -231,7 +231,7 @@ EOT,
     public function testPropNotExist2(): void
     {
         $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage('Creation of dynamic property Tests\\Database\\Ddd\\Entity\\DemoEntity::$notExists is deprecated');
+        $this->expectExceptionMessage('Creation of dynamic property Tests\Database\Ddd\Entity\DemoEntity::$notExists is deprecated');
 
         $entity = new DemoEntity();
         $entity->notExists = 'hello';

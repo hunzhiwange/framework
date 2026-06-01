@@ -86,7 +86,7 @@ abstract class Make extends Command
 
         // 保存成功输出消息
         // @phpstan-ignore-next-line
-        $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->getArgument('name')));
+        $this->info(\sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->getArgument('name')));
         $this->comment($this->formatFile($this->getSaveFilePath()));
     }
 
@@ -207,8 +207,8 @@ abstract class Make extends Command
             ->make(IApp::class)
         ;
 
-        return $app->namespacePath($this->getNamespace()).'/'.
-            ($this->appName ? ucfirst($this->appName).'/' : '');
+        return $app->namespacePath($this->getNamespace()).'/'
+            .($this->appName ? ucfirst($this->appName).'/' : '');
     }
 
     /**

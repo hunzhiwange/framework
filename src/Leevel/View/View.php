@@ -90,7 +90,7 @@ abstract class View implements IView
             $file = $this->parseFile($file, $ext);
         }
         if (!is_file($file)) {
-            throw new \RuntimeException(sprintf('Template file `%s` does not exist.', $file));
+            throw new \RuntimeException(\sprintf('Template file `%s` does not exist.', $file));
         }
 
         // PHAR模式，文件路径像这样 phar:///User/dyhb/leevel.phar/vendor
@@ -117,14 +117,14 @@ abstract class View implements IView
             try {
                 return eval($code);
             } catch (\Throwable $e) {
-                $message = sprintf('Eval [%s]: %s', $code, $e->getMessage());
+                $message = \sprintf('Eval [%s]: %s', $code, $e->getMessage());
 
                 throw new \Exception($message);
             }
         }
 
-        return $this->getThemePath().'/'.$file.
-            ($ext ?: $this->config['suffix']);
+        return $this->getThemePath().'/'.$file
+            .($ext ?: $this->config['suffix']);
     }
 
     /**

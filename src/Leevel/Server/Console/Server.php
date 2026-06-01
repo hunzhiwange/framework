@@ -40,7 +40,7 @@ class Server extends Command
         $this->app = $app;
         $port = (int) $this->getOption('port');
         if (!$port) {
-            $port = (int) $config->get('server\\build_in_port', 9527);
+            $port = (int) $config->get('server\build_in_port', 9527);
         }
         // @phpstan-ignore-next-line
         $this->line("<info>The QueryPHP server started:</info> <http://{$this->getOption('host')}:{$port}>");
@@ -58,7 +58,7 @@ class Server extends Command
      */
     protected function normalizeCommand(int $port): string
     {
-        return sprintf(
+        return \sprintf(
             '%s -S %s:%d -t %s',
             escapeshellarg((string) $this->getOption('php')),
             (string) $this->getOption('host'),

@@ -208,7 +208,7 @@ final class HelperTest extends TestCase
 
         $this->expectException(IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Failed to create "%s": mkdir(): File exists', $file)
+            \sprintf('Failed to create "%s": mkdir(): File exists', $file)
         );
 
         CreateFile::handle($file.'/demo.txt');
@@ -221,7 +221,7 @@ final class HelperTest extends TestCase
 
         $this->expectException(IOException::class);
         $this->expectExceptionMessage(
-            sprintf('Failed to touch "%s"', $file)
+            \sprintf('Failed to touch "%s"', $file)
         );
 
         if (is_dir($sourcePath)) {

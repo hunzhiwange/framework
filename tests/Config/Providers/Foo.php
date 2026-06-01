@@ -23,7 +23,7 @@ class Foo extends Provider
     {
         return [
             'foo' => [
-                'Tests\\Config\\Providers\\Hello',
+                'Tests\Config\Providers\Hello',
             ],
         ];
     }

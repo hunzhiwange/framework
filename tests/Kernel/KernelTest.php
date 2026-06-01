@@ -52,7 +52,7 @@ EOT,
 ])]
 final class KernelTest extends TestCase
 {
-    #[DataProvider('baseUseProvider')]
+    #[DataProvider('provideBaseUseCases')]
     #[Api([
         'zh-CN:title' => '基本使用',
         'zh-CN:description' => <<<'EOT'
@@ -93,7 +93,7 @@ EOT,
         unset($GLOBALS['DemoBootstrapForKernel']);
     }
 
-    public static function baseUseProvider(): array
+    public static function provideBaseUseCases(): iterable
     {
         return [
             [true],

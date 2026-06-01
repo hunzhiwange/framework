@@ -231,11 +231,11 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Stage `Tests\\Pipeline\\NotFound` is invalid.'
+            'Stage `Tests\Pipeline\NotFound` is invalid.'
         );
 
         new Pipeline(new Container())
-            ->through(['Tests\\Pipeline\\NotFound'])
+            ->through(['Tests\Pipeline\NotFound'])
             ->then()
         ;
     }

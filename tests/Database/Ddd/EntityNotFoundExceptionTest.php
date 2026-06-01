@@ -16,7 +16,7 @@ final class EntityNotFoundExceptionTest extends TestCase
         $e->setEntity(Guestbook::class);
 
         self::assertSame(Guestbook::class, $e->entity());
-        self::assertSame('Entity `Tests\\Database\\Ddd\\Entity\\Guestbook` was not found.', $e->getMessage());
+        self::assertSame('Entity `Tests\Database\Ddd\Entity\Guestbook` was not found.', $e->getMessage());
     }
 
     public function testEntityNotFoundExceptionReportable(): void

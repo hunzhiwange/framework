@@ -301,7 +301,7 @@ EOT,
     {
         $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage(
-            'PDO query property \\PDO::ATTR_ERRMODE cannot be set,it is always \\PDO::ERRMODE_EXCEPTION.'
+            'PDO query property \PDO::ATTR_ERRMODE cannot be set,it is always \PDO::ERRMODE_EXCEPTION.'
         );
 
         $manager = $this->createDatabaseConnectWithInvalidPdoAttrErrmode();

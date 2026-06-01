@@ -19,7 +19,7 @@ class JsonResponse extends SymfonyJsonResponse
      */
     protected int $encodingOptions = JSON_UNESCAPED_UNICODE;
 
-/** @phpstan-ignore-line */
+    /** @phpstan-ignore-line */
     public function setData(mixed $data = []): static
     {
         $data = ConvertJson::handle($data, $this->encodingOptions);

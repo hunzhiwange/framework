@@ -1631,7 +1631,6 @@ EOT,
 
         $work->beginTransaction();
 
-
         $post = Post::select()->findEntity(1);
         $work->update($post);
 
@@ -1930,7 +1929,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Updated entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
+            'Updated entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for create.'
         );
 
         $work = UnitOfWork::make();
@@ -1949,7 +1948,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
+            'Deleted entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for create.'
         );
 
         $work = UnitOfWork::make();
@@ -1968,7 +1967,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Replaced entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for create.'
+            'Replaced entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for create.'
         );
 
         $work = UnitOfWork::make();
@@ -1987,7 +1986,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for twice.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for twice.'
         );
 
         $work = UnitOfWork::make();
@@ -2007,7 +2006,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
+            'Deleted entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for update.'
         );
 
         $work = UnitOfWork::make();
@@ -2026,7 +2025,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Created entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
+            'Created entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for update.'
         );
 
         $work = UnitOfWork::make();
@@ -2045,7 +2044,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Replaced entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for update.'
+            'Replaced entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for update.'
         );
 
         $work = UnitOfWork::make();
@@ -2064,7 +2063,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be updated for twice.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be updated for twice.'
         );
 
         $work = UnitOfWork::make();
@@ -2081,7 +2080,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no unique key data for update.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` has no unique key data for update.'
         );
 
         $work = UnitOfWork::make();
@@ -2116,7 +2115,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no unique key data for delete.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` has no unique key data for delete.'
         );
 
         $work = UnitOfWork::make();
@@ -2206,7 +2205,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not managed.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` was not managed.'
         );
 
         $work = UnitOfWork::make();
@@ -2839,7 +2838,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Detached entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be persist.'
+            'Detached entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be persist.'
         );
 
         $work = UnitOfWork::make();
@@ -2856,7 +2855,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Detached entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be remove.'
+            'Detached entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be remove.'
         );
 
         $work = UnitOfWork::make();
@@ -3285,7 +3284,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Created entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+            'Created entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for replace.'
         );
 
         $work = UnitOfWork::make();
@@ -3304,7 +3303,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Updated entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+            'Updated entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for replace.'
         );
 
         $work = UnitOfWork::make();
@@ -3323,7 +3322,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be replaced for twice.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be replaced for twice.'
         );
 
         $work = UnitOfWork::make();
@@ -3343,7 +3342,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Deleted entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be added for replace.'
+            'Deleted entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be added for replace.'
         );
 
         $work = UnitOfWork::make();
@@ -3359,7 +3358,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` has no unique key data for delete.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` has no unique key data for delete.'
         );
 
         $work = UnitOfWork::make();
@@ -3376,7 +3375,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` cannot be deleted for twice.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` cannot be deleted for twice.'
         );
 
         $work = UnitOfWork::make();

@@ -42,7 +42,7 @@ class Cache extends Command
         $this->basePath = $app->path();
         $this->writeCache($cachePath, $data);
 
-        $this->info(sprintf('Config cache succeed at %s.', $cachePath));
+        $this->info(\sprintf('Config cache succeed at %s.', $cachePath));
 
         return self::SUCCESS;
     }
@@ -84,8 +84,8 @@ class Cache extends Command
             $content .= PHP_EOL.'<?'.'php $baseDir = dirname(__DIR__, '.$relativePathLevel.'); ?>';
         }
 
-        $content .= PHP_EOL.'<?php return '.
-            var_export($data, true).'; ?>';
+        $content .= PHP_EOL.'<?php return '
+            .var_export($data, true).'; ?>';
 
         if ($isRelativePath) {
             $content = $this->replaceRelativePath($content);

@@ -33,7 +33,7 @@ class Cache extends Command
         $data = $routerProvider->getRouters();
         $cachePath = $app->routerCachedPath();
         $this->writeCache($cachePath, $data);
-        $this->info(sprintf('Router cache succeed at %s.', $cachePath));
+        $this->info(\sprintf('Router cache succeed at %s.', $cachePath));
 
         return self::SUCCESS;
     }
@@ -43,8 +43,8 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data): void
     {
-        $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'.
-            PHP_EOL.'<?php return '.var_export($data, true).'; ?>';
+        $content = '<?php /* '.date('Y-m-d H:i:s').' */ ?>'
+            .PHP_EOL.'<?php return '.var_export($data, true).'; ?>';
         CreateFile::handle($cachePath, $content);
     }
 }

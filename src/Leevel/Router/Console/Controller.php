@@ -89,10 +89,10 @@ class Controller extends Make
      */
     protected function parseSaveFilePath(string $controllerNamespace, string $controller): string
     {
-        return $this->getNamespacePath().
-            ($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '').
-            $this->normalizeSubDir($this->getOption('subdir')).
-            $controller.'.php';
+        return $this->getNamespacePath()
+            .($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '')
+            .$this->normalizeSubDir($this->getOption('subdir'))
+            .$controller.'.php';
     }
 
     /**
@@ -125,7 +125,7 @@ class Controller extends Make
         }
 
         if (!is_file($stub)) {
-            throw new \InvalidArgumentException(sprintf('Controller stub file `%s` was not found.', $stub));
+            throw new \InvalidArgumentException(\sprintf('Controller stub file `%s` was not found.', $stub));
         }
 
         return $stub;

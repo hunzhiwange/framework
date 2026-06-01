@@ -87,8 +87,8 @@ class Register extends Provider
                     $config = $container['config'];
 
                     return new Response($container['view'], $container['redirect'])
-                        ->setViewSuccessTemplate($config->get('view\\success'))
-                        ->setViewFailTemplate($config->get('view\\fail'))
+                        ->setViewSuccessTemplate($config->get('view\success'))
+                        ->setViewFailTemplate($config->get('view\fail'))
                     ;
                 },
             )

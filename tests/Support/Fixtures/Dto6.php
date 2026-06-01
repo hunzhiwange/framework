@@ -8,8 +8,7 @@ use Leevel\Support\Dto;
 
 class Dto6 extends Dto
 {
-    public int $int1 = 0
-    {
+    public int $int1 = 0 {
         set(int|float|null $v) {
             $this->int1 = $this->set('int1', $v);
         }

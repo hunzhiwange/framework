@@ -92,7 +92,7 @@ class AnnotationRouter
     public function addScandir(string $dir): void
     {
         if (!is_dir($dir)) {
-            throw new \InvalidArgumentException(sprintf('Annotation routing scandir %s is not exits.', $dir));
+            throw new \InvalidArgumentException(\sprintf('Annotation routing scandir %s is not exits.', $dir));
         }
 
         $this->scanDirs[] = $dir;
@@ -172,7 +172,7 @@ class AnnotationRouter
             $filePath = $file->getRealPath() ?: $file->getPathname();
             $content = file_get_contents($filePath) ?: '';
             if (str_contains($content, '#[')
-                && preg_match('/\#\[\\s*Route\\s*\((.*)\)\\s*\]/s', $content)) {
+                && preg_match('/\#\[\s*Route\s*\((.*)\)\s*\]/s', $content)) {
                 $controllerClassName = $classParser->handle($filePath);
                 $this->parseEachControllerAnnotationRouters($routers, $controllerClassName);
             }
@@ -195,7 +195,7 @@ class AnnotationRouter
                 foreach ($routeAttributes as $routeAttribute) {
                     $router = $routeAttribute->getArguments();
                     if (empty($router['path'])) {
-                        throw new \Exception(sprintf('The %s::%s() method annotation routing path cannot be empty.', $controllerClassName, $method->getName()));
+                        throw new \Exception(\sprintf('The %s::%s() method annotation routing path cannot be empty.', $controllerClassName, $method->getName()));
                     }
                     $this->normalizeAnnotationRouterData($router, $controllerClassName.'@'.$method->getName());
                     $routers[$router['method']][] = $router;
@@ -369,8 +369,8 @@ class AnnotationRouter
                 foreach ($second as &$three) {
                     $groups = $this->parseToGroups($three);
                     foreach ($groups as $groupKey => $groupThree) {
-                        [$three['regex'][$groupKey], $three['map'][$groupKey]] =
-                            $this->parseGroupRegex($groupThree);
+                        [$three['regex'][$groupKey], $three['map'][$groupKey]]
+                            = $this->parseGroupRegex($groupThree);
                     }
                 }
             }

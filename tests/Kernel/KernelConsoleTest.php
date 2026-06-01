@@ -137,8 +137,8 @@ EOT,
             'app' => [
                 ':composer' => [
                     'commands' => [
-                        'Tests\\Kernel\\Commands\\Demo',
-                        'Tests\\Kernel\\Commands\\Console',
+                        'Tests\Kernel\Commands\Demo',
+                        'Tests\Kernel\Commands\Console',
                         SeedRun::class,
                     ],
                 ],
@@ -148,10 +148,10 @@ EOT,
             ],
         ];
         $config = new Config($configData);
-        self::assertSame([], $config->get('console\\template'));
+        self::assertSame([], $config->get('console\template'));
         self::assertSame([
-            'Tests\\Kernel\\Commands\\Demo',
-            'Tests\\Kernel\\Commands\\Console',
+            'Tests\Kernel\Commands\Demo',
+            'Tests\Kernel\Commands\Console',
             SeedRun::class,
         ], $config->get(':composer.commands'));
 

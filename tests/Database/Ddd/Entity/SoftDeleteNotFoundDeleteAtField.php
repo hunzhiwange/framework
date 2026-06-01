@@ -20,9 +20,8 @@ class SoftDeleteNotFoundDeleteAtField extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }

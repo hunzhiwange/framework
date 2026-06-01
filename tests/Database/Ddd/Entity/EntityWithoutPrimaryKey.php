@@ -15,11 +15,9 @@ class EntityWithoutPrimaryKey extends Entity
 
     public const null AUTO = null;
 
-    #[Struct([
-    ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }

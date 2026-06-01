@@ -34,13 +34,13 @@ class DocFramework extends Command
     {
         $input = [
             'path' => $this->getArgument('path'),
-            'outputdir' => $config->get('console\\framework_doc_outputdir'),
+            'outputdir' => $config->get('console\framework_doc_outputdir'),
             '--bootstrap' => $app->path('vendor/hunzhiwange/framework/tests/bootstrap.php'),
-            '--git' => $config->get('console\\framework_doc_git'),
-            '--logdir' => $config->get('console\\framework_doc_logdir'),
+            '--git' => $config->get('console\framework_doc_git'),
+            '--logdir' => $config->get('console\framework_doc_logdir'),
         ];
 
-        $i18n = explode(',', (string) $config->get('console\\framework_doc_i18n'));
+        $i18n = explode(',', (string) $config->get('console\framework_doc_i18n'));
         foreach ($i18n as $v) {
             $input['--i18n'] = $v;
             $this->call('make:doc', $input);

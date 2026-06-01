@@ -167,7 +167,7 @@ class Encryption implements IEncryption
      */
     protected function normalizeExpiry(int $expiry = 0): string
     {
-        return sprintf('%010d', $expiry ? $expiry + time() : 0);
+        return \sprintf('%010d', $expiry ? $expiry + time() : 0);
     }
 
     /**
@@ -218,7 +218,7 @@ class Encryption implements IEncryption
     protected function validateCipher(string $cipher): void
     {
         if (!\in_array(strtolower($cipher), openssl_get_cipher_methods(), true)) {
-            throw new \InvalidArgumentException(sprintf('Encrypt cipher `%s` was not found.', $cipher));
+            throw new \InvalidArgumentException(\sprintf('Encrypt cipher `%s` was not found.', $cipher));
         }
     }
 

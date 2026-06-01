@@ -107,7 +107,7 @@ final class MiddlewareParserTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Middleware Tests\\Router\\Middlewares\\NotFound was not found.'
+            'Middleware Tests\Router\Middlewares\NotFound was not found.'
         );
 
         $middlewareParser = $this->createMiddlewareParserNotFound();
@@ -143,9 +143,9 @@ final class MiddlewareParserTest extends TestCase
         ]);
 
         $router->setMiddlewareAlias([
-            'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
-            'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
-            'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+            'demo1' => 'Tests\Router\Middlewares\Demo1',
+            'demo2' => 'Tests\Router\Middlewares\Demo2',
+            'demo3' => 'Tests\Router\Middlewares\Demo3',
         ]);
 
         return $router;
@@ -161,7 +161,7 @@ final class MiddlewareParserTest extends TestCase
         $router = new Router(new Container());
 
         $router->setMiddlewareAlias([
-            'notFound' => 'Tests\\Router\\Middlewares\\NotFound',
+            'notFound' => 'Tests\Router\Middlewares\NotFound',
         ]);
 
         return $router;

@@ -33,7 +33,7 @@ class EntityCollection extends Vector
             return;
         }
 
-        throw new \InvalidArgumentException(sprintf('Value types `%s` must be a subclass of `%s`.', $valueType, Entity::class));
+        throw new \InvalidArgumentException(\sprintf('Value types `%s` must be a subclass of `%s`.', $valueType, Entity::class));
     }
 
     /**
@@ -45,7 +45,7 @@ class EntityCollection extends Vector
     {
         $entity = $this->__get($key);
         if (!$entity) {
-            throw new \Exception(sprintf('Entity %d was not found.', $key));
+            throw new \Exception(\sprintf('Entity %d was not found.', $key));
         }
 
         // @phpstan-ignore-next-line

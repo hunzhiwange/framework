@@ -28,7 +28,7 @@ class Manager extends Managers implements IDatabase
      */
     protected array $poolTransactions = [];
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function getContainer(): IContainer
     {
         // @phpstan-ignore-next-line
@@ -647,7 +647,7 @@ class Manager extends Managers implements IDatabase
         return $this->callSelectMethodChain(__FUNCTION__, $asCollection, $valueTypes);
     }
 
-    public function select(null|callable|ISelect|string $data = null, array $bind = []): mixed
+    public function select(callable|ISelect|string|null $data = null, array $bind = []): mixed
     {
         return $this->callConnectMethod(__FUNCTION__, $data, $bind);
     }
@@ -826,7 +826,7 @@ class Manager extends Managers implements IDatabase
         // @phpstan-ignore-next-line
         return $this->callConnectMethod($method, ...$args);
     }
-    // @codeCoverageIgnoreEnd
+    /** @codeCoverageIgnoreEnd */
 
     /**
      * 取得配置命名空间.
@@ -930,7 +930,7 @@ class Manager extends Managers implements IDatabase
 
         foreach (['master', 'slave'] as $t) {
             if (!\is_array($config[$t])) {
-                throw new \InvalidArgumentException(sprintf('Database config `%s` must be an array.', $t));
+                throw new \InvalidArgumentException(\sprintf('Database config `%s` must be an array.', $t));
             }
         }
 

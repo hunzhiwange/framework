@@ -45,7 +45,7 @@ class Select implements ISelect
         $this->initSelect($softDeletedType);
     }
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function getContainer(): IContainer
     {
         // @phpstan-ignore-next-line
@@ -664,7 +664,7 @@ class Select implements ISelect
         return $this->callSelectMethodChain(__FUNCTION__, $asCollection, $valueTypes);
     }
 
-    public function select(null|callable|IDatabaseSelect|string $data = null, array $bind = []): mixed
+    public function select(callable|IDatabaseSelect|string|null $data = null, array $bind = []): mixed
     {
         return $this->callSelectMethod(__FUNCTION__, $data, $bind);
     }
@@ -822,8 +822,8 @@ class Select implements ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
-    // @codeCoverageIgnoreEnd
 
+    /** @codeCoverageIgnoreEnd */
     public function entity(): Entity
     {
         return $this->entity;
@@ -885,7 +885,7 @@ class Select implements ISelect
         return $result;
     }
 
-    public function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
+    public function findEntity(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity
     {
         $result = $this->select
             ->if(\is_int($idOrCondition) || \is_string($idOrCondition))
@@ -901,7 +901,7 @@ class Select implements ISelect
         return $this->normalizeSelectResult($result);
     }
 
-    public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): EntityCollection
+    public function findMany(array|\Closure|null $idsOrCondition = null, array $column = ['*']): EntityCollection
     {
         // @todo 需要删除掉，这里设计很别扭，空直接抛出异常
         if (\is_array($idsOrCondition) && empty($idsOrCondition)) {
@@ -922,7 +922,7 @@ class Select implements ISelect
         return $this->normalizeSelectResult($result);
     }
 
-    public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
+    public function findOrFail(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity
     {
         // 没有查询主键字段，自动补上主键自动
         $singlePrimaryKey = $this->entity->getSinglePrimaryKey();
@@ -982,7 +982,7 @@ class Select implements ISelect
     /**
      * 取得关联实体.
      */
-    protected function getRelation(string $name, null|array|\Closure|string $relationScope = null): Relation
+    protected function getRelation(string $name, array|\Closure|string|null $relationScope = null): Relation
     {
         $relation = Relation::withoutRelationCondition(function () use ($name, $relationScope): Relation {
             return $this->entity->getRelation($name, $relationScope);
@@ -1079,7 +1079,7 @@ class Select implements ISelect
     /**
      * 关联数据设置到实体上.
      */
-    protected function loadRelation(array $entities, string $name, null|array|\Closure|string $relationScope = null): array
+    protected function loadRelation(array $entities, string $name, array|\Closure|string|null $relationScope = null): array
     {
         $relation = $this->getRelation($name, $relationScope);
         $relation->preLoadCondition($entities);

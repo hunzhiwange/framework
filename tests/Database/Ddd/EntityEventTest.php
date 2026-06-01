@@ -66,7 +66,7 @@ final class EntityEventTest extends TestCase
         DemoEventEntity::event(Entity::BEFORE_CREATING_EVENT, static function (): void {});
     }
 
-    #[DataProvider('getSupportedEvent')]
+    #[DataProvider('provideSupportEventCases')]
     #[Api([
         'zh-CN:title' => '实体支持的事件',
         'zh-CN:description' => <<<'EOT'
@@ -86,7 +86,7 @@ EOT,
         self::assertTrue(\in_array($event, $supportEvent, true));
     }
 
-    public static function getSupportedEvent(): array
+    public static function provideSupportEventCases(): iterable
     {
         return [
             [Entity::BEFORE_SAVING_EVENT],

@@ -683,7 +683,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `user`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\User` was not defined.'
+            'The field `user`.`not_found_source_key` of entity `Tests\Database\Ddd\Entity\Relation\User` was not defined.'
         );
 
         $user = User::select()->where('id', 1)->findOne();
@@ -697,7 +697,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `role`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Role` was not defined.'
+            'The field `role`.`not_found_target_key` of entity `Tests\Database\Ddd\Entity\Relation\Role` was not defined.'
         );
 
         $user = User::select()->where('id', 1)->findOne();
@@ -711,7 +711,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `user_role`.`not_found_middle_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\UserRole` was not defined.'
+            'The field `user_role`.`not_found_middle_source_key` of entity `Tests\Database\Ddd\Entity\Relation\UserRole` was not defined.'
         );
 
         $user = User::select()->where('id', 1)->findOne();
@@ -725,7 +725,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `user_role`.`not_found_middle_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\UserRole` was not defined.'
+            'The field `user_role`.`not_found_middle_target_key` of entity `Tests\Database\Ddd\Entity\Relation\UserRole` was not defined.'
         );
 
         $user = User::select()->where('id', 1)->findOne();
@@ -1352,7 +1352,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Relation scope `relationScopeNotFound` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\User` is not exits.'
+            'Relation scope `relationScopeNotFound` of entity `Tests\Database\Ddd\Entity\Relation\User` is not exits.'
         );
 
         $user = User::select()->where('id', 1)->findOne();
@@ -1366,7 +1366,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `relationScopeFoundButPrivate` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\User::select|make()->relationScopeFoundButPrivate(...)`.'
+            'Method `relationScopeFoundButPrivate` is not exits,maybe you can try `Tests\Database\Ddd\Entity\Relation\User::select|make()->relationScopeFoundButPrivate(...)`.'
         );
 
         $user = User::select()->where('id', 1)->findOne();

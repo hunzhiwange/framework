@@ -95,7 +95,7 @@ EOT,
     public function testWithoutRelationCondition(): void
     {
         $relation = Relation::withoutRelationCondition(static function (): Relation {
-            return new class() extends HasOne {
+            return new class extends HasOne {
                 public function __construct() {}
             };
         });
@@ -111,7 +111,7 @@ EOT,
         );
 
         $relation = Relation::withoutRelationCondition(static function (): Relation {
-            return new class() extends HasOne {
+            return new class extends HasOne {
                 public function __construct()
                 {
                     throw new \Exception('error');
@@ -124,7 +124,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Prop `summary` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` is not a relation type.'
+            'Prop `summary` of entity `Tests\Database\Ddd\Entity\Relation\Post` is not a relation type.'
         );
 
         $notARelation = Post::make()->getRelation('summary');

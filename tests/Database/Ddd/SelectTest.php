@@ -145,7 +145,7 @@ final class SelectTest extends TestCase
     {
         $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not found.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` was not found.'
         );
 
         $select = new Select(new Post());

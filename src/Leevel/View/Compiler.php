@@ -192,8 +192,8 @@ class Compiler
      */
     public function variableCodeCompiler(array &$theme): void
     {
-        $theme['content'] = !empty($theme['content']) ?
-            $this->parseContent($theme['content']) : null;
+        $theme['content'] = !empty($theme['content'])
+            ? $this->parseContent($theme['content']) : null;
 
         if (null !== $theme['content']) {
             $theme['content'] = $this->withPhpTag('echo '.$theme['content'].';');
@@ -237,9 +237,9 @@ class Compiler
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        $theme['content'] = $this->withPhpTag('if ('.$attr['cond'].'):').
-            $this->getNodeBody($theme).
-            $this->withPhpTag('endif;');
+        $theme['content'] = $this->withPhpTag('if ('.$attr['cond'].'):')
+            .$this->getNodeBody($theme)
+            .$this->withPhpTag('endif;');
     }
 
     /**
@@ -273,7 +273,7 @@ class Compiler
         null === $attr['id'] && $attr['id'] = 'id';
         null === $attr['mod'] && $attr['mod'] = 2;
 
-        if (preg_match('/[^\\d\-.,]/', (string) $attr['mod'])) {
+        if (preg_match('/[^\d\-.,]/', (string) $attr['mod'])) {
             $attr['mod'] = '$'.$attr['mod'];
         }
 
@@ -283,38 +283,38 @@ class Compiler
         $attr['name'] = $this->parseContent($attr['name']);
 
         $compiled = [];
-        $tmp = 'if (is_array('.
-            $attr['name'].')):'.PHP_EOL.'    $'.
-            $attr['index'].' = 0;'.PHP_EOL;
+        $tmp = 'if (is_array('
+            .$attr['name'].')):'.PHP_EOL.'    $'
+            .$attr['index'].' = 0;'.PHP_EOL;
 
         if ('' !== $attr['length']) {
-            $tmp .= '    $tmp = array_slice('.
-                $attr['name'].', '.
-                $attr['offset'].', '.
-                $attr['length'].');';
+            $tmp .= '    $tmp = array_slice('
+                .$attr['name'].', '
+                .$attr['offset'].', '
+                .$attr['length'].');';
         } elseif ('' !== $attr['offset']) {
-            $tmp .= '    $tmp = array_slice('.
-                $attr['name'].', '.
-                $attr['offset'].');';
+            $tmp .= '    $tmp = array_slice('
+                .$attr['name'].', '
+                .$attr['offset'].');';
         } else {
             $tmp .= '    $tmp = '.$attr['name'].';';
         }
 
-        $tmp .= PHP_EOL.'    if (0 === count($tmp)):'.PHP_EOL.
-            '        echo "'.$attr['empty'].'";';
+        $tmp .= PHP_EOL.'    if (0 === count($tmp)):'.PHP_EOL
+            .'        echo "'.$attr['empty'].'";';
         $tmp .= PHP_EOL.'    else:';
-        $tmp .= PHP_EOL.'        foreach ($tmp as $'.$attr['key'].
-            ' => $'.$attr['id'].'):';
+        $tmp .= PHP_EOL.'        foreach ($tmp as $'.$attr['key']
+            .' => $'.$attr['id'].'):';
         $tmp .= PHP_EOL.'            ++$'.$attr['index'].';'.PHP_EOL;
-        $tmp .= '            '.'$mod = $'.$attr['index'].' % '.
-            $attr['mod'].';';
+        $tmp .= '            '.'$mod = $'.$attr['index'].' % '
+            .$attr['mod'].';';
 
         $compiled[] = $this->withPhpTag($tmp);
         $compiled[] = $this->getNodeBody($theme);
         $compiled[] = '        '.$this->withPhpTag(
-            'endforeach;'.PHP_EOL.'    endif;'.
-            PHP_EOL.'else:'.PHP_EOL.'    echo "'.
-            $attr['empty'].'";'.PHP_EOL.'endif;'
+            'endforeach;'.PHP_EOL.'    endif;'
+            .PHP_EOL.'else:'.PHP_EOL.'    echo "'
+            .$attr['empty'].'";'.PHP_EOL.'endif;'
         );
         $theme['content'] = implode('', $compiled);
     }
@@ -339,15 +339,15 @@ class Compiler
         }
 
         // 编译
-        $theme['content'] = $this->withPhpTag($attr['index'].' = 1;').PHP_EOL.
-            $this->withPhpTag(
-                'if (is_array('.$attr['for'].')): foreach ('.$attr['for'].
-                ' as '.$attr['key'].' => '.
-                $attr['value'].'):'
-            ).
-            $this->getNodeBody($theme).
-            $this->withPhpTag($attr['index'].'++;').PHP_EOL.
-            $this->withPhpTag('endforeach; endif;');
+        $theme['content'] = $this->withPhpTag($attr['index'].' = 1;').PHP_EOL
+            .$this->withPhpTag(
+                'if (is_array('.$attr['for'].')): foreach ('.$attr['for']
+                .' as '.$attr['key'].' => '
+                .$attr['value'].'):'
+            )
+            .$this->getNodeBody($theme)
+            .$this->withPhpTag($attr['index'].'++;').PHP_EOL
+            .$this->withPhpTag('endforeach; endif;');
     }
 
     /**
@@ -374,8 +374,8 @@ class Compiler
         }
 
         $theme['content'] = $this->withPhpTag(
-            'echo $this->display('.$attr['file'].
-            ($attr['ext'] ? ", [], '{$attr['ext']}'" : '').');'
+            'echo $this->display('.$attr['file']
+            .($attr['ext'] ? ", [], '{$attr['ext']}'" : '').');'
         );
     }
 
@@ -402,10 +402,10 @@ class Compiler
 
         $compiled = [];
         $compiled[] = $this->withPhpTag(
-            'for ('.$attr['var'].
-            ' = '.$attr['start'].'; '.
-            $attr['var'].$comparison.$attr['end'].'; '.
-            $attr['var'].$minusPlus.$attr['step'].'):'
+            'for ('.$attr['var']
+            .' = '.$attr['start'].'; '
+            .$attr['var'].$comparison.$attr['end'].'; '
+            .$attr['var'].$minusPlus.$attr['step'].'):'
         );
         $compiled[] = $this->getNodeBody($theme);
         $compiled[] = $this->withPhpTag('endfor;');
@@ -419,9 +419,9 @@ class Compiler
     {
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
-        $theme['content'] = $this->withPhpTag('while('.$attr['cond'].'):').
-            $this->getNodeBody($theme).
-            $this->withPhpTag('endwhile;');
+        $theme['content'] = $this->withPhpTag('while('.$attr['cond'].'):')
+            .$this->getNodeBody($theme)
+            .$this->withPhpTag('endwhile;');
     }
 
     /**
@@ -455,11 +455,11 @@ class Compiler
         // 正则匹配
         $regexp = [];
         // xxx="yyy" 或 "yyy" 格式
-        $regexp[] = '/(([^=\\s]+)=)?"([^"]+)"/';
+        $regexp[] = '/(([^=\s]+)=)?"([^"]+)"/';
         // xxx='yyy' 或 'yyy' 格式
         $regexp[] = "/(([^=\\s]+)=)?'([^\\']+)'/";
         // xxx=yyy 或 yyy 格式
-        $regexp[] = '/(([^=\\s]+)=)?([^\\s]+)/';
+        $regexp[] = '/(([^=\s]+)=)?([^\s]+)/';
         $nameIdx = 2;
         $valueIdx = 3;
         $defaultIdx = 0;
@@ -590,13 +590,13 @@ class Compiler
         // 验证必要属性
         $tag = $this->nodeTag;
         if (!isset($tag[$theme['name']])) {
-            throw new \InvalidArgumentException(sprintf('The tag %s is undefined.', $theme['name']));
+            throw new \InvalidArgumentException(\sprintf('The tag %s is undefined.', $theme['name']));
         }
 
         foreach ($tag[$theme['name']]['required'] as $name) {
             $name = strtolower($name);
             if (!isset($attribute['attribute_list'][$name])) {
-                throw new \InvalidArgumentException(sprintf('The node %s lacks the required property: %s.', $theme['name'], $name));
+                throw new \InvalidArgumentException(\sprintf('The node %s lacks the required property: %s.', $theme['name'], $name));
             }
         }
 
@@ -645,9 +645,9 @@ class Compiler
             $txt = str_replace([
                 '\\\\',
                 "\\'",
-                '\\"',
-                '\\$',
-                '\\.',
+                '\"',
+                '\$',
+                '\.',
             ], [
                 '\\',
                 '~~{#!`!#}~~',

@@ -78,11 +78,11 @@ abstract class Manager
         }
 
         if (!\is_array($configs = $this->getContainerConfig('connect.'.$connect))) {
-            throw new \InvalidArgumentException(sprintf('Connection %s config is not an array.', $connect));
+            throw new \InvalidArgumentException(\sprintf('Connection %s config is not an array.', $connect));
         }
 
         if (!isset($configs['driver'])) {
-            throw new \InvalidArgumentException(sprintf('Connection %s driver is not set.', $connect));
+            throw new \InvalidArgumentException(\sprintf('Connection %s driver is not set.', $connect));
         }
 
         $instance = $this->makeConnect($connect, $configs['driver'], $configs['driver_class'] ?? null, ...$arguments);
@@ -218,7 +218,7 @@ abstract class Manager
             return $this->{$makeDriver}($connect, $driverClass, ...$arguments);
         }
 
-        throw new \InvalidArgumentException(sprintf('Connection %s driver `%s` is invalid.', $connect, $driver));
+        throw new \InvalidArgumentException(\sprintf('Connection %s driver `%s` is invalid.', $connect, $driver));
     }
 
     /**
@@ -284,12 +284,12 @@ abstract class Manager
         // 比如说数据库驱动 \Leevel\Config\Proxy\Config::set('database\\connect.'.$dynamicConnect, $config)
         $dynamicConnectFunction = substr($connect, 1);
         if (!\function_exists($dynamicConnectFunction)) {
-            throw new \InvalidArgumentException(sprintf('Dynamic connect function `%s` was not found.', $dynamicConnectFunction));
+            throw new \InvalidArgumentException(\sprintf('Dynamic connect function `%s` was not found.', $dynamicConnectFunction));
         }
 
         $connect = $dynamicConnectFunction();
         if (!\is_string($connect)) {
-            throw new \InvalidArgumentException(sprintf('Dynamic connect function `%s` must return string.', $dynamicConnectFunction));
+            throw new \InvalidArgumentException(\sprintf('Dynamic connect function `%s` must return string.', $dynamicConnectFunction));
         }
 
         return $connect;

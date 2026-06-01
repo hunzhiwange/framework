@@ -20,45 +20,36 @@ class PostForReplace extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $title = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $title = null {
+        set(string|null $v) {
             $this->title = $this->set('title', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $userId = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $userId = null {
+        set(int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $summary = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $summary = null {
+        set(string|null $v) {
             $this->summary = $this->set('summary', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $createAt = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $createAt = null {
+        set(string|null $v) {
             $this->createAt = $this->set('createAt', $v);
         }
     }
@@ -66,9 +57,8 @@ class PostForReplace extends Entity
     #[Struct([
         self::CREATE_FILL => 0,
     ])]
-    public ?int $deleteAt = null
-    {
-        set (int|string|null $v) {
+    public ?int $deleteAt = null {
+        set(int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }

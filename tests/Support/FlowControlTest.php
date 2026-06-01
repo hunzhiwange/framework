@@ -76,7 +76,7 @@ EOT,
         self::assertSame('condition2', $value);
     }
 
-    #[DataProvider('getElseData')]
+    #[DataProvider('provideElseMultiCases')]
     #[Api([
         'zh-CN:title' => 'else 条件语句例子',
         'zh-CN:description' => <<<'EOT'
@@ -109,7 +109,7 @@ EOT,
         self::assertSame($result, $value);
     }
 
-    public static function getElseData(): array
+    public static function provideElseMultiCases(): iterable
     {
         return [
             [0, 'condition1'],

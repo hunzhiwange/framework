@@ -10,7 +10,7 @@ class BasePath
 {
     #[Route(
         path: '/basePath/normalize/',
-        bind: '\\Tests\\Router\\Controllers\\Annotation\\BasePath@normalize',
+        bind: '\Tests\Router\Controllers\Annotation\BasePath@normalize',
     )]
     private function foo(): void {}
 }

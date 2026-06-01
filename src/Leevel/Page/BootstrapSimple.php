@@ -47,9 +47,9 @@ class BootstrapSimple extends Bootstrap
     protected function getPrevRender(): string
     {
         if ($this->page->canPrevRender()) {
-            return sprintf(
-                '<li class="%s"><a aria-label="Previous" href="%s">'.
-                    '<span aria-hidden="true">%s</span></a></li>',
+            return \sprintf(
+                '<li class="%s"><a aria-label="Previous" href="%s">'
+                    .'<span aria-hidden="true">%s</span></a></li>',
                 'justify' === $this->config['align'] ? 'previous' : '',
                 $this->replace(
                     $this->page->parsePrevRenderPrev()
@@ -58,9 +58,9 @@ class BootstrapSimple extends Bootstrap
             );
         }
 
-        return sprintf(
-            '<li class="disabled%s"><a aria-label="Previous">'.
-                '<span aria-hidden="true">%s</span></a></li>',
+        return \sprintf(
+            '<li class="disabled%s"><a aria-label="Previous">'
+                .'<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->config['align'] ? ' previous' : '',
             __('上一页')
         );
@@ -72,9 +72,9 @@ class BootstrapSimple extends Bootstrap
     protected function getNextRender(): string
     {
         if ($this->page->canNextRender()) {
-            return sprintf(
-                '<li class="%s"><a aria-label="Next" href="%s">'.
-                    '<span aria-hidden="true">%s</span></a></li>',
+            return \sprintf(
+                '<li class="%s"><a aria-label="Next" href="%s">'
+                    .'<span aria-hidden="true">%s</span></a></li>',
                 'justify' === $this->config['align'] ? 'next' : '',
                 $this->replace(
                     $this->page->getCurrentPage() + 1
@@ -83,9 +83,9 @@ class BootstrapSimple extends Bootstrap
             );
         }
 
-        return sprintf(
-            '<li class="disabled%s"><a aria-label="Next">'.
-                '<span aria-hidden="true">%s</span></a></li>',
+        return \sprintf(
+            '<li class="disabled%s"><a aria-label="Next">'
+                .'<span aria-hidden="true">%s</span></a></li>',
             'justify' === $this->config['align'] ? ' next' : '',
             __('下一页')
         );
@@ -108,14 +108,14 @@ class BootstrapSimple extends Bootstrap
     }
 }
 
-if (!\function_exists(__NAMESPACE__.'\\__')) {
+if (!\function_exists(__NAMESPACE__.'\__')) {
     /**
      * @codeCoverageIgnore
      */
-    function __(string $text, null|bool|float|int|string ...$data): string
+    function __(string $text, bool|float|int|string|null ...$data): string
     {
         if (!class_exists(Gettext::class)) {
-            return sprintf($text, ...$data);
+            return \sprintf($text, ...$data);
         }
 
         return Gettext::handle($text, ...$data);

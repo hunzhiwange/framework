@@ -25,7 +25,7 @@ trait Env
     /**
      * 设置环境变量.
      */
-    protected function setEnvVar(string $name, null|bool|string $value = null): void
+    protected function setEnvVar(string $name, bool|string|null $value = null): void
     {
         if (\is_bool($value)) {
             putenv($name.'='.($value ? '(true)' : '(false)'));

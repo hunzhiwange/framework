@@ -40,7 +40,7 @@ class Autoload extends Command
      */
     protected function normalizeComposerCommand(): string
     {
-        $command = sprintf(
+        $command = \sprintf(
             '%s dump-autoload --optimize',
             escapeshellarg((string) $this->getOption('composer'))
         );

@@ -70,12 +70,12 @@ class Cache extends Command
     protected function compiles(Finder $finder, string $path): void
     {
         if (0 === \count($finder)) {
-            $this->comment(sprintf('Compile files not found in path `%s` and skipped.', $path));
+            $this->comment(\sprintf('Compile files not found in path `%s` and skipped.', $path));
 
             return;
         }
 
-        $this->info(sprintf('Start to compiles path `%s`', $path));
+        $this->info(\sprintf('Start to compiles path `%s`', $path));
 
         $progressBar = new ProgressBar(new ConsoleOutput(), \count($finder));
         $progressBar->setFormat('[View:cache]%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
@@ -133,7 +133,7 @@ class Cache extends Command
             }
 
             if (!is_dir($value)) {
-                throw new \RuntimeException(sprintf('View dir `%s` is not exist.', $value));
+                throw new \RuntimeException(\sprintf('View dir `%s` is not exist.', $value));
             }
 
             return $value;

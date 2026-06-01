@@ -1579,7 +1579,7 @@ EOT,
     public function testFindByFooAndBarArgsWasNotMatched(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined method Leevel\\Database\\Mysql::findByNameAndTitle()');
+        $this->expectExceptionMessage('Call to undefined method Leevel\Database\Mysql::findByNameAndTitle()');
 
         $connect = $this->createDatabaseConnectMock();
         $connect->findByNameAndTitle('one');
@@ -1588,7 +1588,7 @@ EOT,
     public function testFindNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined method Leevel\\Database\\Mysql::findPage()');
+        $this->expectExceptionMessage('Call to undefined method Leevel\Database\Mysql::findPage()');
 
         $connect = $this->createDatabaseConnectMock();
         $connect->findPage();

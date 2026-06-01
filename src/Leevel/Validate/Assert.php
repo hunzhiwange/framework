@@ -61,7 +61,7 @@ class Assert
         $this->lazy = $lazy;
     }
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     /**
      * 是否可接受的.
      */
@@ -1069,7 +1069,7 @@ class Assert
     {
         return $this->callMethodChain(__FUNCTION__, $message, $antisense);
     }
-    // @codeCoverageIgnoreEnd
+    /** @codeCoverageIgnoreEnd */
 
     /**
      * 创建断言对象已支持链式表达式.
@@ -1286,9 +1286,9 @@ class Assert
      */
     protected static function validateRule(string $method, array $multi, bool $antisense): bool
     {
-        $classHelper = __NAMESPACE__.'\\Helper\\'.ucfirst($method);
+        $classHelper = __NAMESPACE__.'\Helper\\'.ucfirst($method);
         if (!class_exists($classHelper)) {
-            throw new \BadMethodCallException(sprintf('Class `%s` is not exits.', $classHelper));
+            throw new \BadMethodCallException(\sprintf('Class `%s` is not exits.', $classHelper));
         }
 
         $rule = UnCamelize::handle($method);
@@ -1304,11 +1304,11 @@ class Assert
     }
 }
 
-if (!\function_exists(__NAMESPACE__.'\\__')) {
-    function __(string $text, null|bool|float|int|string ...$data): string
+if (!\function_exists(__NAMESPACE__.'\__')) {
+    function __(string $text, bool|float|int|string|null ...$data): string
     {
         if (!class_exists(Gettext::class)) {
-            return sprintf($text, ...$data); // @codeCoverageIgnore
+            return \sprintf($text, ...$data); // @codeCoverageIgnore
         }
 
         return Gettext::handle($text, ...$data);

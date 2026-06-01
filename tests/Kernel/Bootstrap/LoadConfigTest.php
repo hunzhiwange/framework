@@ -93,7 +93,7 @@ EOT,
         $config = $container->make('config');
 
         self::assertSame('development', $config->get('environment'));
-        self::assertSame('bar', $config->get('demo\\foo'));
+        self::assertSame('bar', $config->get('demo\foo'));
     }
 
     #[Api([
@@ -133,7 +133,7 @@ EOT,
         $config = $container->make('config');
 
         self::assertSame('testing', $config->get('environment'));
-        self::assertSame('bar', $config->get('demo\\foo'));
+        self::assertSame('bar', $config->get('demo\foo'));
     }
 
     public function testWithRuntimeEnvNotFound(): void
@@ -142,7 +142,7 @@ EOT,
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Env file `%s` was not found.', $appPath.'/.notfoundenv')
+            \sprintf('Env file `%s` was not found.', $appPath.'/.notfoundenv')
         );
 
         putenv('RUNTIME_ENVIRONMENT=notfoundenv');
@@ -204,7 +204,7 @@ EOT,
         $config = $container->make('config');
 
         self::assertSame('development', $config->get('environment'));
-        self::assertSame('bar', $config->get('demo\\foo'));
+        self::assertSame('bar', $config->get('demo\foo'));
         self::assertNull($config->get(':env.foo'));
         self::assertTrue($config->get(':env.debug'));
     }

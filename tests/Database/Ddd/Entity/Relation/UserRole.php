@@ -15,47 +15,37 @@ class UserRole extends Entity
 
     public const string AUTO = 'id';
 
-    #[Struct([
-    ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $userId = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $userId = null {
+        set(int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $roleId = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $roleId = null {
+        set(int|string|null $v) {
             $this->roleId = $this->set('roleId', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $createAt = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $createAt = null {
+        set(string|null $v) {
             $this->createAt = $this->set('createAt', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $deleteAt = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $deleteAt = null {
+        set(int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }

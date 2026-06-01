@@ -31,7 +31,7 @@ class SessionCollector extends DataCollector implements DataCollectorInterface, 
     {
         $data = [];
         foreach ($this->session->all() as $key => $value) {
-            $data[$key] = \is_string($value) ? $value : $this->formatVar($value);
+            $data[$key] = \is_string($value) ? $value : $this->getDataFormatter()->formatVar($value);
         }
 
         return $data;

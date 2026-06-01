@@ -81,9 +81,8 @@ trait Helper
     {
         /** @phpstan-ignore-next-line */
         $reflected = new \ReflectionClass($classOrObject);
-        $property = $reflected->getProperty($prop);
 
-        return $property;
+        return $reflected->getProperty($prop);
     }
 
     /**
@@ -92,9 +91,7 @@ trait Helper
     protected function parseTestMethod(object|string $classOrObject, string $method): \ReflectionMethod
     {
         /** @phpstan-ignore-next-line */
-        $method = new \ReflectionMethod($classOrObject, $method);
-
-        return $method;
+        return new \ReflectionMethod($classOrObject, $method);
     }
 
     /**

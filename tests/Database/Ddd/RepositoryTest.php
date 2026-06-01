@@ -336,7 +336,7 @@ final class RepositoryTest extends TestCase
     {
         $this->expectException(DataNotFoundException::class);
         $this->expectExceptionMessage(
-            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+            'Data of `Tests\Database\Ddd\Entity\Relation\Post` was not found.'
         );
 
         $connect = $this->createDatabaseConnect();
@@ -366,7 +366,7 @@ final class RepositoryTest extends TestCase
     {
         $this->expectException(DataNotFoundException::class);
         $this->expectExceptionMessage(
-            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+            'Data of `Tests\Database\Ddd\Entity\Relation\Post` was not found.'
         );
 
         $connect = $this->createDatabaseConnect();
@@ -394,7 +394,7 @@ final class RepositoryTest extends TestCase
     {
         $this->expectException(DataNotFoundException::class);
         $this->expectExceptionMessage(
-            'Data of `Tests\\Database\\Ddd\\Entity\\Relation\Post` was not found.'
+            'Data of `Tests\Database\Ddd\Entity\Relation\Post` was not found.'
         );
 
         $connect = $this->createDatabaseConnect();
@@ -452,7 +452,7 @@ final class RepositoryTest extends TestCase
     {
         $this->expectException(EntityNotFoundException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not found.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\Post` was not found.'
         );
 
         $repository = new Repository(new Post());
@@ -712,17 +712,17 @@ final class RepositoryTest extends TestCase
         $repository->deleteEntity($post = new Post(['id' => 1, 'title' => 'new title']));
         $sql = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         self::assertTrue(\in_array($repository->getLastSql(), [
-            sprintf($sql, time() - 1),
-            sprintf($sql, time()),
-            sprintf($sql, time() + 1),
+            \sprintf($sql, time() - 1),
+            \sprintf($sql, time()),
+            \sprintf($sql, time() + 1),
         ], true));
 
         $repository->deleteEntity($post); // 将会更新 `delete_at` 字段.
         $sql = 'SQL: [98] UPDATE `post` SET `post`.`delete_at` = :named_param_delete_at WHERE `post`.`id` = :post_id LIMIT 1 | Params:  2 | Key: Name: [22] :named_param_delete_at | paramno=0 | name=[22] ":named_param_delete_at" | is_param=1 | param_type=1 | Key: Name: [8] :post_id | paramno=1 | name=[8] ":post_id" | is_param=1 | param_type=1 (UPDATE `post` SET `post`.`delete_at` = %d WHERE `post`.`id` = 1 LIMIT 1)';
         self::assertTrue(\in_array($repository->getLastSql(), [
-            sprintf($sql, time() - 1),
-            sprintf($sql, time()),
-            sprintf($sql, time() + 1),
+            \sprintf($sql, time() - 1),
+            \sprintf($sql, time()),
+            \sprintf($sql, time() + 1),
         ], true));
 
         $newPost = $repository->findEntity(1);

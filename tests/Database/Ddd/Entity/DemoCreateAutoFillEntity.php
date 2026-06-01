@@ -18,9 +18,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -28,9 +27,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::CREATE_FILL => 'name for '.self::CREATE_FILL,
     ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }
@@ -38,9 +36,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::CREATE_FILL => null,
     ])]
-    public ?string $description = null
-    {
-        set (string|null $v) {
+    public ?string $description = null {
+        set(string|null $v) {
             $this->description = $this->set('description', $v);
         }
     }
@@ -48,9 +45,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::CREATE_FILL => null,
     ])]
-    public ?string $address = null
-    {
-        set (string|null $v) {
+    public ?string $address = null {
+        set(string|null $v) {
             $this->address = $this->set('address', $v);
         }
     }
@@ -58,9 +54,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::CREATE_FILL => null,
     ])]
-    public ?string $fooBar = null
-    {
-        set (string|null $v) {
+    public ?string $fooBar = null {
+        set(string|null $v) {
             $this->fooBar = $this->set('fooBar', $v);
         }
     }
@@ -68,9 +63,8 @@ class DemoCreateAutoFillEntity extends Entity
     #[Struct([
         self::CREATE_FILL => null,
     ])]
-    public ?string $hello = null
-    {
-        set (string|null $v) {
+    public ?string $hello = null {
+        set(string|null $v) {
             $this->hello = $this->set('hello', $v);
         }
     }

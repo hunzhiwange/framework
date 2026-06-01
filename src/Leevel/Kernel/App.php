@@ -123,8 +123,8 @@ class App implements IApp
 
     public function appPath(string $path = ''): string
     {
-        return ($this->appPath ?? $this->path).
-            $this->normalizePath($path);
+        return ($this->appPath ?? $this->path)
+            .$this->normalizePath($path);
     }
 
     public function setStoragePath(string $path): void
@@ -134,8 +134,8 @@ class App implements IApp
 
     public function storagePath(string $path = ''): string
     {
-        return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage').
-            $this->normalizePath($path);
+        return ($this->storagePath ?? $this->path.\DIRECTORY_SEPARATOR.'storage')
+            .$this->normalizePath($path);
     }
 
     public function setThemesPath(string $path): void
@@ -145,8 +145,8 @@ class App implements IApp
 
     public function themesPath(string $path = ''): string
     {
-        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'themes').
-            $this->normalizePath($path);
+        return ($this->themesPath ?? $this->path.\DIRECTORY_SEPARATOR.'themes')
+            .$this->normalizePath($path);
     }
 
     public function setConfigPath(string $path): void
@@ -156,8 +156,8 @@ class App implements IApp
 
     public function configPath(string $path = ''): string
     {
-        return ($this->configPath ?? $this->path.\DIRECTORY_SEPARATOR.'config').
-            $this->normalizePath($path);
+        return ($this->configPath ?? $this->path.\DIRECTORY_SEPARATOR.'config')
+            .$this->normalizePath($path);
     }
 
     public function setI18nPath(string $path): void
@@ -167,8 +167,8 @@ class App implements IApp
 
     public function i18nPath(?string $path = null): string
     {
-        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'i18n').
-            $this->normalizePath($path ?: '');
+        return ($this->i18nPath ?? $this->path.\DIRECTORY_SEPARATOR.'i18n')
+            .$this->normalizePath($path ?: '');
     }
 
     public function setEnvPath(string $path): void
@@ -257,7 +257,7 @@ class App implements IApp
         }
 
         if (false === $path = $this->findNamespacePathByComposer($composer, $namespace.'\\')) {
-            throw new \RuntimeException(sprintf('Namespaces `%s` for was not found.', $namespace));
+            throw new \RuntimeException(\sprintf('Namespaces `%s` for was not found.', $namespace));
         }
 
         return $this->realpath($path);
@@ -370,7 +370,7 @@ class App implements IApp
         return $this->callContainer(__FUNCTION__, [$name, $service]);
     }
 
-    public function alias(array|string $alias, null|array|string $value = null): IContainer
+    public function alias(array|string $alias, array|string|null $value = null): IContainer
     {
         // @phpstan-ignore-next-line
         return $this->callContainer(__FUNCTION__, [$alias, $value]);

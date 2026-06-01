@@ -45,39 +45,39 @@ final class DocFrameworkTest extends TestCase
         $outputDirNameEnUs = str_replace('{i18n}', '/en-US', $outputDirName);
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameDefault)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameDefault)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameDefault)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameDefault)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameDefault)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameDefault)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameZhCn)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameZhCn)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameZhCn)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameZhCn)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameZhCn)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameZhCn)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameEnUs)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirNameEnUs)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameEnUs)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo3 was generate succeed at %s/demo3.md.', $outputDirNameEnUs)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameEnUs)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo2 was generate succeed at %s/demo2.md.', $outputDirNameEnUs)),
             $result,
         );
         self::assertStringContainsString(
@@ -110,10 +110,10 @@ final class DocFrameworkTest extends TestCase
     {
         $config = $this->createMock(IConfig::class);
         $map = [
-            ['console\\framework_doc_outputdir', null, \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}'],
-            ['console\\framework_doc_git', null, 'https://github.com/hunzhiwange/framework/blob/master'],
-            ['console\\framework_doc_logdir', null, ''],
-            ['console\\framework_doc_i18n', null, ',zh-CN,en-US'],
+            ['console\framework_doc_outputdir', null, \dirname(__DIR__).'/Utils/Assert/Doc/Output{i18n}'],
+            ['console\framework_doc_git', null, 'https://github.com/hunzhiwange/framework/blob/master'],
+            ['console\framework_doc_logdir', null, ''],
+            ['console\framework_doc_i18n', null, ',zh-CN,en-US'],
         ];
         $config->method('get')->willReturnMap($map);
         $container->singleton(IConfig::class, static function () use ($config) {

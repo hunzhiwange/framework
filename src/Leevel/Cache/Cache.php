@@ -97,7 +97,7 @@ abstract class Cache implements ICache
     protected function getCacheName(string $name): string
     {
         if (preg_match($this->keyRegex, $name) <= 0) {
-            throw new \InvalidArgumentException(sprintf('Cache key must be `%s`.', $this->keyRegex));
+            throw new \InvalidArgumentException(\sprintf('Cache key must be `%s`.', $this->keyRegex));
         }
 
         return $name;

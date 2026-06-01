@@ -88,7 +88,7 @@ final class EntityTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Cannot set a relation prop `post_content` on entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post`.'
+            'Cannot set a relation prop `post_content` on entity `Tests\Database\Ddd\Entity\Relation\Post`.'
         );
 
         $entity = new Post();
@@ -880,7 +880,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField has no primary key.'
+            'Entity Tests\Database\Ddd\Entity\EntityWithoutAnyField has no primary key.'
         );
 
         $entity = new EntityWithoutAnyField();
@@ -899,7 +899,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\WithoutPrimarykeyAndAllAreKey does not support composite primary keys.'
+            'Entity Tests\Database\Ddd\Entity\WithoutPrimarykeyAndAllAreKey does not support composite primary keys.'
         );
 
         $entity = new WithoutPrimarykeyAndAllAreKey();
@@ -911,7 +911,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId does not support composite primary keys.'
+            'Entity Tests\Database\Ddd\Entity\CompositeId does not support composite primary keys.'
         );
 
         $entity = new CompositeId();
@@ -931,7 +931,7 @@ eot;
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\Relation\Post has no identify condition data.'
         );
 
         $entity = new Post();
@@ -979,7 +979,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `user` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::make()->getRelation(\'user\')`.'
+            'Method `user` is not exits,maybe you can try `Tests\Database\Ddd\Entity\Relation\Post::make()->getRelation(\'user\')`.'
         );
 
         $entity = new Post();
@@ -990,7 +990,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `notFoundMethod` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::select|make()->notFoundMethod(...)`.'
+            'Method `notFoundMethod` is not exits,maybe you can try `Tests\Database\Ddd\Entity\Relation\Post::select|make()->notFoundMethod(...)`.'
         );
 
         $entity = new Post();
@@ -1001,7 +1001,7 @@ eot;
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage(
-            'Method `notFoundMethod` is not exits,maybe you can try `Tests\\Database\\Ddd\\Entity\\Relation\\Post::select|make()->notFoundMethod(...)`.'
+            'Method `notFoundMethod` is not exits,maybe you can try `Tests\Database\Ddd\Entity\Relation\Post::select|make()->notFoundMethod(...)`.'
         );
 
         Post::notFoundMethod();
@@ -1244,7 +1244,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\Relation\Post has no identify condition data.'
         );
 
         $entity = new Post();
@@ -1258,7 +1258,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\CompositeId has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\CompositeId has no identify condition data.'
         );
 
         $entity = new CompositeId();
@@ -1275,7 +1275,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey has no identify condition data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();
@@ -1286,7 +1286,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutAnyField has no primary key.'
+            'Entity Tests\Database\Ddd\Entity\EntityWithoutAnyField has no primary key.'
         );
 
         $entity = new EntityWithoutAnyField();

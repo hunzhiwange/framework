@@ -221,9 +221,9 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
      */
     public function getRange(): int
     {
-        return $this->config['range'] ?
-            (int) $this->config['range'] :
-            static::RANGE;
+        return $this->config['range']
+            ? (int) $this->config['range']
+            : static::RANGE;
     }
 
     /**
@@ -506,7 +506,7 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
     /**
      * 渲染分页.
      */
-    public function render(null|IRender|string $render = null, array $config = []): string
+    public function render(IRender|string|null $render = null, array $config = []): string
     {
         $config = array_merge($this->config['render_config'], $config);
 
@@ -567,9 +567,9 @@ class Page implements IJson, IArray, IHtml, \JsonSerializable
             $param[$this->config['page']] = '{page}';
         }
 
-        $this->cachedUrl = $url.
-            (!str_contains($url, '?') ? '?' : '&').
-            http_build_query($param, '', '&');
+        $this->cachedUrl = $url
+            .(!str_contains($url, '?') ? '?' : '&')
+            .http_build_query($param, '', '&');
 
         return $this->cachedUrl .= $this->buildFragment();
     }

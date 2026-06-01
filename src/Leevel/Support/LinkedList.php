@@ -73,7 +73,7 @@ class LinkedList extends \SplDoublyLinkedList
     public function validate(mixed $value): void
     {
         if (!$this->checkType($value)) {
-            throw new \UnexpectedValueException(sprintf('The element type must be one of the following `%s`.', implode(',', $this->types)));
+            throw new \UnexpectedValueException(\sprintf('The element type must be one of the following `%s`.', implode(',', $this->types)));
         }
     }
 

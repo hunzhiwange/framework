@@ -10,8 +10,8 @@ class NewPrefix
 {
     public function handle(IContainer $container): string
     {
-        return 'hello plus for newPrefix, attributes petId is '.
-            $container
+        return 'hello plus for newPrefix, attributes petId is '
+            .$container
                 ->make('request')
                 ->attributes
                 ->get('petId')

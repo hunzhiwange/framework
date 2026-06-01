@@ -55,7 +55,7 @@ interface IContainer extends ContainerInterface
     /**
      * 设置别名.
      */
-    public function alias(array|string $alias, null|array|string $value = null): self;
+    public function alias(array|string $alias, array|string|null $value = null): self;
 
     /**
      * 创建容器服务并返回.

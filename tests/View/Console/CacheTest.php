@@ -47,7 +47,7 @@ final class CacheTest extends TestCase
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
+            $this->normalizeContent(\sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
         self::assertStringContainsString(
@@ -80,7 +80,7 @@ final class CacheTest extends TestCase
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
+            $this->normalizeContent(\sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
         self::assertStringContainsString(
@@ -111,7 +111,7 @@ final class CacheTest extends TestCase
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Compile files not found in path `%s` and skipped', __DIR__.'/assert/no')),
+            $this->normalizeContent(\sprintf('Compile files not found in path `%s` and skipped', __DIR__.'/assert/no')),
             $result,
         );
         self::assertStringContainsString(
@@ -143,11 +143,11 @@ final class CacheTest extends TestCase
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
+            $this->normalizeContent(\sprintf('Start to compiles path `%s`', __DIR__.'/assert')),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Start to compiles path `%s`', __DIR__.'/app/path1')),
+            $this->normalizeContent(\sprintf('Start to compiles path `%s`', __DIR__.'/app/path1')),
             $result,
         );
         self::assertStringContainsString(
@@ -179,7 +179,7 @@ final class CacheTest extends TestCase
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('View dir `%s` is not exist.', __DIR__.'/app2/path2')),
+            $this->normalizeContent(\sprintf('View dir `%s` is not exist.', __DIR__.'/app2/path2')),
             $result,
         );
     }

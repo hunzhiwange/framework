@@ -63,7 +63,7 @@ class File extends Cache implements ICache
         clearstatcache();
         $expire = $this->normalizeExpire($expire);
         $data = json_encode([(int) $expire, $this->encodeData($data)], JSON_UNESCAPED_UNICODE);
-        $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
+        $data = \sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
         $cachePath = $this->getCachePath($name);
         $this->writeData($cachePath, $data);
     }
@@ -147,30 +147,30 @@ class File extends Cache implements ICache
 
         $fp = fopen($cachePath, 'r');
         if (false === $fp) {
-            throw new \Exception(sprintf('Open file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Open file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         $lockResult = flock($fp, LOCK_SH);
         if (false === $lockResult) {
-            throw new \Exception(sprintf('Lock file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Lock file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         $len = filesize($cachePath);
         if (false === $len) {
-            throw new \Exception(sprintf('Get file size of file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Get file size of file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         /** @phpstan-ignore-next-line */
         $readResult = fread($fp, static::HEADER_LENGTH);
         if (false === $readResult) {
-            throw new \Exception(sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         $len -= static::HEADER_LENGTH;
         if ($len > 0) {
             $data = fread($fp, $len);
             if (false === $data) {
-                throw new \Exception(sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore
+                throw new \Exception(\sprintf('Read file %s failed.', $cachePath)); // @codeCoverageIgnore
             }
         } else {
             $data = false;
@@ -178,12 +178,12 @@ class File extends Cache implements ICache
 
         $unlockResult = flock($fp, LOCK_UN);
         if (false === $unlockResult) {
-            throw new \Exception(sprintf('Unlock file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Unlock file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         $closeResult = fclose($fp);
         if (false === $closeResult) {
-            throw new \Exception(sprintf('Close file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Close file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         return $data;
@@ -202,7 +202,7 @@ class File extends Cache implements ICache
 
         $fileTime = filemtime($cachePath = $this->getCachePath($name));
         if (false === $fileTime) {
-            throw new \Exception(sprintf('Get file modification time of file %s failed.', $cachePath)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Get file modification time of file %s failed.', $cachePath)); // @codeCoverageIgnore
         }
 
         return $fileTime < time() - $expire;
@@ -232,7 +232,7 @@ class File extends Cache implements ICache
         CreateFile::handle($fileName);
         $result = file_put_contents($fileName, $data, LOCK_EX);
         if (false === $result) {
-            throw new \Exception(sprintf('Write file %s failed.', $fileName)); // @codeCoverageIgnore
+            throw new \Exception(\sprintf('Write file %s failed.', $fileName)); // @codeCoverageIgnore
         }
     }
 

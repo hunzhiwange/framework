@@ -304,9 +304,9 @@ class Doc
         $i18n = $this->i18n ? $this->i18n.':' : '';
         $defaultI18n = $this->defaultI18n ? $this->defaultI18n.':' : '';
 
-        return $info[$i18n.$name] ??
-            ($info[$defaultI18n.$name] ??
-                ($info[$name] ?? $defaultValue));
+        return $info[$i18n.$name]
+            ?? ($info[$defaultI18n.$name]
+                ?? ($info[$name] ?? $defaultValue));
     }
 
     /**
@@ -421,7 +421,7 @@ class Doc
 
             if (str_starts_with($v, 'use ')
                 && !\in_array($v, ['use Tests\TestCase;'], true)
-                  && !str_contains($v, '\\Fixtures\\')) {
+                  && !str_contains($v, '\Fixtures\\')) {
                 $result[] = $v;
             }
         }
@@ -515,7 +515,7 @@ class Doc
                 if ($this->logPath) {
                     $this->writeCache($errorsLogPath = $this->logPath.'/errors/'.$logName, '<?php'.PHP_EOL.$code);
 
-                    throw new \RuntimeException(sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage()));
+                    throw new \RuntimeException(\sprintf('Documentation error was found and report at %s and error message is %s.', $errorsLogPath, $exception->getMessage()));
                 }
 
                 throw new \RuntimeException('Documentation error was found and error message is '.$exception->getMessage().PHP_EOL.PHP_EOL.'<?php'.PHP_EOL.$code);

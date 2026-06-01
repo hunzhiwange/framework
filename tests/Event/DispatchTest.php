@@ -311,7 +311,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer Tests\\Event\\ListenerWithoutRunOrHandleMethod must has handle method.'
+            'Observer Tests\Event\ListenerWithoutRunOrHandleMethod must has handle method.'
         );
 
         $dispatch = new Dispatch(new Container());
@@ -323,11 +323,11 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer `Tests\\Event\\NotFoundListener` is invalid.'
+            'Observer `Tests\Event\NotFoundListener` is invalid.'
         );
 
         $dispatch = new Dispatch(new Container());
-        $dispatch->register('testevent', 'Tests\\Event\\NotFoundListener');
+        $dispatch->register('testevent', 'Tests\Event\NotFoundListener');
         $dispatch->handle('testevent');
     }
 
@@ -373,7 +373,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer `Tests\\Event\\ListenerNotExtendsWithoutHandle` is invalid.'
+            'Observer `Tests\Event\ListenerNotExtendsWithoutHandle` is invalid.'
         );
 
         $dispatch = new Dispatch(new Container());
@@ -385,7 +385,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Observer Leevel\\Event\\Observer must has handle method.'
+            'Observer Leevel\Event\Observer must has handle method.'
         );
 
         $dispatch = new Dispatch(new Container());

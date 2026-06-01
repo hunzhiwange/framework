@@ -83,7 +83,7 @@ abstract class Log extends AbstractLogger implements ILog
     {
         $level = (string) $level;
         if (!\defined(LogLevel::class.'::'.strtoupper($level))) {
-            throw new InvalidArgumentException(sprintf('Level %s is invalid.', $level));
+            throw new InvalidArgumentException(\sprintf('Level %s is invalid.', $level));
         }
 
         $message = (string) $message;

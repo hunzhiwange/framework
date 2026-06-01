@@ -21,7 +21,7 @@ class Filter
             if (isset($rules[$k])) {
                 $rule = $rules[$k];
                 if (!\is_array($rule)) {
-                    throw new \InvalidArgumentException(sprintf('Rule of `%s` must be an array.', $k));
+                    throw new \InvalidArgumentException(\sprintf('Rule of `%s` must be an array.', $k));
                 }
 
                 foreach ($rule as $r) {
@@ -30,7 +30,7 @@ class Filter
                     }
 
                     if (!\is_callable($r)) {
-                        throw new \InvalidArgumentException(sprintf('Rule item of `%s` must be a callback type.', $k));
+                        throw new \InvalidArgumentException(\sprintf('Rule item of `%s` must be a callback type.', $k));
                     }
 
                     if (null !== $v || \in_array('must', $rule, true)) {

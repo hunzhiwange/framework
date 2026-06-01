@@ -204,7 +204,7 @@ interface ISelect extends ICondition, IBaseDatabase
     /**
      * 原生 SQL 查询数据.
      */
-    public function select(null|callable|self|string $data = null, array $bind = []): mixed;
+    public function select(callable|self|string|null $data = null, array $bind = []): mixed;
 
     /**
      * 插入数据 insert (支持原生 SQL).

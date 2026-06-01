@@ -31,7 +31,7 @@ class Normalize
 
         return array_filter(
             $inputs,
-            static fn (mixed $value) => $value || in_array($value, $allowedEmpty, true),
+            static fn (mixed $value) => $value || \in_array($value, $allowedEmpty, true),
         );
     }
 }

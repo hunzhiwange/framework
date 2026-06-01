@@ -23,7 +23,7 @@ class Bar extends Provider
     {
         return [
             'bar' => [
-                'Tests\\Config\\Providers\\World',
+                'Tests\Config\Providers\World',
             ],
             'helloworld',
         ];

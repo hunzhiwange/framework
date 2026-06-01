@@ -123,7 +123,7 @@ class Pipeline
      *
      * @throws \InvalidArgumentException
      */
-    protected function stageCallback(null|callable|string $stages): null|array|callable // @phpstan-ignore-line
+    protected function stageCallback(callable|string|null $stages): array|callable|null // @phpstan-ignore-line
     {
         if (null === $stages) {
             return null;
@@ -143,7 +143,7 @@ class Pipeline
         $stageRaw = $stage;
         if (!\is_object($stage = $this->container->make($stage, throw: false))) {
             // @phpstan-ignore-next-line
-            throw new \InvalidArgumentException(sprintf('Stage `%s` is invalid.', $stageRaw));
+            throw new \InvalidArgumentException(\sprintf('Stage `%s` is invalid.', $stageRaw));
         }
 
         return [$stage, $method, $params];

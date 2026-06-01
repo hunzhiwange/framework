@@ -47,7 +47,7 @@ final class RouterAnnotationTest extends TestCase
         $pathInfo = '/app:tests/Annotation/base-use';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
 
         $container = $this->createContainer();
 
@@ -311,7 +311,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\Api\\V1\\PetLeevel::hello() was not found.'
+            'The router App\Router\Controllers\Api\V1\PetLeevel::hello() was not found.'
         );
 
         $pathInfo = '/api/v1/petLeevel/hello';
@@ -340,7 +340,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\NotFirstLetter::index() was not found.'
+            'The router App\Router\Controllers\NotFirstLetter::index() was not found.'
         );
 
         $pathInfo = '/notFirstLetter';
@@ -394,7 +394,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\NNotFound::index() was not found.'
+            'The router App\Router\Controllers\NNotFound::index() was not found.'
         );
 
         $pathInfo = '/nNotFound';
@@ -423,7 +423,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\PFirstLetterNotGroupNotMatched::index() was not found.'
+            'The router App\Router\Controllers\PFirstLetterNotGroupNotMatched::index() was not found.'
         );
 
         $pathInfo = '/pFirstLetterNotGroupNotMatched';
@@ -452,7 +452,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\PetRegexNotMatched::index() was not found.'
+            'The router App\Router\Controllers\PetRegexNotMatched::index() was not found.'
         );
 
         $pathInfo = '/petRegexNotMatched';
@@ -481,7 +481,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\Router\\Controllers\\Api\\V1::petRegexNotMatched() was not found.'
+            'The router App\Router\Controllers\Api\V1::petRegexNotMatched() was not found.'
         );
 
         $pathInfo = '/api/v1/petRegexNotMatched';
@@ -557,7 +557,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderFoo was not found.'
+            'The router \Tests\Router\Apps\AppForAnnotation\Controllers\BindNotSet@routePlaceholderFoo was not found.'
         );
 
         $pathInfo = '/bindNotSet/test';
@@ -589,7 +589,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router \\Tests\\Router\\Apps\\AppForAnnotation\\Controllers\\BindNotSet@routePlaceholderBar was not found.'
+            'The router \Tests\Router\Apps\AppForAnnotation\Controllers\BindNotSet@routePlaceholderBar was not found.'
         );
 
         $pathInfo = '/bindNotSet/test2';
@@ -954,7 +954,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound@notFound was not found.'
+            'The router \Tests\Router\Controllers\Annotation\BindNotFound@notFound was not found.'
         );
 
         $pathInfo = '/bindNotFound/test';
@@ -986,7 +986,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router \\Tests\\Router\\Controllers\\Annotation\\BindNotFound was not found.'
+            'The router \Tests\Router\Controllers\Annotation\BindNotFound was not found.'
         );
 
         $pathInfo = '/bindNotFound/test2';
@@ -1018,7 +1018,7 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router \\Tests\\Router\\Controllers\\Annotation\\BindMethodNotFound was not found.'
+            'The router \Tests\Router\Controllers\Annotation\BindMethodNotFound was not found.'
         );
 
         $pathInfo = '/bindNotFound/test3';
@@ -1090,7 +1090,7 @@ EOT,
 
 class RouterProviderAnnotation extends RouterProvider
 {
-    protected ?string $controllerDir = 'Router\\Controllers';
+    protected ?string $controllerDir = 'Router\Controllers';
 
     protected array $middlewareGroups = [
         'group1' => [

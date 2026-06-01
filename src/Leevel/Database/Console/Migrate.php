@@ -58,7 +58,7 @@ class Migrate extends AbstractCommand
         }
 
         $output->writeln('', $this->verbosityLevel);
-        $output->writeln('<comment>All Done. Took '.sprintf('%.4fs', $end - $start).'</comment>', $this->verbosityLevel);
+        $output->writeln('<comment>All Done. Took '.\sprintf('%.4fs', $end - $start).'</comment>', $this->verbosityLevel);
 
         return self::SUCCESS;
     }

@@ -43,7 +43,7 @@ final class CacheTest extends TestCase
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Router cache succeed at %s.', $cacheFile)),
+            $this->normalizeContent(\sprintf('Router cache succeed at %s.', $cacheFile)),
             $result
         );
 
@@ -80,7 +80,7 @@ final class CacheTest extends TestCase
         );
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Router cache succeed at %s.', $cacheFile)),
+            $this->normalizeContent(\sprintf('Router cache succeed at %s.', $cacheFile)),
             $result
         );
 

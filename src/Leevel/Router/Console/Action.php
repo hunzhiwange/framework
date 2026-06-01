@@ -89,10 +89,10 @@ class Action extends Make
      */
     protected function parseSaveFilePath(string $controllerNamespace, string $controller, string $action): string
     {
-        return $this->getNamespacePath().
-            ($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '').
-            $this->normalizeSubDir($this->getOption('subdir')).
-            $controller.'/'.$action.'.php';
+        return $this->getNamespacePath()
+            .($controllerNamespace ? str_replace('\\', '/', $controllerNamespace).'/' : '')
+            .$this->normalizeSubDir($this->getOption('subdir'))
+            .$controller.'/'.$action.'.php';
     }
 
     /**
@@ -125,7 +125,7 @@ class Action extends Make
         }
 
         if (!is_file($stub)) {
-            throw new \InvalidArgumentException(sprintf('Action stub file `%s` was not found.', $stub));
+            throw new \InvalidArgumentException(\sprintf('Action stub file `%s` was not found.', $stub));
         }
 
         return $stub;

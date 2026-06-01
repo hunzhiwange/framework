@@ -342,7 +342,7 @@ EOT,
     {
         $this->expectException(ContainerInvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Interface Tests\\Di\\Fixtures\\ITest2 cannot be normalize because not bound.'
+            'Interface Tests\Di\Fixtures\ITest2 cannot be normalize because not bound.'
         );
 
         $container = new Container();
@@ -553,7 +553,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class Tests\\Di\\Fixtures\\Test9 is not instantiable.'
+            'Class Tests\Di\Fixtures\Test9 is not instantiable.'
         );
 
         $container = new Container();
@@ -628,7 +628,7 @@ EOT,
     {
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(
-            'Service Tests\\Di\\Fixtures\\TestNotFound was not found.'
+            'Service Tests\Di\Fixtures\TestNotFound was not found.'
         );
 
         $container = new Container();
@@ -664,8 +664,8 @@ EOT,
         $container->instance('foo');
         self::assertSame('foo', $container->make('foo'));
 
-        $container->instance('Leevel\\Foo\\Middleware\\Bar');
-        self::assertSame('Leevel\\Foo\\Middleware\\Bar', $container->make('Leevel\\Foo\\Middleware\\Bar'));
+        $container->instance('Leevel\Foo\Middleware\Bar');
+        self::assertSame('Leevel\Foo\Middleware\Bar', $container->make('Leevel\Foo\Middleware\Bar'));
     }
 
     #[Api([
@@ -740,7 +740,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class or interface Tests\\Di\\Fixtures\\Test27 is register in container is not object.'
+            'Class or interface Tests\Di\Fixtures\Test27 is register in container is not object.'
         );
 
         $container = new Container();
@@ -907,11 +907,11 @@ EOT,
     public function testDeferredProvider(): void
     {
         $deferredProviders = [
-            'test_deferred' => 'Tests\\Di\\Fixtures\\DeferredProvider',
+            'test_deferred' => 'Tests\Di\Fixtures\DeferredProvider',
         ];
 
         $deferredAlias = [
-            'Tests\\Di\\Fixtures\\DeferredProvider' => [
+            'Tests\Di\Fixtures\DeferredProvider' => [
                 'test_deferred' => 'bar',
             ],
         ];

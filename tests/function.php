@@ -10,7 +10,7 @@ class I18nMock
     /**
      * lang.
      */
-    public function gettext(string $text, null|bool|float|int|string ...$data): string
+    public function gettext(string $text, bool|float|int|string|null ...$data): string
     {
         return sprintf($text, ...$data);
     }

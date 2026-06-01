@@ -285,7 +285,7 @@ class Router implements IRouter
      */
     protected function normalizeMatchedData(Request $request, string $matching): array
     {
-        $matching = __NAMESPACE__.'\\Matching\\'.$matching;
+        $matching = __NAMESPACE__.'\Matching\\'.$matching;
 
         /** @var IMatching $matching */
         $matching = new $matching();
@@ -313,7 +313,8 @@ class Router implements IRouter
             if (!$response instanceof Response) {
                 if (ShouldJson::handle($response)) {
                     $response = JsonResponse::fromJsonString(ConvertJson::handle($response))
-                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+                        ->setEncodingOptions(JSON_UNESCAPED_UNICODE)
+                    ;
                 } else {
                     $response = new Response((string) $response);
                 }
@@ -374,7 +375,7 @@ class Router implements IRouter
      */
     protected function routerNotFound(Request $request): void
     {
-        $message = sprintf('The router %s was not found.', $this->makeRouterNode($request));
+        $message = \sprintf('The router %s was not found.', $this->makeRouterNode($request));
         $this->clearMatchedData($request);
 
         throw new RouterNotFoundException($message);
@@ -389,10 +390,10 @@ class Router implements IRouter
             return $matchedBind;
         }
 
-        return $this->matchedApp($request).'\\'.
-                $this->parseControllerDir($request).'\\'.
-                $this->matchedController($request).'::'.
-                $this->matchedAction($request).'()';
+        return $this->matchedApp($request).'\\'
+                .$this->parseControllerDir($request).'\\'
+                .$this->matchedController($request).'::'
+                .$this->matchedAction($request).'()';
     }
 
     /**

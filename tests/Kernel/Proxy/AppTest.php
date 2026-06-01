@@ -56,7 +56,7 @@ final class AppTest extends TestCase
     public function testProxyNotFound(): void
     {
         $this->expectException(\Error::class);
-        $this->expectExceptionMessage('Call to undefined method Leevel\\Kernel\\App::notFound()');
+        $this->expectExceptionMessage('Call to undefined method Leevel\Kernel\App::notFound()');
 
         $container = $this->createContainer();
         $app = $this->createAppInstance($container);

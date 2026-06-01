@@ -18,18 +18,15 @@ class EntityWithEnumButClassNotFound extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $title = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $title = null {
+        set(string|null $v) {
             $this->title = $this->set('title', $v);
         }
     }
@@ -37,9 +34,8 @@ class EntityWithEnumButClassNotFound extends Entity
     #[Struct([
         self::ENUM_CLASS => 'NotFound',
     ])]
-    public ?int $status = null
-    {
-        set (int|string|null $v) {
+    public ?int $status = null {
+        set(int|string|null $v) {
             $this->status = $this->set('status', $v);
         }
     }

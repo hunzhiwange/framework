@@ -23,9 +23,8 @@ class Post extends Entity
         self::READONLY => true,
         self::COLUMN_NAME => 'ID',
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -33,9 +32,8 @@ class Post extends Entity
     #[Struct([
         self::COLUMN_NAME => '标题',
     ])]
-    public ?string $title = null
-    {
-        set (string|null $v) {
+    public ?string $title = null {
+        set(string|null $v) {
             $this->title = $this->set('title', $v);
         }
     }
@@ -43,9 +41,8 @@ class Post extends Entity
     #[Struct([
         self::COLUMN_NAME => '用户ID',
     ])]
-    public ?int $userId = null
-    {
-        set (int|string|null $v) {
+    public ?int $userId = null {
+        set(int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
@@ -53,9 +50,8 @@ class Post extends Entity
     #[Struct([
         self::COLUMN_NAME => '文章摘要',
     ])]
-    public ?string $summary = null
-    {
-        set (string|null $v) {
+    public ?string $summary = null {
+        set(string|null $v) {
             $this->summary = $this->set('summary', $v);
         }
     }
@@ -63,9 +59,8 @@ class Post extends Entity
     #[Struct([
         self::COLUMN_NAME => '创建时间',
     ])]
-    public ?string $createAt = null
-    {
-        set (string|null $v) {
+    public ?string $createAt = null {
+        set(string|null $v) {
             $this->createAt = $this->set('createAt', $v);
         }
     }
@@ -74,9 +69,8 @@ class Post extends Entity
         self::CREATE_FILL => 0,
         self::COLUMN_NAME => '删除时间',
     ])]
-    public ?int $deleteAt = null
-    {
-        set (int|string|null $v) {
+    public ?int $deleteAt = null {
+        set(int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }
@@ -86,10 +80,9 @@ class Post extends Entity
         self::SOURCE_KEY => 'user_id',
         self::TARGET_KEY => 'id',
     ])]
-    public ?User $user = null
-    {
+    public ?User $user = null {
         get => $this->get('user');
-        set (User|null $v) {
+        set(User|null $v) {
             $this->user = $this->set('user', $v);
         }
     }
@@ -100,10 +93,9 @@ class Post extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    public ?Collection $comment = null
-    {
+    public ?Collection $comment = null {
         get => $this->get('comment');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->comment = $this->set('comment', $v);
         }
     }
@@ -113,10 +105,9 @@ class Post extends Entity
         self::SOURCE_KEY => 'id',
         self::TARGET_KEY => 'post_id',
     ])]
-    public ?PostContent $postContent = null
-    {
+    public ?PostContent $postContent = null {
         get => $this->get('postContent');
-        set (PostContent|int|null $v) {
+        set(PostContent|int|null $v) {
             $this->postContent = $this->set('postContent', $v);
         }
     }
@@ -125,10 +116,9 @@ class Post extends Entity
         self::BELONGS_TO => User::class,
         self::TARGET_KEY => 'id',
     ])]
-    public ?int $userNotDefinedSourceKey = null
-    {
+    public ?int $userNotDefinedSourceKey = null {
         get => $this->get('userNotDefinedSourceKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->userNotDefinedSourceKey = $this->set('userNotDefinedSourceKey', $v);
         }
     }
@@ -137,10 +127,9 @@ class Post extends Entity
         self::BELONGS_TO => User::class,
         self::SOURCE_KEY => 'id',
     ])]
-    public ?int $userNotDefinedTargetKey = null
-    {
+    public ?int $userNotDefinedTargetKey = null {
         get => $this->get('userNotDefinedTargetKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->userNotDefinedTargetKey = $this->set('userNotDefinedTargetKey', $v);
         }
     }
@@ -150,10 +139,9 @@ class Post extends Entity
         self::TARGET_KEY => 'post_id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    public ?int $commentNotDefinedSourceKey = null
-    {
+    public ?int $commentNotDefinedSourceKey = null {
         get => $this->get('commentNotDefinedSourceKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->commentNotDefinedSourceKey = $this->set('commentNotDefinedSourceKey', $v);
         }
     }
@@ -163,10 +151,9 @@ class Post extends Entity
         self::SOURCE_KEY => 'id',
         self::RELATION_SCOPE => 'comment',
     ])]
-    public ?int $commentNotDefinedTargetKey = null
-    {
+    public ?int $commentNotDefinedTargetKey = null {
         get => $this->get('commentNotDefinedTargetKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->commentNotDefinedTargetKey = $this->set('commentNotDefinedTargetKey', $v);
         }
     }
@@ -175,10 +162,9 @@ class Post extends Entity
         self::HAS_ONE => PostContent::class,
         self::TARGET_KEY => 'post_id',
     ])]
-    public ?int $postContentNotDefinedSourceKey = null
-    {
+    public ?int $postContentNotDefinedSourceKey = null {
         get => $this->get('postContentNotDefinedSourceKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->postContentNotDefinedSourceKey = $this->set('postContentNotDefinedSourceKey', $v);
         }
     }
@@ -187,10 +173,9 @@ class Post extends Entity
         self::HAS_ONE => PostContent::class,
         self::SOURCE_KEY => 'id',
     ])]
-    public ?int $postContentNotDefinedTargetKey = null
-    {
+    public ?int $postContentNotDefinedTargetKey = null {
         get => $this->get('postContentNotDefinedTargetKey');
-        set (int|string|null $v) {
+        set(int|string|null $v) {
             $this->postContentNotDefinedTargetKey = $this->set('postContentNotDefinedTargetKey', $v);
         }
     }

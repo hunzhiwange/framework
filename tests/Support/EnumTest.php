@@ -65,7 +65,7 @@ final class EnumTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `100013` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
+            'Value `100013` is not part of Tests\Support\Fixtures\Enum1:Leevel\Support\Msg'
         );
 
         Enum1::description(Enum1::NO_ATTRIBUTES);
@@ -86,7 +86,7 @@ final class EnumTest extends TestCase
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Value `999999999999999` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
+            'Value `999999999999999` is not part of Tests\Support\Fixtures\Enum1:Leevel\Support\Msg'
         );
 
         self::assertSame('', Enum1::description(999999999999999));
@@ -342,7 +342,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Group `not_found` is not part of Tests\\Support\\Fixtures\\Enum1'
+            'Group `not_found` is not part of Tests\Support\Fixtures\Enum1'
         );
 
         Enum1::descriptions('not_found');
@@ -385,7 +385,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\\Support\\Fixtures\\Enum1'
+            'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\Support\Fixtures\Enum1'
         );
 
         self::assertSame(100010, Enum1::valueByKey('ERROR_ONE_NOT_FOUND'));
@@ -395,7 +395,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\\Support\\Fixtures\\RealEnumInt'
+            'Key `ERROR_ONE_NOT_FOUND` is not part of Tests\Support\Fixtures\RealEnumInt'
         );
 
         self::assertSame(100010, RealEnumInt::valueByKey('ERROR_ONE_NOT_FOUND'));
@@ -405,7 +405,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Key `ENABLE` of Tests\\Support\\Fixtures\\RealEnumNoValue does not have a value'
+            'Key `ENABLE` of Tests\Support\Fixtures\RealEnumNoValue does not have a value'
         );
 
         self::assertSame(100010, RealEnumNoValue::valueByKey('ENABLE'));
@@ -436,7 +436,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Description `错误类型一 not found` is not part of Tests\\Support\\Fixtures\\Enum1:Leevel\\Support\\Msg'
+            'Description `错误类型一 not found` is not part of Tests\Support\Fixtures\Enum1:Leevel\Support\Msg'
         );
 
         Enum1::value('错误类型一 not found');
@@ -446,7 +446,7 @@ EOT,
     {
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage(
-            'Description `错误类型一 not found` is not part of Tests\\Support\\Fixtures\\RealEnumInt:Leevel\\Support\\Msg'
+            'Description `错误类型一 not found` is not part of Tests\Support\Fixtures\RealEnumInt:Leevel\Support\Msg'
         );
 
         RealEnumInt::value('错误类型一 not found');

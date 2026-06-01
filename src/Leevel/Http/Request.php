@@ -108,6 +108,14 @@ class Request extends BaseRequest implements IArray
     }
 
     /**
+     * 获取一个请求参数.
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return $this->attributes->get($key, $this->query->get($key, $this->request->get($key, $default)));
+    }
+
+    /**
      * 是否为 PHP 运行模式命令行.
      *
      * @see http://php.net/manual/zh/function.php-sapi-name.php

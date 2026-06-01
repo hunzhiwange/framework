@@ -184,7 +184,7 @@ EOT,
     public function testUpdateReadonly(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\\Database\\Ddd\\Entity\\DemoReadonlyUpdateEntity`.');
+        $this->expectExceptionMessage('Cannot set a read-only prop `name` on entity `Tests\Database\Ddd\Entity\DemoReadonlyUpdateEntity`.');
 
         $entity = new DemoReadonlyUpdateEntity();
         $entity->name = 'foo';
@@ -424,7 +424,7 @@ EOT,
     public function testUpdateWithPrimaryKeyData(): void
     {
         $this->expectException(EntityIdentifyConditionException::class);
-        $this->expectExceptionMessage('Entity Tests\\Database\\Ddd\\Entity\\DemoDatabaseEntity has no identify condition data.');
+        $this->expectExceptionMessage('Entity Tests\Database\Ddd\Entity\DemoDatabaseEntity has no identify condition data.');
 
         $entity = new DemoDatabaseEntity();
         $entity->update();

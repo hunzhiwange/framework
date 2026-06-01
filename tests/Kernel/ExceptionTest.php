@@ -29,10 +29,10 @@ final class ExceptionTest extends TestCase
         self::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
-    #[DataProvider('getHttpExceptionData')]
+    #[DataProvider('provideHttpExceptionCases')]
     public function testHttpException(string $exception, int $code, string $message): void
     {
-        $exceptionName = 'Tests\\Kernel\\Exception\\'.$exception;
+        $exceptionName = 'Tests\Kernel\Exception\\'.$exception;
         $e = new $exceptionName($message);
 
         $this->assertInstanceof(\RuntimeException::class, $e);
@@ -44,7 +44,7 @@ final class ExceptionTest extends TestCase
         self::assertSame(['foo' => 'bar'], $e->getHeaders());
     }
 
-    public static function getHttpExceptionData(): array
+    public static function provideHttpExceptionCases(): iterable
     {
         return [
             ['BadRequestHttpException', 400, 'hello BadRequestHttpException'],

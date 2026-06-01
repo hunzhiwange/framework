@@ -19,7 +19,7 @@ class Set extends Vector
     public function __construct(array $data, string $valueType)
     {
         if (!\in_array($valueType, ['string', 'int'], true)) {
-            throw new \InvalidArgumentException(sprintf('KeySet value type must be string or int, %s given.', $valueType));
+            throw new \InvalidArgumentException(\sprintf('KeySet value type must be string or int, %s given.', $valueType));
         }
 
         parent::__construct($data, $valueType);

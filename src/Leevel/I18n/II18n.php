@@ -12,7 +12,7 @@ interface II18n
     /**
      * 获取语言 text.
      */
-    public function gettext(string $text, null|bool|float|int|string ...$data): string;
+    public function gettext(string $text, bool|float|int|string|null ...$data): string;
 
     /**
      * 添加语言包.

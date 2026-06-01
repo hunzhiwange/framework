@@ -110,7 +110,7 @@ class Validator implements IValidator
             $param[] = $args;
             unset($args);
 
-            if (class_exists($helperClass = __NAMESPACE__.'\\Helper\\'.ucfirst($method))) {
+            if (class_exists($helperClass = __NAMESPACE__.'\Helper\\'.ucfirst($method))) {
                 array_shift($param);
 
                 return $helperClass::handle(...$param);
@@ -132,7 +132,7 @@ class Validator implements IValidator
             }
         }
 
-        throw new \BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        throw new \BadMethodCallException(\sprintf('Method %s is not exits.', $method));
     }
 
     public static function make(array $data = [], array $rules = [], array $names = [], array $messages = []): static
@@ -662,14 +662,14 @@ class Validator implements IValidator
 
         $camelizeRule = ucfirst(Camelize::handle($rule));
 
-        if (class_exists($classHelper = __NAMESPACE__.'\\Helper\\'.$camelizeRule)) {
+        if (class_exists($classHelper = __NAMESPACE__.'\Helper\\'.$camelizeRule)) {
             static::parepareMessage($classHelper, $rule, $antisense);
 
             $validatorErrorMessage = '';
 
             if (!\is_callable([$classHelper, 'handle'])) {
                 // @phpstan-ignore-next-line
-                throw new \Exception(sprintf('Validate rule %s is invalid.', $classHelper));
+                throw new \Exception(\sprintf('Validate rule %s is invalid.', $classHelper));
             }
 
             try {
@@ -769,15 +769,15 @@ class Validator implements IValidator
     {
         if ($antisense) {
             $antisenseRule = '!'.$rule;
-            $message = $this->messages[$field.'.'.$antisenseRule] ??
-                ($this->messages[$antisenseRule] ?? (static::$defaultMessages[$antisenseRule] ?? ''));
+            $message = $this->messages[$field.'.'.$antisenseRule]
+                ?? ($this->messages[$antisenseRule] ?? (static::$defaultMessages[$antisenseRule] ?? ''));
             if ($message) {
                 return $message;
             }
         }
 
-        $message = $this->messages[$field.'.'.$rule] ??
-            ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
+        $message = $this->messages[$field.'.'.$rule]
+            ?? ($this->messages[$rule] ?? (static::$defaultMessages[$rule] ?? ''));
 
         if ($antisense) {
             $message = static::parepareAntisenseMessage($message);
@@ -822,7 +822,7 @@ class Validator implements IValidator
 
         // @phpstan-ignore-next-line
         if (!\is_object($extend = $this->container->make($className, throw: false))) {
-            throw new \InvalidArgumentException(sprintf('Extend class %s is not valid.', $className));
+            throw new \InvalidArgumentException(\sprintf('Extend class %s is not valid.', $className));
         }
 
         // @phpstan-ignore-next-line
@@ -857,11 +857,11 @@ class Validator implements IValidator
     }
 }
 
-if (!\function_exists(__NAMESPACE__.'\\__')) {
-    function __(string $text, null|bool|float|int|string ...$data): string
+if (!\function_exists(__NAMESPACE__.'\__')) {
+    function __(string $text, bool|float|int|string|null ...$data): string
     {
         if (!class_exists(Gettext::class)) {
-            return sprintf($text, ...$data); // @codeCoverageIgnore
+            return \sprintf($text, ...$data); // @codeCoverageIgnore
         }
 
         return Gettext::handle($text, ...$data);

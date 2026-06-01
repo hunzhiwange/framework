@@ -18,7 +18,7 @@ class Manager extends Managers implements ICache
      */
     protected array $pools = [];
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function put(array|string $keys, mixed $value = null, ?int $expire = null): void
     {
         $this->callConnectMethod(__FUNCTION__, $keys, $value, $expire);
@@ -93,8 +93,8 @@ class Manager extends Managers implements ICache
     {
         $this->callConnectMethod(__FUNCTION__, $pool);
     }
-    // @codeCoverageIgnoreEnd
 
+    /** @codeCoverageIgnoreEnd */
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): ICache
     {
         // 协程环境每次从创建驱动中获取连接

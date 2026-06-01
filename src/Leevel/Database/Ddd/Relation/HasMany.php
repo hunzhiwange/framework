@@ -76,14 +76,14 @@ class HasMany extends Relation
     protected function getRelationValue(array $entitys, string $type): mixed
     {
         if (!$entitys) {
-            return 'one' === $type ?
-                $this->targetEntity->make() :
-                $this->targetEntity->collection();
+            return 'one' === $type
+                ? $this->targetEntity->make()
+                : $this->targetEntity->collection();
         }
 
-        return 'one' === $type ?
-            reset($entitys) :
-            $this->targetEntity->collection($entitys);
+        return 'one' === $type
+            ? reset($entitys)
+            : $this->targetEntity->collection($entitys);
     }
 
     /**

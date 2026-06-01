@@ -368,9 +368,8 @@ final class ValidatorFlowTest extends TestCase
         $condition = false;
 
         $validate
-            ->
 
-        if($condition)
+        ->if($condition)
             ->addMessage(['min_length' => '{field} foo min {rule}'])
             ->else()
             ->addMessage(['min_length' => '{field} bar min {rule}'])

@@ -29,7 +29,7 @@ class Vector extends Collection
      */
     public function push(mixed $value): static
     {
-        $this->offsetSet(count($this->elements), $value);
+        $this->offsetSet(\count($this->elements), $value);
 
         return $this;
     }

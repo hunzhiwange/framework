@@ -50,7 +50,7 @@ class Repository implements ISelect
      */
     public function __construct(protected Entity $entity, protected ?IDispatch $dispatch = null) {}
 
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function entity(): Entity
     {
         // @phpstan-ignore-next-line
@@ -88,19 +88,19 @@ class Repository implements ISelect
         return $this->callSelectMethod(__FUNCTION__, $result);
     }
 
-    public function findEntity(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
+    public function findEntity(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $idOrCondition, $column);
     }
 
-    public function findMany(null|array|\Closure $idsOrCondition = null, array $column = ['*']): EntityCollection
+    public function findMany(array|\Closure|null $idsOrCondition = null, array $column = ['*']): EntityCollection
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $idsOrCondition, $column);
     }
 
-    public function findOrFail(null|array|\Closure|int|string $idOrCondition = null, array $column = ['*']): Entity
+    public function findOrFail(array|\Closure|int|string|null $idOrCondition = null, array $column = ['*']): Entity
     {
         // @phpstan-ignore-next-line
         return $this->callSelectMethod(__FUNCTION__, $idOrCondition, $column);
@@ -730,7 +730,7 @@ class Repository implements ISelect
         return $this->callSelectMethodChain(__FUNCTION__, $asCollection, $valueTypes);
     }
 
-    public function select(null|callable|IDatabaseSelect|string $data = null, array $bind = []): mixed
+    public function select(callable|IDatabaseSelect|string|null $data = null, array $bind = []): mixed
     {
         return $this->callSelectMethod(__FUNCTION__, $data, $bind);
     }
@@ -882,7 +882,7 @@ class Repository implements ISelect
     {
         return $this->callSelectMethodChain(__FUNCTION__, $name, $expire, $cache);
     }
-    // @codeCoverageIgnoreEnd
+    /** @codeCoverageIgnoreEnd */
 
     /**
      * 设置批量插入回调.
@@ -999,7 +999,7 @@ class Repository implements ISelect
             return;
         }
 
-        throw new DataNotFoundException(sprintf('Data of `%s` was not found.', \get_class($this->entity)));
+        throw new DataNotFoundException(\sprintf('Data of `%s` was not found.', \get_class($this->entity)));
     }
 
     /**

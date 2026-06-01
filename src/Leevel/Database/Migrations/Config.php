@@ -37,7 +37,7 @@ class Config extends Dto
         ob_end_clean();
 
         if (!\is_array($configArray)) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'PHP file \'%s\' must return an array',
                 $configFilePath
             ));

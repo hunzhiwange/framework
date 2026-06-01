@@ -15,6 +15,6 @@ readonly class IgnoreRoute
         ?string $path = null,
         ?string $bind = null,
         ?array $attributes = null,
-        null|array|string $middlewares = null
+        array|string|null $middlewares = null
     ) {}
 }

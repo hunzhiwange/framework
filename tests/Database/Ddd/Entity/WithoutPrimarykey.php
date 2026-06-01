@@ -18,27 +18,22 @@ class WithoutPrimarykey extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $goodsId = null
-    {
-        set (int|string|null $v) {
+    public ?int $goodsId = null {
+        set(int|string|null $v) {
             $this->goodsId = $this->set('goodsId', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $description = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $description = null {
+        set(string|null $v) {
             $this->description = $this->set('description', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }

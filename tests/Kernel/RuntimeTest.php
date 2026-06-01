@@ -245,7 +245,7 @@ EOT,
         $e = new Exception1('hello world');
 
         $this->assertInstanceof(Response::class, $resultResponse = $runtime->render($request, $e));
-        self::assertStringContainsString('Tests\\Kernel\\Exception1: hello world in file', $resultResponse->getContent());
+        self::assertStringContainsString('Tests\Kernel\Exception1: hello world in file', $resultResponse->getContent());
         self::assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -422,7 +422,7 @@ EOT,
 
         self::assertIsArray($content = json_decode($resultResponse->getContent(), true));
         self::assertArrayHasKey('error', $content);
-        self::assertSame('Tests\\Kernel\\Exception1', $content['error']['type']);
+        self::assertSame('Tests\Kernel\Exception1', $content['error']['type']);
         self::assertSame('hello world', $content['error']['message']);
         self::assertSame(500, $resultResponse->getStatusCode());
     }
@@ -635,7 +635,7 @@ EOT,
         $content = $resultResponse->getContent();
 
         self::assertStringContainsString('<div id="status-code">405</div>', $content);
-        self::assertStringContainsString('Tests\\Kernel\\Exception8<div class="file">#FILE', $content);
+        self::assertStringContainsString('Tests\Kernel\Exception8<div class="file">#FILE', $content);
         self::assertStringContainsString('<p id="sub-title">0 hello world</p>', $content);
         self::assertSame(405, $resultResponse->getStatusCode());
     }
@@ -749,7 +749,7 @@ EOT,
 
         $content = $resultResponse->getContent();
 
-        self::assertStringContainsString('Tests\\Kernel\\Exception1: hello world', $content);
+        self::assertStringContainsString('Tests\Kernel\Exception1: hello world', $content);
         self::assertSame(500, $resultResponse->getStatusCode());
     }
 
@@ -919,7 +919,7 @@ EOT,
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(
-            sprintf('Exception file %s is not exist.', __DIR__.'/assert/notFoundDefault.php')
+            \sprintf('Exception file %s is not exist.', __DIR__.'/assert/notFoundDefault.php')
         );
 
         $app = new AppRuntime($container = new Container(), __DIR__.'/app');

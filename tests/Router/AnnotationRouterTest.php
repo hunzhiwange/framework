@@ -179,7 +179,7 @@ final class AnnotationRouterTest extends TestCase
         $scandir = __DIR__.'/Apps/PetstorenNotFound';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Annotation routing scandir %s is not exits.', $scandir));
+        $this->expectExceptionMessage(\sprintf('Annotation routing scandir %s is not exits.', $scandir));
 
         $annotationRouter = new AnnotationRouter($this->createMiddlewareParser());
         $annotationRouter->addScandir($scandir);

@@ -27,7 +27,7 @@ class StringDecode
             return $value;
         }
 
-        return ctype_digit($value) ?
-            (int) $value : (is_numeric($value) ? (float) $value : $value);
+        return ctype_digit($value)
+            ? (int) $value : (is_numeric($value) ? (float) $value : $value);
     }
 }

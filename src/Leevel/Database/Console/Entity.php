@@ -133,8 +133,8 @@ class Entity extends Make
      */
     protected function parseSaveFilePath(): string
     {
-        return $this->getNamespacePath().'Entity/'.
-            ucfirst(Camelize::handle($this->tableName)).'.php';
+        return $this->getNamespacePath().'Entity/'
+            .ucfirst(Camelize::handle($this->tableName)).'.php';
     }
 
     /**
@@ -208,7 +208,7 @@ class Entity extends Make
         $regex = '/#\[Struct\(\[.*?\]\)\]\s*public\s*\?\w+\s+\$(\w+)\s*=\s*null\s*\{[^}]*\}/s';
         if (preg_match_all($regex, $contentLines, $matches)) {
             foreach ($matches[1] as $i => $v) {
-                $oldStructData[UnCamelize::handle($v)] = '    ' . trim($matches[0][$i].PHP_EOL.'    }', PHP_EOL) . PHP_EOL;
+                $oldStructData[UnCamelize::handle($v)] = '    '.trim($matches[0][$i].PHP_EOL.'    }', PHP_EOL).PHP_EOL;
             }
         }
 
@@ -286,7 +286,8 @@ class Entity extends Make
 
         foreach ($contentLines as $i => $v) {
             if ($i > $endStructIndex && '    }' === $v) {
-                $endStructIndex = $i-1;
+                $endStructIndex = $i - 1;
+
                 break;
             }
         }
@@ -361,8 +362,8 @@ class Entity extends Make
      */
     protected function getAutoIncrement(array $columns): string
     {
-        return $columns['auto_increment'] ?
-            "'{$columns['auto_increment']}'" : 'null';
+        return $columns['auto_increment']
+            ? "'{$columns['auto_increment']}'" : 'null';
     }
 
     /**
@@ -498,12 +499,13 @@ class Entity extends Make
 
             if ($isCommenting) {
                 // 最后一行不加注释
-                if (trim($line) === '') {
+                if ('' === trim($line)) {
                     $commentedLines[] = $line;
+
                     continue;
                 }
 
-                $commentedLines[] = '    // ' . substr($line, 4);
+                $commentedLines[] = '    // '.substr($line, 4);
             } else {
                 $commentedLines[] = $line;
             }
@@ -657,7 +659,7 @@ class Entity extends Make
         }
 
         if (!is_file($stub)) {
-            throw new \InvalidArgumentException(sprintf('Entity stub file `%s` was not found.', $stub));
+            throw new \InvalidArgumentException(\sprintf('Entity stub file `%s` was not found.', $stub));
         }
 
         return $stub;
@@ -677,7 +679,7 @@ class Entity extends Make
         ;
 
         if (empty($result['list'])) {
-            throw new \Exception(sprintf('Table (%s) is not found or has no columns.', $tableName));
+            throw new \Exception(\sprintf('Table (%s) is not found or has no columns.', $tableName));
         }
 
         return $result;

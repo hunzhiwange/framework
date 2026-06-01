@@ -19,9 +19,8 @@ class EntityWithEnumValidator extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -42,9 +41,8 @@ class EntityWithEnumValidator extends Entity
             ],
         ],
     ])]
-    public ?string $title = null
-    {
-        set (string|null $v) {
+    public ?string $title = null {
+        set(string|null $v) {
             $this->title = $this->set('title', $v);
         }
     }
@@ -52,9 +50,8 @@ class EntityWithEnumValidator extends Entity
     #[Struct([
         self::ENUM_CLASS => StatusEnum::class,
     ])]
-    public ?int $status = null
-    {
-        set (int|string|null $v) {
+    public ?int $status = null {
+        set(int|string|null $v) {
             $this->status = $this->set('status', $v);
         }
     }

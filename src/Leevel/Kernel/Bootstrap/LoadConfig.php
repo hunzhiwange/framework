@@ -26,7 +26,7 @@ class LoadConfig
 
         if ($app->isCachedConfig()) {
             $data = (array) include $app->configCachedPath();
-            $this->setEnvVars($data['app'][':env'], static function (string $name, null|bool|string $value = null): void {
+            $this->setEnvVars($data['app'][':env'], static function (string $name, bool|string|null $value = null): void {
                 // 保持和 Dotenv 兼容
                 $_SERVER[$name] = $_ENV[$name] = $value;
             });
@@ -60,7 +60,7 @@ class LoadConfig
 
         $file = '.'.getenv('RUNTIME_ENVIRONMENT');
         if (!is_file($fullFile = $app->envPath().'/'.$file)) {
-            throw new \RuntimeException(sprintf('Env file `%s` was not found.', $fullFile));
+            throw new \RuntimeException(\sprintf('Env file `%s` was not found.', $fullFile));
         }
 
         $app->setEnvFile($file);

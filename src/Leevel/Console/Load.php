@@ -69,7 +69,7 @@ class Load
         $files = [];
         foreach ($namespaces as $key => $dir) {
             if (!is_dir($dir)) {
-                throw new \RuntimeException(sprintf('Console load dir %s is not exits.', $dir));
+                throw new \RuntimeException(\sprintf('Console load dir %s is not exits.', $dir));
             }
 
             // PHAR 模式下不支持 glob 读取文件

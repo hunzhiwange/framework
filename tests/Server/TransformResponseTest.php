@@ -145,7 +145,7 @@ class TransformResponseTest extends TestCase
         unset($GLOBALS['swoole.response']['header']);
 
         self::assertSame(
-            sprintf($result, $time, $time),
+            \sprintf($result, $time, $time),
             $this->varJson($GLOBALS['swoole.response'])
         );
         self::assertSame(['Cache-Control', 'no-cache, private'], $headers[0]);

@@ -23,8 +23,7 @@ final class ClearTest extends TestCase
         $cacheFile = __DIR__.'/i18n_cache_[i18n].php';
 
         $cacheData = [
-            'zh-CN' => [
-            ],
+            'zh-CN' => [],
             'zh-TW' => [
                 '上一页' => '上一頁',
                 '下一页' => '下一頁',
@@ -61,7 +60,7 @@ final class ClearTest extends TestCase
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
             self::assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf(
+                    \sprintf(
                         'I18n cache succeed at %s.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
@@ -97,7 +96,7 @@ final class ClearTest extends TestCase
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
             self::assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf(
+                    \sprintf(
                         'I18n cache files %s clear succeed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
@@ -106,7 +105,7 @@ final class ClearTest extends TestCase
             );
 
             self::assertStringNotContainsString(
-                sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n),
+                \sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n),
                 $result
             );
         }
@@ -141,7 +140,7 @@ final class ClearTest extends TestCase
         foreach (['zh-CN', 'zh-TW', 'en-US'] as $i18n) {
             self::assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf(
+                    \sprintf(
                         'I18n cache files %s clear succeed.',
                         $cacheFileForI18n = str_replace('[i18n]', $i18n, $cacheFile)
                     )
@@ -151,7 +150,7 @@ final class ClearTest extends TestCase
 
             self::assertStringContainsString(
                 $this->normalizeContent(
-                    sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n)
+                    \sprintf('I18n cache files %s have been cleaned up.', $cacheFileForI18n)
                 ),
                 $result
             );

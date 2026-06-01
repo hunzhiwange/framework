@@ -24,9 +24,8 @@ class PostNew6 extends Entity
             'type' => 'bigint',
         ],
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
@@ -39,9 +38,8 @@ class PostNew6 extends Entity
             'length' => 64,
         ],
     ])]
-    public ?string $title = null
-    {
-        set (string|null $v) {
+    public ?string $title = null {
+        set(string|null $v) {
             $this->title = $this->set('title', $v);
         }
     }
@@ -53,9 +51,8 @@ class PostNew6 extends Entity
             'default' => 0,
         ],
     ])]
-    public ?int $userId = null
-    {
-        set (int|string|null $v) {
+    public ?int $userId = null {
+        set(int|string|null $v) {
             $this->userId = $this->set('userId', $v);
         }
     }
@@ -68,9 +65,8 @@ class PostNew6 extends Entity
             'length' => 200,
         ],
     ])]
-    public ?string $summary = null
-    {
-        set (string|null $v) {
+    public ?string $summary = null {
+        set(string|null $v) {
             $this->summary = $this->set('summary', $v);
         }
     }
@@ -82,9 +78,8 @@ class PostNew6 extends Entity
             'default' => 'CURRENT_TIMESTAMP',
         ],
     ])]
-    public ?string $createAt = null
-    {
-        set (string|null $v) {
+    public ?string $createAt = null {
+        set(string|null $v) {
             $this->createAt = $this->set('createAt', $v);
         }
     }
@@ -97,9 +92,8 @@ class PostNew6 extends Entity
             'default' => 0,
         ],
     ])]
-    public ?int $deleteAt = null
-    {
-        set (int|string|null $v) {
+    public ?int $deleteAt = null {
+        set(int|string|null $v) {
             $this->deleteAt = $this->set('deleteAt', $v);
         }
     }

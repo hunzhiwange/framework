@@ -70,7 +70,7 @@ class Select implements ISelect
      */
     public function __call(string $method, array $args): mixed
     {
-        throw new \InvalidArgumentException(sprintf('Select do not implement magic method `%s`.', $method));
+        throw new \InvalidArgumentException(\sprintf('Select do not implement magic method `%s`.', $method));
     }
 
     public function getContainer(): IContainer
@@ -701,7 +701,7 @@ class Select implements ISelect
         return $this;
     }
 
-    public function select(null|callable|ISelect|string $data = null, array $bind = []): mixed
+    public function select(callable|ISelect|string|null $data = null, array $bind = []): mixed
     {
         // 查询对象直接查询
         if ($data instanceof self) {

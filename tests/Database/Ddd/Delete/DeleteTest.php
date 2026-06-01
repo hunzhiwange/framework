@@ -729,7 +729,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\Relation\\PostContent` soft delete field was not defined.'
+            'Entity `Tests\Database\Ddd\Entity\Relation\PostContent` soft delete field was not defined.'
         );
 
         $entity = new PostContent();
@@ -740,7 +740,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Entity `Tests\\Database\\Ddd\\Entity\\SoftDeleteNotFoundDeleteAtField` soft delete field `delete_at` was not found.'
+            'Entity `Tests\Database\Ddd\Entity\SoftDeleteNotFoundDeleteAtField` soft delete field `delete_at` was not found.'
         );
 
         $entity = new SoftDeleteNotFoundDeleteAtField();
@@ -751,7 +751,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\EntityWithoutPrimaryKey has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\EntityWithoutPrimaryKey has no identify condition data.'
         );
 
         $entity = new EntityWithoutPrimaryKey();
@@ -762,7 +762,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\Relation\Post has no identify condition data.'
         );
 
         $entity = new Post();
@@ -773,7 +773,7 @@ EOT,
     {
         $this->expectException(EntityIdentifyConditionException::class);
         $this->expectExceptionMessage(
-            'Entity Tests\\Database\\Ddd\\Entity\\Relation\\Post has no identify condition data.'
+            'Entity Tests\Database\Ddd\Entity\Relation\Post has no identify condition data.'
         );
 
         $entity = new Post();

@@ -37,7 +37,7 @@ class Load
     public function __construct(string $dir)
     {
         if (!is_dir($dir)) {
-            throw new \RuntimeException(sprintf('Config load dir %s is not exits.', $dir));
+            throw new \RuntimeException(\sprintf('Config load dir %s is not exits.', $dir));
         }
 
         $this->dir = $dir;
@@ -182,7 +182,7 @@ class Load
                     $item = $path.'/'.$item;
                 }
                 if (!is_file($item)) {
-                    throw new \RuntimeException(sprintf('Config file %s is not exist.', $item));
+                    throw new \RuntimeException(\sprintf('Config file %s is not exist.', $item));
                 }
                 $configData = array_merge($configData, include $item);
             }

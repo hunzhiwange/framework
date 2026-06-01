@@ -53,7 +53,7 @@ EOT,
         $pathInfo = '/app:tests';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -82,7 +82,7 @@ EOT,
         $pathInfo = '/app:tests/hello/actionClass';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -109,7 +109,7 @@ EOT,
         $pathInfo = '/app:tests/hello/action_convert-foo_bar';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -136,7 +136,7 @@ EOT,
         $pathInfo = '/app:tests/controller_convert-foo_bar/bar';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -165,7 +165,7 @@ EOT,
         $pathInfo = '/app:tests/sub/world/foo';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -180,7 +180,7 @@ EOT,
         $pathInfo = '/app:tests/sub/world/foo/bar';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -206,13 +206,13 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\\Router\\Controllers\\HeLloWor\\Bar\\Foo\\XYYAc\\ControllerXxYy::actionXxxYzs() was not found.'
+            'The router Tests\Router\Controllers\HeLloWor\Bar\Foo\XYYAc\ControllerXxYy::actionXxxYzs() was not found.'
         );
 
         $pathInfo = '/app:tests/he_llo-wor/Bar/foo/xYY-ac/controller_xx-yy/action-xxx_Yzs';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -236,7 +236,7 @@ EOT,
         $pathInfo = '/app:tests/should_json';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -263,7 +263,7 @@ EOT,
         $pathInfo = '/app:tests/Response/IntResponse';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -278,7 +278,7 @@ EOT,
         $pathInfo = '/app:tests/Response/BoolResponse';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -293,7 +293,7 @@ EOT,
         $pathInfo = '/app:tests/Response/StringableResponse';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -303,7 +303,7 @@ EOT,
         self::assertSame('stringable test.', $result->getContent());
     }
 
-    #[DataProvider('getRestfulData')]
+    #[DataProvider('provideRestfulCases')]
     #[Api([
         'zh-CN:title' => 'RESTFUL 控制器响应',
         'zh-CN:description' => <<<'EOT'
@@ -345,7 +345,7 @@ EOT,
         $pathInfo = '/app:tests/restful/5';
         $attributes = [];
         $method = $method;
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -355,7 +355,7 @@ EOT,
         self::assertSame('hello for restful '.$action, $result->getContent());
     }
 
-    public static function getRestfulData(): array
+    public static function provideRestfulCases(): iterable
     {
         return [
             ['GET', Router::RESTFUL_SHOW],
@@ -382,7 +382,7 @@ EOT,
         $pathInfo = '/app:tests/restful/5/action';
         $attributes = [];
         $method = 'get';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -392,25 +392,25 @@ EOT,
         self::assertSame('hello action for restful show', $result->getContent());
     }
 
-    #[DataProvider('getNodeNotFoundData')]
+    #[DataProvider('provideNodeNotFoundCases')]
     public function testNodeNotFound(string $method, string $action): void
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
+            \sprintf('The router App\App\Controller\Home::%s() was not found.', $action)
         );
 
         $pathInfo = '/';
         $attributes = [];
         $method = $method;
-        $controllerDir = 'App\\Controller';
+        $controllerDir = 'App\Controller';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
     }
 
-    public static function getNodeNotFoundData(): array
+    public static function provideNodeNotFoundCases(): iterable
     {
         return [
             ['GET', Router::RESTFUL_INDEX],
@@ -420,25 +420,25 @@ EOT,
         ];
     }
 
-    #[DataProvider('getNodeNotFoundDataWithParams')]
+    #[DataProvider('provideNodeNotFoundWithParamsCases')]
     public function testNodeNotFoundWithParams(string $method, string $action): void
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            sprintf('The router App\\App\\Controller\\Home::%s() was not found.', $action)
+            \sprintf('The router App\App\Controller\Home::%s() was not found.', $action)
         );
 
         $pathInfo = '/home/5';
         $attributes = [];
         $method = $method;
-        $controllerDir = 'App\\Controller';
+        $controllerDir = 'App\Controller';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
         $router->dispatch($request);
     }
 
-    public static function getNodeNotFoundDataWithParams(): array
+    public static function provideNodeNotFoundWithParamsCases(): iterable
     {
         return [
             ['GET', Router::RESTFUL_SHOW],
@@ -465,14 +465,14 @@ EOT,
         $pathInfo = '';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setPreRequestMatched($request, [
             IRouter::APP => 'Tests',
             IRouter::CONTROLLER => 'Bar',
             IRouter::ACTION => 'foo',
-            IRouter::PREFIX => 'PreRequestMatched\\Prefix',
+            IRouter::PREFIX => 'PreRequestMatched\Prefix',
             IRouter::ATTRIBUTES => null,
             IRouter::MIDDLEWARES => null,
             IRouter::VARS => null,
@@ -525,7 +525,7 @@ EOT,
         $pathInfo = '/app:tests/hello/throughMiddleware';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setMiddlewareGroups([
@@ -563,14 +563,14 @@ EOT,
                     ],
                 ],
             ],
-            '/^\\/app:tests\/hello\/throughMiddleware\\/$/' => [
+            '/^\/app:tests\/hello\/throughMiddleware\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         Demo3::class.':10,hello@handle',
                     ],
                 ],
             ],
-            '/^\\/app:tests(\\S*)\\/$/' => [
+            '/^\/app:tests(\S*)\/$/' => [
                 'middlewares' => [
                     'handle' => [
                         DemoForGroup::class.'@handle',
@@ -619,13 +619,13 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\\Router\\Controllers\\Hello\\ControllerFoundMethodNot::foo() was not found.'
+            'The router Tests\Router\Controllers\Hello\ControllerFoundMethodNot::foo() was not found.'
         );
 
         $pathInfo = '/app:tests/hello/ControllerFoundMethodNot/foo';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -636,13 +636,13 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router Tests\\Router\\Controllers\\Hello::MethodClassFoundButEnterMethodNot() was not found.'
+            'The router Tests\Router\Controllers\Hello::MethodClassFoundButEnterMethodNot() was not found.'
         );
 
         $pathInfo = '/app:tests/hello/MethodClassFoundButEnterMethodNot';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -654,7 +654,7 @@ EOT,
         $pathInfo = '';
         $attributes = [];
         $method = 'OPTIONS';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -683,7 +683,7 @@ EOT,
         $pathInfo = '/app:tests/api/v1:hello';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setControllerDir($controllerDir);
@@ -714,13 +714,13 @@ EOT,
     {
         $this->expectException(RouterNotFoundException::class);
         $this->expectExceptionMessage(
-            'The router App\\My\\Router\\Controllers\\Api\\V1\\Hello::index() was not found.'
+            'The router App\My\Router\Controllers\Api\V1\Hello::index() was not found.'
         );
 
         $pathInfo = '/app:my/api/v1:hello';
         $attributes = [];
         $method = 'GET';
-        $controllerDir = 'Router\\Controllers';
+        $controllerDir = 'Router\Controllers';
         $request = $this->createRequest($pathInfo, $attributes, $method);
         $router = $this->createRouter();
         $router->setWithDefaultAppNamespace(true);

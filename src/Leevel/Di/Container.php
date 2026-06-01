@@ -100,7 +100,7 @@ class Container implements IContainer, \ArrayAccess
      */
     public function __call(string $method, array $args): mixed
     {
-        throw new \BadMethodCallException(sprintf('Method `%s` is not exits.', $method));
+        throw new \BadMethodCallException(\sprintf('Method `%s` is not exits.', $method));
     }
 
     public static function singletons(): IContainer
@@ -153,7 +153,7 @@ class Container implements IContainer, \ArrayAccess
         return $this->bind($name, $service, true);
     }
 
-    public function alias(array|string $alias, null|array|string $value = null): IContainer
+    public function alias(array|string $alias, array|string|null $value = null): IContainer
     {
         if (\is_array($alias)) {
             foreach ($alias as $key => $item) {
@@ -485,14 +485,14 @@ class Container implements IContainer, \ArrayAccess
      * @throws ContainerInvalidArgumentException
      * @throws ServiceNotFoundException
      */
-    protected function getInjectionObject(string $className, array $args = []): null|object|string
+    protected function getInjectionObject(string $className, array $args = []): object|string|null
     {
         if (interface_exists($className)) {
-            throw new ContainerInvalidArgumentException(sprintf('Interface %s cannot be normalize because not bound.', $className));
+            throw new ContainerInvalidArgumentException(\sprintf('Interface %s cannot be normalize because not bound.', $className));
         }
 
         if (!class_exists($className)) {
-            throw new ServiceNotFoundException(sprintf('Service %s was not found.', $className));
+            throw new ServiceNotFoundException(\sprintf('Service %s was not found.', $className));
         }
 
         $args = $this->normalizeInjectionArgs($className, $args);
@@ -509,7 +509,7 @@ class Container implements IContainer, \ArrayAccess
     {
         [$args, $required, $validArgs] = $this->parseInjection($value, $args);
         if ($validArgs < $required) {
-            throw new ContainerInvalidArgumentException(sprintf('There are %d required args,but %d given.', $required, $validArgs));
+            throw new ContainerInvalidArgumentException(\sprintf('There are %d required args,but %d given.', $required, $validArgs));
         }
 
         return $args;
@@ -619,7 +619,7 @@ class Container implements IContainer, \ArrayAccess
             return $itemMake;
         }
 
-        throw new \InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsClass));
+        throw new \InvalidArgumentException(\sprintf('Class or interface %s is register in container is not object.', $argsClass));
     }
 
     /**
@@ -671,7 +671,7 @@ class Container implements IContainer, \ArrayAccess
         /** @phpstan-ignore-next-line */
         $reflection = new \ReflectionClass($injection);
         if (!$reflection->isInstantiable()) {
-            throw new \InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
+            throw new \InvalidArgumentException(\sprintf('Class %s is not instantiable.', $injection));
         }
 
         $param = [];

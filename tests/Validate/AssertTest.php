@@ -397,9 +397,9 @@ EOT,
     {
         $this->expectException(AssertException::class);
         $this->expectExceptionMessage(
-            '5 not less than 3'.PHP_EOL.
-            '5 not less than 4'.PHP_EOL.
-            '5 not less than 2'
+            '5 not less than 3'.PHP_EOL
+            .'5 not less than 4'.PHP_EOL
+            .'5 not less than 2'
         );
 
         Assert::lazy(5)

@@ -246,7 +246,7 @@ final class LoadTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('I18n load dir %s is not exits.', __DIR__.'/i18nNotExists/zh-CN')
+            \sprintf('I18n load dir %s is not exits.', __DIR__.'/i18nNotExists/zh-CN')
         );
 
         new Load([__DIR__.'/i18nNotExists'])->loadData();
@@ -256,7 +256,7 @@ final class LoadTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('I18n load dir %s is invali', __DIR__.'/i18nNotExists')
+            \sprintf('I18n load dir %s is invali', __DIR__.'/i18nNotExists')
         );
 
         $GLOBALS['RUNTIME_ERROR_REPORTING'] = error_reporting();

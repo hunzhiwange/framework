@@ -20,7 +20,7 @@ class EntityNotFoundException extends \RuntimeException
     public function setEntity(string $entity): self
     {
         $this->entity = $entity;
-        $this->message = sprintf('Entity `%s` was not found.', $entity);
+        $this->message = \sprintf('Entity `%s` was not found.', $entity);
 
         return $this;
     }

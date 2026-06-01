@@ -39,7 +39,7 @@ class Observer implements \SplObserver
         }
 
         if (!\is_callable($handle)) {
-            throw new \InvalidArgumentException(sprintf('Observer %s must has handle method.', $this::class));
+            throw new \InvalidArgumentException(\sprintf('Observer %s must has handle method.', $this::class));
         }
 
         $subject = $this->convertSubject($subject);

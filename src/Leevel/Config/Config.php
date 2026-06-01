@@ -59,9 +59,9 @@ class Config implements IConfig, \ArrayAccess
         }
 
         if (!strpos($name, '.')) {
-            return \array_key_exists($name, $this->config[$namespaces]) ?
-                $this->config[$namespaces][$name] :
-                $defaults;
+            return \array_key_exists($name, $this->config[$namespaces])
+                ? $this->config[$namespaces][$name]
+                : $defaults;
         }
 
         $config = $this->config[$namespaces];

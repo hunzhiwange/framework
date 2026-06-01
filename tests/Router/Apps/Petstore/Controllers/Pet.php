@@ -13,7 +13,7 @@ class Pet
     #[Route(
         path: '/api/v2/petLeevel/{petId:[A-Za-z]+}/',
         attributes: ['args1' => 'hello', 'args2' => 'world'],
-        bind: '\\PetLeevel\\Show',
+        bind: '\PetLeevel\Show',
         middlewares: 'api',
     )]
     private function petLeevel(): void {}

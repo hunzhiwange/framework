@@ -17,29 +17,23 @@ class User extends Entity
 
     public const string AUTO = 'id';
 
-    #[Struct([
-    ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $createAt = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $createAt = null {
+        set(string|null $v) {
             $this->createAt = $this->set('createAt', $v);
         }
     }
@@ -52,10 +46,9 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $role = null
-    {
+    public ?Collection $role = null {
         get => $this->get('role');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->role = $this->set('role', $v);
         }
     }
@@ -68,10 +61,9 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $roleSoftDeleted = null
-    {
+    public ?Collection $roleSoftDeleted = null {
         get => $this->get('roleSoftDeleted');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleSoftDeleted = $this->set('roleSoftDeleted', $v);
         }
     }
@@ -85,10 +77,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'withSoftDeleted',
     ])]
-    public ?Collection $roleMiddleWithSoftDeleted = null
-    {
+    public ?Collection $roleMiddleWithSoftDeleted = null {
         get => $this->get('roleMiddleWithSoftDeleted');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleMiddleWithSoftDeleted = $this->set('roleMiddleWithSoftDeleted', $v);
         }
     }
@@ -102,10 +93,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'onlySoftDeleted',
     ])]
-    public ?Collection $roleMiddleOnlySoftDeleted = null
-    {
+    public ?Collection $roleMiddleOnlySoftDeleted = null {
         get => $this->get('roleMiddleOnlySoftDeleted');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleMiddleOnlySoftDeleted = $this->set('roleMiddleOnlySoftDeleted', $v);
         }
     }
@@ -119,10 +109,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'notFound',
     ])]
-    public ?Collection $roleRelationScopeNotFound = null
-    {
+    public ?Collection $roleRelationScopeNotFound = null {
         get => $this->get('roleRelationScopeNotFound');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleRelationScopeNotFound = $this->set('roleRelationScopeNotFound', $v);
         }
     }
@@ -136,10 +125,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'foundButPrivate',
     ])]
-    public ?Collection $roleRelationScopeFoundButPrivate = null
-    {
+    public ?Collection $roleRelationScopeFoundButPrivate = null {
         get => $this->get('roleRelationScopeFoundButPrivate');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleRelationScopeFoundButPrivate = $this->set('roleRelationScopeFoundButPrivate', $v);
         }
     }
@@ -151,10 +139,9 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $roleNotDefinedMiddleEntity = null
-    {
+    public ?Collection $roleNotDefinedMiddleEntity = null {
         get => $this->get('roleNotDefinedMiddleEntity');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleNotDefinedMiddleEntity = $this->set('roleNotDefinedMiddleEntity', $v);
         }
     }
@@ -166,10 +153,9 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $roleNotDefinedSourceKey = null
-    {
+    public ?Collection $roleNotDefinedSourceKey = null {
         get => $this->get('roleNotDefinedSourceKey');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleNotDefinedSourceKey = $this->set('roleNotDefinedSourceKey', $v);
         }
     }
@@ -181,10 +167,9 @@ class User extends Entity
         self::MIDDLE_SOURCE_KEY => 'user_id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $roleNotDefinedTargetKey = null
-    {
+    public ?Collection $roleNotDefinedTargetKey = null {
         get => $this->get('roleNotDefinedTargetKey');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleNotDefinedTargetKey = $this->set('roleNotDefinedTargetKey', $v);
         }
     }
@@ -196,10 +181,9 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_TARGET_KEY => 'role_id',
     ])]
-    public ?Collection $roleNotDefinedMiddleSourceKey = null
-    {
+    public ?Collection $roleNotDefinedMiddleSourceKey = null {
         get => $this->get('roleNotDefinedMiddleSourceKey');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleNotDefinedMiddleSourceKey = $this->set('roleNotDefinedMiddleSourceKey', $v);
         }
     }
@@ -211,10 +195,9 @@ class User extends Entity
         self::TARGET_KEY => 'id',
         self::MIDDLE_SOURCE_KEY => 'user_id',
     ])]
-    public ?Collection $roleNotDefinedMiddleTargetKey = null
-    {
+    public ?Collection $roleNotDefinedMiddleTargetKey = null {
         get => $this->get('roleNotDefinedMiddleTargetKey');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleNotDefinedMiddleTargetKey = $this->set('roleNotDefinedMiddleTargetKey', $v);
         }
     }
@@ -228,10 +211,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleField',
     ])]
-    public ?Collection $roleMiddleField = null
-    {
+    public ?Collection $roleMiddleField = null {
         get => $this->get('roleMiddleField');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleMiddleField = $this->set('roleMiddleField', $v);
         }
     }
@@ -245,10 +227,9 @@ class User extends Entity
         self::MIDDLE_TARGET_KEY => 'role_id',
         self::RELATION_SCOPE => 'middleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition',
     ])]
-    public ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null
-    {
+    public ?Collection $roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = null {
         get => $this->get('roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition');
-        set (Collection|null $v) {
+        set(Collection|null $v) {
             $this->roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition = $this->set('roleMiddleOnlySoftDeletedAndMiddleFieldAndOtherTableCondition', $v);
         }
     }

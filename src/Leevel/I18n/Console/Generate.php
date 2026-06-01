@@ -35,13 +35,13 @@ class Generate extends Command
         $generatedLanguageFiles = $gettextGenerator->generatorPoFiles(
             $config->get(':composer.i18n-paths', []),
             // @phpstan-ignore-next-line
-            explode(',', $config->get('console\\app_i18n')),
+            explode(',', $config->get('console\app_i18n')),
             $app->path('i18n')
         );
 
         foreach ($generatedLanguageFiles as $namespace => $files) {
             foreach ($files as $file) {
-                $this->info(sprintf('I18n file %s generate succeed at %s.', $namespace, $file));
+                $this->info(\sprintf('I18n file %s generate succeed at %s.', $namespace, $file));
             }
         }
 

@@ -23,7 +23,7 @@ EOT,
 ])]
 final class EntityConversionTest extends TestCase
 {
-    #[DataProvider('getBaseUseData')]
+    #[DataProvider('provideBaseUseCases')]
     #[Api([
         'zh-CN:title' => '基本使用方法',
         'zh-CN:description' => <<<'EOT'
@@ -54,7 +54,7 @@ EOT,
         $this->{$assertMethod}($conversion, $entity->getProp($field));
     }
 
-    public static function getBaseUseData(): array
+    public static function provideBaseUseCases(): iterable
     {
         return [
             // int

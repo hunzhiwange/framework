@@ -581,7 +581,7 @@ EOT,
 
         $session->flash('bar', ['sub' => ['foo' => 'bar']]);
         self::assertSame(['foo', 'bar'], $session->getFlash('test'));
-        self::assertNull($session->getFlash('test\\notFound'));
+        self::assertNull($session->getFlash('test\notFound'));
     }
 
     public function deleteFlash(): void

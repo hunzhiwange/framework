@@ -207,8 +207,8 @@ GROUP BY
      */
     protected function parseTableInfo(string $tableName, bool $master = false): array
     {
-        $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '.
-            'information_schema.tables WHERE table_name=\''.$tableName.'\';';
+        $sql = 'SELECT TABLE_COLLATION,TABLE_COMMENT FROM '
+            .'information_schema.tables WHERE table_name=\''.$tableName.'\';';
         if (!$tableInfo = $this->query($sql, [], $master)) {
             return [];
         }

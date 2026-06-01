@@ -34,12 +34,12 @@ abstract class Reload extends Command
     protected function reload(string $pidPath): void
     {
         if (!file_exists($pidPath)) {
-            throw new \InvalidArgumentException(sprintf('Pid path `%s` was not found.', $pidPath));
+            throw new \InvalidArgumentException(\sprintf('Pid path `%s` was not found.', $pidPath));
         }
 
         $pid = (int) file_get_contents($pidPath);
         if (!Process::kill($pid, SIG_DFL)) {
-            throw new \InvalidArgumentException(sprintf('Pid `%s` was not found.', $pid));
+            throw new \InvalidArgumentException(\sprintf('Pid `%s` was not found.', $pid));
         }
 
         Process::kill($pid, SIGUSR1);
@@ -53,7 +53,7 @@ abstract class Reload extends Command
             apc_clear_cache();
         }
 
-        $message = sprintf('Process %d has reloaded.', $pid);
+        $message = \sprintf('Process %d has reloaded.', $pid);
         $this->info($message);
     }
 }

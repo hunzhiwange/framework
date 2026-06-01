@@ -147,7 +147,7 @@ abstract class Command extends SymfonyCommand
      */
     public function time(string $message, string $format = 'H:i:s'): string
     {
-        return ($format ? sprintf('[%s]', date($format)) : '').$message;
+        return ($format ? \sprintf('[%s]', date($format)) : '').$message;
     }
 
     /**

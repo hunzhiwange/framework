@@ -138,7 +138,7 @@ class Parser
         // 源码
         if (false === $isContent) {
             if (!is_file($file)) {
-                throw new \InvalidArgumentException(sprintf('File %s is not exits.', $file));
+                throw new \InvalidArgumentException(\sprintf('File %s is not exits.', $file));
             }
 
             $cache = file_get_contents($file) ?: '';
@@ -183,9 +183,9 @@ class Parser
     {
         $rand = random_int(1000000, 9999999);
 
-        return "__##revert##START##{$rand}@".
-            base64_encode($content).
-            '##END##revert##__';
+        return "__##revert##START##{$rand}@"
+            .base64_encode($content)
+            .'##END##revert##__';
     }
 
     /**
@@ -195,9 +195,9 @@ class Parser
     {
         $rand = random_int(1000000, 9999999);
 
-        return "__##global##START##{$rand}@".
-            base64_encode($content).
-            '##END##global##__';
+        return "__##global##START##{$rand}@"
+            .base64_encode($content)
+            .'##END##global##__';
     }
 
     /**
@@ -432,8 +432,8 @@ class Parser
                 $tagName = (string) $tag['name'];
                 if (true !== $nodeTag[$tagName]['single']) {
                     // @phpstan-ignore-next-line
-                    throw new \InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tagName).
-                        PHP_EOL.$this->getLocation($tag['position']));
+                    throw new \InvalidArgumentException(\sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $tagName)
+                        .PHP_EOL.$this->getLocation($tag['position']));
                 }
 
                 // 退回栈中
@@ -820,13 +820,13 @@ class Parser
      */
     protected function getLocation(array $position): string
     {
-        return sprintf(
+        return \sprintf(
             'Line:%s; column:%s; file:%s.',
             $position['start_line'],
             $position['start_in'],
             $this->sourceFile ?: null
-        ).
-            ($this->sourceFile ? $this->getLocationSource($this->sourceFile, $position) : null);
+        )
+            .($this->sourceFile ? $this->getLocationSource($this->sourceFile, $position) : null);
     }
 
     /**

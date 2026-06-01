@@ -87,9 +87,9 @@ final class ScanRouterTest extends TestCase
         ]);
 
         $router->setMiddlewareAlias([
-            'demo1' => 'Tests\\Router\\Middlewares\\Demo1',
-            'demo2' => 'Tests\\Router\\Middlewares\\Demo2',
-            'demo3' => 'Tests\\Router\\Middlewares\\Demo3',
+            'demo1' => 'Tests\Router\Middlewares\Demo1',
+            'demo2' => 'Tests\Router\Middlewares\Demo2',
+            'demo3' => 'Tests\Router\Middlewares\Demo3',
         ]);
 
         $container->singleton('app', $app);

@@ -83,7 +83,7 @@ class Load
         $files = [];
         foreach ($dirs as $dir) {
             if (!is_dir($dir)) {
-                throw new \RuntimeException(sprintf('I18n load dir %s is not exits.', $dir));
+                throw new \RuntimeException(\sprintf('I18n load dir %s is not exits.', $dir));
             }
             $files = array_merge($files, $this->getPoFiles($dir));
         }
@@ -101,7 +101,7 @@ class Load
         // PHAR 模式下不支持 glob 读取文件
         $files = scandir($dir);
         if (false === $files) {
-            throw new \InvalidArgumentException(sprintf('I18n load dir %s is invalid.', $dir));
+            throw new \InvalidArgumentException(\sprintf('I18n load dir %s is invalid.', $dir));
         }
 
         $files = array_values(array_filter(

@@ -14,7 +14,7 @@ final class CompilerFileNotFoundTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf('File %s is not exits.', __DIR__.'/not_found.html')
+            \sprintf('File %s is not exits.', __DIR__.'/not_found.html')
         );
 
         $parser = $this->createParser();

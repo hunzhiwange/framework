@@ -307,7 +307,7 @@ EOT,
         self::assertStringContainsString('Starts from this moment with QueryPHP.', $content);
     }
 
-    #[DataProvider('getMessageLevelsData')]
+    #[DataProvider('provideMessageLevelsDataCases')]
     #[Api([
         'zh-CN:title' => '调试消息等级',
         'zh-CN:description' => <<<'EOT'
@@ -349,7 +349,7 @@ EOT,
         self::assertStringContainsString('"label":"'.$level.'",', $content);
     }
 
-    public static function getMessageLevelsData(): array
+    public static function provideMessageLevelsDataCases(): iterable
     {
         return [
             ['emergency'], ['alert'], ['critical'],
@@ -610,7 +610,7 @@ EOT,
 
         self::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        self::assertStringContainsString('$debug->exception(new \\\\Exception(\'test_exception\'));', $content);
+        self::assertStringContainsString('$debug->exception(new \\\Exception(\'test_exception\'));', $content);
     }
 
     public function testExceptionWithError(): void
@@ -642,7 +642,7 @@ EOT,
 
         self::assertStringContainsString('$response = new JsonResponse([\'foo\' => \'bar\']);', $content);
 
-        self::assertStringContainsString('$debug->exception(new \\\\Error(\'test_error\'));', $content);
+        self::assertStringContainsString('$debug->exception(new \\\Error(\'test_error\'));', $content);
     }
 
     public function testWithoutJson(): void

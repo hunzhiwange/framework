@@ -67,7 +67,7 @@ class Doc extends Command
             }
         }
 
-        $message = sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount);
+        $message = \sprintf('A total of <comment>%d</comment> files generate succeed.', $succeedCount);
         $this->info($message);
 
         return self::SUCCESS;
@@ -87,7 +87,7 @@ class Doc extends Command
         $result = $utilsDoc->handleAndSave($className);
         if (false !== $result) {
             /** @phpstan-ignore-next-line */
-            $message = sprintf('Class <info>%s</info> was generate succeed at <info>%s</info>.', $className, $result[0]);
+            $message = \sprintf('Class <info>%s</info> was generate succeed at <info>%s</info>.', $className, $result[0]);
             $this->line($message);
         }
 

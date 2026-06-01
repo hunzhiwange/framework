@@ -62,7 +62,7 @@ abstract class Server extends Command
         if ($bind) {
             foreach ($bind as $k => $val) {
                 if ('*' === $val['ip'] || $val['ip'] === $host) {
-                    throw new \InvalidArgumentException(sprintf(
+                    throw new \InvalidArgumentException(\sprintf(
                         'The port has been used %s:%s,the port process ID is %s',
                         $val['ip'],
                         $val['port'],
@@ -111,7 +111,7 @@ abstract class Server extends Command
         $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid}$\"";
         exec($cmd, $out);
         if (!empty($out)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Swoole pid file %s is already exists,pid is %d',
                 $pidPath,
                 $pid,

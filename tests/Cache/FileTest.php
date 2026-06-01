@@ -93,7 +93,7 @@ final class FileTest extends TestCase
             mkdir(__DIR__.'/cacheFile', 0o777);
         }
 
-        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[86400,"\\"[1583755712,\\\\\\"hello\\\\\\"]\\""]');
+        file_put_contents($filePath, '<?php die(/* 2020-03-05 15:49:21  */); ?>[86400,"\"[1583755712,\\\\\"hello\\\\\"]\""]');
         self::assertFalse($file->increase('testIncreaseCacheDataIsInvalid'));
     }
 

@@ -697,7 +697,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `post`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not defined.'
+            'The field `post`.`not_found_source_key` of entity `Tests\Database\Ddd\Entity\Relation\Post` was not defined.'
         );
 
         $post = Post::select()->where('id', 1)->findOne();
@@ -711,7 +711,7 @@ eot;
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `user`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\User` was not defined.'
+            'The field `user`.`not_found_target_key` of entity `Tests\Database\Ddd\Entity\Relation\User` was not defined.'
         );
 
         $post = Post::select()->where('id', 1)->findOne();

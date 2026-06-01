@@ -11,12 +11,12 @@ use Leevel\Di\Container;
  */
 class Gettext
 {
-    public static function handle(string $text, null|bool|float|int|string ...$data): string
+    public static function handle(string $text, bool|float|int|string|null ...$data): string
     {
         /** @var I18n $service */
         $service = Container::singletons()->make('i18n');
         if (!method_exists($service, 'gettext')) {
-            return sprintf($text, ...$data);
+            return \sprintf($text, ...$data);
         }
 
         return $service->gettext($text, ...$data);

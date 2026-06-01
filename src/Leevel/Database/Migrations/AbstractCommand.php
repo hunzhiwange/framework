@@ -104,7 +104,7 @@ abstract class AbstractCommand extends Command
         }
 
         if (!file_exists($configFile)) {
-            throw new \InvalidArgumentException(sprintf('Configuration file "%s" not found. Please provide a valid configuration file path.', $configFile));
+            throw new \InvalidArgumentException(\sprintf('Configuration file "%s" not found. Please provide a valid configuration file path.', $configFile));
         }
 
         return $configFile;

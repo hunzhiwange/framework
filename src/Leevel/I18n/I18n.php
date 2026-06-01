@@ -28,12 +28,12 @@ class I18n implements II18n
         $this->text[$i18n] = [];
     }
 
-    public function gettext(string $text, null|bool|float|int|string ...$data): string
+    public function gettext(string $text, bool|float|int|string|null ...$data): string
     {
         $value = $this->text[$this->i18n][$text] ?? $text;
 
         if ($data) {
-            return sprintf($value, ...$data);
+            return \sprintf($value, ...$data);
         }
 
         return $value;

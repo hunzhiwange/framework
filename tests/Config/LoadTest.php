@@ -54,7 +54,7 @@ final class LoadTest extends TestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Config load dir %s is not exits.', __DIR__.'/configNotExists')
+            \sprintf('Config load dir %s is not exits.', __DIR__.'/configNotExists')
         );
 
         new Load(__DIR__.'/configNotExists');
@@ -90,7 +90,7 @@ final class LoadTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Config file %s is not exist.', $appPath.'/config/extend/test.php')
+            \sprintf('Config file %s is not exist.', $appPath.'/config/extend/test.php')
         );
 
         $app = $this->createMock(IApp::class);
@@ -115,7 +115,7 @@ final class LoadTest extends TestCase
 
         $this->expectException(InvalidPathException::class);
         $this->expectExceptionMessage(
-            sprintf('Unable to read any of the environment file(s) at [%s].', $appPath.'/.env.notexist')
+            \sprintf('Unable to read any of the environment file(s) at [%s].', $appPath.'/.env.notexist')
         );
 
         $app = $this->createMock(IApp::class);

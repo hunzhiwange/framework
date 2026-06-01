@@ -214,7 +214,7 @@ final class EntityTest extends TestCase
         ], function ($container): void {
             $this->initContainerService($container);
         });
-  
+
         $result = $this->normalizeContent($result);
 
         self::assertStringContainsString($this->normalizeContent('entity <test> created successfully.'), $result);

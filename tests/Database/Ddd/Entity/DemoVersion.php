@@ -20,45 +20,36 @@ class DemoVersion extends Entity
     #[Struct([
         self::READONLY => true,
     ])]
-    public ?int $id = null
-    {
-        set (int|string|null $v) {
+    public ?int $id = null {
+        set(int|string|null $v) {
             $this->id = $this->set('id', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $name = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $name = null {
+        set(string|null $v) {
             $this->name = $this->set('name', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $availableNumber = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $availableNumber = null {
+        set(string|null $v) {
             $this->availableNumber = $this->set('availableNumber', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?string $realNumber = null
-    {
-        set (string|null $v) {
+    #[Struct([])]
+    public ?string $realNumber = null {
+        set(string|null $v) {
             $this->realNumber = $this->set('realNumber', $v);
         }
     }
 
-    #[Struct([
-    ])]
-    public ?int $version = null
-    {
-        set (int|string|null $v) {
+    #[Struct([])]
+    public ?int $version = null {
+        set(int|string|null $v) {
             $this->version = $this->set('version', $v);
         }
     }

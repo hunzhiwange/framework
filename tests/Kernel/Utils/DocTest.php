@@ -274,7 +274,7 @@ eot;
         $logCacheDir = __DIR__.'/Assert/Doc/cache';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Documentation error was found and report at %s/errors/Tests/Kernel/Utils/Assert/Demo8/doc1.php and error message is syntax error, unexpected token "echo".', $logCacheDir)
+            \sprintf('Documentation error was found and report at %s/errors/Tests/Kernel/Utils/Assert/Demo8/doc1.php and error message is syntax error, unexpected token "echo".', $logCacheDir)
         );
 
         $doc = new Doc(

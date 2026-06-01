@@ -12,14 +12,14 @@ use Leevel\Support\Manager as Managers;
  */
 class Manager extends Managers implements IFilesystem
 {
-    // @codeCoverageIgnoreStart
+    /** @codeCoverageIgnoreStart */
     public function getFilesystem(): LeagueFilesystem
     {
         // @phpstan-ignore-next-line
         return $this->callConnectMethod(__FUNCTION__);
     }
-    // @codeCoverageIgnoreEnd
 
+    /** @codeCoverageIgnoreEnd */
     public function connect(?string $connect = null, bool $newConnect = false, mixed ...$arguments): IFilesystem
     {
         return parent::connect($connect, $newConnect, ...$arguments);

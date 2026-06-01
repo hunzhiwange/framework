@@ -105,7 +105,7 @@ final class DtoTest extends TestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'Public properties `demo_not_found` of data transfer object `Tests\\Support\\Fixtures\\Dto1` was not defined.'
+            'Public properties `demo_not_found` of data transfer object `Tests\Support\Fixtures\Dto1` was not defined.'
         );
         Dto1::strict([
             'demo_not_found' => 1,
@@ -583,7 +583,7 @@ EOT,
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage(
-            'Public properties `notFound` of data transfer object `Tests\\Support\\Fixtures\\Dto5` was not defined.'
+            'Public properties `notFound` of data transfer object `Tests\Support\Fixtures\Dto5` was not defined.'
         );
 
         $dto = new Dto5(['demoStringProp' => null]);

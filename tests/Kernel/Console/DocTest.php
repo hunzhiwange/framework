@@ -61,15 +61,15 @@ final class DocTest extends TestCase
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo3 was generate succeed at %s/demo3.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo3 was generate succeed at %s/demo3.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo2 was generate succeed at %s/demo2.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo2 was generate succeed at %s/demo2.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(
@@ -138,7 +138,7 @@ final class DocTest extends TestCase
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(
@@ -177,7 +177,7 @@ final class DocTest extends TestCase
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(
@@ -217,7 +217,7 @@ final class DocTest extends TestCase
         $outputDirName = str_replace('{i18n}', '/zh-CN', $outputDirName);
 
         self::assertStringContainsString(
-            $this->normalizeContent(sprintf('Class Tests\\Kernel\\Utils\\Assert\\Doc\\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
+            $this->normalizeContent(\sprintf('Class Tests\Kernel\Utils\Assert\Doc\Demo1 was generate succeed at %s/demo1.md.', $outputDirName)),
             $result,
         );
         self::assertStringContainsString(

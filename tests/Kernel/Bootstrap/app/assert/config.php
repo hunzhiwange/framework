@@ -13,24 +13,16 @@ return [
             'foo' => null,
         ],
         ':deferred_providers' => [
-            0 => [
-            ],
-            1 => [
-            ],
+            0 => [],
+            1 => [],
         ],
         ':composer' => [
-            'providers' => [
-            ],
-            'ignores' => [
-            ],
-            'commands' => [
-            ],
-            'configs' => [
-            ],
-            'i18ns' => [
-            ],
-            'metas' => [
-            ],
+            'providers' => [],
+            'ignores' => [],
+            'commands' => [],
+            'configs' => [],
+            'i18ns' => [],
+            'metas' => [],
         ],
     ],
     'demo' => [

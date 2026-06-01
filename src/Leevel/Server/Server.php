@@ -40,7 +40,7 @@ abstract class Server implements IServer
     /**
      * 服务.
      */
-    protected null|SwooleHttpServer|SwooleServer $server = null;
+    protected SwooleHttpServer|SwooleServer|null $server = null;
 
     /**
      * 工作进程运行状态.
@@ -148,7 +148,7 @@ abstract class Server implements IServer
                 /** @var Process $process */
                 $process = new $customProcess($customProcessConfig);
                 if (!$process instanceof Process) {
-                    throw new \InvalidArgumentException(sprintf('Expected an instance of Process, got %s instead.', $process::class));
+                    throw new \InvalidArgumentException(\sprintf('Expected an instance of Process, got %s instead.', $process::class));
                 }
 
                 try {
@@ -177,13 +177,13 @@ abstract class Server implements IServer
 
         $this->setProcessName($processName = $this->getProcessName());
 
-        $this->message(sprintf(
+        $this->message(\sprintf(
             'Server is started at %s:%d',
             $this->config['host'],
             $this->config['port'],
         ));
 
-        $this->message(sprintf(
+        $this->message(\sprintf(
             '[%s] Process is started at pid:%s',
             $processName,
             posix_getpid(),
@@ -210,7 +210,7 @@ abstract class Server implements IServer
 
         $this->setProcessName($processName = $this->getProcessName($workerId));
 
-        $this->message(sprintf(
+        $this->message(\sprintf(
             '[%s] Process is started at pid:%s',
             $processName,
             posix_getpid(),
@@ -223,7 +223,7 @@ abstract class Server implements IServer
     protected function onWorkerStop(Pool $poll, int $workerId): void
     {
         $processName = $this->getProcessName($workerId);
-        $this->message(sprintf(
+        $this->message(\sprintf(
             '[%s] Process is shutdown',
             $processName,
         ));
@@ -234,7 +234,7 @@ abstract class Server implements IServer
      */
     protected function message(string $message): void
     {
-        $time = sprintf('[%s]', date('Y-m-d H:i:s'));
+        $time = \sprintf('[%s]', date('Y-m-d H:i:s'));
         fwrite(STDOUT, $time.' '.$message.PHP_EOL);
     }
 

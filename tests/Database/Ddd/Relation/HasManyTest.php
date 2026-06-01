@@ -467,7 +467,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `post`.`not_found_source_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Post` was not defined.'
+            'The field `post`.`not_found_source_key` of entity `Tests\Database\Ddd\Entity\Relation\Post` was not defined.'
         );
 
         $post = Post::select()->where('id', 1)->findOne();
@@ -481,7 +481,7 @@ EOT,
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'The field `comment`.`not_found_target_key` of entity `Tests\\Database\\Ddd\\Entity\\Relation\\Comment` was not defined.'
+            'The field `comment`.`not_found_target_key` of entity `Tests\Database\Ddd\Entity\Relation\Comment` was not defined.'
         );
 
         $post = Post::select()->where('id', 1)->findOne();

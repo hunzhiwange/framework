@@ -15,7 +15,7 @@ class ExtendVar
     )]
     public function withExtendVar(Request $request): string
     {
-        return 'withExtendVar and attributes are '.
-            json_encode($request->attributes->all());
+        return 'withExtendVar and attributes are '
+            .json_encode($request->attributes->all());
     }
 }

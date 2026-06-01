@@ -34,7 +34,7 @@ trait Database
             ;
 
             $this->assertSame(
-                sprintf($sql, $table),
+                \sprintf($sql, $table),
                 $this->varJson(
                     Db::proxy()->connect($connect)->getRealLastSql()
                 )

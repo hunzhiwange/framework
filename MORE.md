@@ -36,7 +36,7 @@ It can be used without installation,we download a version for you.
 
 ```
 cd /data/codes/queryphp/vendor/hunzhiwange/framework
-php build/php-cs-fixer fix --config=.php_cs.dist
+php build/php-cs-fixer fix --config=.php-cs-fixer.dist.php
 ```
 
 ### With Git hooks

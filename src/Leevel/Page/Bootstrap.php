@@ -106,11 +106,11 @@ class Bootstrap implements IRender
      */
     protected function getUlRender(): string
     {
-        return sprintf(
+        return \sprintf(
             '<ul class="pagination%s">',
-            $this->config['size'] ?
-                ' pagination-'.$this->config['size'] :
-                ''
+            $this->config['size']
+                ? ' pagination-'.$this->config['size']
+                : ''
         );
     }
 
@@ -123,9 +123,9 @@ class Bootstrap implements IRender
             return '';
         }
 
-        return sprintf(
-            '<li class=""><a href="%s" >1</a></li>'.
-                '<li><a href="%s">...</a></li>',
+        return \sprintf(
+            '<li class=""><a href="%s" >1</a></li>'
+                .'<li><a href="%s">...</a></li>',
             $this->replace(1),
             $this->replace($this->page->parseFirstRenderPrev())
         );
@@ -137,15 +137,15 @@ class Bootstrap implements IRender
     protected function getPrevRender(): string
     {
         if ($this->page->canPrevRender()) {
-            return sprintf(
-                '<li><a aria-label="Previous" href="%s">'.
-                    '<span aria-hidden="true">&laquo;</span></a></li>',
+            return \sprintf(
+                '<li><a aria-label="Previous" href="%s">'
+                    .'<span aria-hidden="true">&laquo;</span></a></li>',
                 $this->replace($this->page->parsePrevRenderPrev())
             );
         }
 
-        return '<li class="disabled"><a aria-label="Previous">'.
-            '<span aria-hidden="true">&laquo;</span></a></li>';
+        return '<li class="disabled"><a aria-label="Previous">'
+            .'<span aria-hidden="true">&laquo;</span></a></li>';
     }
 
     /**
@@ -161,10 +161,10 @@ class Bootstrap implements IRender
         for ($i = $this->page->getPageStart();
             $i <= $this->page->getPageEnd(); ++$i) {
             $active = $this->page->getCurrentPage() === $i;
-            $result .= sprintf(
+            $result .= \sprintf(
                 '<li class="%s"><a%s>%d</a></li>',
                 $active ? ' active' : '',
-                $active ? '' : sprintf(' href="%s"', $this->replace($i)),
+                $active ? '' : \sprintf(' href="%s"', $this->replace($i)),
                 $i
             );
         }
@@ -178,15 +178,15 @@ class Bootstrap implements IRender
     protected function getNextRender(): string
     {
         if ($this->page->canNextRender()) {
-            return sprintf(
-                '<li><a aria-label="Next" href="%s">'.
-                    '<span aria-hidden="true">&raquo;</span></a></li>',
+            return \sprintf(
+                '<li><a aria-label="Next" href="%s">'
+                    .'<span aria-hidden="true">&raquo;</span></a></li>',
                 $this->replace($this->page->getCurrentPage() + 1)
             );
         }
 
-        return '<li class="disabled"><a aria-label="Next">'.
-            '<span aria-hidden="true">&raquo;</span></a></li>';
+        return '<li class="disabled"><a aria-label="Next">'
+            .'<span aria-hidden="true">&raquo;</span></a></li>';
     }
 
     /**
@@ -195,7 +195,7 @@ class Bootstrap implements IRender
     protected function getLastRender(): string
     {
         if ($this->page->isTotalMacro()) {
-            return sprintf(
+            return \sprintf(
                 '<li><a href="%s">...</a></li>',
                 $this->replace($this->page->parseLastRenderNext())
             );
@@ -204,10 +204,10 @@ class Bootstrap implements IRender
         if ($this->page->canLastRender()) {
             $content = '';
             if ($this->page->canLastRenderNext()) {
-                $content = sprintf('<li><a href="%s">...</a></li>', $this->replace($this->page->parseLastRenderNext()));
+                $content = \sprintf('<li><a href="%s">...</a></li>', $this->replace($this->page->parseLastRenderNext()));
             }
 
-            return $content.sprintf(
+            return $content.\sprintf(
                 '<li><a href="%s">%d</a></li>',
                 $this->replace((int) $this->page->getTotalPage()),
                 $this->page->getTotalPage()

@@ -26,7 +26,7 @@ class LoadI18n
             ->make('config')
         ;
 
-        $i18nDefault = (string) $config->get('i18n\\default');
+        $i18nDefault = (string) $config->get('i18n\default');
         if ($app->isCachedI18n($i18nDefault)) {
             $data = (array) include $app->i18nCachedPath($i18nDefault);
         } else {
@@ -69,7 +69,7 @@ class LoadI18n
             }
 
             if (!is_dir($item)) {
-                throw new \Exception(sprintf('I18n dir %s is not exist.', $item));
+                throw new \Exception(\sprintf('I18n dir %s is not exist.', $item));
             }
 
             return $item;
