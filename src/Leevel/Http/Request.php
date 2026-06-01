@@ -112,7 +112,19 @@ class Request extends BaseRequest implements IArray
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        return $this->attributes->get($key, $this->query->get($key, $this->request->get($key, $default)));
+        if ($this->attributes->has($key)) {
+            return $this->attributes->get($key);
+        }
+
+        if ($this->query->has($key)) {
+            return $this->query->get($key);
+        }
+
+        if ($this->request->has($key)) {
+            return $this->request->get($key);
+        }
+
+        return $default;
     }
 
     /**
