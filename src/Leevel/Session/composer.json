@@ -13,8 +13,8 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "leevel/support": "^2.1",
-        "leevel/cache": "^2.1"
+        "leevel/support": "^2.1.1",
+        "leevel/cache": "^2.1.1"
     },
     "suggest": {
         "leevel/http": "Required to use session middleware (^2.0).",
