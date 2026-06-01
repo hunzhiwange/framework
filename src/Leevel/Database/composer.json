@@ -13,15 +13,12 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "leevel/di": "^2.1.1",
-        "leevel/support": "^2.1.1",
-        "leevel/page": "^2.1.1",
-        "leevel/cache": "^2.1.1",
-        "leevel/event": "^2.1.1",
-        "leevel/i18n": "^2.1.1"
-    },
-    "require-dev": {
-        "swoole/ide-helper": "^6.2.1"
+        "leevel/di": "^2.1.2",
+        "leevel/support": "^2.1.2",
+        "leevel/page": "^2.1.2",
+        "leevel/cache": "^2.1.2",
+        "leevel/event": "^2.1.2",
+        "leevel/i18n": "^2.1.2"
     },
     "suggest": {
         "leevel/kernel": "Required to use the make commands (^2.0).",

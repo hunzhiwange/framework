@@ -13,17 +13,14 @@
   }],
   "require": {
     "php": ">=8.5.6",
-    "leevel/http": "^2.1.1",
-    "leevel/kernel": "^2.1.1",
-    "leevel/di": "^2.1.1",
-    "leevel/log": "^2.1.1",
-    "leevel/router": "^2.1.1",
-    "leevel/support": "^2.1.1",
-    "leevel/filesystem": "^2.1.1",
+    "leevel/http": "^2.1.2",
+    "leevel/kernel": "^2.1.2",
+    "leevel/di": "^2.1.2",
+    "leevel/log": "^2.1.2",
+    "leevel/router": "^2.1.2",
+    "leevel/support": "^2.1.2",
+    "leevel/filesystem": "^2.1.2",
     "symfony/process": "^8.1.0"
-  },
-  "require-dev": {
-    "swoole/ide-helper": "^6.2.1"
   },
   "suggest": {
     "leevel/console": "Required to use the make commands (^2.0).",

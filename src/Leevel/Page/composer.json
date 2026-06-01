@@ -13,8 +13,8 @@
     }],
     "require": {
         "php": ">=8.5.6",
-        "leevel/i18n": "^2.1.1",
-        "leevel/support": "^2.1.1"
+        "leevel/i18n": "^2.1.2",
+        "leevel/support": "^2.1.2"
     },
     "autoload": {
         "psr-4": {

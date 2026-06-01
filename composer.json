@@ -61,8 +61,7 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
-        "league/flysystem-ziparchive": "^4.0.0",
-        "swoole/ide-helper": "^6.2.1"
+        "league/flysystem-ziparchive": "^4.0.0"
     },
     "suggest": {
         "league/flysystem-ziparchive": "ZipArchive adapter support. (^4.0.0)",
