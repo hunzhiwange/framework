@@ -59,7 +59,8 @@ class Server extends Command
     protected function normalizeCommand(int $port): string
     {
         return \sprintf(
-            '%s -S %s:%d -t %s',
+            'PHP_CLI_SERVER_WORKERS=%d %s -S %s:%d -t %s',
+            (int) $this->getOption('workers'),
             escapeshellarg((string) $this->getOption('php')),
             (string) $this->getOption('host'),
             $port,
@@ -82,6 +83,13 @@ class Server extends Command
     protected function getOptions(): array
     {
         return [
+            [
+                'workers',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The number of PHP built-in server workers.',
+                8,
+            ],
             [
                 'host',
                 null,
