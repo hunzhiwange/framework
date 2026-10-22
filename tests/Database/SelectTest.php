@@ -2117,8 +2117,7 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ],
-                []
+                ]
             ]
             eot;
         self::assertSame(

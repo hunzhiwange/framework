@@ -652,8 +652,7 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ],
-                []
+                ]
             ]
             eot;
 
@@ -696,8 +695,7 @@ EOT,
                     {
                         "_name": "tom"
                     }
-                ],
-                []
+                ]
             ]
             eot;
 
@@ -747,8 +745,7 @@ EOT,
                     {
                         "_name": "tom"
                     }
-                ],
-                []
+                ]
             ]
             eot;
 
@@ -806,8 +803,7 @@ EOT,
                     {
                         "content": "I love movie."
                     }
-                ],
-                []
+                ]
             ]
             eot;
         self::assertSame(
